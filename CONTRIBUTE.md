@@ -14,13 +14,13 @@ We will be using Github for development and version control.
 
 ## Here is the workflow from the bottom up:
 
-1. Members or Leads will create an issue on `L1` for the feature they want to work on and create a new branch on `L3` for that, named as `{issue_number}-{short-solution-description}` and open a PR for it on `L2`, and in the description mention the issue number from `L1`.
+1. Members or Leads will create an issue on `L1` for the feature they want to work on and create a new branch on `L3` for that, named as `{issue_number}-{short-solution-description}` and open a PR for it on `L2`, and in the description mention the issue number from `L1` which gets fixed, for eg. `Fixes convict-git/KoraKaagaz#4`
 
 2. If multiple members work on the same feature, there will be one representative member among them who will first create an issue and a new PR for it. Others will add the representative member's fork as remote and contribute to it.
 
 3. Multiple team members can comment and review the PR and ask the responsible member to get it fixed. The Team Lead takes the call to merge it on `L2`.
 
-4. PRs on `L1` will be entertained only from `L2` and will undergo review by the Architect and Manager. So Lead opens PR from `L2` to `L1` mentioning the issue number which gets fixed.
+4. PRs on `L1` will be entertained only from `L2` and will undergo review by the Architect and Manager. So Lead opens PR from `L2` to `L1` mentioning the issue number which gets closed, for eg. `Closes convict-git/KoraKaagaz#4`
 
 5. The architect takes the final call to merge the PR into the Master branch of `L1` and marks the issue as resolved.
 
