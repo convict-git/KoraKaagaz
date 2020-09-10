@@ -2,11 +2,11 @@
 
 # [WIP] Design documentation
 ## Short description
-KoraKaagaz is a Java based is a no-authentication collaborative white board 
+KoraKaagaz is a Java based no-authentication collaborative white board 
 application which runs across internet. It has real-time drawing and chat support 
 with users joining the boards through IDs, username and profile picture. It supports
-multi-colored   and multi-sized pens, erasers along with different shapes. The persitence 
-support helps to keep the drawing without consuming local space.
+multi-colored   and multi-sized pens, erasers along with different shapes. The persistence 
+support on central server helps to keep the drawing without consuming local space.
 
 ## Teams
 1. Networking
