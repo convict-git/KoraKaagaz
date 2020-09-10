@@ -58,8 +58,8 @@ INET socket. UI keeps listening to events.
        Board objects, chat messages and user list. Board configurations and
        state is taken care by the processing team while for chat messages
        content team is responsible.
-
-![KoraKaagaz (2)](https://user-images.githubusercontent.com/34399448/92733647-782b4600-f395-11ea-8a7b-9c1ce69b2785.png)
+       
+![KoraKaagaz](https://user-images.githubusercontent.com/34399448/92733637-76618280-f395-11ea-8b07-ffac60f19268.png)
 
 3. **STEP 3: Drawing and chatting**
    - Now we have a board server running along with possibly multiple clients.
@@ -75,8 +75,8 @@ INET socket. UI keeps listening to events.
        thread publish to UI listener which redraws the frame based on the
        changes. This is how colaboration is achieved.
    - All the changes of the current session stays in the main memory.
-
-![KoraKaagaz](https://user-images.githubusercontent.com/34399448/92733637-76618280-f395-11ea-8b07-ffac60f19268.png)
+   
+![KoraKaagaz (2)](https://user-images.githubusercontent.com/34399448/92733647-782b4600-f395-11ea-8a7b-9c1ce69b2785.png)
 
 4. **STEP 4: Shutdown**
    - A client requests for a shutdown for the board. Board server after
