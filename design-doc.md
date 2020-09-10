@@ -2,11 +2,11 @@
 
 # [WIP] Design documentation
 ## Short description
-KoraKaagaz is a Java based collaborative white board application which runs
-across internet. It has real-time drawing and chat support with users joining
-the boards through IDs, username and profile picture. It supports multi-colored
-and multi-sized pens along with shapes. The persitence support helps to keep the
-drawing without consuming local space.
+KoraKaagaz is a Java based is a no-authentication collaborative white board 
+application which runs across internet. It has real-time drawing and chat support 
+with users joining the boards through IDs, username and profile picture. It supports
+multi-colored   and multi-sized pens, erasers along with different shapes. The persitence 
+support helps to keep the drawing without consuming local space.
 
 ## Teams
 1. Networking
@@ -85,3 +85,13 @@ INET socket. UI keeps listening to events.
        map with a flag denoting currently inactive.
    - Board server terminates itself after releasing the socket resources.
    - Client node closed itself by releasing all the resources and clearing the memory.
+
+## Some additional pointers:
+1) The Infrastructure team has to come up with a test harness which allows unit testing for each module. The 
+Diagnostic and Logging framework is expected which allows multiple log categories that can be turned on and off 
+independently while testing and debugging. 
+2) UI module is expected to deliver a developers tool option which toggles a terminal to display the logs neatly.
+3) Processing module is expected to allow transformations on the drawing objects such as translation and rotation.
+ It is also required to keep local persistence of drawing objects to support undo/redo options.
+4) The algorithms used for operations on drawing objects should be analysed well.
+5) Networking team is suggested to work with UDP based INet sockets.  
