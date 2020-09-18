@@ -2,11 +2,11 @@
 
 # [WIP] Design documentation
 ## Short description
-KoraKaagaz is a Java based no-authentication collaborative white board 
-application which runs across internet. It has real-time drawing and chat support 
+KoraKaagaz is a Java based no-authentication collaborative white board
+native application for Linux which runs across the Internet. It has real-time drawing and chat support
 with users joining the boards through IDs, username and profile picture. It supports
-multi-colored   and multi-sized pens, erasers along with different shapes. The persistence 
-support on central server helps to keep the drawing without consuming local space.
+multi-colored and multi-sized pens, erasers along with different shapes. The persistence
+support on the central server helps to keep the drawing saved without consuming local space.
 
 ## Teams
 1. Networking
@@ -16,24 +16,24 @@ support on central server helps to keep the drawing without consuming local spac
 
 ## Overview of the workflow:
 There will be a centralized server-client setup.
-Therefore it will have a central node acting as server (which is always expected
-to stay up) and possibly multiple client (user) nodes which communicates with the
+Therefore, it will have a central node acting as server (which is always expected
+to stay up) and possibly multiple client (user) nodes which communicate with the
 central node.
-The client is turned up. An UI instance is created and networking module opens a
-INET socket. UI keeps listening to events.
+The client is turned up. A UI instance is created and networking module opens a
+INet socket. UI keeps listening to events.
 
 1. **STEP 1: Initialize/fetch a Board**
     - On the central node we will have a daemon that will act as an
         **Coordinator server**. It stores a map which translates the board ID to
-        a port where the INET socket is open and flag bit (representing whether
-        board is active or not) for the corresponding board. Also another map
+        a port where the INet socket is open and flag bit (representing whether
+        the board is active or not) for the corresponding board. Also another map
         which translates the board ID to the path of the persistence files of the
         board (if exists). This will be handled by the networking team.
     - The client node can take two actions now using the UI, either create a
         new board or demand an existing board by providing a board ID. In any
         case it has to communicate with the coordinator server.
         - In the case of creating a new board, the coordinator server creates a
-            board ID, finds an unused port and creates a directory (on it's local
+            board ID, finds an unused port and creates a directory (on its local
             disk) for persistence. It then updates the aforementioned maps with
             the port and flipping the active bit, and spawns
             a board server which occupies the identified port for further
@@ -44,7 +44,7 @@ INET socket. UI keeps listening to events.
             instance), the coordinator server uses the translation map to give
             out the port for the already running board server to the client.
 
-![KoraKaagaz (1)](https://user-images.githubusercontent.com/34399448/92733643-7792af80-f395-11ea-845d-04ad50ce3f17.png)
+![KoraKaagaz](https://user-images.githubusercontent.com/34399448/93567181-e5e5fc00-f9ab-11ea-9aa8-ff31536d562b.png)
 
 2. **STEP 2: Connect to the Board**
    - Once, the STEP 1 is done, client has a board ID, address and port of the board
@@ -56,9 +56,9 @@ INET socket. UI keeps listening to events.
    - The board server then confirms the connection by sending out the current
        state of the board which includes but not limited to the existing created
        Board objects, chat messages and user list. Board configurations and
-       state is taken care by the processing team while for chat messages
+       state is taken care by the processing team while for chat messages,
        content team is responsible.
-       
+
 ![KoraKaagaz](https://user-images.githubusercontent.com/34399448/92733637-76618280-f395-11ea-8b07-ffac60f19268.png)
 
 3. **STEP 3: Drawing and chatting**
@@ -75,7 +75,7 @@ INET socket. UI keeps listening to events.
        thread publish to UI listener which redraws the frame based on the
        changes. This is how colaboration is achieved.
    - All the changes of the current session stays in the main memory.
-   
+
 ![KoraKaagaz (2)](https://user-images.githubusercontent.com/34399448/92733647-782b4600-f395-11ea-8a7b-9c1ce69b2785.png)
 
 4. **STEP 4: Shutdown**
@@ -87,11 +87,12 @@ INET socket. UI keeps listening to events.
    - Client node closed itself by releasing all the resources and clearing the memory.
 
 ## Some additional pointers:
-1) The Infrastructure team has to come up with a test harness which allows unit testing for each module. The 
-Diagnostic and Logging framework is expected which allows multiple log categories that can be turned on and off 
-independently while testing and debugging. 
-2) UI module is expected to deliver a developers tool option which toggles a terminal to display the logs neatly.
+1) The Infrastructure team has to come up with a test harness which allows unit testing for each module. A
+Diagnostic and Logging framework is expected which allows multiple log categories that can be turned on and off
+independently while testing and debugging.
+2) UI module is expected to deliver a developers' tool option which toggles a terminal to display the logs neatly.
 3) Processing module is expected to allow transformations on the drawing objects such as translation and rotation.
  It is also required to keep local persistence of drawing objects to support undo/redo options.
 4) The algorithms used for operations on drawing objects should be analysed well.
-5) Networking team is suggested to work with UDP based INet sockets.  
+5) Networking team is suggested to work with UDP based INet sockets.
+
