@@ -19,8 +19,8 @@ There will be a centralized server-client setup.
 Therefore, it will have a central node acting as server (which is always expected
 to stay up) and possibly multiple client (user) nodes which communicate with the
 central node.
-The client is turned up. A UI instance is created and networking module opens a
-INet socket. UI keeps listening to events.
+The client is turned up. UI is the main thread which creates instances of processing and content, and networking module opens a
+INet socket. Processing and Content Modules subscribes to the networking module using INotification handler.
 
 1. **STEP 1: Initialize/fetch a Board**
     - On the central node we will have a daemon that will act as an
@@ -70,13 +70,13 @@ INet socket. UI keeps listening to events.
        handlers.
    - Any update such as change in board state or new chat message from either of
        the connected clients is listened by the board server event handler.
-       The board server spawns a new thread which updates its board instance
-       accordingly and broadcasts the event to the rest of the clients. These
+       The board server does the conditional insert into the queues, so that the worker threads of processing module and content module can deque the events and process accordingly and broadcasts the event to the rest of the clients. These
        thread publish to UI listener which redraws the frame based on the
        changes. This is how colaboration is achieved.
    - All the changes of the current session stays in the main memory.
 
-![KoraKaagaz (2)](https://user-images.githubusercontent.com/34399448/92733647-782b4600-f395-11ea-8a7b-9c1ce69b2785.png)
+![](https://i.imgur.com/ohxuujA.png)
+
 
 4. **STEP 4: Shutdown**
    - A client requests for a shutdown for the board. Board server after
@@ -87,12 +87,10 @@ INet socket. UI keeps listening to events.
    - Client node closed itself by releasing all the resources and clearing the memory.
 
 ## Some additional pointers:
-1) The Infrastructure team has to come up with a test harness which allows unit testing for each module. A
-Diagnostic and Logging framework is expected which allows multiple log categories that can be turned on and off
-independently while testing and debugging.
-2) UI module is expected to deliver a developers' tool option which toggles a terminal to display the logs neatly.
+1) The Infrastructure team has to come up with a test harness which allows unit testing for each module. A Diagnostic and Logging framework is expected which allows multiple log categories that can be turned on and off independently while testing and debugging.
+2) UI module is expected to deliver a developers' tool option which toggles a console to display the logs neatly. Log filtering should be possible.
 3) Processing module is expected to allow transformations on the drawing objects such as translation and rotation.
  It is also required to keep local persistence of drawing objects to support undo/redo options.
-4) The algorithms used for operations on drawing objects should be analysed well.
-5) Networking team is suggested to work with UDP based INet sockets.
+4) The algorithms used for operations on drawing objects should be analysed well for time and space complexities.
+5) Networking team is suggested to work with TCP based INet sockets.
 
