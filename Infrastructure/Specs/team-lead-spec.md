@@ -59,7 +59,7 @@ Deliverables
 ``` java
 public interface ITest {
     
-    // Variables
+    // Data Members
     String category;
     String error;
     String description;
@@ -190,14 +190,14 @@ public interface ICommunicator {
 * The messages are sent in plain text as no formatting requirement was given from UI side
 * The data is converted into a JSON format before sending to the server
 * The following fields was agreed for the JSON format as it gave complete information about the data being sent
-[Metadata]: Information on the type of data being sent(Image/Chat)
-[Client]: Information on the client/user sending the data(Username)
+[Meta]: Information on the type of data being sent(Image/Chat) and the client/user identifier(Username)
 [Data]: The actual data being sent
 * The message identifier being given as the value for the argument 'identifier' in the send() API given by networking, is given separately and also packaged into the JSON message so that the networking module can easily identify the type of message on the receiving client and send to the appropriate module without having to read the JSON message
 * Since the content module is handling sending and receiving on both interfaces, two queues are being used for the data flows 
 UI -> Content -> Networking and Networking -> Content -> UI
-* The content module after receiving the username, profile picture and server ip once from the UI at client initialisation will save these values in RAM and also notify the server of new username and profile so that the server can update its map of users and in turn notify other clients of the new client by sending its updated map of users to all clients which is locally stored by each client by their respective content module. This is done to have the profile images of all users available locally rather than send through the network when needed thereby reducing the load on the network
 * Due to simultaneous operation of publishing and listening on the UI-Content interface, an additional thread will be used 
+* The content module will receive the username, profile picture and server ip once from the UI at client initialisation and notify the server of the new username and profile image so that the server can update its map of users. The server will then notify other clients of the new user by sending its updated map of users to all clients. This map is then locally stored on the respective content modules of each client. This way the load on the network is reduced since the profile images are stored locally on each client.
+
 ## Test Plan 
 ## Content Module
 * Unit test the queues used in the module
