@@ -9,4 +9,17 @@ package processing.utility;
 // of a position
 public class Position {
 	public int r, c; // r: row, c: column
+	
+	@Override
+	public boolean equals(Object obj) {
+		if(obj instanceof Position) {
+			Position pos = (Position) obj;
+			return
+				r == pos.r
+				&&
+				c == pos.c;
+		}
+		else
+			return false;
+	}
 }

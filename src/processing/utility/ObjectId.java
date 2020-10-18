@@ -21,4 +21,13 @@ public class ObjectId {
 	public String toString() {
 		return objectId;
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if(obj instanceof ObjectId)
+			return 
+				objectId == ((ObjectId)obj).objectId;
+		else
+			return false;
+	}
 }
