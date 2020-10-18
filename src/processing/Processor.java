@@ -11,12 +11,12 @@ import processing.utility.*;
 public class Processor implements IDrawErase, IDrawShapes, IOperation, IUndoRedo, IUser {
 	
 	@Override
-	public void DrawCurve (ArrayList <Pixel> pixels) {
+	public void drawCurve (ArrayList <Pixel> pixels) {
 		return;
 	}
 	
 	@Override
-	public void Erase (ArrayList <Position> position) {
+	public void erase (ArrayList <Position> position) {
 		return;
 	}
 	
@@ -57,7 +57,7 @@ public class Processor implements IDrawErase, IDrawShapes, IOperation, IUndoRedo
 	}
 	
 	@Override
-	public void rotate (double angleCCW) {
+	public void rotate (Angle angleCCW) {
 		return;
 	}
 	
