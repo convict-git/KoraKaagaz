@@ -1,6 +1,7 @@
 package processing;
 
 import java.util.*;
+import processing.utility.*;
 
 /**
 *
@@ -18,7 +19,7 @@ public interface IOperation {
     void colorChange (Intensity intensity);
     
     // rotates selected object by specified angle in counter clockwise direction
-    void rotate (double angleCCW);
+    void rotate (Angle angleCCW);
     
     // removes all the object present on the board
     void reset ();
