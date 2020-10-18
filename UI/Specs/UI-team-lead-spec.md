@@ -324,4 +324,5 @@ public interface contentNotificationHandler {
 |    Anish Jain    |              Brush and Eraser               |
 | E. Sajith Kumar  |    Shapes and Processing Module Listener    |
 |    Anagha M S    |        Undo, Redo and Clean my work         |
+|   Chandana  S K  |                    Cursor                   |
 |K. Sai Deekshith  | Development Tools and  UI module testing    |
