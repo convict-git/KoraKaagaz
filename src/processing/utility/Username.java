@@ -1,6 +1,11 @@
 package processing.utility;
 
-//This class corresponds to the Username
+/**
+*
+* @author Ahmed Zaheer Dadarkar
+*/
+
+// This class corresponds to the Username
 public class Username {
     // The Username is internally stored as a String
     private String username;

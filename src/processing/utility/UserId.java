@@ -1,7 +1,13 @@
 package processing.utility;
 
+/**
+*
+* @author Ahmed Zaheer Dadarkar
+*/
+
+// This class corresponds to the User ID
 public class UserId {
-	private String userId;
+	private String userId; // user ID String
 	
 	// Build the User ID using the IP Address and
 	// the username

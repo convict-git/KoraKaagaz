@@ -2,8 +2,14 @@ package processing.utility;
 
 import java.security.Timestamp;
 
+/**
+*
+* @author Ahmed Zaheer Dadarkar
+*/
+
+// This class corresponds to the Object ID
 public class ObjectId {
-	private String objectId;
+	private String objectId; // Object ID String
 	
 	// Create Object ID using provided User ID and 
 	// Time stamp
