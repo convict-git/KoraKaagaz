@@ -107,7 +107,7 @@ class Pixel {            // pixel position with RGB values
 - Cursor
 - Undo
 - Redo
-- Clean my work
+- Clean
 - Chat Window
 - Leave Session
 
@@ -230,11 +230,11 @@ public interface IOperation {
 ```
 ```javascript=
 public interface IChanges {
-    void getChanges(rrayList<Pixel>);
+    void getChanges(ArrayList<Pixel>);
 }
 
 ```
-**7. Clean my work**
+**7. Clean**
 - Upon selecting this option all the drawings of the user are deleted.
 - The chat message are not changed.
 - reset API of the IOperation interface is called.
@@ -283,6 +283,7 @@ package contentManager;
 public interface contentNotificationHandler {
 	void onMessageReceived(String username, String message, String image);
 	void onNewUserJoined(String username);
+    void onUserExit(String username);
 }
 ```
 **10. Leave Session**
