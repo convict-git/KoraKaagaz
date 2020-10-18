@@ -11,8 +11,8 @@ import processing.utility.*;
 public interface IDrawErase {
 	
 	//will draw the curve on given pixels
-	void DrawCurve (ArrayList <Pixel> pixels);
+	void drawCurve (ArrayList <Pixel> pixels);
 	
 	//will work as an eraser on the Board
-	void Erase (ArrayList <Position> position);
+	void erase (ArrayList <Position> position);
 }
