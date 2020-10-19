@@ -8,7 +8,7 @@ import java.util.Date;
 */
 
 // This class corresponds to the Timestamp
-public class Timestamp {
+public class Timestamp implements Comparable<Timestamp> {
 	private Date date; // Date
 
 	public Timestamp(Date date) {
@@ -25,6 +25,7 @@ public class Timestamp {
 		return date;
 	}
 	
+	// Equals method
 	@Override
 	public boolean equals(Object obj) {
 		if(obj instanceof Timestamp) {
@@ -33,5 +34,11 @@ public class Timestamp {
 		}
 		else
 			return false;
+	}
+
+	// Compare method
+	@Override
+	public int compareTo(Timestamp timestamp) {
+		return date.compareTo(timestamp.date);
 	}
 }
