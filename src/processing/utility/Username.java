@@ -19,4 +19,12 @@ public class Username {
     public String toString() {
     	return username;
     }
+    
+    @Override
+	public boolean equals(Object obj) {
+		if(obj instanceof Username)
+			return username == ((Username)obj).username;
+		else
+			return false;
+	}
 }

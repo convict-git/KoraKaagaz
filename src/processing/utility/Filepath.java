@@ -18,4 +18,12 @@ public class Filepath {
 	public String toString() {
 		return filepath;
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if(obj instanceof Filepath)
+			return filepath == ((Filepath)obj).filepath;
+		else
+			return false;
+	}
 }
