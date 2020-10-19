@@ -4,7 +4,7 @@
 ## Overview
 We wish to support the following features for our shared white board application -
 * Selection of objects
-   A client should be able to select any object on the board - object created by them or another client's object. 
+   A client should be able to select any object on the board - object created by them or another client's object.
 * Deletion of the selected object
    Similar to selection, a client may delete any object present on the board.
 * Show the tag of the selected object
@@ -29,7 +29,7 @@ This requirement indicates that there is an ordering in the board objects in a d
 Z-ordering is an interesting and complex concept. It can also allow us to implement features like layers, changing layers of objects on our board. Ex: Putting the triangle on top of the circle in the our previous example. However, our team is not targetting these features currently and decided to design the implementation of our targeted features without Z-ordering concepts.
 
 ### Refined requirements
-* Each board object is created in the top most layer, on previous objects that would have been present at those positions. 
+* Each board object is created in the top most layer, on previous objects that would have been present at those positions.
 * Move, change layer of object features are not being implemented. Thus, an object's layer remains fixed (neither can it be brought above to the upper layers nor can it be moved to the lower layers) which is its layer at the time of creation. Further, undo-redo, colour change and rotate operations will not modify the object's layer.
 
 ### Motivation
@@ -56,7 +56,7 @@ We maintain three ordered maps - a map from `Position` to priority queue of pair
 * The (ObjectId, Object) pair is deleted from the second map.
 * The delete operation is pushed into the undo stack so that this operation can be undo-ed/redo-ed.
 * `provideChanges()` API in class `CommunicateChange` is called to compute intensity changes at the top of the pixels caused due to deletion. These changes will be published to UI (a subscriber to pixel intensity changes).
-* The locally stored object is returned. 
+* The locally stored object is returned.
 
 ### Tagging the selected object
 * The selected ObjectId's object is looked-up from the second map and stored locally.
@@ -73,31 +73,31 @@ The following interface is provided to the UI for performing operations select, 
 
 ```java
 public interface IOperation {
-    
-    /** 
+
+    /**
      * Returns all the pixel positions for the selected object if an object exists at the input param
      * @param positions the list of Positions selected by the cursor from UI
      */
     ArrayList<Position> select (ArrayList <Position> positions);
-    
+
     /**
      * Deletes the selected object
-     */ 
+     */
     void delete ();
-    
+
     /**
      * Changes color of selected objected to specified intensity
-     */ 
+     */
     void colorChange (Intensity intensity);
-    
+
     /**
      * Rotates selected object by specified angle in counter clockwise direction
-     */ 
-    void rotate (double angleCCW);
-    
+     */
+    void rotate (Angle angleCCW);
+
     /**
      * Resets the board to an empty board
-     */  
+     */
     void reset ();
 }
 ```
@@ -108,14 +108,14 @@ These classes are defined to abstract commonly used objects like intensity, coor
 ```java
     // This class corresponds to RGB values
     public class Intensity {
-        public int r, g, b; 
+        public int r, g, b;
     }
-    
+
     // This class corresponds to row and column of a position
     public class Position {
         public int r, c;
     }
-    
+
     // This class corresponds to position and intensity at that position
     public class Pixel {
         public Position position;
@@ -128,7 +128,7 @@ The following `BoardState` class maintains the data structures needed to represe
 
 ```java
     public class BoardState implements Serializable {
-    
+
             /* maps - IN BOARD STATE */
             // map from pixel to priority queue (max-heap) of (ObjectId, Timestamp)
             // based on timestamp (max timestamp has more priority)
@@ -136,16 +136,16 @@ The following `BoardState` class maintains the data structures needed to represe
 
             // map from ObjectId to Object
             public static Map <ObjectId, BoardObject> objIdToBoardObject;
-     
+
             // map from UserId to Username (String) in our case
             public static Map <UserId, String> idToName;
 
             // CAUTION : All three maps above are unique for each client
             // Therefore need to synchronize while accessing/updating them
-            
+
             // Need to synchronize functions using 'selectedPair'
-            public static Pair <ObjectId, Timestamp> selectedPair;  
-            
+            public static Pair <ObjectId, Timestamp> selectedPair;
+
             // more data members and member functions ....
 }
 ```
@@ -154,7 +154,7 @@ The following `BoardState` class maintains the data structures needed to represe
 
 The `SelectDeleteUtil` class defined below provides methods to update the map from `ObjectId` to `BoardObject` and the map from `Position` to `Priority Queue` of pair of `ObjectId` and `Timestamp` (higher Timestamps are more recent and have more priority). It also has other helper methods to be called by `Operation` class defined later in this section to achieve select, delete and tagging operations.
 
-The `BoardState` class maintains a static data member `selectedPair` that stores the ObjectId and Timestamp of the client's currently selected object. Since it is a shared variable between multiple threads that can write to it (ex: the user selected two different objects in succession and two threads are spawned to handle selection), its get and set methods are synchronized.  
+The `BoardState` class maintains a static data member `selectedPair` that stores the ObjectId and Timestamp of the client's currently selected object. Since it is a shared variable between multiple threads that can write to it (ex: the user selected two different objects in succession and two threads are spawned to handle selection), its get and set methods are synchronized.
 
 The private methods `getMostProbableObjectId`, `insertIntoPQ`, `removeFromPQ` are synchronized and access/update the Position to Priority Queue of (ObjectId, Timestamp) pair map defined in `BoardState` class.
 On the other hand, `getBoardObject`, `insertObjectIntoMap`, `removeObjectFromMap` private methods access/update the ObjectId to BoardObject map and hence are synchronized.
@@ -171,15 +171,15 @@ The `getUserNameOfSelectedObject` returns the username of the user who most rece
              */
             public synchronized static void setSelectedPair(ObjectId, Timestamp);
             public synchronized static Pair <ObjectId, Timestamp> getSelectedPair();
-            
+
 
             /**
              * Gets ObjectIds at the top of Priority Queues at each position (x, y) in given ArrayList.
              * The ObjectId that is present at the maximum number of positions i.e. which occurs
              * the maximum number of times is returned
-             * This is done as the selected pixel positions can be such that 
+             * This is done as the selected pixel positions can be such that
              * some of the pixels belong to an object and some to others.
-             */ 
+             */
             private synchronized static ObjectId getMostProbableObjectId(ArrayList <Position>);
 
             /** Gets DrawingObject with the given ObjectId
@@ -187,15 +187,15 @@ The `getUserNameOfSelectedObject` returns the username of the user who most rece
             private synchronized static BoardObject getBoardObject (ObjectId);
 
             /**
-             * For each Position (x, y) in the input ArrayList, insert the ObjectId, Timestamp pair into the 
+             * For each Position (x, y) in the input ArrayList, insert the ObjectId, Timestamp pair into the
              * Priority Queue at the position (x, y) present in the map
-             */ 
+             */
             private synchronized static void insertIntoPQ (ArrayList <Position>, ObjectId, Timestamp);
-            
+
             /**
-             * For each Position (x, y) in the input ArrayList, delete the ObjectId, Timestamp pair from the 
+             * For each Position (x, y) in the input ArrayList, delete the ObjectId, Timestamp pair from the
              * Priority Queue at the position (x, y) present in the map, if it exists in the Priority Queue
-             */ 
+             */
             private synchronized static void removeFromPQ (ArrayList <Position>, ObjectId, Timestamp);
 
             /**
@@ -203,22 +203,22 @@ The `getUserNameOfSelectedObject` returns the username of the user who most rece
              * insert the (ObjectId, BoardObject) key, value pair in the map
              */
             private synchronized static void insertObjectIntoMap(BoardObject);
-            
+
             /**
              * Remove the input ObjectId's BoardObject from the map
              * Thus, the key, value pair (ObjectId, BoardObject) gets deleted from the map
              */
             private synchronized static BoardObject removeObjectFromMap(ObjectId);
-            
+
 
             /* APIs to Update maps to be used internally by other Processing Module classes */
-            
+
             /**
              * Reads the ObjectId, Timestamp, ArrayList<Positions> fields of the input BoardObject
              * calls insertIntoPQ and insertObjectIntoMap to update both the maps
-             */ 
+             */
             public static void insertObjectIntoMaps (BoardObject);
-            
+
             /**
              * Performs a lookup in the ObjectId to BoardObject map to obtain the BoardObject
              * corresponding to this ObjectId
@@ -233,9 +233,9 @@ The `getUserNameOfSelectedObject` returns the username of the user who most rece
              * Looks up the BoardObject of the selectedPair's ObjectId using the map
              * From the BoardObject, UserId field is read
              * Calls getUserNameFromId(UserId) function provided by the BoardState class to get the username as a String
-             */ 
-            public static String getUserNameOfSelectedObject();       
-            
+             */
+            public static String getUserNameOfSelectedObject();
+
     }
 ```
 
@@ -243,18 +243,18 @@ The `Operation` class below imports the above class and invokes its functions to
 
 ```java
     public static class Operation {
-        
+
         // selects the object present at the maximum number of positions
         // out of the many positions selected by the UI cursor
         public static ArrayList <Position> select (ArrayList <Position> positions);
-        
+
         // deletes the selected object
         // calls the pushIntoStack function in the UndoRedo class to push the deletion operation in the undo stack
         public static void delete ();
 
         // other functions like rotate, colour change, reset defined in IOperation interface follow
    }
-  
+
 ```
 ## Analysis
 
@@ -282,10 +282,10 @@ will typically be less than `P`.
 * Space complexity for storing the ObjectId to BoardObject map is `O(N)`, for map from Position to Priority Queue is `O(P + (totalNumberOfPixels)_i)` for each object `i` from `{1, 2,... N}` and `O(U * maxLengthOfUserName)` for map from UserId to username.
 
 ### Security
-Since maps are a part of the `BoardState` class and are shared data members, access and update operations are provided using synchronized helper functions. Thus, the API is thread-safe ensuring consistency. Efficiency is also ensured by only synchronizing the methods executing critical section code like update/access of maps. Other methods' non-critical section code can be executed concurrently. 
+Since maps are a part of the `BoardState` class and are shared data members, access and update operations are provided using synchronized helper functions. Thus, the API is thread-safe ensuring consistency. Efficiency is also ensured by only synchronizing the methods executing critical section code like update/access of maps. Other methods' non-critical section code can be executed concurrently.
 
-For erasing objects using an eraser or for resetting the board, we create a white object at the pixels where the eraser was used (or on the entire board in case of reset). This `BoardObject` has a boolean `isReset` which is true if and only if the object is a reset object. 
-In the case that the object is a reset object, `select` will be disabled on it during implementation. Thus, select, delete, colour change and rotate operations would not work on an erased object. This is indeed the desired behaviour as the white object is used to save computation time required to remove elements from the maps and the stacks. The white object can be deleted by an undo operation only. 
+For erasing objects using an eraser or for resetting the board, we create a white object at the pixels where the eraser was used (or on the entire board in case of reset). This `BoardObject` has a boolean `isReset` which is true if and only if the object is a reset object.
+In the case that the object is a reset object, `select` will be disabled on it during implementation. Thus, select, delete, colour change and rotate operations would not work on an erased object. This is indeed the desired behaviour as the white object is used to save computation time required to remove elements from the maps and the stacks. The white object can be deleted by an undo operation only.
 
 ### Usability
 Other classes in the Processing module call the public methods in `SelectDeleteUtil` and `Operation` class.
@@ -293,6 +293,6 @@ The internal details of synchronizing access and updates on maps and maintaining
 
 ## Summary and Conclusions
 * Time complexities for all operations are logarithmic.
-Ex: For `P = 1e6, N = 1e6` which represents a typical `1000*1000` resolution board with 10,00,000 objects only requires `O(m*20*20)` time for selection of `m` pixels. The select operation will work within 1 sec if `m <= 2500` (assuming `1e6` number of operations/sec on a typical commodity processor, even though processors are able to execute `1e7` operations/sec today). Typical upper bound for `m` will around `1000` in case of a high resolution board with high PPI (pixels per inch). In practice, the number of objects on the board will be less than 10,00,000 most of the times. Thus, the operations are efficient even for a high resolution board and large number of objects. 
+Ex: For `P = 1e6, N = 1e6` which represents a typical `1000*1000` resolution board with 10,00,000 objects only requires `O(m*20*20)` time for selection of `m` pixels. The select operation will work within 1 sec if `m <= 2500` (assuming `1e6` number of operations/sec on a typical commodity processor, even though processors are able to execute `1e7` operations/sec today). Typical upper bound for `m` will around `1000` in case of a high resolution board with high PPI (pixels per inch). In practice, the number of objects on the board will be less than 10,00,000 most of the times. Thus, the operations are efficient even for a high resolution board and large number of objects.
 
 * Ordered maps have been used instead of Hash Maps in java to strike a tradeoff between space and time complexity. Ordered maps require lesser memory than hash maps as they only store a value for a key if the key, value pair is inserted in the map. However, lookup time is logarithmic instead of expected constant time lookup provided by a hash map.
