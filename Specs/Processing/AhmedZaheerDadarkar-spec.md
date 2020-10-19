@@ -197,9 +197,6 @@ for better readability.
     // This interface would provide the operation that would
     // be performed on the object.
     public interface BoardObjectOperation {
-        // Board Object Operation type
-        private BoardObjectOperationType boardOpType;
-
         // This method would give the type, which
         // would then help us to (downcast) cast
         // it into its original dynamic type for
@@ -209,16 +206,12 @@ for better readability.
     
     // The Creation Operation - It has no parameters
     public class CreateOperation implements BoardObjectOperation {
-        private BoardObjectOperationType operationType;
-        
         public CreateOperation ();
         public BoardObjectOperationType getOperationType ();
     }
     
     // The Deletion Operation - It has no parameters
     public class DeleteOperation implements BoardObjectOperation  {
-        private BoardObjectOperationType operationType;
-        
         public DeleteOperation ();
         public BoardObjectOperationType getOperationType ();
     }
@@ -226,9 +219,7 @@ for better readability.
     // The Rotation Operation - It has the angle parameter
     public class RotateOperation implements BoardObjectOperation  {
         private Angle angleCCW;
-        private BoardObjectOperationType operationType;
-        
-        public RedoOperation (Angle angleCCW);
+        public RotateOperation (Angle angleCCW);
         public BoardObjectOperationType getOperationType ();
     }
     
@@ -236,8 +227,6 @@ for better readability.
     // parameter (i.e. color)
     public class ColorChangeOperation implements BoardObjectOperation  {
         private Intensity intensity;
-        private BoardObjectOperationType operationType;
-        
         public ColorChangeOperation (Intensity intensity);
         public BoardObjectOperationType getOperationType ();
     }
@@ -260,12 +249,14 @@ for better readability.
         // screen operation. This object then, cannot be rotated or color changed
         
         // Construct a Board Object using the list of pixels,
-        // object ID, timestamp and user ID
+        // object ID, timestamp and user ID, and whether object is
+        // reset object or not
         public BoardObject (
             ArrayList <Pixel> pixels,
             ObjectId objectId,
             Timestamp timestamp,
-            UserId userId
+            UserId userId,
+            boolean isReset
         );
         public BoardObjectOperation getOperation (); // Get the operation corresponding to this shape
         // Set the operation corresponding to this shape
