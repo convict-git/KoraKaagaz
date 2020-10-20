@@ -92,7 +92,7 @@ The logging framework contains multiple log levels and also has different config
    stored and searched to get the method caller. Also, it might not be possible to extract the module/package name efficiently.
    To reduce the resource footprint of the Logging framework for now, this has not been further explored.
    - For now, Module names are stored as an enum type in the Logging Framework Class.
-4. All logs messages follow the format - `YYYY/MM/DD HH:MM:SS MODULE-NAME LOG-LEVEL message`
+4. All logs messages follow the format - `[YYYY:MM:DD HH:MM:SS] [logLevel] [moduleName] logMessage`
 5. It will be possible to specify the level of logging for a particular execution. This has to be specified in the 
    configuration file ($HOME/.config/korakaagaz/loggerconfig.properties). A Boolean value associated with each Log Level
    option (and default values) that indicate whether those particular log level messages need to be written/printed or not.
