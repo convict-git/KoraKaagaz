@@ -108,7 +108,7 @@ The logging framework contains multiple log levels and also has different config
     - ERROR   : RED
     - WARNING : ORANGE
     - SUCCESS : GREEN
-    - INFO    : NO COLOR
+    - INFO    : NO COLOR (i.e. the default color for text in Console gets applied)
 
 ### Future Scope of Work
 1. A newer configuration file format like [lightbend config][lightbend] or HOCON file.
