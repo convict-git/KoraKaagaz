@@ -4,10 +4,13 @@ import java.util.*;
 import processing.utility.*;
 
 /**
-*
-* @author Himanshu Jain
-*/
+ * 
+ * @author Himanshu Jain
+ *
+ */
 
 public interface IChanges {
-	void getChanges(ArrayList<Pixel> pixels);
+	
+	void getChanges(ArrayList <Pixel> pixels);
+	
 }
