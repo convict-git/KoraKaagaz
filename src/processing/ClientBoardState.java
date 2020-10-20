@@ -19,6 +19,8 @@ public class ClientBoardState {
 	//port Number of the Board Server
 	public static int portNumber;
 	
+	//public static Map <Identifier identifier, IChanges handler>
+	
 	public static String BoardId;
 	
 	//undo and redo stacks
