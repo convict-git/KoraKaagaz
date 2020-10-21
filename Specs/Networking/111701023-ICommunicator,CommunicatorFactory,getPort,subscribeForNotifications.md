@@ -55,7 +55,7 @@ We are developing whiteboard application, Where anonymous user can join and shar
      &emsp; The publisher–subscriber is a messaging pattern where senders of messages, called publishers, do not program the messages to be sent directly to specific receivers, called subscribers, but instead categorize published messages into classes without knowledge of which subscribers, if any, there may be. Similarly, subscribers express interest in one or more classes and only receive messages that are of interest, without knowledge of which publishers.
      &emsp; So here the Networking module acts as publisher for recieving messages over the network, By providing subscribeForNotifications() method of the ICommunicator object, And The Content and Processing module acts subscirbers. Subscribers subscribe to recieving messages by passing handler to subscribeForNotifications() method of ICommunicator object. So When the Networking Module receives the data, it would call the appropriate provided handler(as an argument).
     <br />
-![](https://i.imgur.com/0HElJDr.png =95%x)
+![](https://i.imgur.com/0HElJDr.png )
 <br />
 # [Objectives](https://)
 * ## [ICommunicator Interface](https://)
