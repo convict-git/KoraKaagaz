@@ -23,7 +23,7 @@ public class ClientBoardState {
 	public static String boardId;
 	
 	//undo and redo stacks
-	public static ArrayList <BoardObject> unodStack = new ArrayList <BoardObject>();
+	public static ArrayList <BoardObject> undoStack = new ArrayList <BoardObject>();
 	public static ArrayList <BoardObject> redoStack = new ArrayList <BoardObject>();
 	
 	//to store the selected object
