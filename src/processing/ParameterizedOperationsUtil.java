@@ -41,10 +41,7 @@ public class ParameterizedOperationsUtil {
         newPixelSet = obj.getPixels();
         for(int i = 0; i < newPixelSet.size(); i++) {
 
-            Pixel newPix;
-            newPix.position = newPixelSet.get(i).position;
-            newPix.intensity = newIntensity;
-
+            Pixel newPix = new Pixel(newPixelSet.get(i).position, newIntensity);
             newPixelSet.set(i, newPix);
         }
 
