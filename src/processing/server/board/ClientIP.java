@@ -13,7 +13,7 @@ import processing.utility.*;
 public class ClientIP implements IClientIP {
 	
 	@Override
-	public Map<Username, IpAddress> getClientDetails() {
+	public Map<Username, IpAddress> getClientIP() {
 		Map<Username, IpAddress> userToIp = new HashMap<Username, IpAddress>();
 		return userToIp;
 	}

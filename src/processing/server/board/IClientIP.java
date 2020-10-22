@@ -14,6 +14,6 @@ import java.util.*;
 
 public interface IClientIP {
 	
-	public Map<Username, IpAddress> getClientDetails(); 
+	public Map<Username, IpAddress> getClientIP(); 
 	
 }
