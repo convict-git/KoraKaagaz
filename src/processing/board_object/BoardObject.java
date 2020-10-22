@@ -11,6 +11,12 @@ import java.util.ArrayList;
 */
 
 public class BoardObject implements Serializable {
+
+	// This UID is generated so that there won't be unexpected InvalidClassExceptions
+	// exceptions because of different compiler implementations, read:
+	// https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/Serializable.html
+	private static final long serialVersionUID = 1388864177359509930L;
+
 	private ArrayList <Pixel> pixels;     // List of Pixels Representing the object
     private BoardObjectOperation boardOp; // The operation performed on this object
     private ObjectId objectId;            // The object ID
