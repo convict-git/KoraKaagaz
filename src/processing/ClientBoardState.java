@@ -35,6 +35,6 @@ public class ClientBoardState {
 	
 	public static IpAddress serverIp;
 	
-	public static BrushSize brushSize;
+	public static BrushRadius brushSize;
 	
 }
