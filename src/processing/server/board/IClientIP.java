@@ -12,7 +12,7 @@ import java.util.*;
  *
  */
 
-public interface IClientDetails {
+public interface IClientIP {
 	
 	public Map<Username, IpAddress> getClientDetails(); 
 	

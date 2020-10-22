@@ -11,8 +11,8 @@ package processing.server.board;
 
 public class ServerFactory {
 
-	public ClientDetails getDetailsHandler() {
-		ClientDetails cd = new ClientDetails();
+	public ClientIP getDetailsHandler() {
+		ClientIP cd = new ClientIP();
 		return cd;
 	}
 	

@@ -10,7 +10,7 @@ import processing.utility.*;
  *
  */
 
-public class ClientDetails implements IClientDetails {
+public class ClientIP implements IClientIP {
 	
 	@Override
 	public Map<Username, IpAddress> getClientDetails() {
