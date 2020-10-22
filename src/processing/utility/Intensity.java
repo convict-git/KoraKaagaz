@@ -9,6 +9,13 @@ package processing.utility;
 public class Intensity {
 	public int r, g, b; // r: red, g: green, b: blue
 	
+	// Constructor for Intensity Class
+	public Intensity(int red, int green, int blue) {
+		r = red;
+		g = green;
+		b = blue;
+	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		if(obj instanceof Intensity) {

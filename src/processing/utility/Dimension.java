@@ -7,7 +7,14 @@ package processing.utility;
 
 // This class corresponds to the Dimension
 public class Dimension {
+	// Number of rows and columns
 	public int numRows, numCols;
+	
+	// Constructor for Dimension Class
+	public Dimension(int numRows, int numCols) {
+		this.numRows = numRows;
+		this.numCols = numCols;
+	}
 	
 	@Override
 	public boolean equals(Object obj) {

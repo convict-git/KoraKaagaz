@@ -9,6 +9,11 @@ package processing.utility;
 public class Angle {
 	public double angle;
 	
+	// Constructor for Angle Class
+	public Angle(double angle) {
+		this.angle = angle;
+	}
+	
 	@Override
 	public boolean equals(Object otherAngle) {
 		if(otherAngle instanceof Angle)

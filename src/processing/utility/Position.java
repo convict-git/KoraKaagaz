@@ -10,6 +10,12 @@ package processing.utility;
 public class Position {
 	public int r, c; // r: row, c: column
 	
+	// Constructor for Position class
+	public Position(int row, int column) {
+		r = row;
+		c = column;
+	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		if(obj instanceof Position) {
