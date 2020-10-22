@@ -20,7 +20,7 @@ public class ClientBoardState {
 	
 	//public static Map <Identifier identifier, IChanges handler>
 	
-	public static String BoardId;
+	public static String boardId;
 	
 	//undo and redo stacks
 	public static ArrayList <BoardObject> unodStack = new ArrayList <BoardObject>();
