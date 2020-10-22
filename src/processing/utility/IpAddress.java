@@ -14,6 +14,11 @@ public class IpAddress {
     public IpAddress(String ipAddress) {
     	this.ipAddress = ipAddress;
     }
+
+    // Copy Constructor for IP Address
+    public IpAddress(IpAddress ipAddressObject) {
+    	ipAddress = ipAddressObject.ipAddress;
+    }
     
     // Return the ipAddress String
     public String toString() {

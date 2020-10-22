@@ -15,6 +15,11 @@ public class Username {
     	this.username = username;
     }
     
+    // Copy Constructor for Username
+    public Username(Username usernameObject) {
+    	username = usernameObject.username;
+    }
+    
     // Return the username String
     public String toString() {
     	return username;

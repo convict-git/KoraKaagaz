@@ -16,6 +16,12 @@ public class Dimension {
 		this.numCols = numCols;
 	}
 	
+	// Copy Constructor for Dimension Class
+	public Dimension(Dimension dimension) {
+		numRows = dimension.numRows;
+		numCols = dimension.numCols;
+	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		if(obj instanceof Dimension) {

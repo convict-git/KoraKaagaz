@@ -14,6 +14,11 @@ public class Angle {
 		this.angle = angle;
 	}
 	
+	// Copy Constructor for Angle Class
+	public Angle(Angle angleObject) {
+		angle = angleObject.angle;
+	}
+	
 	@Override
 	public boolean equals(Object otherAngle) {
 		if(otherAngle instanceof Angle)
