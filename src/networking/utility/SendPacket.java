@@ -1,4 +1,4 @@
-package networking.queueManagement.utility;
+package networking.utility;
 
 /**
  *
