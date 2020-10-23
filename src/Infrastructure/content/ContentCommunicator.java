@@ -1,13 +1,13 @@
-package contentManager;
+package content;
 
 public class ContentCommunicator implements IContentCommunicator{
     
-	public void initialiseUser(String json_new) {
+	public void initialiseUser(String userDetails) {
     	//UI will call this to send any message to server
 		//this method will be implemented by content team.
     }
 	
-	public void sendMessageToContent(String json_message) {
+	public void sendMessageToContent(String message) {
     	//UI will call this to send any message to server
 		//this method will be implemented by content team.
     }
