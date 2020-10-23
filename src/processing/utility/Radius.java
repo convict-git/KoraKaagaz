@@ -14,6 +14,11 @@ public class Radius {
 		this.radius = radius;
 	}
 	
+	// Copy Constructor for Radius Class
+	public Radius(Radius radiusObject) {
+		radius = radiusObject.radius;
+	}
+	
 	public boolean equals(Object obj) {
 		if(obj instanceof Radius)
 			return radius == ((Radius)obj).radius;

@@ -16,6 +16,12 @@ public class Position {
 		c = column;
 	}
 	
+	// Copy Constructor for Pixel Class
+	public Position(Position posObject) {
+		r = posObject.r;
+		c = posObject.c;
+	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		if(obj instanceof Position) {

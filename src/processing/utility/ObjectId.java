@@ -15,6 +15,11 @@ public class ObjectId {
 		objectId = userId.toString() + "_" + timestamp.toString();
 	}
 	
+	// Copy constructor for ObjectId Class
+	public ObjectId(ObjectId objectIdObject) {
+		objectId = objectIdObject.objectId;
+	}
+	
 	// Convert object ID to String
 	public String toString() {
 		return objectId;

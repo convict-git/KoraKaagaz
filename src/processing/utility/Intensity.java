@@ -16,6 +16,13 @@ public class Intensity {
 		b = blue;
 	}
 	
+	// Copy constructor for Intensity Class
+	public Intensity(Intensity intensity) {
+		r = intensity.r;
+		g = intensity.g;
+		b = intensity.b;
+	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		if(obj instanceof Intensity) {
