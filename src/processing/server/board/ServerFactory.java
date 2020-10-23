@@ -10,10 +10,13 @@ package processing.server.board;
  */
 
 public class ServerFactory {
+	
+	public static ClientIP ins = new ClientIP();
+	
+	private ServerFactory() {};
 
-	public ClientIP getIPHandler() {
-		ClientIP cd = new ClientIP();
-		return cd;
+	public static ClientIP getIPHandler() {
+		return ins;
 	}
 	
 }
