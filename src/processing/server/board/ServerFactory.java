@@ -11,12 +11,12 @@ package processing.server.board;
 
 public class ServerFactory {
 	
-	public static ClientIP ins = new ClientIP();
+	public static ClientIP clientIP = new ClientIP();
 	
 	private ServerFactory() {};
 
 	public static ClientIP getIPHandler() {
-		return ins;
+		return clientIP;
 	}
 	
 }
