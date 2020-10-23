@@ -12,6 +12,8 @@ import processing.utility.*;
 
 public class Processor implements IDrawErase, IDrawShapes, IOperation, IUndoRedo, IUser {
 	
+	protected Processor() {};
+	
 	@Override
 	public void drawCurve (ArrayList <Pixel> pixels) {
 		return;
