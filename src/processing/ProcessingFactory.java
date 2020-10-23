@@ -9,9 +9,11 @@ package processing;
 
 public class ProcessingFactory {
 	
-	public Processor getProcessor() {
-		Processor processor = new Processor();
-		
+	public static Processor processor = new Processor();
+	
+	private ProcessingFactory() {};
+	
+	public static Processor getProcessor() {
 		return processor;
 	}
 	
