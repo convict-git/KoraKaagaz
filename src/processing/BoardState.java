@@ -103,7 +103,7 @@ public class BoardState implements Serializable {
 		for (Position pos : positions) {
 			PriorityQueue <PriorityQueueObject> pq = posToObjects.get(pos);
 			if (pq == null) {
-				posToObjects.put(pos, new PriorityQueue<PriorityQueueObject>());
+				posToObjects.put(pos, new PriorityQueue<PriorityQueueObject>(20, new ObjectComparator()));
 			}
 			posToObjects.get(pos).add(toBeInserted);
 		}
