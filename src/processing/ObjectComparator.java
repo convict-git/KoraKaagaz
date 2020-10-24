@@ -19,7 +19,7 @@ public class ObjectComparator implements Comparator <PriorityQueueObject>{
 		else if(obj1.timestamp.compareTo(obj2.timestamp) > 0) {
 			return -1;
 		}
-		return 0;
+		else return 0;
 	}
 	
 }
