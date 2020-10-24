@@ -10,6 +10,7 @@ import processing.board_object.*;
 * ClientBoardState and ServerBoardState will store the object of this class in their class.
 *
 * @author Himanshu Jain, Shruti Umat
+* @reviewer Rakesh Kumar, Satchit Desai
 */
 
 public class BoardState implements Serializable {
