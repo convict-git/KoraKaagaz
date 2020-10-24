@@ -20,4 +20,8 @@ class LanCommunicator implements ICommunicator{
         return;
     }
 
+    public void subscribeForNotifications(String identifier, INotificationHandler handler){
+        return;
+    }
+    
 }
