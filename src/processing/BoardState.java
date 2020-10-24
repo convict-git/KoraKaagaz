@@ -55,7 +55,7 @@ public class BoardState implements Serializable {
 	 * This is done as the selected pixel positions can be such that
 	 * some of the pixels belong to an object and some to others.
 	 */
-	private synchronized ObjectId getMostProbableObjectId(ArrayList <Position> positions) {
+	public synchronized ObjectId getMostProbableObjectId(ArrayList <Position> positions) {
 		HashMap<ObjectId, Integer> count = new HashMap<ObjectId, Integer>();
 		for (Position pos: positions) {
 			PriorityQueue <PriorityQueueObject> queue_at_pos = posToObjects.get(pos);
@@ -87,12 +87,6 @@ public class BoardState implements Serializable {
 		}
 
 		return maxOccObjectId;
-	}
-
-	/** Gets BoardObject with the given ObjectId
-	 */
-	private synchronized BoardObject getBoardObject (ObjectId objId) {
-		return objIdToBoardObject.get(objId);
 	}
 
 	/**
