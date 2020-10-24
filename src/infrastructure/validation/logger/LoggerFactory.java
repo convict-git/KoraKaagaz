@@ -17,7 +17,7 @@ public class LoggerFactory {
 	/**
 	 * 
 	 */
-	public LoggerFactory() {
+	private LoggerFactory() {
 		// TODO Auto-generated constructor stub
 	}
 
