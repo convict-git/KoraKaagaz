@@ -1,5 +1,10 @@
 package networking.utility;
 
+/**
+ *
+ * @author Pandravisam Shiva Santhosh
+*/
+
 public class IncomingPacket{
 
     // The content of the message that needs to be delivered to the corresponding module
