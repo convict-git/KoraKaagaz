@@ -12,7 +12,7 @@ public class LoggerManager implements ILogger {
 	/**
 	 * 
 	 */
-	public LoggerManager() {
+	protected LoggerManager() {
 		// TODO Auto-generated constructor stub
 	}
 
