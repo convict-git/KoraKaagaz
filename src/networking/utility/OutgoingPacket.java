@@ -5,6 +5,11 @@ package networking.utility;
  * @author Pandravisam Shiva Santhosh
  */
 
+/*
+    This file contains the class that is going to used by Send-Component for adding the data to the queue
+     and SendQueueListener-Component for retrieving the data from the queue.
+ */
+
 public class OutgoingPacket {
 
     // Destination IP address of the host for which the message should be delivered
@@ -62,9 +67,9 @@ public class OutgoingPacket {
     else returns false
      */
     public boolean isEqual(Object obj) {
-        if(obj instanceof SendPacket){
-            if(destination == ((SendPacket) obj).destination && message == ((SendPacket) obj).message
-                    && identifier == ((SendPacket) obj).identifier) {
+        if(obj instanceof OutgoingPacket){
+            if(destination == ((OutgoingPacket) obj).destination && message == ((OutgoingPacket) obj).message
+                    && identifier == ((OutgoingPacket) obj).identifier) {
                 return true;
             }
             else {

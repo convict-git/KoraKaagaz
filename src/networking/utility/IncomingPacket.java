@@ -5,6 +5,11 @@ package networking.utility;
  * @author Pandravisam Shiva Santhosh
 */
 
+/*
+    This file contains the class that is going to used by SockListener-Component for adding the data
+    to the queue and ReceiveQueueListener-Component for retrieving the data from the queue.
+ */
+
 public class IncomingPacket{
 
     // The content of the message that needs to be delivered to the corresponding module
@@ -34,8 +39,8 @@ public class IncomingPacket{
     else returns false
     */
     public boolean isEqual(Object obj) {
-        if(obj instanceof OutgoingPacket){
-            if(message == ((OutgoingPacket) obj).message) {
+        if(obj instanceof IncomingPacket){
+            if(message == ((IncomingPacket) obj).message) {
                 return true;
             }
             else {
