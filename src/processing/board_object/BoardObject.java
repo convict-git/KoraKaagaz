@@ -2,7 +2,6 @@ package processing.board_object;
 
 import processing.utility.*;
 import java.io.Serializable;
-import java.security.Timestamp;
 import java.util.ArrayList;
 
 /**
@@ -21,7 +20,7 @@ public class BoardObject implements Serializable {
     private boolean isReset;         // Is this object a reset object ?
     // By reset object we mean an object which is built by an erase or clear
     // screen operation. This object then, cannot be rotated or color changed
-    
+
     // Construct a Board Object using the list of pixels,
     // object ID, timestamp and user ID and boolean
     // telling if the object is a reset object or not
@@ -39,12 +38,12 @@ public class BoardObject implements Serializable {
     	this.isReset = isReset;
     	this.prevPixelIntensities = null;
     }
-    
+
     // Get the operation corresponding to this shape
     public BoardObjectOperation getOperation() {
     	return boardOp;
     }
-    
+
     // Set the operation corresponding to this shape
     // This operation has special functionality for color change
     // operation - it stores previous intensities into the
@@ -52,7 +51,7 @@ public class BoardObject implements Serializable {
     public void setOperation (BoardObjectOperation boardOp) {
     	this.boardOp = boardOp;
     	if(
-    		boardOp.getOperationType() 
+    		boardOp.getOperationType()
     		==
     		BoardObjectOperationType.COLOR_CHANGE
     	)
@@ -88,7 +87,7 @@ public class BoardObject implements Serializable {
     public Timestamp getTimestamp() {
     	return timestamp;
     }
-    
+
     // Is this a reset object ?
     public boolean isResetObject() {
     	return isReset;
