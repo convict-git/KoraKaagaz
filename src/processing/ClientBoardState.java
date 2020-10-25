@@ -32,6 +32,7 @@ public class ClientBoardState {
 	//to store the username and userId
 	public static Username username;
 	public static UserId userId;
+	public static IpAddress userIP;
 	
 	public static IpAddress serverIp;
 	
