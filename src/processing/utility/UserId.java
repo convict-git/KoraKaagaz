@@ -15,6 +15,11 @@ public class UserId {
 		userId = ipAddress.toString() + "_" + username.toString();
 	}
 	
+	// Copy Constructor for UserId
+	public UserId(UserId userIdObject) {
+		userId = userIdObject.userId;
+	}
+	
 	// Convert User ID to String
 	public String toString() {
 		return userId;

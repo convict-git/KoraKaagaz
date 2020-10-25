@@ -11,6 +11,18 @@ public class Pixel {
 	public Position position;
 	public Intensity intensity;
 	
+	// Constructor for Pixel Class
+	public Pixel(Position position, Intensity intensity) {
+		this.position = position;
+		this.intensity = intensity;
+	}
+	
+	// Copy Constructor for Pixel Class
+	public Pixel(Pixel pixelObject) {
+		position = new Position(pixelObject.position);
+		intensity = new Intensity(pixelObject.intensity);
+	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		if(obj instanceof Pixel) {
