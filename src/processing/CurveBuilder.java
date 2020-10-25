@@ -1,9 +1,9 @@
 package processing;
-import java.security.Timestamp;
+
 import java.util.*;
 import processing.utility.*;
 import processing.BoardState;
-
+import processing.board_object.*;
 /**
 *
 * @author Satchit Desai
@@ -26,38 +26,15 @@ public class CurveBuilder {
 			Boolean reset
 			) {
 				
-		BoardObject curveObj = new BoardObject();
-		
-		curveObj.pixels = pixels;
-		
-		//Update object of the new object
-		curveObj.objectid = new ObjectId();
-		
-		curveObj.objectid = newobjectId;
-		
-		//Update timestamp of the new object
-		curveObj.timestamp = new Timestamp();
-		
-		curveObj.timestamp = newtimestamp;
-		
-		//Update userid of the new object
-		curveObj.userid = new UserId();
-		
-		curveObj.userid = newuserId;
+		BoardObject curveObj = new BoardObject(pixels, newobjectId, newtimestamp, newuserId, reset);
 		
 		//There is no previous intensity
 		//for a new object so it is null
-		curveObj.prevpixel = new prevPixelIntensities();
-		
-		curveObj.prevpixel = prevPixelIntensity;
-		
-		//Set reset flag as false
-		curveObj.resetFlag = new isReset();
-		
-		curveObj.resetFlag= reset;
+		ArrayList<Pixel> prevpixel = new ArrayList<Pixel> ();
+		prevpixel = prevPixelIntensity;
 		
 		//Insert BoardObject in the Map
-		insertObjectIntoMap(curveObj);
+		ClientBoardState.maps.insertObjectIntoMaps(curveObj);
 		
 		//Push BoardObject in the stack
 		stackUtil(curveObj);
