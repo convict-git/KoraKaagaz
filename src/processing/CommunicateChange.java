@@ -1,4 +1,4 @@
-package processing.change;
+package processing;
 
 import java.util.*;
 import processing.IChanges;
