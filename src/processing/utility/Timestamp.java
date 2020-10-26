@@ -11,8 +11,14 @@ import java.util.Date;
 public class Timestamp implements Comparable<Timestamp> {
 	private Date date; // Date
 
+	// Constructor for Timestamp
 	public Timestamp(Date date) {
 		this.date = date;
+	}
+	
+	// Copy Constructor for Timestamp
+	public Timestamp(Timestamp timestampObj) {
+		date = new Date(timestampObj.date.getTime());
 	}
 	
 	// Convert timestamp to String
