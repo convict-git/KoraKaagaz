@@ -12,7 +12,7 @@ public class Username {
     private String username;
     
     /**
-	 * Username Constructor
+     * Username Constructor
 	 * 
 	 * @param username Username String
 	 */
@@ -26,7 +26,7 @@ public class Username {
     }
     
     /**
-	 * Converts to String
+     * Converts to String
 	 * 
 	 * @return Username as a String
 	 */
