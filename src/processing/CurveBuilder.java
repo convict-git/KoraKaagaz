@@ -50,6 +50,5 @@ public class CurveBuilder {
 		
 		UndoRedo.pushIntoStack(newObj);
 	
-	}
-	
+	}	
 }
