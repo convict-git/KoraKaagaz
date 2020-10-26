@@ -9,8 +9,8 @@ package processing;
 
 public interface IUndoRedo {
 	/** redo will perform the redo operation */
-    void redo();
-    
-    /** undo will perform the undo operation */
-    void undo();
+	void redo();
+	
+	/** undo will perform the undo operation */
+	void undo();
 }
