@@ -4,8 +4,6 @@ package networking;
  * @author Madaka Srikar Reddy
  */
 
-import queueManagement.*;
-
 class LanCommunicator implements ICommunicator{
 
     public void start(){
