@@ -54,7 +54,7 @@ public class ParameterizedOperationsUtil {
         BoardObjectOperation newBoardOp = new ColorChangeOperation(newIntensity);
 
         // remove previous object from maps.
-        BoardObject dummyObj = BoardState.removeObjectFromMaps(obj.objectId);
+        BoardObject dummyObj = ClientBoardState.maps.removeObjectFromMaps(obj.objectId);
 
         // create a new object with same objectId, timestamp and other updated values.
         BoardObject newObj = CurveBuilder.drawCurve(newPixelSet, newBoardOp, newObjectId, newTime,
