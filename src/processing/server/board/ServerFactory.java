@@ -5,7 +5,7 @@ package processing.server.board;
  * content team so that they can use the function getClientDetails defined in the 
  * IClientDetails interface.
  * 
- * @author recursed
+ * @author Himanshu Jain
  *
  */
 

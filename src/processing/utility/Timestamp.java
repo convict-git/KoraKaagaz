@@ -16,7 +16,7 @@ public class Timestamp implements Comparable<Timestamp> {
 	 * Timestamp Constructor
 	 * 
 	 * @param date Date to build the timestamp
-	 */
+	*/
 	public Timestamp(Date date) {
 		this.date = date;
 	}
@@ -30,7 +30,7 @@ public class Timestamp implements Comparable<Timestamp> {
 	 * Converts to String
 	 * 
 	 * @return Timestamp as a String
-	 */
+	*/
 	public String toString() {
 		return date.toString();
 	}
@@ -39,7 +39,7 @@ public class Timestamp implements Comparable<Timestamp> {
 	 * Converts to Date
 	 * 
 	 * @return Timestamp as a Date
-	 */
+	*/
 	public Date toDate() {
 		return date;
 	}
