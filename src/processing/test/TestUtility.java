@@ -84,10 +84,10 @@ public class TestUtility {
 	   Intensity falseCopy = new Intensity(1,3,2);
 	   assertFalse(falseCopy.equals(copy));
 	   
-   }
+   } 
    
-	@Test 
-	public void testIpAddress() {
+   @Test 
+   public void testIpAddress() {
 	   String address = "192.168.20.1";
 	   IpAddress ip = new IpAddress(address);
 	   assertEquals(ip.toString(), address);
@@ -97,8 +97,7 @@ public class TestUtility {
 	   
 	   IpAddress falseCopy = new IpAddress("192.168.10.1");
 	   assertFalse(falseCopy.equals(copy)); 
-	}
-   
+   }
    
    @Test 
    public void testObjectId( ) {
