@@ -3,7 +3,7 @@ package infrastructure.content;
 public interface IContentCommunicator {
 	/*
 	 * UI will call this method with one json formatted string argument
-	 * @param : userDetails - It is json string which will contain server ip_address, username, image
+	 * @param : userDetails - It is json string which will contain server ipAddress, username, image
 	 */
 	void initialiseUser(String userDetails);
 	
