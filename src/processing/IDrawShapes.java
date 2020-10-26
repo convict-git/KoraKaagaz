@@ -3,14 +3,15 @@ package processing;
 import processing.utility.*;
 
 /**
-* This interface provides function for drawing shapes on the board.
-* These function will be used by the UI module.
-*
-* @author Himanshu Jain
-*/
+ * This interface provides function for drawing shapes on the board.
+ * These function will be used by the UI module.
+ *
+ * @author Himanshu Jain
+ * @reviewer Ahmed Zaheer Dadarkar
+ */
 
 public interface IDrawShapes {
-	/***
+	/**
 	 * drawCircle will be called when a circle is drawn on the board, it will process
 	 * the circle drawn.
 	 * 
@@ -19,7 +20,7 @@ public interface IDrawShapes {
 	 */
     void drawCircle(Pixel center, float radius);
     
-    /***
+    /**
      * drawSquare will be called when a square is drawn on the board, it will process
      * the square drawn.
      * 
@@ -28,7 +29,7 @@ public interface IDrawShapes {
      */
     void drawSquare(Pixel start, float length);         
     
-    /***
+    /**
      * drawRectangle will be called when a Rectangle is drawn on the board, it will process
      * the rectangle drawn.
      * 
@@ -37,7 +38,7 @@ public interface IDrawShapes {
      */
     void drawRectangle(Pixel start, Pixel end); 
     
-    /***
+    /**
      * drawLine will be called when a line is drawn on the board, it will process
      * the line drawn.
      * 

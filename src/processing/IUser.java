@@ -4,14 +4,15 @@ import java.util.*;
 import processing.utility.*;
 
 /**
-* IUser will provide functions for getting user details and also it
-* provides subscribeForChanges function.
-*
-* @author Himanshu Jain
-*/
+ * IUser will provide functions for getting user details and also it
+ * provides subscribeForChanges function.
+ *
+ * @author Himanshu Jain
+ * @reviewer Ahmed Zaheer Dadarkar
+ */
 
 public interface IUser {
-	/***
+	/**
 	 * This will be used by the UI module in the start to give the user details to the
 	 * processing module.
 	 * 
@@ -22,7 +23,7 @@ public interface IUser {
 	 */
     String giveUserDetails(String userName, String ipAddress, String boardId);
     
-    /***
+    /**
      * getUser will return the User who has drawn the particular object
      * 
      * @param positions List of position where a part of object is there, whose
@@ -31,12 +32,12 @@ public interface IUser {
      */
     String getUser(ArrayList<Position> positions);
     
-    /***
+    /**
      * when user will close the application, UI module will call this function
      */
     void stopBoardSession();
 
-    /***
+    /**
      * UI module will first subscribe for changes on the board from other clients
      * 
      * @param identifier identifier provided by the UI module to identify the changes

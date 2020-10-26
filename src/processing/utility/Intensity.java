@@ -4,6 +4,7 @@ package processing.utility;
  * Class Representing Pixel Intensity
  *
  * @author Ahmed Zaheer Dadarkar
+ * @reviewer Himanshu Jain
  */
 
 public class Intensity {

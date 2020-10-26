@@ -4,6 +4,7 @@ package processing.utility;
  * Class Representing an Angle
  * 
  * @author Ahmed Zaheer Dadarkar
+ * @reviewer Himanshu Jain
  */
 
 public class Angle {

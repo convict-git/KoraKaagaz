@@ -4,6 +4,7 @@ package processing.utility;
  * Class Representing a user's Username
  *
  * @author Ahmed Zaheer Dadarkar
+ * @reviewer Himanshu Jain
  */
 
 public class Username {
