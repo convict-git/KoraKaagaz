@@ -1,29 +1,41 @@
 package processing.utility;
 
 /**
-*
-* @author Ahmed Zaheer Dadarkar
-*/
+ * Class Representing a Filepath
+ *
+ * @author Ahmed Zaheer Dadarkar
+ */
 
-// This class corresponds to the filepath
 public class Filepath {
-	private String filepath; // Filepath String
+	/**
+	 * Filepath String 
+	 */
+	private String filepath;
 	
-	// Construct using String
+	/**
+	 * Filepath Constructor
+	 * 
+	 * @param filepath Filepath String
+	 */
 	public Filepath(String filepath) {
 		this.filepath = filepath;
 	}
 	
-	// Copy Constructor for Filepath Class
+	/** Copy Constructor */
 	public Filepath(Filepath filepathObject) {
 		filepath = filepathObject.filepath;
 	}
 	
-	// Convert to String
+	/**
+	 * Converts to String
+	 * 
+	 * @return Filepath as a String
+	 */
 	public String toString() {
 		return filepath;
 	}
 	
+	/** Equals Method */
 	@Override
 	public boolean equals(Object obj) {
 		if(obj instanceof Filepath)

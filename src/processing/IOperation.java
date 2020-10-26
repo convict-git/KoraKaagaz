@@ -38,8 +38,6 @@ public interface IOperation {
      */
     void rotate (Angle angleCCW);
 
-    /***
-     * reset will clear all the objects on the screen
-     */
+    /** reset will clear all the objects on the screen */
     void reset ();
 }

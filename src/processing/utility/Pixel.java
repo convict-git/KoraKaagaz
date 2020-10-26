@@ -1,28 +1,37 @@
 package processing.utility;
 
 /**
-*
-* @author Ahmed Zaheer Dadarkar
-*/
+ * Class Representing a Pixel
+ *
+ * @author Ahmed Zaheer Dadarkar
+ */
 
-// This class corresponds to position
-// and intensity at that position
+
 public class Pixel {
+	/** Position of this pixel on the Board */
 	public Position position;
+
+	/** Intensity of this pixel */
 	public Intensity intensity;
 	
-	// Constructor for Pixel Class
+	/**
+	 * Pixel Constructor
+	 * 
+	 * @param position Position of pixel
+	 * @param intensity intensity of this pixel
+	 */
 	public Pixel(Position position, Intensity intensity) {
 		this.position = position;
 		this.intensity = intensity;
 	}
 	
-	// Copy Constructor for Pixel Class
+	/** Copy Constructor */
 	public Pixel(Pixel pixelObject) {
 		position = new Position(pixelObject.position);
 		intensity = new Intensity(pixelObject.intensity);
 	}
 	
+	/** Equals Method */
 	@Override
 	public boolean equals(Object obj) {
 		if(obj instanceof Pixel) {

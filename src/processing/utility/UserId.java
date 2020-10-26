@@ -1,30 +1,43 @@
 package processing.utility;
 
 /**
-*
-* @author Ahmed Zaheer Dadarkar
-*/
+ * Class Representing a user's User ID
+ *
+ * @author Ahmed Zaheer Dadarkar
+ */
 
-// This class corresponds to the User ID
 public class UserId {
-	private String userId; // user ID String
+	/** User ID is stored as a String */
+	private String userId;
 	
-	// Build the User ID using the IP Address and
-	// the username
-	public UserId(IpAddress ipAddress, Username username) {
-		userId = ipAddress.toString() + "_" + username.toString();
+	/**
+	 * User ID Constructor
+	 * 
+	 * Construct the User ID using the user's machine's IP Address
+	 * and user's Username
+	 * 
+	 * @param ipAddress 
+	 * @param timestamp Time at which this object was built
+	 */
+	public UserId(String ipAddress, Username username) {
+		userId = ipAddress + "_" + username.toString();
 	}
 	
-	// Copy Constructor for UserId
+	/** Copy Constructor */
 	public UserId(UserId userIdObject) {
 		userId = userIdObject.userId;
 	}
 	
-	// Convert User ID to String
+	/**
+	 * Converts to String
+	 * 
+	 * @return User ID as a String
+	 */
 	public String toString() {
 		return userId;
 	}
 	
+	/** Equals Method  */
 	@Override
 	public boolean equals(Object obj) {
 		if(obj instanceof UserId)

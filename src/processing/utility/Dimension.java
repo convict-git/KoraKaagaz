@@ -1,27 +1,36 @@
 package processing.utility;
 
 /**
-*
-* @author Ahmed Zaheer Dadarkar
-*/
+ * Class Representing the Dimension
+ *
+ * @author Ahmed Zaheer Dadarkar
+ */
 
-// This class corresponds to the Dimension
 public class Dimension {
-	// Number of rows and columns
+	/**
+	 * numRows Number of rows
+	 * numCols Number of columns
+	 */
 	public int numRows, numCols;
 	
-	// Constructor for Dimension Class
+	/**
+	 * Dimension Constructor
+	 * 
+	 * @param numRows Number of rows
+	 * @param numCols Number of columns
+	 */
 	public Dimension(int numRows, int numCols) {
 		this.numRows = numRows;
 		this.numCols = numCols;
 	}
 	
-	// Copy Constructor for Dimension Class
+	/** Copy Constructor */
 	public Dimension(Dimension dimension) {
 		numRows = dimension.numRows;
 		numCols = dimension.numCols;
 	}
 	
+	/** Equals Method */
 	@Override
 	public boolean equals(Object obj) {
 		if(obj instanceof Dimension) {
