@@ -4,6 +4,7 @@ package processing.utility;
  * Class Representing a Pixel
  *
  * @author Ahmed Zaheer Dadarkar
+ * @reviewer Himanshu Jain
  */
 
 

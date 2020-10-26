@@ -4,6 +4,7 @@ package processing.utility;
  * Class Representing the Dimension
  *
  * @author Ahmed Zaheer Dadarkar
+ * @reviewer Himanshu Jain
  */
 
 public class Dimension {

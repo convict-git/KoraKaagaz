@@ -4,6 +4,7 @@ package processing.utility;
  * Class Representing a user's Username
  *
  * @author Ahmed Zaheer Dadarkar
+ * @reviewer Himanshu Jain
  */
 
 public class Username {
@@ -11,10 +12,10 @@ public class Username {
     private String username;
     
     /**
-	 * Username Constructor
-	 * 
-	 * @param username Username String
-	 */
+     * Username Constructor
+     * 
+     * @param username Username String
+     */
     public Username(String username) {
     	this.username = username;
     }
@@ -25,10 +26,10 @@ public class Username {
     }
     
     /**
-	 * Converts to String
-	 * 
-	 * @return Username as a String
-	 */
+     * Converts Username to String
+     * 
+     * @return Username as a String
+     */
     public String toString() {
     	return username;
     }
