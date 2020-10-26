@@ -17,6 +17,6 @@ public final class ContentFactory {
 		if (instance2 == null) {
     		instance2 = new ServerPort();
 		}
-    	return instance2;
-    }
+		return instance2;
+	}
 }
