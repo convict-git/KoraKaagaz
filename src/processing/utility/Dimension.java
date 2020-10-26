@@ -7,13 +7,13 @@ package processing.utility;
  */
 
 public class Dimension {
-	/*
+	/**
 	 * numRows Number of rows
 	 * numCols Number of columns
 	 */
 	public int numRows, numCols;
 	
-	/*
+	/**
 	 * Dimension Constructor
 	 * 
 	 * @param numRows Number of rows
@@ -24,17 +24,13 @@ public class Dimension {
 		this.numCols = numCols;
 	}
 	
-	/**
-	 * Copy Constructor
-	 */
+	/** Copy Constructor */
 	public Dimension(Dimension dimension) {
 		numRows = dimension.numRows;
 		numCols = dimension.numCols;
 	}
 	
-	/*
-	 * Equals Method
-	 */
+	/** Equals Method */
 	@Override
 	public boolean equals(Object obj) {
 		if(obj instanceof Dimension) {

@@ -7,14 +7,14 @@ package processing.utility;
  */
 
 public class Intensity {
-	/*
+	/**
 	 * r Red intensity
 	 * g Green intensity
 	 * b Blue blue intensity
 	 */
 	public int r, g, b;
 	
-	/*
+	/**
 	 * Intensity Constructor
 	 * 
 	 * @param red Red intensity
@@ -27,18 +27,14 @@ public class Intensity {
 		b = blue;
 	}
 	
-	/**
-	 * Copy Constructor
-	 */
+	/** Copy Constructor */
 	public Intensity(Intensity intensity) {
 		r = intensity.r;
 		g = intensity.g;
 		b = intensity.b;
 	}
 	
-	/*
-	 * Equals Method
-	 */
+	/** Equals Method */
 	@Override
 	public boolean equals(Object obj) {
 		if(obj instanceof Intensity) {

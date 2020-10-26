@@ -9,12 +9,10 @@ import java.util.Date;
  */
 
 public class Timestamp implements Comparable<Timestamp> {
-	/*
-	 * Timestamp is internally stored as a Date
-	 */
+	/** Timestamp is internally stored as a Date */
 	private Date date;
 	
-	/*
+	/**
 	 * Timestamp Constructor
 	 * 
 	 * @param date Date to build the timestamp
@@ -23,14 +21,12 @@ public class Timestamp implements Comparable<Timestamp> {
 		this.date = date;
 	}
 	
-	/**
-	 * Copy Constructor
-	 */
+	/** Copy Constructor */
 	public Timestamp(Timestamp timestampObj) {
 		date = new Date(timestampObj.date.getTime());
 	}
 	
-	/*
+	/**
 	 * Converts to String
 	 * 
 	 * @return Timestamp as a String
@@ -39,7 +35,7 @@ public class Timestamp implements Comparable<Timestamp> {
 		return date.toString();
 	}
 	
-	/*
+	/**
 	 * Converts to Date
 	 * 
 	 * @return Timestamp as a Date
@@ -48,9 +44,7 @@ public class Timestamp implements Comparable<Timestamp> {
 		return date;
 	}
 	
-	/*
-	 * Equals Method
-	 */
+	/** Equals Method */
 	@Override
 	public boolean equals(Object obj) {
 		if(obj instanceof Timestamp) {
@@ -61,9 +55,7 @@ public class Timestamp implements Comparable<Timestamp> {
 			return false;
 	}
 
-	/*
-	 * Compare Method
-	 */
+	/** Compare Method */
 	@Override
 	public int compareTo(Timestamp timestamp) {
 		return date.compareTo(timestamp.date);

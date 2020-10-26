@@ -7,12 +7,10 @@ package processing.utility;
  */
 
 public class UserId {
-	/*
-	 * User ID is stored as a String
-	 */
+	/** User ID is stored as a String */
 	private String userId;
 	
-	/*
+	/**
 	 * User ID Constructor
 	 * 
 	 * Construct the User ID using the user's machine's IP Address
@@ -25,14 +23,12 @@ public class UserId {
 		userId = ipAddress + "_" + username.toString();
 	}
 	
-	/**
-	 * Copy Constructor
-	 */
+	/** Copy Constructor */
 	public UserId(UserId userIdObject) {
 		userId = userIdObject.userId;
 	}
 	
-	/*
+	/**
 	 * Converts to String
 	 * 
 	 * @return User ID as a String
@@ -41,9 +37,7 @@ public class UserId {
 		return userId;
 	}
 	
-	/*
-	 * Equals Method
-	 */
+	/** Equals Method  */
 	@Override
 	public boolean equals(Object obj) {
 		if(obj instanceof UserId)

@@ -8,16 +8,13 @@ package processing.utility;
 
 
 public class Pixel {
-	/*
-	 * Position of this pixel on the Board
-	 */
+	/** Position of this pixel on the Board */
 	public Position position;
-	/*
-	 * Intensity of this pixel
-	 */
+
+	/** Intensity of this pixel */
 	public Intensity intensity;
 	
-	/*
+	/**
 	 * Pixel Constructor
 	 * 
 	 * @param position Position of pixel
@@ -28,17 +25,13 @@ public class Pixel {
 		this.intensity = intensity;
 	}
 	
-	/**
-	 * Copy Constructor
-	 */
+	/** Copy Constructor */
 	public Pixel(Pixel pixelObject) {
 		position = new Position(pixelObject.position);
 		intensity = new Intensity(pixelObject.intensity);
 	}
 	
-	/*
-	 * Equals Method
-	 */
+	/** Equals Method */
 	@Override
 	public boolean equals(Object obj) {
 		if(obj instanceof Pixel) {

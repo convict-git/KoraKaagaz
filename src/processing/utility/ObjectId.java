@@ -7,12 +7,12 @@ package processing.utility;
  */
 
 public class ObjectId {
-	/*
+	/**
 	 * Object ID as a String
 	 */
 	private String objectId;
 	
-	/*
+	/**
 	 * Object ID Constructor
 	 * 
 	 * Construct Object ID using a User ID and a Timestamp
@@ -24,14 +24,12 @@ public class ObjectId {
 		objectId = userId.toString() + "_" + timestamp.toString();
 	}
 	
-	/**
-	 * Copy Constructor
-	 */
+	/** Copy Constructor */
 	public ObjectId(ObjectId objectIdObject) {
 		objectId = objectIdObject.objectId;
 	}
 	
-	/*
+	/**
 	 * Converts to String
 	 * 
 	 * @return Object ID as a String
@@ -40,9 +38,7 @@ public class ObjectId {
 		return objectId;
 	}
 	
-	/*
-	 * Equals Method
-	 */
+	/** Equals Method */
 	@Override
 	public boolean equals(Object obj) {
 		if(obj instanceof ObjectId)

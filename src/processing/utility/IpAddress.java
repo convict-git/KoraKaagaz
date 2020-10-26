@@ -8,12 +8,10 @@ package processing.utility;
  */
 
 public class IpAddress {
-	/*
-	 * IP Address String
-	 */
+	/** IP Address String */
     private String ipAddress;
     
-    /*
+    /**
      * IP Address Constructor
      * 
      * @param ipAddress IP Address Constructor
@@ -22,14 +20,12 @@ public class IpAddress {
     	this.ipAddress = ipAddress;
     }
 
-    /**
-	 * Copy Constructor
-	 */
+    /** Copy Constructor */
     public IpAddress(IpAddress ipAddressObject) {
     	ipAddress = ipAddressObject.ipAddress;
     }
     
-    /*
+    /**
 	 * Converts to String
 	 * 
 	 * @return IP Address as a String
@@ -38,9 +34,7 @@ public class IpAddress {
     	return ipAddress;
     }
     
-    /*
-	 * Equals Method
-	 */
+    /** Equals Method */
     @Override
 	public boolean equals(Object obj) {
 		if(obj instanceof IpAddress)

@@ -7,13 +7,13 @@ package processing.utility;
  */
 
 public class Position {
-	/*
+	/**
 	 * r Row number
 	 * c Column number
 	 */
 	public int r, c;
 	
-	/*
+	/**
 	 * Position Constructor
 	 * 
 	 * @param row Row number
@@ -24,17 +24,13 @@ public class Position {
 		c = column;
 	}
 	
-	/**
-	 * Copy Constructor
-	 */
+	/** Copy Constructor */
 	public Position(Position posObject) {
 		r = posObject.r;
 		c = posObject.c;
 	}
 	
-	/*
-	 * Equals Method
-	 */
+	/** Equals Method */
 	@Override
 	public boolean equals(Object obj) {
 		if(obj instanceof Position) {

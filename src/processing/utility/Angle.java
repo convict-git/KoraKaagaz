@@ -7,6 +7,7 @@ package processing.utility;
  */
 
 public class Angle {
+	/** Angle as a double value */
 	public double angle;
 	
 	/**
@@ -18,16 +19,12 @@ public class Angle {
 		this.angle = angle;
 	}
 	
-	/**
-	 * Copy Constructor
-	 */
+	/** Copy Constructor */
 	public Angle(Angle angleObject) {
 		angle = angleObject.angle;
 	}
 	
-	/**
-	 * Equals Method
-	 */
+	/** Equals Method */
 	@Override
 	public boolean equals(Object otherAngle) {
 		if(otherAngle instanceof Angle)

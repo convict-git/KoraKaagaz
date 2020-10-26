@@ -7,12 +7,10 @@ package processing.utility;
  */
 
 public class Username {
-	/*
-	 * Username is stored as a String
-	 */
+	/** Username is stored as a String */
     private String username;
     
-    /*
+    /**
 	 * Username Constructor
 	 * 
 	 * @param username Username String
@@ -21,14 +19,12 @@ public class Username {
     	this.username = username;
     }
     
-    /**
-	 * Copy Constructor
-	 */
+    /** Copy Constructor */
     public Username(Username usernameObject) {
     	username = usernameObject.username;
     }
     
-    /*
+    /**
 	 * Converts to String
 	 * 
 	 * @return Username as a String
@@ -37,9 +33,7 @@ public class Username {
     	return username;
     }
     
-    /*
-	 * Equals Method
-	 */
+    /** Equals Method */
     @Override
 	public boolean equals(Object obj) {
 		if(obj instanceof Username)

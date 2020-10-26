@@ -7,12 +7,10 @@ package processing.utility;
  */
 
 public class Radius {
-	/*
-	 * The radius as a double value
-	 */
+	/** The radius as a double value */
 	public double radius;
 	
-	/*
+	/**
 	 * Radius Constructor
 	 * 
 	 * @param radius Radius as a double value
@@ -21,16 +19,12 @@ public class Radius {
 		this.radius = radius;
 	}
 
-	/**
-	 * Copy Constructor
-	 */
+	/** Copy Constructor */
 	public Radius(Radius radiusObject) {
 		radius = radiusObject.radius;
 	}
 	
-	/*
-	 * Equals Method
-	 */
+	/** Equals Method */
 	public boolean equals(Object obj) {
 		if(obj instanceof Radius)
 			return radius == ((Radius)obj).radius;
