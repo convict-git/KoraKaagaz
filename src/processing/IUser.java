@@ -4,24 +4,43 @@ import java.util.*;
 import processing.utility.*;
 
 /**
+* IUser will provide functions for getting user details and also it
+* provides subscribeForChanges function.
 *
 * @author Himanshu Jain
 */
 
 public interface IUser {
-    // this function is used to get the user details during initial setup from user through UI 
-    // if the board Id is null then we get a new board id from server and pass to UI
-    // parameter: userName - user name
-    //            ipAddress - ipaddress for the server with the port
-    //            boardId - white board ID to which user wants to connect 
-    String getUserDetails(String userName, String ipAddress, String boardId);
+	/***
+	 * This will be used by the UI module in the start to give the user details to the
+	 * processing module.
+	 * 
+	 * @param userName Username of the user
+	 * @param ipAddress IP Address of the user
+	 * @param boardId Board ID of the requested board, if any
+	 * @return It will return the userId to the UI module
+	 */
+    String giveUserDetails(String userName, String ipAddress, String boardId);
     
-    // return the username at the selected position
+    /***
+     * getUser will return the User who has drawn the particular object
+     * 
+     * @param positions List of position where a part of object is there, whose
+     * 		   			User they need to identify
+     * @return UserId of the user
+     */
     String getUser(ArrayList<Position> positions);
     
-    // stop baord session for that user
+    /***
+     * when user will close the application, UI module will call this function
+     */
     void stopBoardSession();
-    
-    // UI will subscribe for any changes 
+
+    /***
+     * UI module will first subscribe for changes on the board from other clients
+     * 
+     * @param identifier identifier provided by the UI module to identify the changes
+     * @param handler appropriate handler to handle the changes
+     */
     void subscribeForChanges(String identifier, IChanges handler);
 }
