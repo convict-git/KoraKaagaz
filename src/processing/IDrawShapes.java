@@ -19,7 +19,7 @@ public interface IDrawShapes {
 	 * @param radius radius of circle
 	 */
 	void drawCircle(Pixel center, float radius);
-    
+	
     /**
      * drawSquare will be called when a square is drawn on the board, it will process
      * the square drawn.
