@@ -23,7 +23,7 @@
 ### Function Elaboration Test Harness
 - Run all the Tests: Using this will allow the module to run all the tests irrespective of category
 ``` java =
-public void RunAll()
+public void runAll()
         {
         foreach(string testName in testNames){
         runbyName(testName);
@@ -34,7 +34,7 @@ public void RunAll()
 
 ```java = 
 
-private void RunByCategory(Category category)
+public void runByCategory(Category category)
         {
         List<string> tests = new List<string>;
         // populate the tests names
@@ -51,7 +51,7 @@ private void RunByCategory(Category category)
 - First we will be running tests with high priority, then medium, then low
 
 ```java=
-private void RunBypriority()
+public void runBypriority()
         {
         List<string> tests_1 = new List<string>;
         List<string> tests_2 = new List<string>;
@@ -70,7 +70,7 @@ private void RunBypriority()
 - Run by Name: This allows the dev to run a particular test by specifying the name of the test given in the description
 
 ```java=
-    private bool runByName(testName n,Category c){
+    public bool runByName(testName n,Category c){
         Object test = Class.forName(testName).newInstance();
         bool result = test.run()
         // create an instance of the test and then run the test. We will get the boolean value of either being a success or failure
@@ -106,7 +106,7 @@ public String getError()
 
 - Run 
 ``` java =
-public Stiring getCatagory()
+public String getCatagory()
         {
         //return the catagory of the test case which is the moudle name of the test case  
         return catagory;
