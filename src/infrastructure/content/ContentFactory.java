@@ -7,16 +7,16 @@ public final class ContentFactory {
 	private ContentFactory() {}
 	
     public static IContentCommunicator getContentCommunicator() {
-		if (instance1 == null) {
+    	if (instance1 == null) {
 			instance1 = new ContentCommunicator();
 		}
-        return instance1;
+		return instance1;
     }
     
     public static IServerPort getServerPort() {
-		if (instance2 == null) {
+    	if (instance2 == null) {
 			instance2 = new ServerPort();
 		}
-        return instance2;
+    	return instance2;
     }
 }
