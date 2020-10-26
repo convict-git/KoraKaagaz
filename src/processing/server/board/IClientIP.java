@@ -4,7 +4,7 @@ import processing.utility.*;
 import java.util.*;
 
 /***
- * This interface will be used by the content module to get the ip addresses of
+ * This interface will be used by the content module to get the IP addresses of
  * all the clients connected to the particular board.
  * 
  * 
@@ -14,6 +14,11 @@ import java.util.*;
 
 public interface IClientIP {
 	
+	/***
+	 * getClientIP will return a Map of all the clients to IP
+	 * 
+	 * @return Map from all the clients to IP
+	 */
 	public Map<Username, IpAddress> getClientIP(); 
 	
 }
