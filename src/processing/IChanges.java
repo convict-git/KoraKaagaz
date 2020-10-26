@@ -4,10 +4,19 @@ import java.util.*;
 import processing.utility.*;
 
 /**
-*
-* @author Himanshu Jain
-*/
+ * This interface will be implemented by UI to get the changes on
+ * the board.
+ * 
+ * @author Himanshu Jain
+ * @reviewer Ahmed Zaheer Dadarkar
+ */
 
 public interface IChanges {
+	
+	/** 
+	 * getChanges will take all the changes as the input and passed to the UI
+	 * 
+	 * @param pixels List of all the pixels where there is a change
+	 */
 	void getChanges(ArrayList<Pixel> pixels);
 }

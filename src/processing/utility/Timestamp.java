@@ -3,35 +3,49 @@ package processing.utility;
 import java.util.Date;
 
 /**
-*
-* @author Ahmed Zaheer Dadarkar
-*/
+ * Class Representing a Timestamp
+ *
+ * @author Ahmed Zaheer Dadarkar
+ * @reviewer Himanshu Jain
+ */
 
-// This class corresponds to the Timestamp
 public class Timestamp implements Comparable<Timestamp> {
-	private Date date; // Date
-
-	// Constructor for Timestamp
+	/** Timestamp is internally stored as a Date */
+	private Date date;
+	
+	/**
+	 * Timestamp Constructor
+	 * 
+	 * @param date Date to build the timestamp
+	 */
 	public Timestamp(Date date) {
 		this.date = date;
 	}
 	
-	// Copy Constructor for Timestamp
+	/** Copy Constructor */
 	public Timestamp(Timestamp timestampObj) {
 		date = new Date(timestampObj.date.getTime());
 	}
 	
-	// Convert timestamp to String
+	/**
+	 * Converts to String
+	 * 
+	 * @return Timestamp as a String
+	 */
 	public String toString() {
 		return date.toString();
 	}
 	
-	// Convert timestamp to date
+	/**
+	 * Converts to Date
+	 * 
+	 * @return Timestamp as a Date
+	 */
 	public Date toDate() {
 		return date;
 	}
 	
-	// Equals method
+	/** Equals Method */
 	@Override
 	public boolean equals(Object obj) {
 		if(obj instanceof Timestamp) {
@@ -42,7 +56,7 @@ public class Timestamp implements Comparable<Timestamp> {
 			return false;
 	}
 
-	// Compare method
+	/** Compare Method */
 	@Override
 	public int compareTo(Timestamp timestamp) {
 		return date.compareTo(timestamp.date);

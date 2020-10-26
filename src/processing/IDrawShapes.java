@@ -3,26 +3,46 @@ package processing;
 import processing.utility.*;
 
 /**
-*
-* @author Himanshu Jain
-*/
+ * This interface provides function for drawing shapes on the board.
+ * These function will be used by the UI module.
+ *
+ * @author Himanshu Jain
+ * @reviewer Ahmed Zaheer Dadarkar
+ */
 
 public interface IDrawShapes {
-    // parameter: Pixel center - center position with intensity for circle
-    //            radius - radius of circle
-    void draw_circle(Pixel center, float radius);
-    
-    // makes an object for square parallel to the whiteBoard 
-    // parameter: Pixel start - start position for square with RGB values in whiteBoard
-    //            float length - length of the sqaure
-    void draw_square(Pixel start, float length);         
-    
-    // parameter: Pixel start - top left position with RGB values for rectangle in whiteBoard
-    //            Pixel end - bottom right position with RGB values for rectangle in whiteBoard
-    void draw_rectangle(Pixel start, Pixel end); 
-    
-    // makes an object for a line segment parallel to the whiteBoard 
-    // parameter: Pixel start - start position with RGB values
-    //            Pixel end - end position with RGB values
-    void draw_line(Pixel start, Pixel end);        
+	/**
+	 * drawCircle will be called when a circle is drawn on the board, it will process
+	 * the  circle drawn.
+	 * 
+	 * @param center center position with intensity for circle
+	 * @param radius radius of circle
+	 */
+	void drawCircle(Pixel center, float radius);
+	
+	/**
+	 * drawSquare will be called when a square is drawn on the board, it will process
+	 * the square drawn.
+	 * 
+	 * @param start start position for square with RGB values in whiteBoard
+	 * @param length length of the square
+	 */
+	void drawSquare(Pixel start, float length);
+	/**
+	 * drawRectangle will be called when a Rectangle is drawn on the board, it will process
+	 * the rectangle drawn.
+	 * 
+	 * @param start top left position with RGB values for rectangle in whiteBoard
+	 * @param end bottom right position with RGB values for rectangle in whiteBoard
+	 */
+	void drawRectangle(Pixel start, Pixel end);
+	
+	/**
+	 * drawLine will be called when a line is drawn on the board, it will process
+	 * the line drawn.
+	 * 
+	 * @param start start position with RGB values
+	 * @param end end position with RGB values
+	 */
+	void drawLine(Pixel start, Pixel end);        
 }
