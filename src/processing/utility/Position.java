@@ -1,27 +1,37 @@
 package processing.utility;
 
 /**
-*
-* @author Ahmed Zaheer Dadarkar
-*/
+ * Class Representing a Position on the Board
+ *
+ * @author Ahmed Zaheer Dadarkar
+ * @reviewer Himanshu Jain
+ */
 
-// This class corresponds to row and column
-// of a position
 public class Position {
-	public int r, c; // r: row, c: column
+	/**
+	 * r Row number
+	 * c Column number
+	 */
+	public int r, c;
 	
-	// Constructor for Position class
+	/**
+	 * Position Constructor
+	 * 
+	 * @param row Row number
+	 * @param column Column number
+	 */
 	public Position(int row, int column) {
 		r = row;
 		c = column;
 	}
 	
-	// Copy Constructor for Pixel Class
+	/** Copy Constructor */
 	public Position(Position posObject) {
 		r = posObject.r;
 		c = posObject.c;
 	}
 	
+	/** Equals Method */
 	@Override
 	public boolean equals(Object obj) {
 		if(obj instanceof Position) {
