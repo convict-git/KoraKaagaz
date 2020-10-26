@@ -1,4 +1,4 @@
-package content;
+package infrastructure.content;
 
 public interface IContentNotificationHandler {
 	// Meta field is username of a new user
