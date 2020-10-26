@@ -27,6 +27,15 @@ public class Intensity {
 		b = blue;
 	}
 	
+	/**
+	 * Copy Constructor
+	 */
+	public Intensity(Intensity intensity) {
+		r = intensity.r;
+		g = intensity.g;
+		b = intensity.b;
+	}
+	
 	/*
 	 * Equals Method
 	 */

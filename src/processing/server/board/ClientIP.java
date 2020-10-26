@@ -4,13 +4,15 @@ import java.util.*;
 import processing.utility.*;
 
 /***
- * This class implements interface IClientDetails
+ * This class implements interface IClientIP
  * 
  * @author Himanshu Jain
  *
  */
 
 public class ClientIP implements IClientIP {
+	
+	protected ClientIP() {};
 	
 	@Override
 	public Map<Username, IpAddress> getClientIP() {

@@ -24,6 +24,14 @@ public class Dimension {
 		this.numCols = numCols;
 	}
 	
+	/**
+	 * Copy Constructor
+	 */
+	public Dimension(Dimension dimension) {
+		numRows = dimension.numRows;
+		numCols = dimension.numCols;
+	}
+	
 	/*
 	 * Equals Method
 	 */

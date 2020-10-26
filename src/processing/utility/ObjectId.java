@@ -12,7 +12,6 @@ public class ObjectId {
 	 */
 	private String objectId;
 	
-
 	/*
 	 * Object ID Constructor
 	 * 
@@ -23,6 +22,13 @@ public class ObjectId {
 	 */
 	public ObjectId(UserId userId, Timestamp timestamp) {
 		objectId = userId.toString() + "_" + timestamp.toString();
+	}
+	
+	/**
+	 * Copy Constructor
+	 */
+	public ObjectId(ObjectId objectIdObject) {
+		objectId = objectIdObject.objectId;
 	}
 	
 	/*

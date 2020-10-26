@@ -28,6 +28,14 @@ public class Pixel {
 		this.intensity = intensity;
 	}
 	
+	/**
+	 * Copy Constructor
+	 */
+	public Pixel(Pixel pixelObject) {
+		position = new Position(pixelObject.position);
+		intensity = new Intensity(pixelObject.intensity);
+	}
+	
 	/*
 	 * Equals Method
 	 */

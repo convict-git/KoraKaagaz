@@ -23,6 +23,13 @@ public class Timestamp implements Comparable<Timestamp> {
 		this.date = date;
 	}
 	
+	/**
+	 * Copy Constructor
+	 */
+	public Timestamp(Timestamp timestampObj) {
+		date = new Date(timestampObj.date.getTime());
+	}
+	
 	/*
 	 * Converts to String
 	 * 

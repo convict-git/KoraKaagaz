@@ -1,14 +1,15 @@
 package processing;
 
 /**
-*
+* IUndoRedo provides functions for undo and redo options
+* 
 * @author Himanshu Jain
 */
 
 public interface IUndoRedo {
-    // redo the work done by a particular user
+	/** redo will perform the redo operation */
     void redo();
     
-    // undo the work done by a particular user
+    /** undo will perform the undo operation */
     void undo();
 }

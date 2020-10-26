@@ -19,6 +19,13 @@ public class Angle {
 	}
 	
 	/**
+	 * Copy Constructor
+	 */
+	public Angle(Angle angleObject) {
+		angle = angleObject.angle;
+	}
+	
+	/**
 	 * Equals Method
 	 */
 	@Override

@@ -24,6 +24,14 @@ public class Position {
 		c = column;
 	}
 	
+	/**
+	 * Copy Constructor
+	 */
+	public Position(Position posObject) {
+		r = posObject.r;
+		c = posObject.c;
+	}
+	
 	/*
 	 * Equals Method
 	 */

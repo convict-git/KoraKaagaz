@@ -25,6 +25,13 @@ public class UserId {
 		userId = ipAddress + "_" + username.toString();
 	}
 	
+	/**
+	 * Copy Constructor
+	 */
+	public UserId(UserId userIdObject) {
+		userId = userIdObject.userId;
+	}
+	
 	/*
 	 * Converts to String
 	 * 

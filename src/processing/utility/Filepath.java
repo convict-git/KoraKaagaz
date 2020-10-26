@@ -21,6 +21,13 @@ public class Filepath {
 		this.filepath = filepath;
 	}
 	
+	/**
+	 * Copy Constructor
+	 */
+	public Filepath(Filepath filepathObject) {
+		filepath = filepathObject.filepath;
+	}
+	
 	/*
 	 * Converts to String
 	 * 

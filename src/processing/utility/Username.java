@@ -21,6 +21,13 @@ public class Username {
     	this.username = username;
     }
     
+    /**
+	 * Copy Constructor
+	 */
+    public Username(Username usernameObject) {
+    	username = usernameObject.username;
+    }
+    
     /*
 	 * Converts to String
 	 * 

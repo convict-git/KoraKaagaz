@@ -20,6 +20,13 @@ public class Radius {
 	public Radius(double radius) {
 		this.radius = radius;
 	}
+
+	/**
+	 * Copy Constructor
+	 */
+	public Radius(Radius radiusObject) {
+		radius = radiusObject.radius;
+	}
 	
 	/*
 	 * Equals Method
