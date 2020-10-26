@@ -1,25 +1,39 @@
 package processing.utility;
 
 /**
+ * Class Representing IP Address
  * 
  * @author Himanshu Jain
  *
  */
 
 public class IpAddress {
-	// The ipAddress is internally stored as a String
+	/*
+	 * IP Address String
+	 */
     private String ipAddress;
     
-    // Build ipAddress as string
+    /*
+     * IP Address Constructor
+     * 
+     * @param ipAddress IP Address Constructor
+     */
     public IpAddress(String ipAddress) {
     	this.ipAddress = ipAddress;
     }
     
-    // Return the ipAddress String
+    /*
+	 * Converts to String
+	 * 
+	 * @return IP Address as a String
+	 */
     public String toString() {
     	return ipAddress;
     }
     
+    /*
+	 * Equals Method
+	 */
     @Override
 	public boolean equals(Object obj) {
 		if(obj instanceof IpAddress)

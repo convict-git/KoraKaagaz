@@ -1,25 +1,42 @@
 package processing.utility;
 
 /**
-*
-* @author Ahmed Zaheer Dadarkar
-*/
+ * Class Representing the Board Object ID
+ *
+ * @author Ahmed Zaheer Dadarkar
+ */
 
-// This class corresponds to the Object ID
 public class ObjectId {
-	private String objectId; // Object ID String
+	/*
+	 * Object ID as a String
+	 */
+	private String objectId;
 	
-	// Create Object ID using provided User ID and 
-	// Time stamp
+
+	/*
+	 * Object ID Constructor
+	 * 
+	 * Construct Object ID using a User ID and a Timestamp
+	 * 
+	 * @param userId The user ID of a user
+	 * @param timestamp Time at which this object was built
+	 */
 	public ObjectId(UserId userId, Timestamp timestamp) {
 		objectId = userId.toString() + "_" + timestamp.toString();
 	}
 	
-	// Convert object ID to String
+	/*
+	 * Converts to String
+	 * 
+	 * @return Object ID as a String
+	 */
 	public String toString() {
 		return objectId;
 	}
 	
+	/*
+	 * Equals Method
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if(obj instanceof ObjectId)

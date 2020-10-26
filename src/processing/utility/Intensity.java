@@ -1,21 +1,35 @@
 package processing.utility;
 
 /**
-*
-* @author Ahmed Zaheer Dadarkar
-*/
+ * Class Representing Pixel Intensity
+ *
+ * @author Ahmed Zaheer Dadarkar
+ */
 
-// This class corresponds to RGB values
 public class Intensity {
-	public int r, g, b; // r: red, g: green, b: blue
+	/*
+	 * r Red intensity
+	 * g Green intensity
+	 * b Blue blue intensity
+	 */
+	public int r, g, b;
 	
-	// Constructor for Intensity Class
+	/*
+	 * Intensity Constructor
+	 * 
+	 * @param red Red intensity
+	 * @param green Green intensity
+	 * @param blue Blue intensity
+	 */
 	public Intensity(int red, int green, int blue) {
 		r = red;
 		g = green;
 		b = blue;
 	}
 	
+	/*
+	 * Equals Method
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if(obj instanceof Intensity) {

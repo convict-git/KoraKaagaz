@@ -1,19 +1,29 @@
 package processing.utility;
 
 /**
-*
-* @author Ahmed Zaheer Dadarkar
-*/
+ * Class Representing a Radius value
+ *
+ * @author Ahmed Zaheer Dadarkar
+ */
 
-// This class corresponds to the radius
 public class Radius {
+	/*
+	 * The radius as a double value
+	 */
 	public double radius;
 	
-	// Constructor for Radius Class
+	/*
+	 * Radius Constructor
+	 * 
+	 * @param radius Radius as a double value
+	 */
 	public Radius(double radius) {
 		this.radius = radius;
 	}
 	
+	/*
+	 * Equals Method
+	 */
 	public boolean equals(Object obj) {
 		if(obj instanceof Radius)
 			return radius == ((Radius)obj).radius;

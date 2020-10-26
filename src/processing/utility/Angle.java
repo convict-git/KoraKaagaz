@@ -1,19 +1,26 @@
 package processing.utility;
 
 /**
-*
-* @author Ahmed Zaheer Dadarkar
-*/
+ * Class Representing an Angle
+ * 
+ * @author Ahmed Zaheer Dadarkar
+ */
 
-// This class corresponds to the Angle
 public class Angle {
 	public double angle;
 	
-	// Constructor for Angle Class
+	/**
+	 * Angle Constructor
+	 * 
+	 * @param angle Angle as a double value
+	 */
 	public Angle(double angle) {
 		this.angle = angle;
 	}
 	
+	/**
+	 * Equals Method
+	 */
 	@Override
 	public boolean equals(Object otherAngle) {
 		if(otherAngle instanceof Angle)
