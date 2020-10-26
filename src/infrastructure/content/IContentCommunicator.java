@@ -9,7 +9,7 @@ public interface IContentCommunicator {
 	
 	/*
 	 * UI will call this to paas the message of client to everyone else
-	 * @param : message - it is the actual message as a string
+	 * @param : message - it is the actual message as a json string, more fields can be accomodated in future
 	 */
 	void sendMessageToContent(String message);
 	
@@ -20,6 +20,8 @@ public interface IContentCommunicator {
 	
 	/*
 	 * UI will subscribe to us in order to receive any updates coming from other users
+	 * @param : identifier - This will be a string and unique too
+	 * @param : handler - By using this handler, methods of IContentNotificationHandler will be called
 	 */
 	void subscribeForNotifications(String identifier, IContentNotificationHandler handler);
 	
