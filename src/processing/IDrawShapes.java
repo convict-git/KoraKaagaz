@@ -21,28 +21,28 @@ public interface IDrawShapes {
 	void drawCircle(Pixel center, float radius);
 	
 	/**
-     * drawSquare will be called when a square is drawn on the board, it will process
-     * the square drawn.
-     * 
-     * @param start start position for square with RGB values in whiteBoard
-     * @param length length of the square
-     */
+	 * drawSquare will be called when a square is drawn on the board, it will process
+	 * the square drawn.
+	 * 
+	 * @param start start position for square with RGB values in whiteBoard
+	 * @param length length of the square
+	 */
 	void drawSquare(Pixel start, float length);
 	/**
-     * drawRectangle will be called when a Rectangle is drawn on the board, it will process
-     * the rectangle drawn.
-     * 
-     * @param start top left position with RGB values for rectangle in whiteBoard
-     * @param end bottom right position with RGB values for rectangle in whiteBoard
-     */
+	 * drawRectangle will be called when a Rectangle is drawn on the board, it will process
+	 * the rectangle drawn.
+	 * 
+	 * @param start top left position with RGB values for rectangle in whiteBoard
+	 * @param end bottom right position with RGB values for rectangle in whiteBoard
+	 */
 	void drawRectangle(Pixel start, Pixel end);
 	
 	/**
-     * drawLine will be called when a line is drawn on the board, it will process
-     * the line drawn.
-     * 
-     * @param start start position with RGB values
-     * @param end end position with RGB values
-     */
+	 * drawLine will be called when a line is drawn on the board, it will process
+	 * the line drawn.
+	 * 
+	 * @param start start position with RGB values
+	 * @param end end position with RGB values
+	 */
 	void drawLine(Pixel start, Pixel end);        
 }
