@@ -1,6 +1,7 @@
 package infrastructure.content;
 
 public final class ContentFactory {
+	
 	private static IContentCommunicator instance1;
 	private static IServerPort instance2;
 	
