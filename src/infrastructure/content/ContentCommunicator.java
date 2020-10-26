@@ -1,24 +1,24 @@
-package content;
+package infrastructure.content;
 
 public class ContentCommunicator implements IContentCommunicator{
     
+	@Override
 	public void initialiseUser(String userDetails) {
-    	//UI will call this to send any message to server
-		//this method will be implemented by content team.
+    	
     }
 	
+	@Override
 	public void sendMessageToContent(String message) {
-    	//UI will call this to send any message to server
-		//this method will be implemented by content team.
+    	
     }
 	
+	@Override
 	public void notifyUserExit() {
-    	//UI will call this to send any message to server
-		//this method will be implemented by content team.
+    	
     }
     
-	public void subscribeForNotifications(String identifier, IContentNotification handler) {
-		//this method will be implemented by content team.
+	@Override
+	public void subscribeForNotifications(String identifier, IContentNotificationHandler handler) {
+		
     }
-
 }
