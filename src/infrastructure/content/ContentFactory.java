@@ -6,14 +6,13 @@ public final class ContentFactory {
 	
 	private ContentFactory() {}
 	
-    public static IContentCommunicator getContentCommunicator() {
+	public static IContentCommunicator getContentCommunicator() {
     	if (instance1 == null) {
 			instance1 = new ContentCommunicator();
 		}
 		return instance1;
     }
-    
-    public static IServerPort getServerPort() {
+	public static IServerPort getServerPort() {
     	if (instance2 == null) {
 			instance2 = new ServerPort();
 		}
