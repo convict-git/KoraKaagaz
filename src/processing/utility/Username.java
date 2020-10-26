@@ -13,9 +13,9 @@ public class Username {
     
     /**
      * Username Constructor
-	 * 
-	 * @param username Username String
-	 */
+     * 
+     * @param username Username String
+     */
     public Username(String username) {
     	this.username = username;
     }
@@ -26,10 +26,10 @@ public class Username {
     }
     
     /**
-     * Converts to String
-	 * 
-	 * @return Username as a String
-	 */
+     * Converts Username to String
+     * 
+     * @return Username as a String
+     */
     public String toString() {
     	return username;
     }
