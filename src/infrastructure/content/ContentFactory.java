@@ -11,7 +11,7 @@ public final class ContentFactory {
 			instance1 = new ContentCommunicator();
 		}
 		return instance1;
-    }
+	}
 	public static IServerPort getServerPort() {
     	if (instance2 == null) {
 			instance2 = new ServerPort();
