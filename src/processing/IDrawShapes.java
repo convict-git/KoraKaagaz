@@ -13,12 +13,12 @@ import processing.utility.*;
 public interface IDrawShapes {
 	/**
 	 * drawCircle will be called when a circle is drawn on the board, it will process
-	 * the circle drawn.
+	 * the  circle drawn.
 	 * 
 	 * @param center center position with intensity for circle
 	 * @param radius radius of circle
 	 */
-    void drawCircle(Pixel center, float radius);
+	void drawCircle(Pixel center, float radius);
     
     /**
      * drawSquare will be called when a square is drawn on the board, it will process
