@@ -50,6 +50,13 @@ public class BoardState implements Serializable {
 	}
 
 	/**
+	 * Looks up BoardObject for the ObjectId key in the argument
+	 */
+	public synchronized BoardObject getBoardObjectFromId(ObjectId objId) {
+		return objIdToBoardObject.get(objId);
+	}
+
+	/**
 	 * Gets ObjectIds at the top of Priority Queues at each position (x, y) in given ArrayList.
 	 * The ObjectId that is present at the maximum number of positions i.e. which occurs
 	 * the maximum number of times is returned
