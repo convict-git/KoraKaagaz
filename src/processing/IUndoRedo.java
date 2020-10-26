@@ -12,6 +12,7 @@ public interface IUndoRedo {
 	 */
     void redo();
 
+    
     /***
      * undo will perform the undo operation
      */
