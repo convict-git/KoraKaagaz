@@ -42,24 +42,39 @@ public class CommunicateChange {
 		
 		// finds the intensity value at each position and push into the array
 		for (Position pos : modifiedPos) {
-			Pixel pixel = new Pixel ();
-			pixel.position.r = pos.r;
-			pixel.position.c = pos.c;
-			PriorityQueue <PriorityQueueObject> objQueue = 
-					ClientBoardState.maps.getObject(pos);
+			Position curPos = new Position(pos);
+			Intensity intensity;
 			
-			// no object at the position, so default value is white
-			if (objQueue == null || objQueue.size() == 0) {
-				pixel.intensity.r = 255;
-				pixel.intensity.g = 255;
-				pixel.intensity.b = 255;
+			// gets the objectId at pos
+			ObjectId objectId = ClientBoardState
+					.maps
+					.getMostProbableObjectId(
+							new ArrayList <Position> (Arrays.asList(pos))
+							);
+			
+			if (objectId == null) {
+				// no object at the position, so default value is white
+				intensity = new Intensity(255, 255, 255);
 			}
 			else {
-				UserId userId  = objQueue.peek();
-				// find the intensity
-				//pixel.intensity
+				ArrayList <Pixel> pixels = ClientBoardState
+						.maps
+						.getBoardObjectFromObjectId(objectId)
+						.getPixels();
+				
+				if (pixels == null || pixels.size() <= 0) {
+					// Ideally, it should not happen
+					// error should be logged
+					intensity = new Intensity(255, 255, 255);
+				}
+				else {
+					// An Object has same color on all of its pixels
+					// gets the intensity of the object from the first pixel
+					intensity = new Intensity(pixels.get(0).intensity);
+				}
+					
 			}
-			modifiedPixels.add(pixel);
+			modifiedPixels.add(new Pixel(curPos, intensity));
 		}
 		
 		// gets the handler for the subscriber
