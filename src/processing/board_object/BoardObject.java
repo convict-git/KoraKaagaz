@@ -6,31 +6,62 @@ import java.security.Timestamp;
 import java.util.ArrayList;
 
 /**
-*
-* @author Ahmed Zaheer Dadarkar
-*/
+ * The Board Object Class
+ * 
+ * It represents a collection of pixels on the board which
+ * may be a curve or a shape. Objects of this class would
+ * be sent across the network.
+ *
+ * @author Ahmed Zaheer Dadarkar
+ */
 
 public class BoardObject implements Serializable {
 
-	// This UID is generated so that there won't be unexpected InvalidClassExceptions
-	// exceptions because of different compiler implementations, read:
-	// https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/Serializable.html
+	/**
+	 * This UID is generated so that there won't be unexpected 
+	 * InvalidClassExceptionsexceptions because of different 
+	 * compiler implementations
+	 * 
+	 * @see <a href="https://docs.oracle.com/en/java/javase/11
+	 * docs/api/java.base/java/io/Serializable.html">Serializable</a>
+	 */
 	private static final long serialVersionUID = 1388864177359509930L;
 
-	private ArrayList <Pixel> pixels;     // List of Pixels Representing the object
-    private BoardObjectOperation boardOp; // The operation performed on this object
-    private ObjectId objectId;            // The object ID
-    private Timestamp timestamp;          // Time of creation of this object
-    private UserId userId;           // User ID of the user who owns this object
-    private ArrayList <Pixel> prevPixelIntensities; // previous intensities (color) of
-                                                    // this object - required by undo
-    private boolean isReset;         // Is this object a reset object ?
-    // By reset object we mean an object which is built by an erase or clear
-    // screen operation. This object then, cannot be rotated or color changed
+	/** List of Pixels Representing the object */
+	private ArrayList <Pixel> pixels;
+	
+	/** The operation performed on this object */
+    private BoardObjectOperation boardOp; 
     
-    // Construct a Board Object using the list of pixels,
-    // object ID, timestamp and user ID and boolean
-    // telling if the object is a reset object or not
+    /** The object ID */
+    private ObjectId objectId;
+    
+    /** Time of creation of this object */
+    private Timestamp timestamp;
+    
+    /** User ID of the user who owns this object */
+    private UserId userId;
+    
+    /** previous intensities (color) of this object, it is required by undo */
+    private ArrayList <Pixel> prevPixelIntensities;
+
+    /** 
+     * Boolean Variable Indicating whether object is a reset object or not 
+     * 
+     * By reset object we mean an object which is built by an erase or clear
+     * screen operation. This object then, cannot be rotated or color changed
+     */
+    private boolean isReset;
+    
+    /**
+     * Constructor for the Board Object
+     * 
+     * @param pixels An array-list of pixels representing pixels of this board object
+     * @param objectId Object ID of this board object
+     * @param timestamp Time when the object was created 
+     * @param userId User ID of the user who owns this board object
+     * @param isReset Boolean representing whether object is a reset object or not
+     */
     public BoardObject (
         ArrayList <Pixel> pixels,
         ObjectId objectId,
@@ -46,15 +77,21 @@ public class BoardObject implements Serializable {
     	this.prevPixelIntensities = null;
     }
     
-    // Get the operation corresponding to this shape
+    /** Gets the operation corresponding to this shape */
     public BoardObjectOperation getOperation() {
     	return boardOp;
     }
     
-    // Set the operation corresponding to this shape
-    // This operation has special functionality for color change
-    // operation - it stores previous intensities into the
-    // `prevPixelIntensities` variable - required by undo
+    /**
+     * Sets the operations to be performed on this board object
+     * 
+     * This operation has special functionality for the color change
+     * operation, it stores previous pixel values into the array-list 
+     * {@link BoardObject#prevPixelIntensities}, which would be required
+     * by the undo operation
+     * 
+     * @param boardOp The operation to be performed on this board object
+     */
     public void setOperation (BoardObjectOperation boardOp) {
     	this.boardOp = boardOp;
     	if(
@@ -65,42 +102,42 @@ public class BoardObject implements Serializable {
     		this.prevPixelIntensities = this.pixels;
     }
 
-    // Get the board object's list of pixels
+    /** Gets the board object's list of pixels */
     public ArrayList <Pixel> getPixels () {
     	return pixels;
     }
 
-    // Set the pixels using the given list of pixels
+    /** Sets the pixels using the given array-list of pixels */
     public void setPixels (ArrayList <Pixel> pixels) {
     	this.pixels = pixels;
     }
 
-    // Get the user's User ID who owns this object
+    /** Gets the user's User ID who owns this board object */
     public UserId getUserId() {
     	return userId;
     }
 
-    // Set user ID of the object
+    /** Sets user ID of this board object */
     public void setUserId(UserId userId) {
     	this.userId = userId;
     }
 
-    // Get object ID
+    /** Gets object ID */
     public ObjectId getObjectId() {
     	return objectId;
     }
 
-    // Get timestamp of creation of object
+    /** Gets timestamp of creation of object */
     public Timestamp getTimestamp() {
     	return timestamp;
     }
     
-    // Is this a reset object ?
+    /** Returns true if this a reset object, else false */
     public boolean isResetObject() {
     	return isReset;
     }
 
-    // Get previous intensities of pixels
+    /** Gets previous intensities of pixels */
     public ArrayList <Pixel> getPrevIntensity() {
     	return prevPixelIntensities;
     }
