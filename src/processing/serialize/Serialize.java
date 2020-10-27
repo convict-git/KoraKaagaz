@@ -8,20 +8,29 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
 /**
-*
-* @author Ahmed Zaheer Dadarkar
-*/
+ * Class containing static methods for serializing and
+ * deserializing Serializable objects and Strings representing
+ * them respectively
+ * 
+ * The Serialize class provides the serialize and deserialize
+ * functions for Serializable objects. The 
+ * {@link Serialize#deSerialize} function when applied on a
+ * string serialized by the {@link Serialize#serialize} function
+ * outputs the exact same object and its dynamic type
+ * 
+ * @author Ahmed Zaheer Dadarkar
+ */
 
-// The Serialize class provides the serialize and deserialize
-// functions for Serializable objects. The `deserialize`
-// function when applied on a string serialized by the
-// `serialize` function outputs the exact same object
-// and its dynamic type.
 public class Serialize {
 
-    // The `serialize` function takes as input an object
-    // `serialObj` which implements the Serializable interface
-    // and outputs the object as a serialized String
+	/**
+	 * Takes a Serializable object as input and outputs
+	 * the corresponding serialized String
+	 * 
+	 * @param serialObj A Serializable Object
+	 * @return the Serializable object as a String
+	 * @throws IOException
+	 */
     public static String serialize (
     	Serializable serialObj
     ) throws IOException {
@@ -49,9 +58,14 @@ public class Serialize {
     	return serialString;
     }
     
-    // The `deserialize` function takes as input a
-    // String `serialString` which is the serialized form
-    // of a Serializable object, and returns the object
+    /**
+     * Takes a String representing a Serialized Object, and returns the object
+     * 
+     * @param serialString A String representing a Serializable object
+     * @return the Serializable object from the String
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     public static Serializable deSerialize (
     	String serialString
     ) throws IOException, ClassNotFoundException {
