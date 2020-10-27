@@ -1,4 +1,4 @@
-package processing.board_object;
+package processing.boardobject;
 
 /**
  * This interface would provide the operation that would

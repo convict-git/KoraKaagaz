@@ -1,4 +1,4 @@
-package processing.board_object;
+package processing.boardobject;
 
 import processing.utility.*;
 import java.io.Serializable;
