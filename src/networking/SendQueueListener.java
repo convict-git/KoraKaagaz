@@ -1,6 +1,8 @@
 package networking;
 import networking.queueManagement.*;
 import networking.utility.*;
+
+import java.io.DataOutputStream;
 import java.net.*;
 public class SendQueueListener implements Runnable {
     public String [] splitAddress(String destination){
@@ -26,8 +28,13 @@ public class SendQueueListener implements Runnable {
                 String ip = dest[0];
                 int port = Integer.parseInt(dest[1]);
                 Socket sock = new Socket(ip, port);
-                
+                DataOutputStream dout = new DataOutputStream(sock.getOutputStream());
+                dout.writeUTF(message);
+                dout.flush();
+                dout.close();
+                sock.close();
             }
+            
         }
     }
 }
