@@ -8,7 +8,7 @@
 
 package infrastructure.validation.testing;
 
-public abstract class TestCase implements ITest {
+public abstract class TestCase implements ITest{
 
   //data members
   /**
@@ -31,36 +31,36 @@ public abstract class TestCase implements ITest {
   */
   public abstract boolean run();
 
-  public void setDescription (String description) {
-  this.description = description;
+  public void setDescription(String description) {
+    this.description = description;
   }
 
   public String getDescription() {
-  return this.description;
+    return this.description;
   }
 
   public void setError(String error) {
-  this.error = error;
+    this.error = error;
   }
 
   public String getError() {
-  return this.error;
+    return this.error;
   }
 
   public void setCategory(String category) {
-  this.category = category;
+    this.category = category;
   }
 
   public String getCategory() {
-  return this.category;
+    return this.category;
   }
 
   public void setPriority(int priority) {
-  this.priority = priority;
+    this.priority = priority;
   }
 
-  public String getPriority() {
-  return this.priority;
+  public int getPriority() {
+    return this.priority;
   }
 
 }

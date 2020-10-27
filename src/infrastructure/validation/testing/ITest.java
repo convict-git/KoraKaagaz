@@ -14,7 +14,7 @@
   String getDescription();
   String getError();
   String getCategory();
-  String getPriority();
+  int getPriority();
   void setDescription(String description);
   void setError(String error);
   void setCategory(String category);
