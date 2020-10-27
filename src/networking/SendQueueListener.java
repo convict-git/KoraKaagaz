@@ -37,6 +37,7 @@ public class SendQueueListener implements Runnable {
             catch(Exception e){
                 System.out.println(e);
             }
+            LanCommunicator.SendQueue.dequeue();
         }
     }
 }
