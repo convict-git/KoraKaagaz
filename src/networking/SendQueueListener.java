@@ -18,6 +18,10 @@ public class SendQueueListener implements Runnable {
             else if(identifier == "content"){
                 message = "c" + message;
             }
+            else{
+                continue;
+            }
+            
         }
     }
 }
