@@ -1,28 +1,35 @@
 package processing.board_object;
 
+import java.io.Serializable;
+
 import processing.utility.Angle;
 
 /**
-*
-* @author Ahmed Zaheer Dadarkar
-*/
+ * The Rotate Operation
+ * 
+ * It is parameterized by the Angle of rotation
+ *
+ * @author Ahmed Zaheer Dadarkar
+ */
 
-// The Rotate Operation
-// It is parameterized by the Angle
-public class RotateOperation implements BoardObjectOperation {
-	private Angle angleCCW; // The Angle Parameter
+public class RotateOperation implements BoardObjectOperation, Serializable {
+	/** UID of this serializable class */
+	private static final long serialVersionUID = 1083016147969650796L;
+
+	/** The Angle Parameter */
+	private Angle angleCCW;
 	
-	// The Constructor for Rotate Operation
+	/** Constructor for the Rotate Operation */
 	public RotateOperation(Angle angleCCW) {
 		this.angleCCW = angleCCW;
 	}
 	
-	// Return the type of operation
+	/** Returns the type of operation */
 	public BoardObjectOperationType getOperationType () {
 		return BoardObjectOperationType.ROTATE;
 	}
 	
-	// Get the Angle Parameter
+	/** Gets the Angle Parameter */
 	public Angle getAngle() {
 		return angleCCW;
 	}

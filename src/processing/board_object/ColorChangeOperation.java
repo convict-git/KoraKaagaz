@@ -1,28 +1,34 @@
 package processing.board_object;
 
+import java.io.Serializable;
 import processing.utility.Intensity;
 
 /**
-*
-* @author Ahmed Zaheer Dadarkar
-*/
+ * The Color Change Operation
+ * 
+ * It is parameterized by the Intensity (Color)
+ *
+ * @author Ahmed Zaheer Dadarkar
+ */
 
-// The Color Change Operation
-// It is parameterized by the Intensity (Color)
-public class ColorChangeOperation implements BoardObjectOperation {
-	private Intensity intensity; // The Color Parameter
+public class ColorChangeOperation implements BoardObjectOperation, Serializable  {
+	/** UID of this serializable class */
+	private static final long serialVersionUID = -1972682873989750630L;
+
+	/** The Intensity (Color) Parameter  */
+	private Intensity intensity; // 
 	
-	// The Constructor for Color Change Operation
+	/** Constructor for the Color Change Operation */
 	public ColorChangeOperation(Intensity intensity) {
 		this.intensity = intensity;
 	}
 	
-	// Return the type of operation
+	/** Returns the type of operation */
 	public BoardObjectOperationType getOperationType () {
 		return BoardObjectOperationType.COLOR_CHANGE;
 	}
 	
-	// Get the Intensity (Color) Parameter
+	/** Gets the Intensity (Color) Parameter */
 	public Intensity getIntensity() {
 		return intensity;
 	}

@@ -1,17 +1,24 @@
 package processing.board_object;
 
-/**
-*
-* @author Ahmed Zaheer Dadarkar
-*/
+import java.io.Serializable;
 
-// The Create Operation
-public class CreateOperation implements BoardObjectOperation {
+/**
+ * The Create Operation
+ * 
+ * It does not have any parameter
+ *
+ * @author Ahmed Zaheer Dadarkar
+ */
+
+public class CreateOperation implements BoardObjectOperation, Serializable {
 	
-	// Empty Constructor
+	/** UID of this serializable class */
+	private static final long serialVersionUID = 8647835000907198741L;
+
+	/** Constructor for the Create Operation */
 	public CreateOperation() {}
 	
-	// Return the type of operation
+	/** Returns the type of operation */
 	public BoardObjectOperationType getOperationType() {
 		return BoardObjectOperationType.CREATE;
 	}

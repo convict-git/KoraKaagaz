@@ -1,17 +1,24 @@
 package processing.board_object;
 
-/**
-*
-* @author Ahmed Zaheer Dadarkar
-*/
+import java.io.Serializable;
 
-// The Delete Operation
-public class DeleteOperation implements BoardObjectOperation {
+/**
+ * The Delete Operation
+ * 
+ * It does not have any parameter
+ *
+ * @author Ahmed Zaheer Dadarkar
+ */
+
+public class DeleteOperation implements BoardObjectOperation, Serializable {
 	
-	// Empty Constructor
+	/** UID of this serializable class */
+	private static final long serialVersionUID = 1648404666296301004L;
+
+	/** Constructor for the Delete Operation */
 	public DeleteOperation() {}
 	
-	// Return the type of operation
+	/** Returns the type of operation */
 	public BoardObjectOperationType getOperationType() {
 		return BoardObjectOperationType.DELETE;
 	}
