@@ -1,6 +1,7 @@
 package networking;
 import networking.queueManagement.*;
 import networking.utility.*;
+import java.net.*;
 public class SendQueueListener implements Runnable {
     public String [] splitAddress(String destination){
         return destination.split(":");
@@ -9,7 +10,7 @@ public class SendQueueListener implements Runnable {
         
         while(LanCommunicator.isRunning){
             OutgoingPacket out = LanCommunicator.SendQueue.front();
-            String [] destination = this.splitAddress(out.destination);
+            String [] dest = this.splitAddress(out.destination);
             String message = out.message;
             String identifier = out.identifier;
             if(identifier == "processing"){
@@ -21,7 +22,12 @@ public class SendQueueListener implements Runnable {
             else{
                 continue;
             }
-            
+            try{
+                String ip = dest[0];
+                int port = Integer.parseInt(dest[1]);
+                Socket sock = new Socket(ip, port);
+                
+            }
         }
     }
 }
