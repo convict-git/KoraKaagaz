@@ -26,6 +26,12 @@ public class ClientBoardState {
 	public static ArrayList <BoardObject> undoStack = new ArrayList <BoardObject>();
 	public static ArrayList <BoardObject> redoStack = new ArrayList <BoardObject>();
 	
+	/**
+	 * Will remain empty on the client side, as there is no need to know all the users to the client.
+	 * Server will use this users List to maintain the list of all the users connected to this Board.
+	 */
+	public static ArrayList <UserId> users = new ArrayList <UserId>();
+	
 	//to store the selected object
 	public static PriorityQueueObject selectedObject;
 	
