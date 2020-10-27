@@ -31,7 +31,7 @@ public class BoardObject implements Serializable {
 	private ArrayList <Pixel> pixels;
 	
 	/** The operation performed on this object */
-    private BoardObjectOperation boardOp; 
+    private IBoardObjectOperation boardOp; 
     
     /** The object ID */
     private ObjectId objectId;
@@ -78,7 +78,7 @@ public class BoardObject implements Serializable {
     }
     
     /** Gets the operation corresponding to this shape */
-    public BoardObjectOperation getOperation() {
+    public IBoardObjectOperation getOperation() {
     	return boardOp;
     }
     
@@ -92,7 +92,7 @@ public class BoardObject implements Serializable {
      * 
      * @param boardOp The operation to be performed on this board object
      */
-    public void setOperation (BoardObjectOperation boardOp) {
+    public void setOperation (IBoardObjectOperation boardOp) {
     	this.boardOp = boardOp;
     	if(
     		boardOp.getOperationType() 

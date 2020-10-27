@@ -12,7 +12,7 @@ import processing.utility.Angle;
  * @author Ahmed Zaheer Dadarkar
  */
 
-public class RotateOperation implements BoardObjectOperation, Serializable {
+public class RotateOperation implements IBoardObjectOperation, Serializable {
 	/** UID of this serializable class */
 	private static final long serialVersionUID = 1083016147969650796L;
 

@@ -10,7 +10,7 @@ import java.io.Serializable;
  * @author Ahmed Zaheer Dadarkar
  */
 
-public class CreateOperation implements BoardObjectOperation, Serializable {
+public class CreateOperation implements IBoardObjectOperation, Serializable {
 	
 	/** UID of this serializable class */
 	private static final long serialVersionUID = 8647835000907198741L;

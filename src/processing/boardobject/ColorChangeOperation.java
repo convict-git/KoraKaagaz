@@ -11,7 +11,7 @@ import processing.utility.Intensity;
  * @author Ahmed Zaheer Dadarkar
  */
 
-public class ColorChangeOperation implements BoardObjectOperation, Serializable  {
+public class ColorChangeOperation implements IBoardObjectOperation, Serializable  {
 	/** UID of this serializable class */
 	private static final long serialVersionUID = -1972682873989750630L;
 

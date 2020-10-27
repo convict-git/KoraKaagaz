@@ -7,7 +7,7 @@ package processing.boardobject;
  * @author Ahmed Zaheer Dadarkar
  */
 
-public interface BoardObjectOperation {
+public interface IBoardObjectOperation {
 	/**
 	 * Get the enum type of the operation to be performed
 	 * 

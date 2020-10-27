@@ -10,7 +10,7 @@ import java.io.Serializable;
  * @author Ahmed Zaheer Dadarkar
  */
 
-public class DeleteOperation implements BoardObjectOperation, Serializable {
+public class DeleteOperation implements IBoardObjectOperation, Serializable {
 	
 	/** UID of this serializable class */
 	private static final long serialVersionUID = 1648404666296301004L;
