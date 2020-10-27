@@ -34,7 +34,9 @@ public class SendQueueListener implements Runnable {
                 dout.close();
                 sock.close();
             }
-            
+            catch(Exception e){
+                System.out.println(e);
+            }
         }
     }
 }
