@@ -92,7 +92,7 @@ public class ParameterizedOperationsUtil {
         Timestamp newTime = obj.getTimestamp();
 
         // set (COLOR_CHANGE) as the operation which is applied on object.
-        BoardObjectOperation newBoardOp = new ColorChangeOperation(newIntensity);
+        IBoardObjectOperation newBoardOp = new ColorChangeOperation(newIntensity);
 
         // remove previous object from maps.
         BoardObject dummyObj = ClientBoardState.maps.removeObjectFromMaps(obj.getObjectId());
@@ -149,7 +149,7 @@ public class ParameterizedOperationsUtil {
         Timestamp newTime = obj.getTimestamp();
 
         // set (ROTATE) as the operation which is applied on object.
-        BoardObjectOperation newBoardOp = new RotateOperation(angleOfRotation);
+        IBoardObjectOperation newBoardOp = new RotateOperation(angleOfRotation);
 
         // remove previous object from maps.
         BoardObject dummyObj = ClientBoardState.maps.removeObjectFromMaps(obj.getObjectId());
