@@ -120,6 +120,9 @@ public class BoardState implements Serializable {
 				continue;
 			}
 			pq.remove(objectToBeRemoved);
+			if(pq.isEmpty()) {
+				posToObjects.remove(pos);
+			}
 		}
 	}
 
@@ -150,12 +153,8 @@ public class BoardState implements Serializable {
 	public void insertObjectIntoMaps (BoardObject boardObject) {
 		ObjectId objId = boardObject.getObjectId();
 		Timestamp timestamp = boardObject.getTimestamp();
-		ArrayList<Pixel> pixels = boardObject.getPixels();
 
-		ArrayList<Position> positions = new ArrayList<Position>();
-		for (Pixel p : pixels) {
-			positions.add(p.position);
-		}
+		ArrayList<Position> positions = boardObject.getPositions();
 
 		PriorityQueueObject pqObject = new PriorityQueueObject(objId, timestamp);
 
@@ -178,12 +177,8 @@ public class BoardState implements Serializable {
 		}
 
 		Timestamp timestamp = remove.getTimestamp();
-		ArrayList<Pixel> pixels = remove.getPixels();
-
-		ArrayList<Position> positions = new ArrayList<Position>();
-		for (Pixel p : pixels) {
-			positions.add(p.position);
-		}
+		
+		ArrayList<Position> positions = remove.getPositions();
 
 		PriorityQueueObject pqRemoveObject = new PriorityQueueObject(objectId, timestamp);
 
