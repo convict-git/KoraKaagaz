@@ -26,16 +26,16 @@ public class LanCommunicator implements ICommunicator{
     static boolean isRunning = false;
 
     // Send Queue that has the message that should be sent across the network
-    static IQueue<OutgoingPacket> sendQueue;
+    IQueue<OutgoingPacket> sendQueue;
 
     // The Receive Queue in which we have the messages that needs to be sent to the processing module
-    static IQueue<IncomingPacket> processingReceiveQueue;
+    IQueue<IncomingPacket> processingReceiveQueue;
 
     // The receive queue in which we have the messages that needs to be sent to the content module
-    static IQueue<IncomingPacket> contentReceiveQueue;
+    IQueue<IncomingPacket> contentReceiveQueue;
 
     // this hashmap contains the handlers for the respective modules processing and content
-    static HashMap<String, INotificationHandler> handlerMap;
+    HashMap<String, INotificationHandler> handlerMap;
 
     // constructor
     public LanCommunicator() {
@@ -54,25 +54,25 @@ public class LanCommunicator implements ICommunicator{
 	
 	        // The listener which listens on the send queue and transfer the messages on the lan network to the destination IP
 	        // A thread is spawn to perform this continuously whenever we have packets in the queue
-	        sendQueueListener = new SendQueueListener();
+	        sendQueueListener = new SendQueueListener(sendQueue);
 	        sendQueueListenerWorker = new Thread(sendQueueListener);
 	        sendQueueListenerWorker.start();
 	        
 	        // The listener that will be listening on the network and that receives the packet sent by the sendQueueListener
 	        // This listener will distingush between processing module message and content module's message and push into their respective queues
-	        socketListener = new SocketListener();
+	        socketListener = new SocketListener(processingReceiveQueue, contentReceiveQueue);
 	        socketListenerWorker = new Thread(socketListener);
 	        socketListenerWorker.start();
 	
 	        // This listener will be listening on the receive queue which is for the processing modules message
 	        // It will send the message which is pushed by network listener through the processing module handler 
-	        processingReceiveQueueListener = new ReceiveQueueListener("processor");
+	        processingReceiveQueueListener = new ReceiveQueueListener("processor", processingReceiveQueue, handlerMap);
 	        processingReceiveQueueListenerWorker = new Thread();
 	        processingReceiveQueueListenerWorker.start();
 	        
 	        // This listener will be listening on the receive queue which is for the content modules message
 	        // It will send the message which is pushed by network listener through the content module handler 
-	        contentReceiveQueueListener = new ReceiveQueueListener("content");
+	        contentReceiveQueueListener = new ReceiveQueueListener("content", contentReceiveQueue, handlerMap);
 	        contentReceiveQueueListenerWorker = new Thread(contentReceiveQueueListener);
 	        contentReceiveQueueListenerWorker.start();
 	        
@@ -89,7 +89,6 @@ public class LanCommunicator implements ICommunicator{
     	// Creating the object for the outgoing packet that is being pushed into the send queue.
         OutgoingPacket packet = new OutgoingPacket(destination, message, identifier);
         sendQueue.enqueue(packet);
-        return;
     }
 
     public void subscribeForNotifications(String identifier, INotificationHandler handler){
