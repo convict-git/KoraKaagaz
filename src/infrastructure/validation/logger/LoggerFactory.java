@@ -1,6 +1,3 @@
-/**
- * 
- */
 package infrastructure.validation.logger;
 
 /**
@@ -16,9 +13,6 @@ public class LoggerFactory {
 	 */
 	private static ILogger loggerManager;
 	
-	/**
-	 * 
-	 */
 	private LoggerFactory() {
 		// TODO Auto-generated constructor stub
 	}
