@@ -17,7 +17,7 @@ public interface IUser {
 	 * processing module.
 	 * 
 	 * @param userName Username of the user
-	 * @param ipAddress IP Address of the user
+	 * @param ipAddress IP Address of the server
 	 * @param boardId Board ID of the requested board, if any
 	 * @return It will return the userId to the UI module
 	 */
@@ -32,9 +32,7 @@ public interface IUser {
      */
     String getUser(ArrayList<Position> positions);
     
-    /**
-     * when user will close the application, UI module will call this function
-     */
+    /** when user will close the application, UI module will call this function */
     void stopBoardSession();
 
     /**
