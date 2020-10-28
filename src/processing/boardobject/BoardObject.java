@@ -13,6 +13,7 @@ import java.util.ArrayList;
  * be sent across the network.
  *
  * @author Ahmed Zaheer Dadarkar
+ * @reviewer Rakesh Kumar
  */
 
 public class BoardObject implements Serializable {
@@ -105,6 +106,19 @@ public class BoardObject implements Serializable {
     /** Gets the board object's list of pixels */
     public ArrayList <Pixel> getPixels () {
     	return pixels;
+    }
+    
+    /** Gets the board object's list of positions */
+    public ArrayList <Position> getPositions () {
+    	// Construct position arraylist
+    	ArrayList <Position> positions = new ArrayList<Position> ();
+    	
+    	// Extract positions from pixels and add it to
+    	// the array list of positions
+    	for(Pixel p : pixels)
+    		positions.add(p.position);
+    	
+    	return positions;
     }
 
     /** Sets the pixels using the given array-list of pixels */
