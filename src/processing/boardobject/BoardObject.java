@@ -13,6 +13,7 @@ import java.util.ArrayList;
  * be sent across the network.
  *
  * @author Ahmed Zaheer Dadarkar
+ * @reviewer Rakesh Kumar
  */
 
 public class BoardObject implements Serializable {
