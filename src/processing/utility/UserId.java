@@ -43,7 +43,7 @@ public class UserId {
 	 * 
 	 * @return username who has this User ID
 	 */
-	public Username getUserId() {
+	public Username getUsername() {
 		return new Username(userId.split("_", 2)[1]);
 	}
 	

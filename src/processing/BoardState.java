@@ -91,12 +91,16 @@ public class BoardState implements Serializable {
 	 */
 	private synchronized void insertIntoPQ (
 			ArrayList <Position> positions, 
-			PriorityQueueObject toBeInserted) {
+			PriorityQueueObject toBeInserted
+	) {
 		
 		for (Position pos : positions) {
 			PriorityQueue <PriorityQueueObject> pq = posToObjects.get(pos);
 			if (pq == null) {
-				posToObjects.put(pos, new PriorityQueue<PriorityQueueObject>(20, new ObjectComparator()));
+				posToObjects.put(
+						pos, 
+						new PriorityQueue<PriorityQueueObject>(20, new ObjectComparator())
+				);
 			}
 			posToObjects.get(pos).add(toBeInserted);
 		}
@@ -108,8 +112,8 @@ public class BoardState implements Serializable {
 	 */
 	private synchronized void removeFromPQ (
 			ArrayList <Position> positions, 
-			PriorityQueueObject objectToBeRemoved) {
-		
+			PriorityQueueObject objectToBeRemoved
+	) {
 		for (Position pos : positions) {
 			PriorityQueue <PriorityQueueObject> pq = posToObjects.get(pos);
 			if (pq == null) {
@@ -197,9 +201,7 @@ public class BoardState implements Serializable {
 		if (boardObject == null) {
 			return null;
 		}
-		String userId = boardObject.getUserId().toString();
-		String[] splits = userId.split("_", 2);
-		return splits[1];
+		return boardObject.getUserId().getUsername().toString();
 	}
 
 }
