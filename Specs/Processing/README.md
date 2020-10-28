@@ -321,6 +321,21 @@ public interface IChanges {
 }
 ```
 
+```java
+public interface IClientIP {
+	
+	/**
+	 * This interface will be used by the content module to get the IP addresses of
+	 * all the clients connected to the particular board.
+	 * getClientIP will return a Map of all the clients to IP
+	 * 
+	 * @return Map from all the clients to IP
+	 */
+	public Map<Username, IpAddress> getClientIP(); 
+	
+}
+
+```
 ### Tasks Distribution
 ---
 #### Ahmed Zaheer Dadarkar 
