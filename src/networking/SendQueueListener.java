@@ -23,7 +23,7 @@ public class SendQueueListener implements Runnable {
         return destination.split(":");
     }
 
-    // The following function will check whether the ip address is valid or not.
+    // The following method will check whether the ip address is valid or not.
     public boolean isValidIpaddress(String IP){
         //regular expression for integer between 0 and 255
         String zeroTo255 
@@ -42,6 +42,14 @@ public class SendQueueListener implements Runnable {
         */
         return Pattern.matches(ipreg, IP);
     }
+
+    //The following method will check whether the port number is valid or not.
+    public boolean isValidPort(int port){
+        //it will return true if port is valid else false.
+        return (port > 0) && (port <= 65535);
+    }
+
+
     //This method will do the work of taking the data from the queue 
     //and send it over the network.
     public void run(){
@@ -61,6 +69,7 @@ public class SendQueueListener implements Runnable {
             //take port number from the dest array and parse it into integer.
             int port = Integer.parseInt(dest[1]);
 
+            
             
             //store the message into the message variable
             String message = out.message;
