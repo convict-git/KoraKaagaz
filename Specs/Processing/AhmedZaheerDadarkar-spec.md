@@ -8,8 +8,8 @@
       object (which is serializable) and convert it into a serialized string
       which can be used to completely recover the object at the receiver end.
     * Write a static function `deserialize` of the class `Serialize` to take
-      a serialized string and return the corresponding object and its dynamic
-      type.
+      a serialized string and return the corresponding object. The dynamic type
+      can be inferred from the `getClass` method of the object.
 * Implement the functionality to build different kinds of shapes
     * Provide a `BoardObject` class which would generalize each shape by
       containing the list of pixels belonging to the object.
@@ -31,18 +31,12 @@
 
 1. First get the dynamic type of the object
 2. Then convert the bytes of the object into a String
-3. Now, create a JSON Object with two key-value pairs, the first pair maps
-   the String "objectType" to dynamic type of the object and the second pair
-   maps the String "data" to the String of the bytes of the object (i.e.
-   the data of the object)
-4. Convert the JSON Object into a String and return it
+3. Just return the String
 
 ## Deserialize a Serialized String
 
-1. Parse the JSON String to get the String containing the dynamic object
-   type and the String containing the object's data.
-2. Convert the data of the object into an Object of Serializable type.
-3. Return the Object and the String containing the dynamic object type.
+2. Convert the data String of the object into an Object of Serializable type.
+3. Return the Constructed Serializable Object
 
 Notes:
 
@@ -120,9 +114,7 @@ for better readability.
         // The `deserialize` function takes as input a
         // String `serialString` which is the serialized form
         // of a Serializable object, and returns the object
-        // and its dynamic type
-        public static Pair<String, Serializable> 
-            deSerialize (String serialString);
+        public static Serializable deSerialize (String serialString);
     }
 ```
 
@@ -197,9 +189,6 @@ for better readability.
     // This interface would provide the operation that would
     // be performed on the object.
     public interface BoardObjectOperation {
-        // Board Object Operation type
-        private BoardObjectOperationType boardOpType;
-
         // This method would give the type, which
         // would then help us to (downcast) cast
         // it into its original dynamic type for
@@ -209,16 +198,12 @@ for better readability.
     
     // The Creation Operation - It has no parameters
     public class CreateOperation implements BoardObjectOperation {
-        private BoardObjectOperationType operationType;
-        
         public CreateOperation ();
         public BoardObjectOperationType getOperationType ();
     }
     
     // The Deletion Operation - It has no parameters
     public class DeleteOperation implements BoardObjectOperation  {
-        private BoardObjectOperationType operationType;
-        
         public DeleteOperation ();
         public BoardObjectOperationType getOperationType ();
     }
@@ -226,9 +211,7 @@ for better readability.
     // The Rotation Operation - It has the angle parameter
     public class RotateOperation implements BoardObjectOperation  {
         private Angle angleCCW;
-        private BoardObjectOperationType operationType;
-        
-        public RedoOperation (Angle angleCCW);
+        public RotateOperation (Angle angleCCW);
         public BoardObjectOperationType getOperationType ();
     }
     
@@ -236,8 +219,6 @@ for better readability.
     // parameter (i.e. color)
     public class ColorChangeOperation implements BoardObjectOperation  {
         private Intensity intensity;
-        private BoardObjectOperationType operationType;
-        
         public ColorChangeOperation (Intensity intensity);
         public BoardObjectOperationType getOperationType ();
     }
@@ -260,12 +241,14 @@ for better readability.
         // screen operation. This object then, cannot be rotated or color changed
         
         // Construct a Board Object using the list of pixels,
-        // object ID, timestamp and user ID
+        // object ID, timestamp and user ID, and whether object is
+        // reset object or not
         public BoardObject (
             ArrayList <Pixel> pixels,
             ObjectId objectId,
             Timestamp timestamp,
-            UserId userId
+            UserId userId,
+            boolean isReset
         );
         public BoardObjectOperation getOperation (); // Get the operation corresponding to this shape
         // Set the operation corresponding to this shape
@@ -392,9 +375,10 @@ for better readability.
 * All those classes mentioned above which have only static members will
   not be instantiated for objects. They are only used to group together
   similar functions.
-* We thought about using JSON instead of XML because we could not find Java
-  APIs for XML which were easy-to-use and commonly used, but found very
-  easy-to-use APIs for JSON.
+* We thought about using JSON for storing the class type within the serialized
+  String, but now we found that it is not needed since Java provides a way
+  to get the dynamic type of the object using the `getClass` method of the
+  topmost `Object` class.
 * The `Serializable` interface does not require any methods to be implemented.
 * The algorithms for computing the pixels from the parameters of different shapes
   would use slight approximations for digits behind the decimal point for the

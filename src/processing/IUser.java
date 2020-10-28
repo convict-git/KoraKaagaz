@@ -21,25 +21,27 @@ public interface IUser {
 	 * @param boardId Board ID of the requested board, if any
 	 * @return It will return the userId to the UI module
 	 */
-    String giveUserDetails(String userName, String ipAddress, String boardId);
-    
-    /**
-     * getUser will return the User who has drawn the particular object
-     * 
-     * @param positions List of position where a part of object is there, whose
-     * 		   			User they need to identify
-     * @return UserId of the user
-     */
-    String getUser(ArrayList<Position> positions);
-    
-    /** when user will close the application, UI module will call this function */
-    void stopBoardSession();
-
-    /**
-     * UI module will first subscribe for changes on the board from other clients
-     * 
-     * @param identifier identifier provided by the UI module to identify the changes
-     * @param handler appropriate handler to handle the changes
-     */
-    void subscribeForChanges(String identifier, IChanges handler);
+	String giveUserDetails(String userName, String ipAddress, String boardId);
+	
+	/**
+	 * getUser will return the User who has drawn the particular object
+	 * 
+	 * @param positions List of position where a part of object is there, whose
+	 * user they need to identify
+	 * @return UserId of the user
+	 */
+	String getUser(ArrayList<Position> positions);
+	
+	/**
+	 * when user will close the application, UI module will call this function
+	 */
+	void stopBoardSession();
+	
+	/**
+	 * UI module will first subscribe for changes on the board from other clients
+	 * 
+	 * @param identifier identifier provided by the UI module to identify the changes
+	 * @param handler appropriate handler to handle the changes
+	 */
+	void subscribeForChanges(String identifier, IChanges handler);
 }
