@@ -10,37 +10,27 @@ import processing.boardobject.*;
 * ClientBoardState and ServerBoardState will store the object of this class in their class.
 *
 * @author Himanshu Jain, Shruti Umat
-* @reviewer Rakesh Kumar, Satchit Desai
+* @reviewer Ahmed Zaheer Dadarkar, Satchit Desai
 */
 
 public class BoardState implements Serializable {
 
-	/**
-	 *  To authenticate that the user deserializing this object
-	 */
+	/** To authenticate that the user deserializing this object */
 	private static final long serialVersionUID = 1L;
 
-	/**
-	 * Map from object ID to the Board Object
-	 */
+	/** Map from object ID to the Board Object */
 	private Map <ObjectId, BoardObject> objIdToBoardObject;
 
-	/**
-	 * Map from position on the board to Priority Queue of objects on that position
-	 */
+	/** Map from position on the board to Priority Queue of objects on that position */
 	private Map <Position, PriorityQueue <PriorityQueueObject>> posToObjects;
 
-	/**
-	 * Constructor to initialize both the maps
-	 */
+	/** Constructor to initialize both the maps */
 	public BoardState() {
 		objIdToBoardObject = new HashMap <ObjectId, BoardObject> ();
 		posToObjects = new HashMap <Position, PriorityQueue <PriorityQueueObject>> ();
 	}
 
-	/**
-	 * Synchronized handles to get and set the 'selectedObject' data member in ClientBoardState class
-	 */
+	/** Synchronized handles to get and set the 'selectedObject' data member in ClientBoardState class */
 	public synchronized void setSelectedObject(PriorityQueueObject pqObject) {
 		ClientBoardState.selectedObject = new PriorityQueueObject(pqObject);
 	}
@@ -49,9 +39,7 @@ public class BoardState implements Serializable {
 		return ClientBoardState.selectedObject;
 	}
 
-	/**
-	 * Looks up BoardObject for the ObjectId key in the argument
-	 */
+	/** Looks up BoardObject for the ObjectId key in the argument */
 	public synchronized BoardObject getBoardObjectFromId(ObjectId objId) {
 		return objIdToBoardObject.get(objId);
 	}
@@ -101,11 +89,18 @@ public class BoardState implements Serializable {
 	 * For each Position (x, y) in the input ArrayList, insert the PriorityQueueObject into the
 	 * Priority Queue at the position (x, y) present in the map
 	 */
-	private synchronized void insertIntoPQ (ArrayList <Position> positions, PriorityQueueObject toBeInserted) {
+	private synchronized void insertIntoPQ (
+			ArrayList <Position> positions, 
+			PriorityQueueObject toBeInserted
+	) {
+		
 		for (Position pos : positions) {
 			PriorityQueue <PriorityQueueObject> pq = posToObjects.get(pos);
 			if (pq == null) {
-				posToObjects.put(pos, new PriorityQueue<PriorityQueueObject>(20, new ObjectComparator()));
+				posToObjects.put(
+						pos, 
+						new PriorityQueue<PriorityQueueObject>(20, new ObjectComparator())
+				);
 			}
 			posToObjects.get(pos).add(toBeInserted);
 		}
@@ -115,13 +110,19 @@ public class BoardState implements Serializable {
 	 * For each Position (x, y) in the input ArrayList, delete the PriorityQueueObject from the
 	 * Priority Queue at the position (x, y) present in the map, if it exists in the Priority Queue
 	 */
-	private synchronized void removeFromPQ (ArrayList <Position> positions, PriorityQueueObject objectToBeRemoved) {
+	private synchronized void removeFromPQ (
+			ArrayList <Position> positions, 
+			PriorityQueueObject objectToBeRemoved
+	) {
 		for (Position pos : positions) {
 			PriorityQueue <PriorityQueueObject> pq = posToObjects.get(pos);
 			if (pq == null) {
 				continue;
 			}
 			pq.remove(objectToBeRemoved);
+			if(pq.isEmpty()) {
+				posToObjects.remove(pos);
+			}
 		}
 	}
 
@@ -152,12 +153,8 @@ public class BoardState implements Serializable {
 	public void insertObjectIntoMaps (BoardObject boardObject) {
 		ObjectId objId = boardObject.getObjectId();
 		Timestamp timestamp = boardObject.getTimestamp();
-		ArrayList<Pixel> pixels = boardObject.getPixels();
 
-		ArrayList<Position> positions = new ArrayList<Position>();
-		for (Pixel p : pixels) {
-			positions.add(p.position);
-		}
+		ArrayList<Position> positions = boardObject.getPositions();
 
 		PriorityQueueObject pqObject = new PriorityQueueObject(objId, timestamp);
 
@@ -180,12 +177,8 @@ public class BoardState implements Serializable {
 		}
 
 		Timestamp timestamp = remove.getTimestamp();
-		ArrayList<Pixel> pixels = remove.getPixels();
-
-		ArrayList<Position> positions = new ArrayList<Position>();
-		for (Pixel p : pixels) {
-			positions.add(p.position);
-		}
+		
+		ArrayList<Position> positions = remove.getPositions();
 
 		PriorityQueueObject pqRemoveObject = new PriorityQueueObject(objectId, timestamp);
 
@@ -203,9 +196,7 @@ public class BoardState implements Serializable {
 		if (boardObject == null) {
 			return null;
 		}
-		String userId = boardObject.getUserId().toString();
-		String[] splits = userId.split("_", 2);
-		return splits[1];
+		return boardObject.getUserId().getUsername().toString();
 	}
 
 }
