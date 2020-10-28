@@ -1,8 +1,10 @@
 package networking;
+
 import networking.queueManagement.*;
 import networking.utility.*;
 import java.io.*;
 import java.net.*;
+import java.util.regex.Pattern;
 
 /** 
  * @author Sirpa Sahul
@@ -21,7 +23,27 @@ public class SendQueueListener implements Runnable {
         return destination.split(":");
     }
 
-    //This method will the work of taking the data from the queue and sending it over the network.
+    // The following function will check whether the ip address is valid or not.
+    public boolean isValidIpaddress(String IP){
+        //regular expression for integer between 0 and 255
+        String zeroTo255 
+            = "(\\d{1,2}|(0|1)\\"
+              + "d{2}|2[0-4]\\d|25[0-5])";
+
+        //regular epression for ip address.
+        String ipreg = zeroTo255 + "\\."
+        + zeroTo255 + "\\."
+        + zeroTo255 + "\\."
+        + zeroTo255; 
+        
+        /*
+            if ip address matches regular expression return true
+            else return false.
+        */
+        return Pattern.matches(ipreg, IP);
+    }
+    //This method will do the work of taking the data from the queue 
+    //and send it over the network.
     public void run(){
         
         // run the while loop as long as the application is running.
@@ -33,6 +55,13 @@ public class SendQueueListener implements Runnable {
             //Divide the destination address into ip and port from destination.
             String[] dest = this.splitAddress(out.destination);
 
+            //Take ip address from the dest array
+            String ip = dest[0];
+
+            //take port number from the dest array and parse it into integer.
+            int port = Integer.parseInt(dest[1]);
+
+            
             //store the message into the message variable
             String message = out.message;
         
@@ -52,12 +81,6 @@ public class SendQueueListener implements Runnable {
 
             //The following code in try block will try to send the message over the network.
             try{
-
-                //Take ip address from the dest array
-                String ip = dest[0];
-
-                //take port number from the dest array and parse it into integer.
-                int port = Integer.parseInt(dest[1]);
 
                 //create socket using ip address and port number.
                 Socket sock = new Socket(ip, port);
