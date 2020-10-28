@@ -88,14 +88,14 @@ public class ParameterizedOperationsUtil {
         }
 
         // storing data members that remain same: objectId, and timestamp of object creation
-        ObjectId newObjectId = obj.objectId;
-        Timestamp newTime = obj.timestamp;
+        ObjectId newObjectId = obj.getObjectId();
+        Timestamp newTime = obj.getTimestamp();
 
         // set (COLOR_CHANGE) as the operation which is applied on object.
         BoardObjectOperation newBoardOp = new ColorChangeOperation(newIntensity);
 
         // remove previous object from maps.
-        BoardObject dummyObj = ClientBoardState.maps.removeObjectFromMaps(obj.objectId);
+        BoardObject dummyObj = ClientBoardState.maps.removeObjectFromMaps(obj.getObjectId());
 
         // create a new object with same objectId, timestamp and other updated values.
         BoardObject newObj = CurveBuilder.drawCurve(newPixelSet, newBoardOp, newObjectId, newTime,
@@ -145,14 +145,14 @@ public class ParameterizedOperationsUtil {
         }
 
         // storing data members that remain same: objectId, and timestamp of object creation
-        ObjectId newObjectId = obj.objectId;
-        Timestamp newTime = obj.timestamp;
+        ObjectId newObjectId = obj.getObjectId();
+        Timestamp newTime = obj.getTimestamp();
 
         // set (ROTATE) as the operation which is applied on object.
         BoardObjectOperation newBoardOp = new RotateOperation(angleOfRotation);
 
         // remove previous object from maps.
-        BoardObject dummyObj = ClientBoardState.maps.removeObjectFromMaps(obj.objectId);
+        BoardObject dummyObj = ClientBoardState.maps.removeObjectFromMaps(obj.getObjectId());
 
         // create a new object with same objectId, timestamp and other updated values.
         BoardObject newObj = CurveBuilder.drawCurve(newPixelSet, newBoardOp, newObjectId, newTime,
