@@ -12,6 +12,7 @@ import java.util.*;
 
 public class ObjectComparator implements Comparator <PriorityQueueObject>{
 	
+	/** return 1 if the first object came before, 0 if they came on same time otherwise -1 */
 	public int compare(PriorityQueueObject obj1, PriorityQueueObject obj2) {
 		if(obj1.timestamp.compareTo(obj2.timestamp) < 0) {
 			return 1;
