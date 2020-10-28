@@ -106,6 +106,19 @@ public class BoardObject implements Serializable {
     public ArrayList <Pixel> getPixels () {
     	return pixels;
     }
+    
+    /** Gets the board object's list of positions */
+    public ArrayList <Position> getPositions () {
+    	// Construct position arraylist
+    	ArrayList <Position> positions = new ArrayList<Position> ();
+    	
+    	// Extract positions from pixels and add it to
+    	// the array list of positions
+    	for(Pixel p : pixels)
+    		positions.add(p.position);
+    	
+    	return positions;
+    }
 
     /** Sets the pixels using the given array-list of pixels */
     public void setPixels (ArrayList <Pixel> pixels) {
