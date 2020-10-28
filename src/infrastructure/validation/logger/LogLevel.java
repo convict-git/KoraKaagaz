@@ -2,7 +2,7 @@ package infrastructure.validation.logger;
 
 /**
  * The ILogger interface depends on the LogLevel enum
- * The LogLevel enum is used to specify the type of log used:
+ * The LogLevel enum is used to specify the type of log used
  * 
  * @author Navaneeth M Nambiar
  */
