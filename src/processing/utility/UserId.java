@@ -38,6 +38,15 @@ public class UserId {
 		return userId;
 	}
 	
+	/**
+	 * Gets the Username present in the User ID
+	 * 
+	 * @return username who has this User ID
+	 */
+	public Username getUserId() {
+		return new Username(userId.split("_", 2)[1]);
+	}
+	
 	/** Equals Method  */
 	@Override
 	public boolean equals(Object obj) {
