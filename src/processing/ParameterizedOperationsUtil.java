@@ -36,13 +36,13 @@ public class ParameterizedOperationsUtil {
         int numOfPixels = pixels.size();
         for(int i = 0; i < numOfPixels; i++) {
 
-            centrePos.x += pixels.get(i).position.x;
-            centrePos.y += pixels.get(i).position.y;
+            centrePos.r += pixels.get(i).position.r;
+            centrePos.c += pixels.get(i).position.c;
         }
 
         // averaging, followed by Narrowing Type Casting
-        centrePos.x = (int)(centrePos.x / numOfPixels);
-        centrePos.y = (int)(centrePos.y / numOfPixels);
+        centrePos.r = (int)(centrePos.r / numOfPixels);
+        centrePos.c = (int)(centrePos.c / numOfPixels);
 
         return centrePos;
     }
@@ -128,16 +128,16 @@ public class ParameterizedOperationsUtil {
         for(int i = 0; i < newPixelSet.size(); i++) {
 
             // shifting origin
-            Position posWithShiftedOrigin = new Position(newPixelSet.get(i).position.x - centre.x,
-            newPixelSet.get(i).position.y - centre.y);
+            Position posWithShiftedOrigin = new Position(newPixelSet.get(i).position.r - centre.r,
+            newPixelSet.get(i).position.c - centre.c);
 
             // applying rotation matrix followed by Narrowing Type Casting
-            Position rotatedPos = new Position((int)(rotMatrix[0][0] * posWithShiftedOrigin.x +
-            rotMatrix[0][1] * posWithShiftedOrigin.y), (int)(rotMatrix[1][0] * posWithShiftedOrigin.x
-             + rotMatrix[1][1] * posWithShiftedOrigin.y));
+            Position rotatedPos = new Position((int)(rotMatrix[0][0] * posWithShiftedOrigin.r +
+            rotMatrix[0][1] * posWithShiftedOrigin.c), (int)(rotMatrix[1][0] * posWithShiftedOrigin.r
+             + rotMatrix[1][1] * posWithShiftedOrigin.c));
 
             // Re-align according to the calculated centre
-            Position finalPos = new Position(rotatedPos.x + centre.x, rotatedPos.y + centre.y);
+            Position finalPos = new Position(rotatedPos.r + centre.r, rotatedPos.c + centre.c);
 
             // set final pixel, preserving the intensity
             Pixel newPix = new Pixel(finalPos, newPixelSet.get(i).intensity);
