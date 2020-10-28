@@ -3,7 +3,7 @@ package processing;
 import java.util.*;
 import java.io.Serializable;
 import processing.utility.*;
-import processing.board_object.*;
+import processing.boardobject.*;
 
 /**
 * This BoardState class stores two maps which should be serializable for persistence.

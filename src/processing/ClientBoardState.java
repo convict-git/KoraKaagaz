@@ -1,7 +1,7 @@
 package processing;
 
 import java.util.*;
-import processing.board_object.*;
+import processing.boardobject.*;
 import processing.utility.*;
 
 /**
