@@ -174,74 +174,150 @@ class Pixel {            // pixel position with RGB values
 }
 
 public interface IDrawErase {
-    // parameter: ArrayList<Pixel> - an ArrayList of pixel with RGB values for random curve object 
-    void draw_curve(ArrayList <Pixel> pixels);
-    // parameter: ArrayList<Position> - an ArrayList of pixel position for erase object
-    void erase(ArrayList <Position> positions);
+	
+	/**
+	 * drawCurve function will be called by UI to draw a random curve on the board.
+	 * 
+	 * @param pixels List of all the pixels of type Pixel, where curve is there on the board.
+	 */
+	void drawCurve (ArrayList <Pixel> pixels);
+	
+	/**
+	 * erase function will be called by UI whenever erase is there on the screen using
+	 * an eraser.
+	 * 
+	 * @param position List of all the position of type Position, where eraser is moved on the board.
+	 */
+	void erase (ArrayList <Position> position);
 }
 ```
 
 ``` java
 public interface IDrawShapes {
-    // parameter: Pixel center - center position with intensity for circle
-    //            radius - radius of circle
-    void draw_circle(Pixel center, float radius);
-    // makes an object for square parallel to the whiteBoard 
-    // parameter: Pixel start - start position for square with RGB values in whiteBoard
-    //            float length - length of the sqaure
-    void draw_square(Pixel start, float length);         
-    // parameter: Pixel start - top left position with RGB values for rectangle in whiteBoard
-    //            Pixel end - bottom right position with RGB values for rectangle in whiteBoard
-    void draw_rectangle(Pixel start, Pixel end); 
-    // makes an object for a line segment parallel to the whiteBoard 
-    // parameter: Pixel start - start position with RGB values
-    //            Pixel end - end position with RGB values
-    void draw_line(Pixel start, Pixel end);        
+	/**
+	 * drawCircle will be called when a circle is drawn on the board, it will process
+	 * the  circle drawn.
+	 * 
+	 * @param center center position with intensity for circle
+	 * @param radius radius of circle
+	 */
+	void drawCircle(Pixel center, float radius);
+	
+	/**
+	 * drawSquare will be called when a square is drawn on the board, it will process
+	 * the square drawn.
+	 * 
+	 * @param start start position for square with RGB values in whiteBoard
+	 * @param length length of the square
+	 */
+	void drawSquare(Pixel start, float length);
+	/**
+	 * drawRectangle will be called when a Rectangle is drawn on the board, it will process
+	 * the rectangle drawn.
+	 * 
+	 * @param start top left position with RGB values for rectangle in whiteBoard
+	 * @param end bottom right position with RGB values for rectangle in whiteBoard
+	 */
+	void drawRectangle(Pixel start, Pixel end);
+	
+	/**
+	 * drawLine will be called when a line is drawn on the board, it will process
+	 * the line drawn.
+	 * 
+	 * @param start start position with RGB values
+	 * @param end end position with RGB values
+	 */
+	void drawLine(Pixel start, Pixel end);        
 }
 ```
 
 ```java
 public interface IUndoRedo {
-    // redo the work done by a particular user
-    void redo();
-    // undo the work done by a particular user
-    void undo();
+	/** redo will perform the redo operation */
+	void redo();
+	
+	/** undo will perform the undo operation */
+	void undo();
 }
 ```
 
 ```java
 public interface IOperation {
-    // returns the pixel position for selected object if  an object exist at selected position  
-    ArrayList<Position> select (ArrayList <Position> positions);
-    // deletes the selected object
-    void delete ();
-    // changes color of selected objected to specified intensity 
-    void colorChange (Intensity intensity);
-    // rotates selected object by specified angle in counter clockwise direction
-    void rotate (double angleCCW);
-    // removes all the object present on the board
-    void reset ();
+	/**
+	 * select function will be called when the user will select an object on the board
+	 * 
+	 * @param positions list of all the Position when user clicked for selection
+	 * @return List of all the position of the object selected
+	 */
+	ArrayList<Position> select (ArrayList <Position> positions);
+	
+	/**
+	 * delete will delete the selected object
+	 */
+	void delete ();
+	
+	/**
+	 * color change will change the color of the selected object
+	 *
+	 * @param intensity new color to be given to the selected object
+	 */
+	void colorChange (Intensity intensity);
+    
+	/**
+	 * rotate will rotate the selected object with a given angle
+	 * @param angleCCW angle through which selected object to be rotated
+	 */
+	void rotate (Angle angleCCW);
+	
+	/** reset will clear all the objects on the screen */
+	void reset ();
 }
 ```
 
 ```java
 public interface IUser {
-    // this function is used to get the user details during initial setup from user through UI 
-    // if the board Id is null then we get a new board id from server and pass to UI
-    // parameter: userName - user name
-    //            ipAddress - ipaddress for the server with the port
-    //            boardId - white board ID to which user wants to connect 
-    String getUserDetails(String userName, String ipAddress, String boardId);
-    // return the username at the selected position
-    String getUser(ArrayList<Position> positions);
-    // stop baord session for that user
-    void stopBoardSession();
-    // UI will subscribe for any changes 
-    void subscribeForChanges(String identifier, IChanges handler);
+	/**
+	 * This will be used by the UI module in the start to give the user details to the
+	 * processing module.
+	 * 
+	 * @param userName Username of the user
+	 * @param ipAddress IP Address of the user
+	 * @param boardId Board ID of the requested board, if any
+	 * @return It will return the userId to the UI module
+	 */
+	String giveUserDetails(String userName, String ipAddress, String boardId);
+	
+	/**
+	 * getUser will return the User who has drawn the particular object
+	 * 
+	 * @param positions List of position where a part of object is there, whose
+	 * user they need to identify
+	 * @return UserId of the user
+	 */
+	String getUser(ArrayList<Position> positions);
+	
+	/**
+	 * when user will close the application, UI module will call this function
+	 */
+	void stopBoardSession();
+	
+	/**
+	 * UI module will first subscribe for changes on the board from other clients
+	 * 
+	 * @param identifier identifier provided by the UI module to identify the changes
+	 * @param handler appropriate handler to handle the changes
+	 */
+	void subscribeForChanges(String identifier, IChanges handler);
 }
 
 public interface IChanges {
-    void getChanges(ArrayList<Pixel> pixels);
+	
+	/** 
+	 * getChanges will take all the changes as the input and passed to the UI
+	 * 
+	 * @param pixels List of all the pixels where there is a change
+	 */
+	void getChanges(ArrayList<Pixel> pixels);
 }
 ```
 
