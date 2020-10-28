@@ -3,6 +3,9 @@ package networking;
 import java.io.*;
 import java.net.*;
 
+import networking.queueManagement.ConcurrentBlockingQueue;
+import networking.utility.IncomingPacket;
+
 /**
 *
 * @author Marella Shiva Sai Teja
@@ -12,23 +15,28 @@ public class SocketListener implements Runnable {
 	
 	int port;
 	private ServerSocket serverSocket;
-    
-    public SocketListener(int port){
-    	this.port = port;
+	private ConcurrentBlockingQueue<IncomingPacket> contModuleQueue;
+	private ConcurrentBlockingQueue<IncomingPacket> procModuleQueue;
+
+    public SocketListener(int port, ConcurrentBlockingQueue<IncomingPacket> contModuleQueue, ConcurrentBlockingQueue<IncomingPacket> procModuleQueue){
+		this.port = port;
+		this.contModuleQueue = contModuleQueue;
+		this.procModuleQueue = procModuleQueue;
     }
 
     public void push(String id, String msg) {
+		IncomingPacket queuePacket = new IncomingPacket(msg);
     	if(id.equals("processing")){
-    		processingReceiveQueue.enqueue(msg);
+    		procModuleQueue.enqueue(queuePacket);
     	}else if(id.equals("content")) {
-    		contentReceiveQueue.enqueue(msg);
+    		contModuleQueue.enqueue(queuePacket);
     	}
     }
     
     public void run(){
 		try {
     		serverSocket = new ServerSocket(port);
-    		while(true) {
+    		while(LanCommunicator.isRunning) {
     			Socket socket = serverSocket.accept();
     			DataInputStream input = new DataInputStream(socket.getInputStream());
     			String recvMsg = input.readUTF();
