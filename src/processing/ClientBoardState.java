@@ -16,11 +16,11 @@ public class ClientBoardState {
 	public static BoardState maps = new BoardState();
 	
 	//port Number of the Board Server
-	public static int portNumber;
+	public static Port portNumber;
 	
 	//public static Map <Identifier identifier, IChanges handler>
 	
-	public static String boardId;
+	public static BoardId boardId;
 	
 	//undo and redo stacks
 	public static ArrayList <BoardObject> undoStack = new ArrayList <BoardObject>();
