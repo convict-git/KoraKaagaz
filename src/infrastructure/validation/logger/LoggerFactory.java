@@ -4,8 +4,10 @@
 package infrastructure.validation.logger;
 
 /**
+ * LoggerFactory class provides the method getLoggerInstance()
+ * This method will return a singleton reference that can be used for logging
+ * 
  * @author Navaneeth M Nambiar
- *
  */
 public class LoggerFactory {
 
