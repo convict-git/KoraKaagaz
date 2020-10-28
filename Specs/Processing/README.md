@@ -281,7 +281,7 @@ public interface IUser {
 	 * processing module.
 	 * 
 	 * @param userName Username of the user
-	 * @param ipAddress IP Address of the user
+	 * @param ipAddress IP Address of the server
 	 * @param boardId Board ID of the requested board, if any
 	 * @return It will return the userId to the UI module
 	 */
