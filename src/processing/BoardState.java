@@ -3,13 +3,14 @@ package processing;
 import java.util.*;
 import java.io.Serializable;
 import processing.utility.*;
-import processing.board_object.*;
+import processing.boardobject.*;
 
 /**
 * This BoardState class stores two maps which should be serializable for persistence.
 * ClientBoardState and ServerBoardState will store the object of this class in their class.
 *
 * @author Himanshu Jain, Shruti Umat
+* @reviewer Rakesh Kumar, Satchit Desai
 */
 
 public class BoardState implements Serializable {
@@ -46,6 +47,13 @@ public class BoardState implements Serializable {
 
 	public synchronized PriorityQueueObject getSelectedObject() {
 		return ClientBoardState.selectedObject;
+	}
+
+	/**
+	 * Looks up BoardObject for the ObjectId key in the argument
+	 */
+	public synchronized BoardObject getBoardObjectFromId(ObjectId objId) {
+		return objIdToBoardObject.get(objId);
 	}
 
 	/**

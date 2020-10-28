@@ -2,7 +2,6 @@ package processing.boardobject;
 
 import processing.utility.*;
 import java.io.Serializable;
-import java.security.Timestamp;
 import java.util.ArrayList;
 
 /**

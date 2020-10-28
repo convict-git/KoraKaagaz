@@ -3,7 +3,7 @@ package processing;
 import java.util.*;
 import processing.utility.*;
 import processing.BoardState;
-import processing.board_object.*;
+import processing.boardobject.*;
 /**
 *
 * @author Satchit Desai
@@ -18,7 +18,7 @@ import processing.board_object.*;
 public class CurveBuilder {
 	public static BoardObject drawCurve(
 			ArrayList<Pixel> pixels,
-			BoardObjectOperation newboardOp,
+			IBoardObjectOperation newboardOp,
 			ObjectId newobjectId,
 			Timestamp newtimestamp,
 			UserId newuserId,
