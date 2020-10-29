@@ -2,15 +2,13 @@ package networking.queueManagement;
 
 /**
  *
- * This file contains the interface of the Queue and the methods that will be provided by
- * the QueueManagement Module
+ * This file contains the interface of the Queue and the methods that will be provided by the QueueManagement Module
  *  Note that the interface takes a generic type T.
  *
  * @author Pandravisam Shiva Santhosh
  */
 
 public interface IQueue <T> {
-
 
     /**
      *  This method "clear" removes all the elements present in the queue
