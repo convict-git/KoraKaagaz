@@ -92,7 +92,7 @@ public class OutgoingPacket {
     /**
      * This method "getIdentifier" returns the identifier
      *
-     * @return the message variable content as a string
+     * @return the identifier variable content as a string
      */
     public String getIdentifier(){
         return identifier;
