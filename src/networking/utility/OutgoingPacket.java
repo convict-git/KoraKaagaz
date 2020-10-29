@@ -2,7 +2,7 @@ package networking.utility;
 
 /**
  * This file contains the class that is going to used by Send-Component for adding the data to the queue
- *  and SendQueueListener-Component for retrieving the data from the queue.
+ * and SendQueueListener-Component for retrieving the data from the queue.
  *
  * @author Pandravisam Shiva Santhosh
  */

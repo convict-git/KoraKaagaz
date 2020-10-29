@@ -2,7 +2,7 @@ package networking.utility;
 
 /**
  * This file contains the class that is going to used by SockListener-Component for adding the data
- * to the queue and ReceiveQueueListener-Component for retrieving the data from the queue.
+ *  to the queue and ReceiveQueueListener-Component for retrieving the data from the queue.
  *
  * @author Pandravisam Shiva Santhosh
 */
