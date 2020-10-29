@@ -1,11 +1,14 @@
 package networking.utility;
+
+/**
+* 
+* @author Prudhvi Vardhan Reddy Pulagam
+*/
 public class GetClientInfo{
-	private String ip="HI";
-	private int port=10;
 	public String getIp(){
-		return ip;
+		return "";
 	}
 	public int getPort(){
-		return port;
+		return 0;
 	}
 }
