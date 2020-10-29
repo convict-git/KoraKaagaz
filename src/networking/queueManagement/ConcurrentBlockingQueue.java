@@ -50,8 +50,8 @@ public class ConcurrentBlockingQueue<T> implements IQueue<T> {
         try {
             T item = q.take();
         } catch (InterruptedException e){
-            System.out.println("The ex");
-            /**/
+            /*The exception needs to be logged*/
+	    /*Interface not provided at the time of logging*/
         }
     }
 
@@ -65,7 +65,8 @@ public class ConcurrentBlockingQueue<T> implements IQueue<T> {
         try {
             q.put(item);
         } catch (InterruptedException e){
-            //throws System.out.println("Exception has been raised");
+            /*The exception needs to be logged*/
+	    /*Interface not provided at the time of logging*/
         }
     }
 
