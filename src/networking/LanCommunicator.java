@@ -24,6 +24,8 @@ public class LanCommunicator implements ICommunicator{
     ReceiveQueueListener contentReceiveQueueListener;
     
     static boolean isRunning = false;
+    
+    int portNumber;
 
     // Send Queue that has the message that should be sent across the network
     IQueue<OutgoingPacket> sendQueue;
@@ -38,7 +40,8 @@ public class LanCommunicator implements ICommunicator{
     HashMap<String, INotificationHandler> handlerMap;
 
     // constructor
-    public LanCommunicator() {
+    public LanCommunicator(int port) {
+    	portNumber = port;
         handlerMap = new java.util.HashMap<>();
     }
 
@@ -60,7 +63,7 @@ public class LanCommunicator implements ICommunicator{
 	        
 	        // The listener that will be listening on the network and that receives the packet sent by the sendQueueListener
 	        // This listener will distingush between processing module message and content module's message and push into their respective queues
-	        socketListener = new SocketListener(processingReceiveQueue, contentReceiveQueue);
+	        socketListener = new SocketListener(processingReceiveQueue, contentReceiveQueue, portNumber);
 	        socketListenerWorker = new Thread(socketListener);
 	        socketListenerWorker.start();
 	
