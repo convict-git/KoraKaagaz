@@ -36,6 +36,29 @@
     
 - Here, the view will be built using javaFX scene builder. It will be a fxml file. CSS properties can be used for providing various attributes like size of text area, colour etc...
 
+
+### Pixel
+- For pixel representation we will be using the below code:
+
+```java
+class Intensity {
+    int r, g, b;         // RGB values at a position
+}
+
+class Position {
+    int x, y;            // pixel position
+}
+
+class Pixel {            // pixel position with RGB values
+    Intensity intensity;
+    Position position;
+}
+```
+
+- Position(double x, double y)
+- Intensity(int r, int g, int b)
+- Pixel (Position pos , Intensity intensity)
+
 ### Shapes interface
 - On click provides an menu of standard shapes like circle, rectangle, square and line segment.
 - Also provides the option to select the colour of the shape.
@@ -44,12 +67,13 @@
 public interface IDrawShapes {
     // parameter: Pixel start - position of mouse drag started with RGB values
     //                 Pixel end -  position of mouse drag ended with RGB values
-    void draw_circle(Pixel start, Pixel end);
-    void draw_square(Pixel start, Pixel end);         
-    void draw_rectangle(Pixel start, Pixel end); 
-    void draw_line(Pixel start, Pixel end);        
-    void draw_oval(Pixel start, Pixel end);    
-    void getSnapshot(Pixel start, Pixel end);
+    void drawCircle(Pixel start, Pixel end);
+    void drawSquare(Pixel start, Pixel end);         
+    void drawRectangle(Pixel start, Pixel end); 
+    void drawLine(Pixel start, Pixel end);        
+    void drawOval(Pixel start, Pixel end); 
+    void drawTriangle(Pixel start, Pixel end);   
+    void drawRightTriangle(Pixel start, Pixel end); 
 }
 ```
 - There is a fixed border size for all the shapes.
@@ -93,25 +117,5 @@ void setColor(int x, int y, Color c)
 //	    c - the Color to write or null
 ```
 
-## Sending the data of modified canvas to processing module
-- If JavaFX had a similarly easy way to read pixel colors from a canvas, we would be all set. Unfortunately, it is not so simple. The reason, as I understand it, is technical: It turns out that drawing operations do not immediately draw to the canvas. Instead, for efficiency, a bunch of drawing operations are saved and sent to the graphics hardware in a batch. Ordinarily, a batch is sent only when the canvas needs to be redrawn on the screen. This means that if you simply read a pixel color from the canvas, the value that you get would not necessarily reflect all of the drawing commands that you have applied to the canvas. In order to read pixel colors, you have to do something that will force all of the drawing operations to complete. The only way I know to do that is by taking a "snapshot" of the canvas.
-- Taking a snapshot of canvas will reaturn a WritableImage in which we can read and store the values of pixels in an array by using getPixels method provided by the class javafx.scene.image.PixelReader()
 
-```java
-void getPixels(int x, int y, int w, int h, WritablePixelFormat<IntBuffer> pixelformat, int[] buffer, int offset, int scanlineStride)
-//Reads pixel data from a rectangular region of the surface into the specified int array. The format to be used for pixels in the buffer is defined by the PixelFormat object and pixel format conversions will be performed as needed to store the data in the indicated format. 
-//The pixelformat must be a compatible PixelFormat<IntBuffer> type. The data for the first pixel at location (x, y) will be read into the array index specified by the offset parameter. 
-//Pixel data for a row will be stored in adjacent locations within the array packed as tightly as possible for increasing X coordinates. Pixel data for adjacent rows will be stored offset from each other by the number of int array elements defined by scanlineStride.
-//Parameters: x - the X coordinate of the rectangular region to read
-//	    y - the Y coordinate of the rectangular region to read
-//	   w - the width of the rectangular region to read
-//	    h - the height of the rectangular region to read
-// 	   pixelformat - the PixelFormat<IntBuffer> object defining the int format to store the pixels into buffer
-//	   buffer - a int array to store the returned pixel data
-//	   offset - the offset into buffer to store the first pixel data
-//	   scanlineStride - the distance between the pixel data for the start of one row of data in the buffer to the start of the next row of data
-```
-
-- We will be calling this method inside the getSnapshot() method provided by  IDrawShapes interface.
-- All the arguments for getPixels method will be created/calculated inside getSnapshot().
  
