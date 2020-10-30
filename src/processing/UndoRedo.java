@@ -1,12 +1,16 @@
 package processing;
 
 import processing.*;
+import processing.utility.*;
+import processing.boardobject.*;
+import java.util.*;
 
 public class UndoRedo {
 	
 	private static int STACK_CAPACITY = 20;
-    // map for access in the list
-    //private static Map <ObjectId, ListIterator> idToIterator;
+    
+	// map for access in the list
+    // private static Map <ObjectId, ListIterator> idToIterator;
    
    /*
     * Performs the undo operation.
@@ -14,7 +18,50 @@ public class UndoRedo {
     * object's inverse operation, pops from the undoStack 
     * and pushes into the redoStack.
     */
-    //public static void undo();
+    public static void undo() {
+    	
+    	Integer stackSize =  ClientBoardState.undoStack.size();
+    	
+    	/** No undo operation possible */
+    	if (stackSize <= 0)
+    		return;
+    	
+    	BoardObject obj =  ClientBoardState.undoStack.get(stackSize - 1);
+    	
+    	/** Gets the operation performed on that object */
+    	IBoardObjectOperation operation = obj.getOperation();
+    	BoardObject newObj;
+    	
+    	switch (operation) {
+    		case CREATE : break;
+    		case DELETE : IBoardObjectOperation newOp = 
+    							new ColorChangeOperation(obj.getOperation().getIntensity());
+    					  newObj = BoardOCurveBuilder.drawCurve( 
+    												obj.getPixels(), 
+    												newOp, 
+    												obj.getObjectId, 
+    												obj.getTimestamp(),
+    												obj.getUserId, 
+    												obj.getPrevIntensity(), 
+    												false 
+    												);
+    					  break;
+    					  
+    		case ROTATE : Angle angleCCW = obj.getOPeration.RotateOperation.getAngle();
+    					  Angle newAngle = Angle(-angleCCW.angle);
+    					  newObj = rotationUtil(obj, obj.getUserId(), newAngle)
+    					  break;
+    					   
+    		case COLOR_CHANGE : ArrayList <Pixel> prevIntensity = obj.getPrevIntensity();
+    							Intensity intensity = prevIntensity.get(0).intensity;
+    							UserId id = obj.getUserId();
+    							newObj = colorChangeUtil(obj, id, intensity);
+    							break;
+    		default : break; /** Invalid operation*/
+    	}
+    	
+    	
+    }
    
    /*
     * Performs the redo operation.
@@ -22,7 +69,9 @@ public class UndoRedo {
     * object's operation, pops from the redoStack and pushes 
     * into the undoStack.
     */
-   //public static void redo();
+   public static void redo() {
+	   ;
+   }
    
    /*
     * Any operation performed on object by other classes
@@ -30,7 +79,7 @@ public class UndoRedo {
     */
    public static void pushIntoStack(BoardObject object) {
 	   ClientBoardState.undoStack.add(object);
-	   // iterator map should also be updated
+	   /** No iterator map for now*/
    }
    
    /*
