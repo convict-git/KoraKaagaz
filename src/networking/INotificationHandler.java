@@ -11,5 +11,5 @@ public interface INotificationHandler{
 	This method is used in the process of subscribing the message recieved over network. Which takes 
 	argument type String and doesnot return any.	
 	*/
-	public void onMessageRecieved(String message);
+	public void onMessageReceived(String message);
 }

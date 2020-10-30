@@ -3,6 +3,7 @@ package processing;
 import java.util.*;
 import processing.boardobject.*;
 import processing.utility.*;
+import networking.ICommunicator;
 
 /**
 * This class contains all the info of the current board.
@@ -43,5 +44,7 @@ public class ClientBoardState {
 	public static IpAddress serverIp;
 	
 	public static BrushRadius brushSize;
+	
+	public static ICommunicator communicator;
 	
 }
