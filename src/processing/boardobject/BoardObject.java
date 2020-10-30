@@ -22,7 +22,7 @@ public class BoardObject implements Serializable {
 	 * InvalidClassExceptionsexceptions because of different 
 	 * compiler implementations
 	 * 
-	 * @see <a href="https://docs.oracle.com/en/java/javase/11
+	 * @see <a href="https://docs.oracle.com/en/java/javase/11/
 	 * docs/api/java.base/java/io/Serializable.html">Serializable</a>
 	 */
 	private static final long serialVersionUID = 1388864177359509930L;
