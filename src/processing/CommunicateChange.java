@@ -1,7 +1,6 @@
 package processing;
 
 import java.util.*;
-import processing.IChanges;
 import processing.utility.*;
 
 public class CommunicateChange {
@@ -15,12 +14,13 @@ public class CommunicateChange {
      * method of IChanges.
      */
 	
-	// oldPixels -> previous pixels of the object
-	// newPixels -> new pixels of the object
-	public static void provideChanges(
-			Identifier identifier, 
-			ArrayList<Pixel> oldPixels, 
-			ArrayList<Pixel> newPixels) {
+	private static IChanges UIhandler;
+
+	/** oldPixels -> previous pixels of the object
+	 *  newPixels -> new pixels of the object
+	 */
+	
+	public static void provideChanges(ArrayList<Pixel> oldPixels, ArrayList<Pixel> newPixels) {
 		
 		// stores the set of positions which would have been modified
 		Set <Position> modifiedPos = new HashSet <Position> ();
@@ -78,13 +78,14 @@ public class CommunicateChange {
 		}
 		
 		// gets the handler for the subscriber
-		IChanges handler = ClientBoardState.identifierTohandler.get(identifier);
+		// IChanges handler = ClientBoardState.identifierTohandler.get(identifier);
 		// sends the subscriber the modified pixels
-		handler.getChanges(modifiedPixels);
+		UIhandler.getChanges(modifiedPixels);
 	}
 	
 	// UI will subscribe for any changes 
-	public static void subscribeForChanges(Identifier identifier, IChanges handler) {
-		ClientBoardState.identifierTohandler.put(identifier, handler);
+	public static void subscribeForChanges(IChanges handler) {
+		// ClientBoardState.identifierTohandler.put(identifier, handler);
+		CommunicateChange.UIhandler = handler;
 	}
 }
