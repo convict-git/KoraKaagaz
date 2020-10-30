@@ -1,4 +1,4 @@
-package processing.serialize;
+package processing;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
