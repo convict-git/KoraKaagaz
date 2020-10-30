@@ -5,10 +5,12 @@ import processing.utility.*;
 
 public class CommunicateChange {
 	
-	// identifier to IChanges handler map
-    // private Map <Identifier, IChanges> identifierTohandler;
-    
-	/*
+	/**
+	 * identifier to IChanges handler map
+     * private Map <Identifier, IChanges> identifierTohandler;
+     */
+	
+	/**
      * Computes the set of pixels which will have effect
      * on the screen and notify the UI using the getChanges
      * method of IChanges.
@@ -50,7 +52,7 @@ public class CommunicateChange {
 					.maps
 					.getMostProbableObjectId(
 							new ArrayList <Position> (Arrays.asList(pos))
-							);
+					);
 			
 			if (objectId == null) {
 				// no object at the position, so default value is white
@@ -63,13 +65,14 @@ public class CommunicateChange {
 						.getPixels();
 				
 				if (pixels == null || pixels.size() <= 0) {
-					// Ideally, it should not happen
-					// error should be logged
+					 // Ideally, it should not happen and error should be logged
 					intensity = new Intensity(255, 255, 255);
 				}
 				else {
-					// An Object has same color on all of its pixels
-					// gets the intensity of the object from the first pixel
+					/**
+					 * An Object has same color on all of its pixels
+					 * gets the intensity of the object from the first pixel
+					 */
 					intensity = new Intensity(pixels.get(0).intensity);
 				}
 					
@@ -77,8 +80,11 @@ public class CommunicateChange {
 			modifiedPixels.add(new Pixel(curPos, intensity));
 		}
 		
-		// gets the handler for the subscriber
-		// IChanges handler = ClientBoardState.identifierTohandler.get(identifier);
+		/**
+		* gets the handler for the subscriber
+		* IChanges handler = ClientBoardState.identifierTohandler.get(identifier);
+		*/
+		
 		// sends the subscriber the modified pixels
 		UIhandler.getChanges(modifiedPixels);
 	}
