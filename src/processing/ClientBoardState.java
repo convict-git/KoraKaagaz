@@ -41,8 +41,10 @@ public class ClientBoardState {
 	public static Username username;
 	public static UserId userId;
 	public static IpAddress userIP;
+	public static Port userPort;
 	
 	public static IpAddress serverIp;
+	public static Port serverPort = new Port(8467);
 	
 	public static BrushRadius brushSize;
 	

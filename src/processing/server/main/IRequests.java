@@ -14,24 +14,19 @@ public interface IRequests {
 	/**
 	 * This function will be called when new board request is to be made
 	 * 
+	 * @param ipAddress IP Address of the client requesting new Board
+	 * @param portNumber Port Number of the client requesting new Board
 	 * @return the port number where the new requested board's server will be running
 	 */
-	public Port requestForNewBoard();
+	public void requestForNewBoard(IpAddress ipAddress, Port portNumber);
 	
 	/**
 	 * This function will be called when existing board request is to be made.
 	 * 
 	 * @param boardId BoardID of the existing board
+	 * @param ipAddress IP Address of the client requesting the Board
+	 * @param portNumber Port Number of the client requesting the Board
 	 * @return the port number where the new requested board's server will be running
 	 */
-	public Port requestForExistingBoard(BoardId boardId);
-	
-	/**
-	 * This will return the port number where given board's server is running
-	 * 
-	 * @param boardId BoardID whose port number need to know
-	 * @return Port number where given board's server is running
-	 * 		   null if the given board's server is not running
-	 */
-	public Port getPortNumber(BoardId boardId);
+	public void requestForExistingBoard(BoardId boardId, IpAddress ipAddress, Port portNumber);
 }
