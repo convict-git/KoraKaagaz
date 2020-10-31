@@ -31,21 +31,59 @@ public class CurveBuilder {
 		//set operation of the created object
 		curveObj.setOperation(newboardOp);
 		
-		//Set pixels of the created object
-		curveObj.setPixels(pixels);
-		
-		//SetUserId of the created Object
-		curveObj.setUserId(newuserId);
-		
 		//Insert BoardObject in the Map
 		ClientBoardState.maps.insertObjectIntoMaps(curveObj);
 		
-		//Push BoardObject in the stack
+		//Push BoardObject in undo stack
 		stackUtil(curveObj);
 		
 		return curveObj;
 	}
-	
+
+	public static BoardObject eraseCurve(
+			ArrayList<Position> position,
+			IBoardObjectOperation newboardOp,
+			ObjectId newobjectId,
+			Timestamp newtimestamp,
+			UserId newuserId,
+			Boolean reset
+			) {
+		int pixelSize = position.size();
+		
+		ArrayList<Pixel> pixel = new ArrayList<Pixel>();
+		
+		for(int i = 0; i < pixelSize; i++)
+		{
+			//Give each channel white intensity
+			int r = 255;
+			int g = 255;
+			int b = 255;
+			
+			//White intensity object
+			Intensity whiteIntensity = new Intensity(r,g,b);
+			
+			Position whitePosition = new Position(position.get(i));
+			
+			// Make a pixel for each position
+			Pixel whitePixel = new Pixel (whitePosition, whiteIntensity);
+			
+			// Pixels of Eraser object 
+			pixel.add(whitePixel);
+		}
+		
+		BoardObject eraseObj = new BoardObject(pixel, newobjectId, newtimestamp, newuserId, reset);
+		
+		//set operation of the created object
+		eraseObj.setOperation(newboardOp);
+		
+		//Insert BoardObject in the map
+		ClientBoardState.maps.insertObjectIntoMaps(eraseObj);
+		
+		//Push BoardObject in undo stack
+		stackUtil(eraseObj);
+		
+		return eraseObj;
+	}
 	private static void stackUtil(BoardObject newObj) {
 		
 		UndoRedo.pushIntoStack(newObj);
