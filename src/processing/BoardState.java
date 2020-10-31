@@ -58,16 +58,20 @@ public class BoardState implements Serializable {
 			if (queue_at_pos == null) {
 				continue;
 			}
-			PriorityQueueObject top_obj = (PriorityQueueObject) queue_at_pos.peek();
-			if (top_obj == null) {
+			PriorityQueueObject top_pq_obj = (PriorityQueueObject) queue_at_pos.peek();
+			if (top_pq_obj == null) {
+				continue;
+			}
+			// there should be a valid object for this ObjectId
+			if (getBoardObjectFromId(top_pq_obj.objectId).isResetObject()) {
 				continue;
 			}
 
-			Integer curr = count.get(top_obj.objectId);
+			Integer curr = count.get(top_pq_obj.objectId);
 			if (curr == null) {
 				curr = 0;
 			}
-			count.put(top_obj.objectId, curr + 1);
+			count.put(top_pq_obj.objectId, curr + 1);
 		}
 
 		Integer maxOccurrence = 0;
