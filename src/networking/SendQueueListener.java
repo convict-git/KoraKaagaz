@@ -1,15 +1,19 @@
 package networking;
 
-import networking.queueManagement.*;
-import networking.utility.*;
 import java.io.*;
 import java.net.*;
 import java.util.regex.Pattern;
+
+import networking.queueManagement.*;
+import networking.utility.*;
+
 
 /**
  * This file contains implementation of sendQueueListener class which is
  * part of networking module and the class in this file is responsible for
  * sending the data over the network.
+ * This class is implemenation of runnable interface so it has the capability
+ * of running in a thread.
  * 
  *  @author Sirpa Sahul
  */
