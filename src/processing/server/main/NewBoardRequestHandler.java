@@ -1,6 +1,8 @@
 package processing.server.main;
 
 import networking.INotificationHandler;
+import processing.utility.*;
+import networking.CommunicatorFactory;
 
 /**
  * This Handler implements INotificationHandler and handles
@@ -14,7 +16,34 @@ import networking.INotificationHandler;
 public class NewBoardRequestHandler implements INotificationHandler{
 
 	public void onMessageReceived(String message) {
-		// handle
+		
+		String clientAddress = message;
+		
+		BoardId boardId = new BoardId(
+				Integer.toString(ServerState.boardNumber)
+		);
+		
+		ServerState.boardNumber++;
+		
+		Port boardServerPort = new Port(
+				CommunicatorFactory.getClientInfo().getPort()
+		);
+		
+		ServerState.boardToPort.put(boardId, boardServerPort);
+		
+		BoardRequestHandler.startBoardServer(boardServerPort, null);
+		
+		ServerState.communicator.send(
+				clientAddress, 
+				boardId.toString(), 
+				"ProcessingBoardId"
+		);
+		
+		ServerState.communicator.send(
+				clientAddress, 
+				boardServerPort.toString(), 
+				"ProcessingServerPort"
+		);
 	}
 	
 }

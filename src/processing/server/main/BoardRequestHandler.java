@@ -16,10 +16,16 @@ import networking.CommunicatorFactory;
 
 public class BoardRequestHandler implements INotificationHandler{
 
-	public void startBoardServer(Port port) {
+	public static void startBoardServer(Port port, String persistence) {
 		
 		ProcessBuilder processbuilder = new ProcessBuilder();
-		processbuilder.command("java", "-jar", "BoardServer.jar", port.toString());
+		processbuilder.command(
+				"java", 
+				"-jar", 
+				"BoardServer.jar", 
+				port.toString(), 
+				persistence
+		);
 		
 		try {
 			
@@ -42,12 +48,23 @@ public class BoardRequestHandler implements INotificationHandler{
 		if(ServerState.boardToPort.containsKey(boardId)) {
 			boardServerPort = ServerState.boardToPort.get(boardId);
 		} else {
-			boardServerPort = new Port(CommunicatorFactory.getClientInfo().getPort());
-			startBoardServer(boardServerPort);
+			boardServerPort = new Port(
+					CommunicatorFactory.getClientInfo().getPort()
+			);
+			
+			String persistence = null;
+			
+			//load persistence file if there
+			
+			startBoardServer(boardServerPort, persistence);
+			ServerState.boardToPort.put(boardId, boardServerPort);
 		}
 		
-		
-		ServerState.communicator.send(clientAddress, boardServerPort.toString(), "ProcessingServerPort");
+		ServerState.communicator.send(
+				clientAddress, 
+				boardServerPort.toString(), 
+				"ProcessingServerPort"
+		);
 	}
 	
 }
