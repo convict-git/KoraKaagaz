@@ -5,16 +5,12 @@ import processing.utility.*;
 import processing.BoardState;
 import processing.boardobject.*;
 /**
-*
+* CurveBuilder Class to 
+* convert curves in BoardObject
 * @author Satchit Desai
 * 
 * @reviewer Himanshu Jain
 */
-/* CurveBuilder Class to 
- * convert curves in BoardObject
- */
-
-
 public class CurveBuilder {
 	public static BoardObject drawCurve(
 			ArrayList<Pixel> pixels,
@@ -26,7 +22,13 @@ public class CurveBuilder {
 			Boolean reset
 			) {
 				
-		BoardObject curveObj = new BoardObject(pixels, newobjectId, newtimestamp, newuserId, reset);
+		BoardObject curveObj = new BoardObject(
+				pixels,
+				newobjectId,
+				newtimestamp,
+				newuserId,
+				reset
+				);
 				
 		//set operation of the created object
 		curveObj.setOperation(newboardOp);
