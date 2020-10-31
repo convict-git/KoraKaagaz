@@ -12,26 +12,27 @@ import processing.utility.*;
 
 public class CommunicateChange {
 	
-	/**
-	 * identifier to IChanges handler map
-     * private Map <String, IChanges> identifierTohandler;
-     * The map should be used when there are more than one subscribers
-     * For now, only UI will subscribe so it is not used currently
-     */
-	
-	/** UI handler */
-	private static IChanges handlerUI;
+	/** identifier to IChanges handler map */
+	private static Map <String, IChanges> identifierToHandler;
+	/** UI identifier */
+	private static String identifierUI;
 
 	/**
      * Computes the set of pixels which will have effect
      * on the screen and notify the UI using the getChanges
      * method of IChanges handler.
      *
+     *
+     * @param identifier identifier of the handler
 	 * @param oldPixels previous pixels of the object
 	 * @param newPixels new pixels of the object
 	 */
 	
-	public static void provideChanges(ArrayList<Pixel> oldPixels, ArrayList<Pixel> newPixels) {
+	public static void provideChanges(
+			String identifier, 
+			ArrayList<Pixel> oldPixels, 
+			ArrayList<Pixel> newPixels
+			) {
 		
 		/** stores the set of positions which would have been modified */
 		Set <Position> modifiedPos = new HashSet <Position> ();
@@ -89,21 +90,42 @@ public class CommunicateChange {
 			modifiedPixels.add(new Pixel(curPos, intensity));
 		}
 		
-		/**
-		* gets the handler for the subscriber
-		* IChanges handlerUI = ClientBoardState.identifierTohandler.get(identifier);
-		*/
 		
-		/** sends the modified pixels to the UI handler*/
-		handlerUI.getChanges(modifiedPixels);
+		/** gets the handler for the subscriber */
+		IChanges handler = identifierToHandler.get(identifier);
+		
+		/** sends the modified pixels to the handler*/
+		handler.getChanges(modifiedPixels);
 	}
 	
 	/**
-	 *  UI will subscribe for any changes 
+	 * Used to implement default parameter method
+	 * Since, only UI subscribes for the changes so
+	 * default UI identifier is used and calls the above
+	 * method
+	 * 
+	 * @param oldPixels previous pixels of the object
+	 * @param newPixels new pixels of the object
+	 */
+	public static void provideChanges(
+			ArrayList<Pixel> oldPixels, 
+			ArrayList<Pixel> newPixels
+			) {
+		provideChanges(identifierUI, oldPixels, newPixels);
+	}
+	
+	/**
+	 *  A module can subscribe for any changes
+	 *  In our design, only UI need subscription so
+	 *  @param identifier can be removed but it is kept
+	 *  for now. 
+	 *   
+	 *  @param identifier identifier used for subscription
 	 *  @param handler UI handler to handle changes
 	 */
 	public static void subscribeForChanges(String identifier, IChanges handler) {
-		/** ClientBoardState.identifierTohandler.put(identifier, handler); */
-		CommunicateChange.handlerUI = handler;
+		identifierToHandler.put(identifier, handler);
+		/** Default UI identifier is stored */
+		CommunicateChange.identifierUI = identifier;
 	}
 }
