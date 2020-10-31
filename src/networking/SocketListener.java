@@ -89,23 +89,28 @@ public class SocketListener implements Runnable {
 
 	public String getMsgFromPacket(String packet){
 
-        char[] chars = packet.toCharArray();
-		StringBuilder idBuilder = new StringBuilder();
+		char[] chars = packet.toCharArray();
+		
+		/**
+		 * String Builder to build required message
+		 */
+		StringBuilder msgBuilder = new StringBuilder();
 
 		/**
 		 * A Utility Boolean flag 
 		 */
 		boolean flag = false;
+		
         for (char ch : chars) {
 			if(flag){
-				idBuilder.append(ch);
+				msgBuilder.append(ch);
 			}
 			if(ch == ':'){
 				flag = true;
 			}
 		}
-		String id = idBuilder.toString();
-		return id;
+		String msg = msgBuilder.toString();
+		return msg;
 
 	}
 
