@@ -63,7 +63,7 @@ public class SocketListener implements Runnable {
 		/**
 		 * converts String to char[] array
 		 */
-    	char[] chars = packet.toCharArray();
+		char[] chars = packet.toCharArray();
 		
 		/**
 		 * String Builder to build a string for the identifier
