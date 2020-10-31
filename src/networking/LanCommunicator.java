@@ -22,10 +22,6 @@ public class LanCommunicator implements ICommunicator{
 
     // ContentReceiveQueueListener that will be listening on the content receive queue and calls the content handler with the message in the queue
     ReceiveQueueListener contentReceiveQueueListener;
-    
-    static boolean isRunning = false;
-    
-    int portNumber;
 
     // Send Queue that has the message that should be sent across the network
     IQueue<OutgoingPacket> sendQueue;
@@ -38,14 +34,23 @@ public class LanCommunicator implements ICommunicator{
 
     // this hashmap contains the handlers for the respective modules processing and content
     HashMap<String, INotificationHandler> handlerMap;
+    
+    int portNumber;
+    
+    static boolean isRunning = false;
 
-    // constructor
+    /* constructor
+     */
     public LanCommunicator(int port) {
     	portNumber = port;
         handlerMap = new java.util.HashMap<>();
     }
 
-    // will be initializing all the threads and starting them
+    /* This method is used for initializing the queues, 
+     * starting worker threads of sendQueueListener, socketListener, 
+     * processingReceiveQueueListener and contentReceiveQueueListener 
+     */
+    @Override
     public void start(){
     	if(!isRunning) {
 	    	// Initializing the queues required for the networking module
@@ -83,17 +88,30 @@ public class LanCommunicator implements ICommunicator{
     	}
     }
 
-    // WIll be destroying all the threads and stops the communication
+    
+    /* This method will help to terminate all the threads
+     * initialized in the start method
+     */
+    @Override
     public void stop(){
     	isRunning = false;
     }
 
+    /* This method takes destination which contains ip and port,
+     * message and the identifier then creates a object with this info
+     * and enqueues this object into the sendQueue
+     */
+    @Override
     public void send(String destination, String message, String identifier){
     	// Creating the object for the outgoing packet that is being pushed into the send queue.
         OutgoingPacket packet = new OutgoingPacket(destination, message, identifier);
         sendQueue.enqueue(packet);
     }
 
+    /* This method takes identifier and handler
+     * It maps them so that they can be passed to the ReceiveQueueListeners
+     */
+    @Override
     public void subscribeForNotifications(String identifier, INotificationHandler handler){
         handlerMap.put(identifier, handler);
     }
