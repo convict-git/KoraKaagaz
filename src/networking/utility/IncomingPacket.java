@@ -47,8 +47,9 @@ public class IncomingPacket{
      *
      * @param message the string that is needed be assigned to the message variable in the class.
      */
-    public void setMessage(String message){
+    public void setMessage(String message, String identifier){
         this.message = message;
+	this.identifier = identifier;
     }
 
     /**
