@@ -139,7 +139,7 @@ public class BoardObject implements Serializable {
     	return isReset;
     }
 
-    /** Set previous intensities of pixels */
+    /** Sets previous intensities of pixels */
     public void setPrevIntensity(
     	ArrayList <Pixel> prevPixelIntensities
     ) {
