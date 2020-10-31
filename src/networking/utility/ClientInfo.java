@@ -1,23 +1,25 @@
 package networking.utility;
 
 /**
-* 
+* This file contains ClientInfo class, which is used as utility for providing client's IP address
+* and free Port number on which the White Board application going to listening too.
+*
 * @author Prudhvi Vardhan Reddy Pulagam
 * 
-* @ClientInfo class consists of information about respective individual
-* client's IP addres and Port number on which the application listening too. 
-*
-* @getIp() method returns client's IP address as String and takes no arguments.
-* @getPort() method returns client's Port number as integer and takes no arguments
-*.
 */
 
 public class ClientInfo{
 
+	/**
+	* @return String which is client's private IP address.
+	*/
 	public String getIp(){
 		return "";
 	}
 
+	/**
+	* @return int which is free port number on client's port number. 
+	*/
 	public int getPort(){
 		return 0;
 	}
