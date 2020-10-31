@@ -7,9 +7,15 @@ import networking.queueManagement.ConcurrentBlockingQueue;
 import networking.utility.IncomingPacket;
 
 /**
-*
-* @author Marella Shiva Sai Teja
-*/
+ * 
+ * This is the file which contains the SocketListener Class which is a runnable class, that means it
+ * has the functionality of threads. This thread basically keeps listening on a port for the client requests, whenever
+ * there is a request it accepts(In a blocking manner) them and connects them to another socket which basically
+ * receives the message. After receiving the message from the client these messages are 
+ * pushed into either content module queue or processing module queue based on the identifier. 
+ * 
+ * @author Marella Shiva Sai Teja
+ */
 
 public class SocketListener implements Runnable {
 	
@@ -144,30 +150,90 @@ public class SocketListener implements Runnable {
 		
     }
 	
+	/**
+	 * 
+	 * This is the default method that would be executed when the thread is started
+	 * because the class implements Runnable interface.
+	 * This is the method where the server starts listening for the client requests and 
+	 * when it finds one it connects it to a socket through which it receives the client message.
+	 * 
+	 */
+
 	@Override
     public void run(){
+
+		/**
+		 * This block of code inside the try would try to execute instructions inside it and when it 
+		 * receives any exceptions it would look for appropriate catch block.
+		 */
 		try {
-    		serverSocket = new ServerSocket(port);
+
+			/**
+			 * creates a socket which keeps listening on the port for client requests
+			 */
+			serverSocket = new ServerSocket(port);
+			
+			/**
+			 * socket keeps listening based on the static variable isRunning
+			 */
     		while(LanCommunicator.isRunning) {
-    			Socket socket = serverSocket.accept();
-    			DataInputStream input = new DataInputStream(socket.getInputStream());
-    			String recvMsg = input.readUTF();
+
+				/**
+				 * creates a socket which connects with the client for message transfer.
+				 */
+				Socket socket = serverSocket.accept();
+				
+				/**
+				 * Receives the input from socket. "Remember getInputStream is Blocking type.."
+				 */
+				DataInputStream input = new DataInputStream(socket.getInputStream());
+				
+				/**
+				 * Converts the received input into UTF format
+				 */
+				String recvMsg = input.readUTF();
+				
 				String id = getIdFromPacket(recvMsg);
 				String msg = getMsgFromPacket(recvMsg);
 
+				/**
+				 * Calls the push function
+				 */
 				push(id, msg);
 
+				/**
+				 * Closes the socket used to connect with client for the transfer
+				 * and also input stream should be closed.
+				 */
 				socket.close();
 				input.close();
 			}
-    	}
+
+		}
+		
+		/**
+		 * This block gets executed when a exception arises in try block
+		 */
         catch(IOException exp){
         	System.out.println(exp);
 		}
+
+		/**
+		 * This block gets executed whether there is an exception or not in try block
+		 */
+
 		finally{
 			try{
+				/**
+				 * Closes the socket which keeps listening on the port 
+				 */
 				serverSocket.close();
-			}catch(IOException e){
+			}
+			
+			/**
+			 * This block gets executed when an exception arises while closing the socket.
+			 */
+			catch(IOException e){
 				System.out.println(e);
 			}
 		}
