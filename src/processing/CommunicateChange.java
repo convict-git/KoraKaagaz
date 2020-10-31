@@ -126,6 +126,6 @@ public class CommunicateChange {
 	public static void subscribeForChanges(String identifier, IChanges handler) {
 		identifierToHandler.put(identifier, handler);
 		/** Default UI identifier is stored */
-		CommunicateChange.identifierUI = identifier;
+		identifierUI = identifier;
 	}
 }
