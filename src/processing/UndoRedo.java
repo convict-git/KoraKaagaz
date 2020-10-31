@@ -12,6 +12,17 @@ public class UndoRedo {
 	// map for access in the list
     // private static Map <ObjectId, ListIterator> idToIterator;
    
+	private static void addIntoStack(LinkedList <BoardObject> stack, BoardObject obj) {
+		
+		/** If stack size becomes full, delete the bottom (first) object */
+		if (stack.size() >= STACK_CAPACITY)
+			stack.removeFirst();
+		
+		/** Push the object to the top (last) */
+		stack.addLast(obj);
+	}
+	
+	
    /*
     * Performs the undo operation.
     * Looks at top object of the undoStack, performs the 
