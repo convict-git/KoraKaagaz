@@ -85,21 +85,10 @@ public class BoardObject implements Serializable {
     /**
      * Sets the operations to be performed on this board object
      * 
-     * This operation has special functionality for the color change
-     * operation, it stores previous pixel values into the array-list 
-     * {@link BoardObject#prevPixelIntensities}, which would be required
-     * by the undo operation
-     * 
      * @param boardOp The operation to be performed on this board object
      */
     public void setOperation (IBoardObjectOperation boardOp) {
-    	this.boardOp = boardOp;
-    	if(
-    		boardOp.getOperationType() 
-    		==
-    		BoardObjectOperationType.COLOR_CHANGE
-    	)
-    		this.prevPixelIntensities = this.pixels;
+    	this.boardOp = boardOp;    		
     }
 
     /** Gets the board object's list of pixels */
@@ -150,6 +139,13 @@ public class BoardObject implements Serializable {
     	return isReset;
     }
 
+    /** Set previous intensities of pixels */
+    public void setPrevIntensity(
+    	ArrayList <Pixel> prevPixelIntensities
+    ) {
+    	this.prevPixelIntensities = prevPixelIntensities;
+    }
+    
     /** Gets previous intensities of pixels */
     public ArrayList <Pixel> getPrevIntensity() {
     	return prevPixelIntensities;
