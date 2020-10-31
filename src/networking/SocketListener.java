@@ -51,9 +51,9 @@ public class SocketListener implements Runnable {
     }
 
 	/**
-	 * This method parses the identifier within packet received from the client
-	 * @param packet	Data received from the client
-	 * @return	Identifier
+	 * This method parses the identifier within packet received from client.
+	 * @param packet Data received from the client
+	 * @return Identifier
 	 */
 
 	public String getIdFromPacket(String packet){
@@ -87,6 +87,12 @@ public class SocketListener implements Runnable {
 
 	}
 
+	/**
+	 * This method parses the message within the packet received from client.
+	 * @param packet Data received from the client
+	 * @return Message
+	 */
+
 	public String getMsgFromPacket(String packet){
 
 		char[] chars = packet.toCharArray();
@@ -100,7 +106,7 @@ public class SocketListener implements Runnable {
 		 * A Utility Boolean flag 
 		 */
 		boolean flag = false;
-		
+
         for (char ch : chars) {
 			if(flag){
 				msgBuilder.append(ch);
@@ -114,15 +120,31 @@ public class SocketListener implements Runnable {
 
 	}
 
+	/**
+	 * This method pushes the message into respective queues based on their identifier.
+	 * @param id Identifier of the message
+	 * @param msg Message that is to be transported over the network.
+	 */
+
     public void push(String id, String msg) {
-		IncomingPacket queuePacket = new IncomingPacket(msg);
-    	if(id.equals("processing")){
-    		procModuleQueue.enqueue(queuePacket);
-    	}else if(id.equals("content")) {
+
+		/**
+		 * Creates a object of queue type.
+		 */
+		IncomingPacket queuePacket = new IncomingPacket(id, msg);
+
+		/**
+		 * Checks whether to push the object into content module queue or processing module queue
+		 */
+    	if(id.equals("content")){
     		contModuleQueue.enqueue(queuePacket);
-    	}
+    	}else{
+    		procModuleQueue.enqueue(queuePacket);
+		}
+		
     }
-    
+	
+	@Override
     public void run(){
 		try {
     		serverSocket = new ServerSocket(port);
