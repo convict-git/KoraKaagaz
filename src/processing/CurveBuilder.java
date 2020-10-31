@@ -73,7 +73,13 @@ public class CurveBuilder {
 			pixel.add(whitePixel);
 		}
 		
-		BoardObject eraseObj = new BoardObject(pixel, newobjectId, newtimestamp, newuserId, reset);
+		BoardObject eraseObj = new BoardObject(
+				pixel,
+				newobjectId,
+				newtimestamp,
+				newuserId,
+				reset
+				);
 		
 		//set operation of the created object
 		eraseObj.setOperation(newboardOp);
