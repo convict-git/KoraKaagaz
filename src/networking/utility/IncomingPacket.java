@@ -50,7 +50,7 @@ public class IncomingPacket{
      */
     public void setMessage(String message, String identifier){
         this.message = message;
-	    this.identifier = identifier;
+	this.identifier = identifier;
     }
 
     /**
