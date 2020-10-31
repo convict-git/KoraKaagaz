@@ -24,6 +24,39 @@ public class SocketListener implements Runnable {
 		this.procModuleQueue = procModuleQueue;
     }
 
+	public String getIdFromPacket(String packet){
+		// convert String to char[] array
+        char[] chars = packet.toCharArray();
+		StringBuilder idBuilder = new StringBuilder();
+        // iterate over char[] array using enhanced for loop
+        for (char ch : chars) {
+            if(ch == ':'){
+				break;
+			}
+			idBuilder.append(ch);
+		}
+		String id = idBuilder.toString();
+		return id;
+	}
+
+	public String getMsgFromPacket(String packet){
+		// convert String to char[] array
+        char[] chars = packet.toCharArray();
+		StringBuilder idBuilder = new StringBuilder();
+		// iterate over char[] array using enhanced for loop
+		boolean flag = false;
+        for (char ch : chars) {
+			if(flag){
+				idBuilder.append(ch);
+			}
+			if(ch == ':'){
+				flag = true;
+			}
+		}
+		String id = idBuilder.toString();
+		return id;
+	}
+
     public void push(String id, String msg) {
 		IncomingPacket queuePacket = new IncomingPacket(msg);
     	if(id.equals("processing")){
@@ -40,16 +73,9 @@ public class SocketListener implements Runnable {
     			Socket socket = serverSocket.accept();
     			DataInputStream input = new DataInputStream(socket.getInputStream());
     			String recvMsg = input.readUTF();
-    			String id = "";
-    			if(recvMsg.charAt(0) == 'p') {
-    				id = "processing";
-    			}else if(recvMsg.charAt(0) == 'c') {
-    				id = "content";
-    			}else {
-    				System.out.println("invalid identifier");
-    			}
-    			
-    			String msg = recvMsg.substring(1);
+				String id = getIdFromPacket(recvMsg);
+				String msg = getMsgFromPacket(recvMsg);
+
 				push(id, msg);
 
 				socket.close();
