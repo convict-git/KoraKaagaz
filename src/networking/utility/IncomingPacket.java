@@ -46,10 +46,11 @@ public class IncomingPacket{
      * This method "setMessage" sets the value of message content that needs to delivered
      *
      * @param message the string that is needed be assigned to the message variable in the class.
+     * @param identifier the string that is needed to be assigned to the identifier variable in the class
      */
     public void setMessage(String message, String identifier){
         this.message = message;
-	this.identifier = identifier;
+	    this.identifier = identifier;
     }
 
     /**
