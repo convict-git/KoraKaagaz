@@ -48,26 +48,22 @@ public class SocketListener implements Runnable {
 	 * 
 	 * There won't be any return type as it is a constructor of the class
 	 */
-    public SocketListener(int port, ConcurrentBlockingQueue<IncomingPacket> contModuleQueue, ConcurrentBlockingQueue<IncomingPacket> procModuleQueue){
-		
+	public SocketListener(int port, ConcurrentBlockingQueue<IncomingPacket> contModuleQueue, ConcurrentBlockingQueue<IncomingPacket> procModuleQueue){
 		this.port = port;
 		this.contModuleQueue = contModuleQueue;
 		this.procModuleQueue = procModuleQueue;
-
-    }
+	}
 
 	/**
 	 * This method parses the identifier within packet received from client.
 	 * @param packet Data received from the client
 	 * @return Identifier
 	 */
-
 	public String getIdFromPacket(String packet){
-
 		/**
 		 * converts String to char[] array
 		 */
-        char[] chars = packet.toCharArray();
+    	char[] chars = packet.toCharArray();
 		
 		/**
 		 * String Builder to build a string for the identifier
@@ -77,8 +73,8 @@ public class SocketListener implements Runnable {
 		/**
 		 * Iterates over char[] array and appends to the Identifier Builder
 		 */
-        for (char ch : chars) {
-            if(ch == ':'){
+		for (char ch : chars) {
+			if(ch == ':'){
 				break;
 			}
 			idBuilder.append(ch);
@@ -88,9 +84,7 @@ public class SocketListener implements Runnable {
 		 * Converts the String Builder to String
 		 */
 		String id = idBuilder.toString();
-
 		return id;
-
 	}
 
 	/**
@@ -98,7 +92,6 @@ public class SocketListener implements Runnable {
 	 * @param packet Data received from the client
 	 * @return Message
 	 */
-
 	public String getMsgFromPacket(String packet){
 
 		char[] chars = packet.toCharArray();
@@ -112,8 +105,7 @@ public class SocketListener implements Runnable {
 		 * A Utility Boolean flag 
 		 */
 		boolean flag = false;
-
-        for (char ch : chars) {
+		for (char ch : chars) {
 			if(flag){
 				msgBuilder.append(ch);
 			}
@@ -123,7 +115,6 @@ public class SocketListener implements Runnable {
 		}
 		String msg = msgBuilder.toString();
 		return msg;
-
 	}
 
 	/**
@@ -131,8 +122,7 @@ public class SocketListener implements Runnable {
 	 * @param id Identifier of the message
 	 * @param msg Message that is to be transported over the network.
 	 */
-
-    public void push(String id, String msg) {
+	public void push(String id, String msg) {
 
 		/**
 		 * Creates a object of queue type.
@@ -142,13 +132,12 @@ public class SocketListener implements Runnable {
 		/**
 		 * Checks whether to push the object into content module queue or processing module queue
 		 */
-    	if(id.equals("content")){
-    		contModuleQueue.enqueue(queuePacket);
-    	}else{
-    		procModuleQueue.enqueue(queuePacket);
+		if(id.equals("content")){
+			contModuleQueue.enqueue(queuePacket);
+		}else{
+			procModuleQueue.enqueue(queuePacket);
 		}
-		
-    }
+	}
 	
 	/**
 	 * 
@@ -158,7 +147,6 @@ public class SocketListener implements Runnable {
 	 * when it finds one it connects it to a socket through which it receives the client message.
 	 * 
 	 */
-
 	@Override
     public void run(){
 
@@ -176,7 +164,7 @@ public class SocketListener implements Runnable {
 			/**
 			 * socket keeps listening based on the static variable isRunning
 			 */
-    		while(LanCommunicator.isRunning) {
+			while(LanCommunicator.isRunning) {
 
 				/**
 				 * creates a socket which connects with the client for message transfer.
@@ -192,7 +180,6 @@ public class SocketListener implements Runnable {
 				 * Converts the received input into UTF format
 				 */
 				String recvMsg = input.readUTF();
-				
 				String id = getIdFromPacket(recvMsg);
 				String msg = getMsgFromPacket(recvMsg);
 
@@ -214,14 +201,13 @@ public class SocketListener implements Runnable {
 		/**
 		 * This block gets executed when a exception arises in try block
 		 */
-        catch(IOException exp){
+		catch(IOException exp){
         	System.out.println(exp);
 		}
 
 		/**
 		 * This block gets executed whether there is an exception or not in try block
 		 */
-
 		finally{
 			try{
 				/**
@@ -229,7 +215,6 @@ public class SocketListener implements Runnable {
 				 */
 				serverSocket.close();
 			}
-			
 			/**
 			 * This block gets executed when an exception arises while closing the socket.
 			 */
