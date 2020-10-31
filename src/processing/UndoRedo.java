@@ -120,18 +120,22 @@ public class UndoRedo {
     	
     	/** Gets the operation performed on that object */
     	BoardObjectOperationType operationType = obj.getOperation().getOperationType();
-    	BoardObject newObj;
+    	BoardObject newObj = null;
     	
     	switch (operationType) {
-    		case CREATE : if (operation == Operation.REDO)
-    					  	newObj = createOperation(topObj);
-    					break;
-    		case DELETE : if (operation == Operation.UNDO)
-    						newObj = createOperation(topObj);
-    					break;
+    		case CREATE :	if (operation == Operation.REDO)
+    							newObj = createOperation(topObj);
+    						else
+    							SelectDelete.delete(topObj);
+    						break;
+    		case DELETE :	if (operation == Operation.UNDO)
+    							newObj = createOperation(topObj);
+    						else 
+    							SelectDelete.delete(topObj);
+    						break;
     					  
     		case ROTATE : Angle angleCCW = ((RotateOperation) topObj.getOperation()).getAngle();
-    					  Angle newAngle;
+    					  Angle newAngle = null;
     					  /** For undo, the object should be rotated -angle CCW
     					   *  For redo, the object should be rotated angle CCW
     					   */
@@ -160,8 +164,13 @@ public class UndoRedo {
     	/** Transfers the object from one stack to other */
     	addIntoStack(otherStack, topObj);
     	curStack.removeLast();
-    	/** Send the modified pixels to the UI */
-    	CommunicateChange.provideChanges(newObj.getPrevIntensity(), newObj.getPixels());
+    	/** Send the modified pixels to the UI 
+    	 *  null value occurs when delete operation is performed 
+    	 */
+    	if (newObj != null)
+    		CommunicateChange.provideChanges(newObj.getPrevIntensity(), newObj.getPixels());
+    	else
+    		CommunicateChange.provideChanges(topObj.getPixels(), null);
 	}
 	
 	/**
