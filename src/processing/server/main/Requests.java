@@ -43,4 +43,8 @@ public class Requests implements IRequests{
 		
 	}
 	
+	public static void removeBoardServer(BoardId boardId) {
+		ServerState.boardToPort.remove(boardId);
+	}
+	
 }

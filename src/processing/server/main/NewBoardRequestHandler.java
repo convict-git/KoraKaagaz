@@ -31,7 +31,7 @@ public class NewBoardRequestHandler implements INotificationHandler{
 		
 		ServerState.boardToPort.put(boardId, boardServerPort);
 		
-		BoardRequestHandler.startBoardServer(boardServerPort, null);
+		BoardRequestHandler.startBoardServer(boardServerPort, boardId, null);
 		
 		ServerState.communicator.send(
 				clientAddress, 

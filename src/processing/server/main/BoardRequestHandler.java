@@ -16,14 +16,15 @@ import networking.CommunicatorFactory;
 
 public class BoardRequestHandler implements INotificationHandler{
 
-	public static void startBoardServer(Port port, String persistence) {
+	public static void startBoardServer(Port port, BoardId boardId, String persistence) {
 		
 		ProcessBuilder processbuilder = new ProcessBuilder();
 		processbuilder.command(
 				"java", 
 				"-jar", 
 				"BoardServer.jar", 
-				port.toString(), 
+				port.toString(),
+				boardId.toString(),
 				persistence
 		);
 		
@@ -56,7 +57,7 @@ public class BoardRequestHandler implements INotificationHandler{
 			
 			//load persistence file if there
 			
-			startBoardServer(boardServerPort, persistence);
+			startBoardServer(boardServerPort, boardId, persistence);
 			ServerState.boardToPort.put(boardId, boardServerPort);
 		}
 		

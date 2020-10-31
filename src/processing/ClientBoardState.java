@@ -10,6 +10,7 @@ import processing.handlers.*;
 * This class contains all the info of the current board.
 *
 * @author Himanshu Jain
+* @reviewer Ahmed Zaheer Dadarkar
 */
 
 public class ClientBoardState {
@@ -32,7 +33,7 @@ public class ClientBoardState {
 	 * Will remain empty on the client side, as there is no need to know all the users to the client.
 	 * Server will use this users List to maintain the list of all the users connected to this Board.
 	 */
-	public static ArrayList <UserId> users = new ArrayList <UserId>();
+	public static ArrayList <String> users = new ArrayList <String>();
 	
 	//to store the selected object
 	public static PriorityQueueObject selectedObject;
