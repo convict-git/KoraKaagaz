@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
 
 /**
  * Class containing static methods for serializing and
@@ -33,7 +34,7 @@ public class Serialize {
 	 */
     public static String serialize (
     	Serializable serialObj
-    ) throws IOException {
+    ) throws IOException, UnsupportedEncodingException {
     	// Create Stream for outputting object as Bytes
     	ByteArrayOutputStream byteOutputStream = 
     		new ByteArrayOutputStream();
@@ -49,7 +50,10 @@ public class Serialize {
     	objOutStream.flush();
     	
     	// Get the serialized String from stream
-    	String serialString = byteOutputStream.toString();
+    	// The ISO-8859-1 preserves 1-to-1 mapping between bytes and characters,
+    	// Read this: https://stackoverflow.com/questions/9098022/
+    	// problems-converting-byte-array-to-string-and-back-to-byte-array
+    	String serialString = byteOutputStream.toString("ISO-8859-1");
     	
     	// Close the streams
     	objOutStream.close();
@@ -68,11 +72,12 @@ public class Serialize {
      */
     public static Serializable deSerialize (
     	String serialString
-    ) throws IOException, ClassNotFoundException {
-    	// Create Stream for reading the bytes of the object
-    	// present in the string
+    ) throws IOException, ClassNotFoundException, UnsupportedEncodingException {
+    	
+    	// Create Stream for reading the bytes of the object present in the string
+    	// The ISO-8859-1 preserves 1-to-1 mapping between bytes and characters,
     	ByteArrayInputStream byteInputStream = 
-    		new ByteArrayInputStream(serialString.getBytes());
+    		new ByteArrayInputStream(serialString.getBytes("ISO-8859-1"));
     	
     	// Create Stream for reading the object from the
     	// ByteArrayInputStream stream
