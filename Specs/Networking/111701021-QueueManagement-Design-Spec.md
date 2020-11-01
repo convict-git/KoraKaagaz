@@ -44,22 +44,22 @@ Interaction of the Queue is with the Send component(used by Processing and Conte
 
 ![](https://i.imgur.com/yC3St6s.png)
 
-Sending Queue will hold the objects of the the class SendPacket. The SendPacket class contains the following details,
+Sending Queue will hold the objects of the the class OutgoingPacket. The OutgoingPacket class contains the following details,
 - message string, this is the string that needs to be send across the network
-- destIP string, this is the string that will contain the IP address of the destination machine.
+- destination string, this is the string that will contain the IP address of the destination machine.
 - identifier string, this is the string that is used in indentifing whether it is Processing Module and Content Module.
 
 ```Java
-public class SendPacket{
+public class IncomingPacket{
     String message;
-    String destIP;
+    String destination;
     String identifier;
 }
 ```
 
 ## Receiving Queue
 
-Interaction of the Queue is with SocketListener Component and SendQueueListener Component.
+Interaction of the Queue is with SocketListener Component and ReceieveQueueListener Component.
 There are two Receiving Queues 
 - One is for Processing Module, the messages that the Queue will hold is to delivered to the processing module
 - Other is for Content Module, the messages that the Queue will hold is to delivered to the content module.
@@ -68,13 +68,15 @@ There are two Receiving Queues
 
 
 
-Receiving Queue will hold the objects of the the class ReceivePacket. The RecievePacket class contains the following details,
+Receiving Queue will hold the objects of the the class IncomingPacket. The IncomingPacket class contains the following details,
 - message string, this is the string that needs to deliver to the corresponding module. It is also suffice to have that information in the queue.
+- identifier string,this is the string that is used in indentifing whether it is Processing Module and Content Module.This is also needed for calling the interrupt handler, used in RecieveQueueListener Component.
 
 
 ```Java
-public class ReceivePacket{
+public class IncomingPacket{
     String message;
+    String identifier;
 }
 ```
 
@@ -98,6 +100,8 @@ The Communicator Factory instantiates the instance of Queue objects
 
 ```Java
 public interface Queue< T >{
+
+    void clear(); #deletes all the elements in the queue
 
     void Enqueue(T item); # enqueues the item into the queue. 
     
