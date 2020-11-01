@@ -50,7 +50,7 @@ Sending Queue will hold the objects of the the class OutgoingPacket. The Outgoin
 - identifier string, this is the string that is used in indentifing whether it is Processing Module and Content Module.
 
 ```Java
-public class IncomingPacket{
+public class OutgoingPacket{
     String message;
     String destination;
     String identifier;
