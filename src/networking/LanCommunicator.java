@@ -16,37 +16,41 @@ import infrastructure.validation.logger.*;
 public class LanCommunicator implements ICommunicator{
 
     /** SendQueueListener that will be listening on the send Queue */
-    SendQueueListener sendQueueListener;
+    private SendQueueListener sendQueueListener;
+    private Thread sendQueueListenerWorker;
 
     /** NetworkListener that will be listening on the network */
-    SocketListener socketListener;
+    private SocketListener socketListener;
+    private Thread socketListenerWorker;
 
     /** ProcessingReceiveQueueListener that will be listening on the Processing Receive Queue */
-    ReceiveQueueListener processingReceiveQueueListener;
+    private ReceiveQueueListener processingReceiveQueueListener;
+    private Thread processingReceiveQueueListenerWorker;
 
     /** ContentReceiveQueueListener that will be listening on the Content Receive Queue */
-    ReceiveQueueListener contentReceiveQueueListener;
+    private ReceiveQueueListener contentReceiveQueueListener;
+    private Thread contentReceiveQueueListenerWorker;
 
     /** Send Queue that has the message that should be sent across the network */
-    IQueue<OutgoingPacket> sendQueue;
+    private IQueue<OutgoingPacket> sendQueue;
 
     /** Receive Queue in which we have the messages that needs to be sent to the processing module */
-    IQueue<IncomingPacket> processingReceiveQueue;
+    private IQueue<IncomingPacket> processingReceiveQueue;
 
     /** Receive queue in which we have the messages that needs to be sent to the content module */
-    IQueue<IncomingPacket> contentReceiveQueue;
+    private IQueue<IncomingPacket> contentReceiveQueue;
 
     /** Hashmap contains the handlers for the respective modules processing and content */
-    HashMap<String, INotificationHandler> handlerMap;
+    private HashMap<String, INotificationHandler> handlerMap;
     
     /** Port Number that we will be listening on the network */
-    int portNumber;
+    private int portNumber;
     
     /** Boolean check variable for listeners to use */
-    static boolean isRunning = false;
+    private static boolean isRunning = false;
     
-    /** Logger instance for logging errors and activities */
-    ILogger logger;
+    /** Logger for logging errors and activities */
+    ILogger logger = LoggerFactory.getLoggerInstance();
 
     /**
      * constructor that takes port and also initializes a hashmap
@@ -57,6 +61,24 @@ public class LanCommunicator implements ICommunicator{
     	portNumber = port;
         handlerMap = new java.util.HashMap<>();
     }
+    
+    /**
+     * This method is used to set the status
+     * 
+     * @param status
+     */
+    private void setStatus(boolean status) {
+    	isRunning = status;
+    }
+    
+    /**
+     * This method is used by threads for getting the status
+     * 
+     * @return isRunning
+     */
+    static boolean getStatus() {
+    	return isRunning;
+    }
 
     /**
      * This method is used for initializing the queues, 
@@ -65,9 +87,9 @@ public class LanCommunicator implements ICommunicator{
      */
     @Override
     public void start(){
-    	if(!isRunning) {
+    	if(!getStatus()) {
     		
-    		isRunning = true;
+    		setStatus(true);
 	    	/** 
 	    	 * Initializing the queues required for the networking module
 	    	 * Send Queue - 1 with OutgoingPacket object in it.
@@ -77,7 +99,7 @@ public class LanCommunicator implements ICommunicator{
 	        processingReceiveQueue = new ConcurrentBlockingQueue<IncomingPacket>();
 	        contentReceiveQueue = new ConcurrentBlockingQueue<IncomingPacket>();
 	        
-	        logger.log(ModuleID.NETWORKING, logLevel.INFO, "1 sendQueue and 2 receive queues created");
+	        logger.log(ModuleID.NETWORKING, LogLevel.INFO, "1 sendQueue and 2 receive queues created");
 	
 	        /** 
 	         * The listener which listens on the send queue and transfer the messages on the lan network to the destination IP
@@ -87,17 +109,17 @@ public class LanCommunicator implements ICommunicator{
 	        sendQueueListenerWorker = new Thread(sendQueueListener);
 	        sendQueueListenerWorker.start();
 	        
-	        logger.log(ModuleID.NETWORKING, logLevel.INFO, "sendQueueListener thread started");
+	        logger.log(ModuleID.NETWORKING, LogLevel.INFO, "sendQueueListener thread started");
 	        
 	        /** 
 	         * The listener that will be listening on the network and that receives the packet sent by the sendQueueListener
 	         * This listener will distingush between processing module message and content module's message and push into their respective queues 
 	         */
-	        socketListener = new SocketListener(processingReceiveQueue, contentReceiveQueue, portNumber);
+	        socketListener = new SocketListener(portNumber, processingReceiveQueue, contentReceiveQueue);
 	        socketListenerWorker = new Thread(socketListener);
 	        socketListenerWorker.start();
 	
-	        logger.log(ModuleID.NETWORKING, logLevel.INFO, "socketListener thread started");
+	        logger.log(ModuleID.NETWORKING, LogLevel.INFO, "socketListener thread started");
 	        
 	        /** 
 	         * This listener will be listening on the receive queue which is for the processing modules message
@@ -107,7 +129,7 @@ public class LanCommunicator implements ICommunicator{
 	        processingReceiveQueueListenerWorker = new Thread();
 	        processingReceiveQueueListenerWorker.start();
 	        
-	        logger.log(ModuleID.NETWORKING, logLevel.INFO, "processingReceiveQueueListener thread started");
+	        logger.log(ModuleID.NETWORKING, LogLevel.INFO, "processingReceiveQueueListener thread started");
 	        
 	        /** 
 	         * This listener will be listening on the receive queue which is for the content modules message
@@ -117,8 +139,8 @@ public class LanCommunicator implements ICommunicator{
 	        contentReceiveQueueListenerWorker = new Thread(contentReceiveQueueListener);
 	        contentReceiveQueueListenerWorker.start();
 	        
-	        logger.log(ModuleID.NETWORKING, logLevel.INFO, "contentReceiveQueueListener thread started");
-	        logger.log(ModuleID.NETWORKING, logLevel.INFO, "Communication is started");
+	        logger.log(ModuleID.NETWORKING, LogLevel.INFO, "contentReceiveQueueListener thread started");
+	        logger.log(ModuleID.NETWORKING, LogLevel.INFO, "Communication is started");
 	    
     	}
     }
@@ -129,8 +151,8 @@ public class LanCommunicator implements ICommunicator{
      */
     @Override
     public void stop(){
-    	isRunning = false;
-    	logger.log(ModuleID.NETWORKING, logLevel.INFO, "Communication is stoped");
+    	setStatus(false);
+    	logger.log(ModuleID.NETWORKING, LogLevel.INFO, "Communication is stoped");
     }
 
     /**
@@ -143,29 +165,22 @@ public class LanCommunicator implements ICommunicator{
      */
     @Override
     public void send(String destination, String message, String identifier){
+    	/** Spliting the destination into ip and port */
+    	String[] dest = destination.split(":");
+    	/** checking if we have the destination in the required pattern ip:port */
+    	if(dest.length != 2 || dest[0] == "" || dest[1] == "") {
+    		logger.log(ModuleID.NETWORKING, LogLevel.WARNING, "Invalid destination : " + destination);
+    		return;
+    	}
+    	/** checking if identifier is empty */
+    	if(identifier == "") {
+    		logger.log(ModuleID.NETWORKING, LogLevel.WARNING, "Empty identifier");
+    		return;
+    	}
     	/** Creating the object for the outgoing packet that is being pushed into the send queue. */
         OutgoingPacket packet = new OutgoingPacket(destination, message, identifier);
-        try {
-        	sendQueue.enqueue(packet);
-        } catch(Exception exception) {
-        	logger.log(ModuleID.NETWORKING, logLevel.ERROR, "Unable to enqueue the outgoing Packet into send queue");
-        }
-    }
-
-    /**
-     * This method takes identifier and handler
-     * and maps them so that they can be passed to the ReceiveQueueListeners
-     * 
-     * @param identifier
-     * @param handler
-     */
-    @Override
-    public void subscribeForNotifications(String identifier, INotificationHandler handler){
-    	try {
-    		handlerMap.put(identifier, handler);
-    	} catch(Exception exception) {
-    		logger.log(ModuleID.NETWORKING, logLevel.ERROR, "Unable to put the handler into the map : " + exception);
-    	}
+        sendQueue.enqueue(packet);
+        logger.log(ModuleID.NETWORKING, LogLevel.INFO, "Pushed the message into the queue");
     }
 
 }
