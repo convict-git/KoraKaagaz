@@ -90,6 +90,38 @@ public class BoardState implements Serializable {
 	}
 
 	/**
+	 * Gets pixels at the top of the input positions
+	 * @param positions positions on the board
+	 * @return pixels at these positions
+	 */
+	public synchronized ArrayList<Pixel> getPixelsAtTop (ArrayList<Position> positions) {
+		ArrayList<Pixel> topPixels = new ArrayList<Pixel>();
+		if (positions == null) {
+			return topPixels;
+		}
+
+		for (Position p : positions) {
+			PriorityQueue<PriorityQueueObject> queue_at_pos = posToObjects.get(p);
+			if (queue_at_pos == null) {
+				topPixels.add(new Pixel(p, new Intensity(255, 255, 255)));
+				continue;
+			}
+
+			PriorityQueueObject top_pq_object= queue_at_pos.peek();
+			if (top_pq_object == null) {
+				topPixels.add(new Pixel(p, new Intensity(255, 255, 255)));
+			}
+			else {
+					BoardObject top_object = getBoardObjectFromId(top_pq_object.objectId);
+					Pixel at_this_pos = top_object.getPixels().get(0);			// Assuming that the object is uni-coloured and should have pixels
+					topPixels.add(new Pixel(p, at_this_pos.intensity));
+			}
+		}
+		assert (positions.size() == topPixels.size());
+		return topPixels;
+	}
+
+	/**
 	 * For each Position (x, y) in the input ArrayList, insert the PriorityQueueObject into the
 	 * Priority Queue at the position (x, y) present in the map
 	 */
