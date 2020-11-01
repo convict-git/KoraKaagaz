@@ -13,6 +13,13 @@ import networking.utility.ClientInfo;
 */
 
 public class CommunicatorFactory{
+
+	/**
+	* Constructor of this class is not accessible to other packages or classes.
+	*/
+	private CommunicatorFactory(){
+
+	}
 	
 	/**
 	* This method helps in creating the LanCommunicator object which uses Singleton and factory design pattern in 
