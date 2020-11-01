@@ -1,6 +1,8 @@
 package networking.queueManagement;
 
+import infrastructure.validation.logger.*;
 import java.util.concurrent.*;
+
 
 /**
  *  This file contains the class ConcurrentBlockingQueue which implements the the queue interface
@@ -27,12 +29,18 @@ public class ConcurrentBlockingQueue<T> implements IQueue<T> {
     BlockingQueue<T> q;
 
     /**
+     *  Logger object from the LoggerFactory to log Messages.
+     */
+    Ilogger logger = LoggerFactory.getLoggerInstance();
+
+    /**
      * Constructor which initialises capacity and creates a ArrayBlocking queue instance of size equal to
      *  capacity.
      */
     public ConcurrentBlockingQueue(){
         capacity = 100000;
         q = new ArrayBlockingQueue<T>(capacity);
+        logger.log(ModuleID.NETWORKING, LogLevel.SUCCESS, "A new queue has been constructed which is thread-safe and blocking");
     }
 
     /**
@@ -50,8 +58,7 @@ public class ConcurrentBlockingQueue<T> implements IQueue<T> {
         try {
             T item = q.take();
         } catch (InterruptedException e){
-            /*The exception needs to be logged*/
-            /*Interface not provided at the time of logging*/
+            logger.log(ModuleID.NETWORKING, LogLevel.ERROR, "Raised in QueueManagement because a interruption is caused while the queue is waiting");
         }
     }
 
@@ -65,8 +72,10 @@ public class ConcurrentBlockingQueue<T> implements IQueue<T> {
         try {
             q.put(item);
         } catch (InterruptedException e){
-            /*The exception needs to be logged*/
-            /*Interface not provided at the time of logging*/
+            logger.log(ModuleID.NETWORKING, LogLevel.ERROR, "Raised in QueueManagement because a interruption is caused while the queue is waiting");
+        }
+        catch(NullPointerException e){
+            logger.log(ModuleID.NETWORKING, LogLevel.ERROR, "Raised in QueueManagement because the element inserted is NULL which should not be inserted");
         }
     }
 
