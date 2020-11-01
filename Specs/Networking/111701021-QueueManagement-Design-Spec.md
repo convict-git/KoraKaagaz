@@ -99,7 +99,7 @@ The Communicator Factory instantiates the instance of Queue objects
 # Interface Provided to Other Components.
 
 ```Java
-public interface Queue< T >{
+public interface IQueue< T >{
 
     void clear(); #deletes all the elements in the queue
 
