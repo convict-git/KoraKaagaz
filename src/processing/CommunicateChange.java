@@ -34,67 +34,32 @@ public class CommunicateChange {
 			ArrayList<Pixel> newPixels
 			) {
 		
-		/** stores the set of positions which would have been modified */
+		// stores the set of positions which would have been modified
 		Set <Position> modifiedPos = new HashSet <Position> ();
 		
-		/** stores the modified pixels */
-		ArrayList <Pixel> modifiedPixels = new ArrayList <Pixel> ();
-		
 		if (oldPixels != null) {
-			/** inserts the old position into the set */
+			// inserts the old positions into the set
 			for (Pixel pixel : oldPixels)
 				modifiedPos.add(pixel.position);
 		}
 		
 		if (newPixels != null) {
-			/** inserts the new position into the set */
+			// inserts the new positions into the set
 			for (Pixel pixel : newPixels)
 				modifiedPos.add(pixel.position);
 		}
 		
-		/** finds the intensity value at each position and push into the array */
-		for (Position pos : modifiedPos) {
-			Position curPos = new Position(pos);
-			Intensity intensity;
-			
-			/** gets the objectId at pos */
-			ObjectId objectId = ClientBoardState
-					.maps
-					.getMostProbableObjectId(
-							new ArrayList <Position> (Arrays.asList(pos))
-					);
-			
-			if (objectId == null) {
-				/** no object at the position, so default value is white */
-				intensity = new Intensity(255, 255, 255);
-			}
-			else {
-				ArrayList <Pixel> pixels = ClientBoardState
-						.maps
-						.getBoardObjectFromObjectId(objectId)
-						.getPixels();
-				
-				if (pixels == null || pixels.size() <= 0) {
-					 /** Ideally, it should not happen and error should be logged */
-					intensity = new Intensity(255, 255, 255);
-				}
-				else {
-					/**
-					 * An Object has same color on all of its pixels
-					 * gets the intensity of the object from the first pixel
-					 */
-					intensity = new Intensity(pixels.get(0).intensity);
-				}
-					
-			}
-			modifiedPixels.add(new Pixel(curPos, intensity));
-		}
+		// stores the positions from the set into the array
+		ArrayList <Position> setToArray = new ArrayList <Position> ();
+		setToArray.addAll(modifiedPos);
 		
+		// gets the top pixels at those positions
+		ArrayList <Pixel> modifiedPixels = ClientBoardState.maps.getPixelsAtTop(setToArray);
 		
-		/** gets the handler for the subscriber */
+		// gets the handler for the subscriber
 		IChanges handler = identifierToHandler.get(identifier);
 		
-		/** sends the modified pixels to the handler*/
+		// sends the modified pixels to the handler
 		handler.getChanges(modifiedPixels);
 	}
 	
@@ -125,7 +90,10 @@ public class CommunicateChange {
 	 */
 	public static void subscribeForChanges(String identifier, IChanges handler) {
 		identifierToHandler.put(identifier, handler);
-		/** Default UI identifier is stored */
+		/**
+		 *  Default UI identifier is stored
+		 *  Needs to modified when more modules can subscribe
+		 */
 		identifierUI = identifier;
 	}
 }
