@@ -31,6 +31,12 @@ public class ConsoleLogger implements ILogger {
 
 		String logTimeStamp = "["+formatDateTime+"]";
 
+		String logModulePart = "["+moduleIdentifier.toString()+"]";
+		
+		String logLevelPart = "["+level.toString()+"]";
+		
+		String logMessage = logTimeStamp+logModulePart+logLevelPart+message;
+
 	}
 
 }
