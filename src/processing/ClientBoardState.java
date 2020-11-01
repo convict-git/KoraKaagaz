@@ -36,7 +36,7 @@ public class ClientBoardState {
 	public static ArrayList <String> users = new ArrayList <String>();
 	
 	//to store the selected object
-	public static PriorityQueueObject selectedObject;
+	private static PriorityQueueObject selectedObject;
 	
 	//to store the username and userId
 	public static Username username;
@@ -56,6 +56,16 @@ public class ClientBoardState {
 		ClientBoardState.communicator.subscribeForNotifications("ProcessingBoardState", new BoardStateHandler());
 		ClientBoardState.communicator.subscribeForNotifications("ProcessingServerPort", new PortHandler());
 		ClientBoardState.communicator.subscribeForNotifications("ProcessingBoardId", new BoardIdHandler());
+		while(ClientBoardState.boardId != null) {
+			// wait until we receive a boardId from the server
+		}
 	}
 	
+	public static synchronized void setSelectedObject(PriorityQueueObject selectedObject) {
+		ClientBoardState.selectedObject = selectedObject;
+	}
+	
+	public static synchronized PriorityQueueObject getSelectedObject() {
+		return ClientBoardState.selectedObject;
+	}
 }
