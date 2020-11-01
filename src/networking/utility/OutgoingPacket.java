@@ -103,7 +103,6 @@ public class OutgoingPacket {
      * else returns false
      *
      * @param obj any object.
-     *
      * @return true, if the current class object equals to the object that was as a argument or else false.
      */
     public boolean isEqual(Object obj) {

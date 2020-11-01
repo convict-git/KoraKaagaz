@@ -51,7 +51,7 @@ public class ConcurrentBlockingQueue<T> implements IQueue<T> {
             T item = q.take();
         } catch (InterruptedException e){
             /*The exception needs to be logged*/
-	    /*Interface not provided at the time of logging*/
+            /*Interface not provided at the time of logging*/
         }
     }
 
@@ -66,7 +66,7 @@ public class ConcurrentBlockingQueue<T> implements IQueue<T> {
             q.put(item);
         } catch (InterruptedException e){
             /*The exception needs to be logged*/
-	    /*Interface not provided at the time of logging*/
+            /*Interface not provided at the time of logging*/
         }
     }
 
@@ -95,7 +95,7 @@ public class ConcurrentBlockingQueue<T> implements IQueue<T> {
      *
      * @return current size of the queue
      */
-    public int size(){
+    public int size() {
         return q.size();
     }
 }
