@@ -59,7 +59,7 @@ public class LanCommunicator implements ICommunicator{
      */
     public LanCommunicator(int port) {
     	portNumber = port;
-        handlerMap = new java.util.HashMap<>();
+        handlerMap = new HashMap<>();
     }
     
     /**
