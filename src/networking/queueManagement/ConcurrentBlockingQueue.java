@@ -73,8 +73,7 @@ public class ConcurrentBlockingQueue<T> implements IQueue<T> {
             q.put(item);
         } catch (InterruptedException e){
             logger.log(ModuleID.NETWORKING, LogLevel.ERROR, "Raised in QueueManagement because a interruption is caused while the queue is waiting");
-        }
-        catch(NullPointerException e){
+        } catch(NullPointerException e){
             logger.log(ModuleID.NETWORKING, LogLevel.ERROR, "Raised in QueueManagement because the element inserted is NULL which should not be inserted");
         }
     }
