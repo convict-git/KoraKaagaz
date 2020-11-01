@@ -45,8 +45,9 @@ public class ReceiveQueueListener implements Runnable{
     /**
      * The method "run" is used to dequeue from the queue continuously when the queue is non empty and the thread is running and call
      * helper function to send the message to corresponding module.
+     * @param Nothing
      * @return Nothing
-     * @exception exception    Error when unable to call onCallback method.
+     * @exception Exception If unable to call sendMessage method.
      * @see Exception
      */
 
@@ -54,15 +55,15 @@ public class ReceiveQueueListener implements Runnable{
     public void run() {
        
         
-        while( LanCommunicator.isRunning ){
+        while( LanCommunicator.getStatus() ){
             
             if( !receivequeue.isEmpty() ){
             
                 /**
-                 * Incoming packet which contains message and identifier is removed from the front of the queue if queue is empty.
+                 * Incoming packet which contains message and identifier is removed from the front of the queue if queue is non empty.
                  */
                 IncomingPacket packet = receivequeue.front();
-         
+                receivequeue.dequeue();
                 
                 /**
                  * Calling helper function "onCallback" for sending message to corresponding module.
@@ -82,7 +83,7 @@ public class ReceiveQueueListener implements Runnable{
     }
     
     /**
-     * The method "onCallback"  will call the handler method of the corresponding module by passing the message.
+     * The method "sendMessage"  will call the handler method of the corresponding module by passing the message.
      * @param packet        the packet which contains the identifier and the message to be sent.
      * @return  Nothing
      */
