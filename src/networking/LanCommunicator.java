@@ -126,7 +126,7 @@ public class LanCommunicator implements ICommunicator{
 	         * It will send the message which is pushed by network listener through the processing module handler 
 	         */
 	        processingReceiveQueueListener = new ReceiveQueueListener(processingReceiveQueue, handlerMap);
-	        processingReceiveQueueListenerWorker = new Thread();
+	        processingReceiveQueueListenerWorker = new Thread(processingReceiveQueueListener);
 	        processingReceiveQueueListenerWorker.start();
 	        
 	        logger.log(ModuleID.NETWORKING, LogLevel.INFO, "processingReceiveQueueListener thread started");
@@ -152,7 +152,9 @@ public class LanCommunicator implements ICommunicator{
     @Override
     public void stop(){
     	setStatus(false);
-    	logger.log(ModuleID.NETWORKING, LogLevel.INFO, "Communication is stoped");
+    	CommunicatorFactory.freeCommunicator();
+        socketListener.stop();
+    	logger.log(ModuleID.NETWORKING, LogLevel.INFO, "Communication is stopped");
     }
 
     /**
