@@ -164,7 +164,7 @@ public class LanCommunicator implements ICommunicator{
     	try {
     		handlerMap.put(identifier, handler);
     	} catch(Exception exception) {
-    		logger.log(ModuleID.NETWORKING, logLevel.ERROR, "Unable to put the handler into the queue : " + exception);
+    		logger.log(ModuleID.NETWORKING, logLevel.ERROR, "Unable to put the handler into the map : " + exception);
     	}
     }
 
