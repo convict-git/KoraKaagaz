@@ -74,17 +74,6 @@ public class UndoRedo {
 		// BoardObject CREATE operation
 		IBoardObjectOperation newOp = new CreateOperation();
 		// gets the newly created object
-		/*
-		BoardObject newObj = CurveBuilder.drawCurve( 
-									obj.getPixels(), 
-									newOp, 
-									obj.getObjectId(), 
-									obj.getTimestamp(),
-									obj.getUserId(), 
-									obj.getPrevIntensity(), 
-									false 
-									);
-		*/
 		BoardObject newObj = new BoardObject(
 				obj.getPixels(),
 				obj.getObjectId(),
