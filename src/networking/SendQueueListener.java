@@ -6,7 +6,7 @@ import java.util.regex.Pattern;
 
 import networking.queueManagement.*;
 import networking.utility.*;
-
+import infrastructure.validation.logger.*;
 
 /**
  * This file contains implementation of sendQueueListener class which is
@@ -24,14 +24,24 @@ public class SendQueueListener implements Runnable {
      * It is the sendqueue which will contain the outgoing packets which needs to be 
      * send over the network.
      */
-    private ConcurrentBlockingQueue<OutgoingPacket> SendQueue;
+    private IQueue<OutgoingPacket> SendQueue;
 
+    /** 
+	 * logger object from the LoggerFactory to log messages
+	*/
+	Ilogger logger = LoggerFactory.getLoggerInstance();
 
     /**
      * Constructor for this sendQueueListener class.
      * @param SendQueue, which require the sendqeue as parameter.
      */
-    public SendQueueListener(ConcurrentBlockingQueue<OutgoingPacket> SendQueue){
+    public SendQueueListener(IQueue<OutgoingPacket> SendQueue){
+
+        /**
+         * logging when the instance of the class is created
+         */
+        logger.log(ModuleID.NETWORKING, LogLevel.INFO, "Send Queue Listener object created");
+
         this.SendQueue = SendQueue;
     }
 
@@ -88,6 +98,7 @@ public class SendQueueListener implements Runnable {
             //it will return true if port is valid else false.
             return (value > 0) && (value <= 65535);
         }
+        return false;
       
     }
 
@@ -99,7 +110,7 @@ public class SendQueueListener implements Runnable {
      */
     private boolean isValidAddress(String destination){
         String[] dest = splitAddress(destination);
-        return ( dest.length == 2 && isValidIpaddress(dest[1]) && isValidPort(dest[0]) );
+        return ( dest.length == 2 && isValidIpaddress(dest[0]) && isValidPort(dest[1]) );
     }
 
 
@@ -110,9 +121,15 @@ public class SendQueueListener implements Runnable {
     public void run(){
         
         /**
+         * when the the thread is started running we logged the instance of it.
+         */
+
+        logger.log(ModuleID.NETWORKING, LogLevel.INFO, "Send Queue Listener thread started running");
+
+        /**
          * run the while loop as long as the application is running.
          */
-        while(LanCommunicator.isRunning){
+        while(LanCommunicator.getStatus()){
             
             /**
              * Check whether queue is empty or not, if it's not empty, 
@@ -201,12 +218,19 @@ public class SendQueueListener implements Runnable {
                      * now close the socket.
                      */
                     sock.close();
+
+                    /**
+                     * For every outgoing packet delivered the log the message with destination address.
+                     */
+                    String logMessage = "Message delivered to destination " + destination;
+                    logger.log(ModuleID.NETWORKING, LogLevel.SUCCESS, logMessage);
+
                 } catch (Exception e) {
                     
                     /**
-                     * if any exception occurs then we are printing the error to console.
+                     * if any exception occurs then log the error.
                      */
-                    System.out.println(e);
+                    logger.log(ModuleID.NETWORKING, LogLevel.ERROR, exp);
                 }
                 
                 /**
@@ -214,6 +238,13 @@ public class SendQueueListener implements Runnable {
                  */
                 SendQueue.dequeue();
             }
+
+            /**
+             * Logging the infromation that when the thread is going to stop.
+             */
+
+            logger.log(ModuleID.NETWORKING, LogLevel.INFO, "Send Queue Listener thread is going to stop running");
+
         }
     }
 }
