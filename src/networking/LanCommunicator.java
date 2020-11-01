@@ -7,7 +7,6 @@ package networking;
  * @author Madaka Srikar Reddy
  */
 
-<<<<<<< HEAD
 
 import java.util.HashMap;
 import networking.queueManagement.*;
@@ -81,19 +80,14 @@ public class LanCommunicator implements ICommunicator{
     	return isRunning;
     }
 
-=======
 class LanCommunicator implements ICommunicator{
 
->>>>>>> f784ec610bed4eb7fd33c692f1f26e3adc4fb045
     /**
      * This method is used for initializing the queues, 
      * starting worker threads of sendQueueListener, socketListener, 
      * processingReceiveQueueListener and contentReceiveQueueListener 
      */
-<<<<<<< HEAD
     @Override
-=======
->>>>>>> f784ec610bed4eb7fd33c692f1f26e3adc4fb045
     public void start(){
     	if(!getStatus()) {
     		
@@ -152,46 +146,34 @@ class LanCommunicator implements ICommunicator{
 	    
     	}
     }
-<<<<<<< HEAD
 
     /**
      * This method will help to terminate all the threads
      * initialized in the start method by setting isRunning to false
      */
     @Override
-=======
     
     /**
      * This method will help to terminate all the threads
      * initialized in the start method
      */
->>>>>>> f784ec610bed4eb7fd33c692f1f26e3adc4fb045
     public void stop(){
     	setStatus(false);
     	CommunicatorFactory.freeCommunicator();
         socketListener.stop();
     	logger.log(ModuleID.NETWORKING, LogLevel.INFO, "Communication is stopped");
     }
-<<<<<<< HEAD
 
-    /**
-     * This method creates a object with the params
-     * and enqueues this object into the sendQueue
-     * 
-=======
+  
     
     /**
      * This method creates a object with the params
      * and enqueues this object into the sendQueue
->>>>>>> f784ec610bed4eb7fd33c692f1f26e3adc4fb045
      * @param destination contains the ip and port
      * @param message that needs to be sent
      * @param identifier specifies who want to send it
      */
-<<<<<<< HEAD
     @Override
-=======
->>>>>>> f784ec610bed4eb7fd33c692f1f26e3adc4fb045
     public void send(String destination, String message, String identifier){
     	/** Spliting the destination into ip and port */
     	String[] dest = destination.split(":");
@@ -210,10 +192,8 @@ class LanCommunicator implements ICommunicator{
         sendQueue.enqueue(packet);
         logger.log(ModuleID.NETWORKING, LogLevel.INFO, "Pushed the message into the queue");
     }
-<<<<<<< HEAD
 
 }
-=======
     
     /**
      * This method takes identifier and handler
@@ -226,4 +206,3 @@ class LanCommunicator implements ICommunicator{
     }
     
 }
->>>>>>> f784ec610bed4eb7fd33c692f1f26e3adc4fb045
