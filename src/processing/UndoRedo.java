@@ -1,6 +1,6 @@
 package processing;
 
-import processing.*;
+
 import processing.utility.*;
 import processing.boardobject.*;
 import java.util.*;
