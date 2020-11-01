@@ -35,7 +35,7 @@ public class UndoRedo {
 	/**
 	 * gets the stack capacity
 	 * 
-	 * @return
+	 * @return stack capacity
 	 */
 	public static int getStackCapacity() {
 		return STACK_CAPACITY;
@@ -53,27 +53,28 @@ public class UndoRedo {
 	 * @param stack could be undo or redo stack
 	 * @param obj object to be pushed
 	 */
-	private static void addIntoStack(LinkedList <BoardObject> stack, BoardObject obj) {
+	private static void addIntoStack(ArrayList <BoardObject> stack, BoardObject obj) {
 		
-		/** If stack size becomes full, delete the bottom (first) object */
+		// If stack size becomes full, delete the bottom (first) object
 		if (stack.size() >= STACK_CAPACITY)
-			stack.removeFirst();
+			stack.remove(0);
 		
-		/** Push the object to the top (last) */
-		stack.addLast(obj);
+		// Push the object to the top (last)
+		stack.add(obj);
 	}
 	
 	/**
-	 * This helper method calls drawCure method of CurveBuilder class to create the object
+	 * This helper method creates the object
 	 * It is called during undo-redo operations
 	 * 
 	 * @param obj
 	 * @return newly created object
 	 */
 	private static BoardObject createOperation(BoardObject obj) {
-		/** BoardObject CREATE operation*/
+		// BoardObject CREATE operation
 		IBoardObjectOperation newOp = new CreateOperation();
-		/** gets the newly created object */
+		// gets the newly created object
+		/*
 		BoardObject newObj = CurveBuilder.drawCurve( 
 									obj.getPixels(), 
 									newOp, 
@@ -83,6 +84,21 @@ public class UndoRedo {
 									obj.getPrevIntensity(), 
 									false 
 									);
+		*/
+		BoardObject newObj = new BoardObject(
+				obj.getPixels(),
+				obj.getObjectId(),
+				obj.getTimestamp(),
+				obj.getUserId(),
+				false
+				);
+				
+		//sets the CREATE operation in the created object
+		newObj.setOperation(newOp);
+		
+		//Insert the object into the Map
+		ClientBoardState.maps.insertObjectIntoMaps(newObj);
+		
 		return newObj;
 	}
 	
@@ -96,7 +112,7 @@ public class UndoRedo {
 	 */
 	private static BoardObject colorChangeOperation(BoardObject obj, Intensity intensity) {
 		UserId id = obj.getUserId();
-		/** gets the newly created color changed object */
+		// gets the newly created color changed object
 		BoardObject newObj = ParameterizedOperationsUtil.colorChangeUtil(obj, id, intensity);
 		return newObj;
 	}
@@ -111,7 +127,7 @@ public class UndoRedo {
 	 */
 	private static BoardObject rotateOperation(BoardObject obj, Angle angle) {
 		UserId id = obj.getUserId();
-		/** gets the newly rotated object */
+		// gets the newly rotated object
 		BoardObject newObj = ParameterizedOperationsUtil.rotationUtil(obj, id, angle);
 		return newObj;
 	}
@@ -125,32 +141,34 @@ public class UndoRedo {
 	 * @param operation undo or redo operation
 	 */
 	private static void undoRedoUtil(
-			LinkedList <BoardObject> curStack,
-			LinkedList <BoardObject> otherStack,
+			ArrayList <BoardObject> curStack,
+			ArrayList <BoardObject> otherStack,
 			Operation operation
 			) {
 		
-		/** No undo or redo operation possible */
+		// No undo or redo operation possible
     	if (curStack.size() <= 0)
     		return;
     	
-    	/** Gets the top object from the stack */
-    	BoardObject topObj =  curStack.getLast();
+    	// Gets the top object from the stack
+    	BoardObject topObj =  curStack.get(curStack.size() - 1);
     	
-    	/** Gets the operation performed on that object */
-    	BoardObjectOperationType operationType = obj.getOperation().getOperationType();
+    	// Gets the operation performed on that object
+    	BoardObjectOperationType operationType = topObj.getOperation().getOperationType();
     	BoardObject newObj = null;
     	
     	switch (operationType) {
     		case CREATE :	if (operation == Operation.REDO)
     							newObj = createOperation(topObj);
     						else
-    							SelectDelete.delete(topObj);
+    							// performs simple delete operation
+    							ClientBoardState.maps.removeObjectFromMaps(topObj.getObjectId());
     						break;
     		case DELETE :	if (operation == Operation.UNDO)
     							newObj = createOperation(topObj);
     						else 
-    							SelectDelete.delete(topObj);
+    							// performs simple delete operation
+    							ClientBoardState.maps.removeObjectFromMaps(topObj.getObjectId());
     						break;
     					  
     		case ROTATE : Angle angleCCW = ((RotateOperation) topObj.getOperation()).getAngle();
@@ -182,9 +200,9 @@ public class UndoRedo {
     		default : break; /** Invalid operation*/
     	}
     	
-    	/** Transfers the object from one stack to other */
+    	// Transfers the object from one stack to other
     	addIntoStack(otherStack, topObj);
-    	curStack.removeLast();
+    	curStack.remove(curStack.size() - 1);
     	/** 
     	 *  Send the modified pixels to the UI 
     	 *  null value occurs when delete operation is performed 
@@ -201,9 +219,9 @@ public class UndoRedo {
 	 * @param stack stack from which the object has to be deleted
 	 * @param objectId object id of the object to be deleted
 	 */
-	private static void deleteFromStack(LinkedList <BoardObject> stack, ObjectId objectId) {
+	private static void deleteFromStack(ArrayList <BoardObject> stack, ObjectId objectId) {
 		   
-		   /** Deletes from the stack */
+		   // Deletes from the stack
 		   ListIterator <BoardObject> iterStack = stack.listIterator();
 		   while (iterStack.hasNext()) {
 			   BoardObject obj = iterStack.next();
@@ -220,9 +238,9 @@ public class UndoRedo {
     * and pushes into the redoStack.
     */
     public static void undo() {
-    	 LinkedList <BoardObject> undoStack = ClientBoardState.undoStack;
-    	 LinkedList <BoardObject> redoStack = ClientBoardState.redoStack;
-    	 undoRedoUtil(undoStack, redoStack, Operation.UNDO);
+    	ArrayList <BoardObject> undoStack = ClientBoardState.undoStack;
+    	ArrayList <BoardObject> redoStack = ClientBoardState.redoStack;
+    	undoRedoUtil(undoStack, redoStack, Operation.UNDO);
     }
    
    /**
@@ -232,8 +250,8 @@ public class UndoRedo {
     * into the undoStack.
     */
    public static void redo() {
-	   LinkedList <BoardObject> undoStack = ClientBoardState.undoStack;
-	   LinkedList <BoardObject> redoStack = ClientBoardState.redoStack;
+	   ArrayList <BoardObject> undoStack = ClientBoardState.undoStack;
+	   ArrayList <BoardObject> redoStack = ClientBoardState.redoStack;
 	   undoRedoUtil(redoStack, undoStack, Operation.REDO);
    }
    
@@ -244,14 +262,17 @@ public class UndoRedo {
     * @param object object to be pushed
     */
    public static void pushIntoStack(BoardObject object) {
-	   ClientBoardState.undoStack.add(object);
 	   
+	   // pushes into undo stack
 	   addIntoStack(ClientBoardState.undoStack, object);
-	   /** No iterator map for now */
+	   /** 
+	    * No iterator map for now
+	    * Will be added later 
+	    */
    }
    
    /**
-    * Deletes an object by the ObjectId from the undoStack
+    * Deletes an object by the ObjectId from the undo and redo
     * Needed for the transfer of the ownership of an object in case
     * the object was deleted by other user 
     * 
@@ -259,9 +280,9 @@ public class UndoRedo {
     */
    public static void deleteFromStack(ObjectId objectId) {
 	   
-	   /** Deletes from undo stack */
+	   // Deletes from undo stack 
 	   deleteFromStack(ClientBoardState.undoStack, objectId);
-	   /** Deletes from redo stack */
+	   // Deletes from redo stack
 	   deleteFromStack(ClientBoardState.redoStack, objectId);
    }
 }
