@@ -175,35 +175,48 @@ public class SocketListener implements Runnable {
 			while(LanCommunicator.getStatus()) {
 
 				/**
-				 * creates a socket which connects with the client for message transfer.
+				 * This block of code inside the tries to accept the client requests if any exception occurs
+				 * it checks for appropriate catch.
 				 */
-				Socket socket = serverSocket.accept();
-				logger.log(ModuleID.NETWORKING, LogLevel.INFO, "Server has accepted a client request for data transfer");
+				try{
+					/**
+					 * creates a socket which connects with the client for message transfer.
+					 */
+					Socket socket = serverSocket.accept();
+					logger.log(ModuleID.NETWORKING, LogLevel.INFO, "Server has accepted a client request for data transfer");
 
-				/**
-				 * Receives the input from socket. "Remember getInputStream is Blocking type.."
-				 */
-				DataInputStream input = new DataInputStream(socket.getInputStream());
-				logger.log(ModuleID.NETWORKING, LogLevel.INFO, "Successfully received data from client");
+					/**
+					 * Receives the input from socket. "Remember getInputStream is Blocking type.."
+					 */
+					DataInputStream input = new DataInputStream(socket.getInputStream());
+					logger.log(ModuleID.NETWORKING, LogLevel.INFO, "Successfully received data from client");
 
-				/**
-				 * Converts the received input into UTF format
-				 */
-				String recvMsg = input.readUTF();
-				String id = getIdFromPacket(recvMsg);
-				String msg = getMsgFromPacket(recvMsg);
+					/**
+					 * Converts the received input into UTF format
+					 */
+					String recvMsg = input.readUTF();
+					String id = getIdFromPacket(recvMsg);
+					String msg = getMsgFromPacket(recvMsg);
 
-				/**
-				 * Calls the push function
-				 */
-				push(id, msg);
+					/**
+					 * Calls the push function
+					 */
+					push(id, msg);
 
+					/**
+					 * Closes the socket used to connect with client for the transfer
+					 * and also input stream should be closed.
+					 */
+					socket.close();
+					input.close();
+				}
 				/**
-				 * Closes the socket used to connect with client for the transfer
-				 * and also input stream should be closed.
+				 * This block gets executed when a exception arises in try block
 				 */
-				socket.close();
-				input.close();
+				catch(Exception exp){
+					//Logs exception
+					logger.log(ModuleID.NETWORKING, LogLevel.WARNING, exp)	
+				}
 			}
 
 		}
@@ -223,8 +236,10 @@ public class SocketListener implements Runnable {
 				/**
 				 * Closes the socket which keeps listening on the port 
 				 */
-				serverSocket.close();
-				logger.log(ModuleID.NETWORKING, LogLevel.INFO, "Server has been closed");
+				if(serverSocket != null){
+					serverSocket.close();
+					logger.log(ModuleID.NETWORKING, LogLevel.INFO, "Server has been closed");
+				}
 			}
 			/**
 			 * This block gets executed when an exception arises while closing the socket.
@@ -234,5 +249,26 @@ public class SocketListener implements Runnable {
 			}
 		}
     }
-  
+	
+	/**
+	 * This method stops the server socket. This is called by LanCommunicator's stop method.
+	 */	
+	public void stop(){
+		try{
+			/**
+			 * Closes the socket which keeps listening on the port 
+			 */
+			if(serverSocket != null){
+				serverSocket.close();
+				logger.log(ModuleID.NETWORKING, LogLevel.INFO, "Server has been closed");
+			}
+		}
+		/**
+		 * This block gets executed when an exception arises while closing the socket.
+		 */
+		catch(IOException exp){
+			logger.log(ModuleID.NETWORKING, LogLevel.ERROR, exp);
+		}
+	}
+
 }
