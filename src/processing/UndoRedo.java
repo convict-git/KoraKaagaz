@@ -14,7 +14,8 @@ import java.util.*;
 
 public class UndoRedo {
 	
-	/** maximum stack size 
+	/** 
+	 *  maximum stack size 
 	 *  restricts the maximum undo-redo operations
 	 */
 	private static int STACK_CAPACITY = 20;
@@ -136,7 +137,8 @@ public class UndoRedo {
     					  
     		case ROTATE : Angle angleCCW = ((RotateOperation) topObj.getOperation()).getAngle();
     					  Angle newAngle = null;
-    					  /** For undo, the object should be rotated -angle CCW
+    					  /** 
+    					   *  For undo, the object should be rotated -angle CCW
     					   *  For redo, the object should be rotated angle CCW
     					   */
     					  if (operation == Operation.UNDO)
@@ -147,7 +149,8 @@ public class UndoRedo {
     					  break;
     					   
     		case COLOR_CHANGE : ArrayList <Pixel> newPixels;
-    							/** For undo, the object's should be changed to previous color
+    							/** 
+    							 *  For undo, the object's should be changed to previous color
     							 *  For redo, the object's should be changed to current color
     							 */
     							if (operation == Operation.UNDO)
@@ -164,7 +167,8 @@ public class UndoRedo {
     	/** Transfers the object from one stack to other */
     	addIntoStack(otherStack, topObj);
     	curStack.removeLast();
-    	/** Send the modified pixels to the UI 
+    	/** 
+    	 *  Send the modified pixels to the UI 
     	 *  null value occurs when delete operation is performed 
     	 */
     	if (newObj != null)
