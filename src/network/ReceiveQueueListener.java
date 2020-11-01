@@ -66,7 +66,7 @@ public class ReceiveQueueListener implements Runnable{
                 receivequeue.dequeue();
                 
                 /**
-                 * Calling helper function "onCallback" for sending message to corresponding module.
+                 * Calling helper function "sendMessage" for sending message to corresponding module.
                  */
                 try {
                     
