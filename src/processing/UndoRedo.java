@@ -24,6 +24,24 @@ public class UndoRedo {
 	}
     
 	/**
+	 * sets the stack capacity
+	 * 
+	 * @param newCapacity new stack capacity
+	 */
+	public static void setStackCapacity(int newCapacity) {
+		STACK_CAPACITY = newCapacity;
+	}
+	
+	/**
+	 * gets the stack capacity
+	 * 
+	 * @return
+	 */
+	public static int getStackCapacity() {
+		return STACK_CAPACITY;
+	}
+	
+	/**
 	 *  Will be visited later
 	 *  map for access in the list
    	 *  private static Map <ObjectId, ListIterator> idToIterator;
