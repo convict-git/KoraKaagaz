@@ -3,8 +3,9 @@ package networking;
 import java.io.*;
 import java.net.*;
 
-import networking.queueManagement.ConcurrentBlockingQueue;
+import networking.queueManagement.*;
 import networking.utility.IncomingPacket;
+import infrastructure.validation.logger.*;
 
 /**
  * 
@@ -22,7 +23,7 @@ public class SocketListener implements Runnable {
 	/**
 	 * Port number on which the socket will be listening for the client requests to connect with.
 	 */
-	int port;
+	private int port;
 
 	/**
 	 * socket object which keeps listening for the client requests.
@@ -32,12 +33,17 @@ public class SocketListener implements Runnable {
 	/**
 	 * Queue into which message from content module will be pushed
 	 */
-	private ConcurrentBlockingQueue<IncomingPacket> contModuleQueue;
+	private IQueue<IncomingPacket> contModuleQueue;
 
 	/**
 	 * Queue into which message from processing module will be pushed
 	 */
-	private ConcurrentBlockingQueue<IncomingPacket> procModuleQueue;
+	private IQueue<IncomingPacket> procModuleQueue;
+
+	/** 
+	 * logger object from the LoggerFactory to log messages
+	*/
+	Ilogger logger = LoggerFactory.getLoggerInstance();
 
 	/**
 	 * 
@@ -48,7 +54,7 @@ public class SocketListener implements Runnable {
 	 * 
 	 * There won't be any return type as it is a constructor of the class
 	 */
-	public SocketListener(int port, ConcurrentBlockingQueue<IncomingPacket> contModuleQueue, ConcurrentBlockingQueue<IncomingPacket> procModuleQueue){
+	public SocketListener(int port, IQueue<IncomingPacket> contModuleQueue, IQueue<IncomingPacket> procModuleQueue){
 		this.port = port;
 		this.contModuleQueue = contModuleQueue;
 		this.procModuleQueue = procModuleQueue;
@@ -127,7 +133,7 @@ public class SocketListener implements Runnable {
 		/**
 		 * Creates a object of queue type.
 		 */
-		IncomingPacket queuePacket = new IncomingPacket(id, msg);
+		IncomingPacket queuePacket = new IncomingPacket(msg, id);
 
 		/**
 		 * Checks whether to push the object into content module queue or processing module queue
@@ -137,6 +143,7 @@ public class SocketListener implements Runnable {
 		}else{
 			procModuleQueue.enqueue(queuePacket);
 		}
+		logger.log(ModuleID.NETWORKING, LogLevel.SUCCESS, "Message pushed into appropriate queue by server based on the identifier");
 	}
 	
 	/**
@@ -160,22 +167,25 @@ public class SocketListener implements Runnable {
 			 * creates a socket which keeps listening on the port for client requests
 			 */
 			serverSocket = new ServerSocket(port);
-			
+			logger.log(ModuleID.NETWORKING, LogLevel.INFO, "Server started listening for client requests..");
+
 			/**
 			 * socket keeps listening based on the static variable isRunning
 			 */
-			while(LanCommunicator.isRunning) {
+			while(LanCommunicator.getStatus()) {
 
 				/**
 				 * creates a socket which connects with the client for message transfer.
 				 */
 				Socket socket = serverSocket.accept();
-				
+				logger.log(ModuleID.NETWORKING, LogLevel.INFO, "Server has accepted a client request for data transfer");
+
 				/**
 				 * Receives the input from socket. "Remember getInputStream is Blocking type.."
 				 */
 				DataInputStream input = new DataInputStream(socket.getInputStream());
-				
+				logger.log(ModuleID.NETWORKING, LogLevel.INFO, "Successfully received data from client");
+
 				/**
 				 * Converts the received input into UTF format
 				 */
@@ -202,7 +212,7 @@ public class SocketListener implements Runnable {
 		 * This block gets executed when a exception arises in try block
 		 */
 		catch(IOException exp){
-        	System.out.println(exp);
+			logger.log(ModuleID.NETWORKING, LogLevel.ERROR, exp);
 		}
 
 		/**
@@ -214,12 +224,13 @@ public class SocketListener implements Runnable {
 				 * Closes the socket which keeps listening on the port 
 				 */
 				serverSocket.close();
+				logger.log(ModuleID.NETWORKING, LogLevel.INFO, "Server has been closed");
 			}
 			/**
 			 * This block gets executed when an exception arises while closing the socket.
 			 */
-			catch(IOException e){
-				System.out.println(e);
+			catch(IOException exp){
+				logger.log(ModuleID.NETWORKING, LogLevel.ERROR, exp);
 			}
 		}
     }
