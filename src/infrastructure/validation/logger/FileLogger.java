@@ -30,8 +30,14 @@ public class FileLogger implements ILogger {
 		LocalDateTime now = LocalDateTime.now();
 		String formatDateTime = now.format(timeStampFormat);
 		
-		String logTimeStamp = "["+formatDateTime+"]";
+		String logTimeStamp = "["+formatDateTime+"] ";
 		
+		String logModulePart = "["+moduleIdentifier.toString()+"] ";
+		
+		String logLevelPart = "["+level.toString()+"] ";
+		
+		String logMessage = logTimeStamp+logModulePart+logLevelPart+message;
+
 	}
 
 }
