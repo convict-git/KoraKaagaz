@@ -22,7 +22,7 @@ public class ReceiveQueueListener implements Runnable{
     /**
      * Logger instance for logging errors and activities.
      */
-    ILogger logger;
+    ILogger logger = LoggerFactory.getLoggerInstance();
     
     /**
      * Map stores module identifiers ( processing / content module ) and corresponding handler. 
@@ -43,7 +43,7 @@ public class ReceiveQueueListener implements Runnable{
     
     
     /**
-     * The method "run" is used to dequeue from the queue continuously when the queue is non empty and call
+     * The method "run" is used to dequeue from the queue continuously when the queue is non empty and the thread is running and call
      * helper function to send the message to corresponding module.
      * @return Nothing
      * @exception exception    Error when unable to call onCallback method.
@@ -54,7 +54,7 @@ public class ReceiveQueueListener implements Runnable{
     public void run() {
        
         
-        while(true){
+        while( LanCommunicator.isRunning ){
             
             if( !receivequeue.isEmpty() ){
             
@@ -109,7 +109,7 @@ public class ReceiveQueueListener implements Runnable{
          */
         if ( handler != null ){
             
-            handler.onMessageRecieved(message);
+            handler.onMessageReceived(message);
             
         } else {
             
