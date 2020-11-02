@@ -19,9 +19,9 @@ public class FileLogger implements ILogger {
 
 	/** stores the format specified for the time-stamp */
 	private DateTimeFormatter timeStampFormat;
-	
-	/** string that holds the name of the log file */
-	private static String logFilename;
+		
+	/** string that holds the location of the log file */
+	private static String logFile;
 	
 	/**
 	 *  
@@ -31,6 +31,10 @@ public class FileLogger implements ILogger {
 		// sets DateTime format as per the spec
 		timeStampFormat = DateTimeFormatter.ofPattern("yyyy:MM:dd HH:mm:ss");
 		
+		// sets the path to the file
+		String home = System.getProperty("user.home");
+		String logFilePath = home+"/.config/";
+		
 		// sets the logFilename as per the spec
 		DateTimeFormatter logFilenameFormat;
 		logFilenameFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm-ss");
@@ -38,7 +42,7 @@ public class FileLogger implements ILogger {
 		LocalDateTime now = LocalDateTime.now();
 		String logTimeStamp = now.format(logFilenameFormat);
 		
-		logFilename = logTimeStamp+"-release.log";
+		logFile = logFilePath+logTimeStamp+"-release.log";
 	}
 
 	@Override
@@ -69,7 +73,7 @@ public class FileLogger implements ILogger {
 		
 		PrintWriter printWriter = null;
 		try {
-			printWriter = openFile(logFilename);
+			printWriter = openFile(logFile);
 			printWriter.printf(logMessage);
 		} catch (IOException e) {
 			System.err.println(" Caught IOException: " + e.getMessage());
