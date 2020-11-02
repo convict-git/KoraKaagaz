@@ -3,6 +3,10 @@ package infrastructure.validation.logger;
 import java.time.format.DateTimeFormatter;
 import java.time.LocalDateTime;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.PrintWriter;
+import java.io.IOException;
 
 /**
  * FileLogger class that is part of loggerManager,
@@ -16,12 +20,17 @@ public class FileLogger implements ILogger {
 	/** stores the format specified for the time-stamp */
 	private DateTimeFormatter timeStampFormat;
 	
+	/** string that holds the file name */
+	private String filename;
+	
 	/**
 	 *  
 	 */
 	protected FileLogger() {
 		
+		// set up DateTime format
 		timeStampFormat = DateTimeFormatter.ofPattern("yyyy:MM:dd HH:mm:ss");
+		
 	}
 
 	@Override
@@ -40,4 +49,23 @@ public class FileLogger implements ILogger {
 
 	}
 
+	private static PrintWriter openFile(String filename) throws IOException {
+		
+		FileWriter fileWriter = new FileWriter(filename);
+		PrintWriter printWriter = new PrintWriter(fileWriter);
+		return printWriter;
+	}
+	
+	private static void closeFile(PrintWriter p) {
+		
+		try {
+			if( p != null) {
+				p.close();
+			}
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	
+	}
 }
