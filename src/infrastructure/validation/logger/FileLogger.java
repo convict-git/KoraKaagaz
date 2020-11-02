@@ -21,7 +21,7 @@ public class FileLogger implements ILogger {
 	private DateTimeFormatter timeStampFormat;
 	
 	/** string that holds the file name */
-	private String filename;
+	private static String logFilename;
 	
 	/**
 	 *  
@@ -47,6 +47,7 @@ public class FileLogger implements ILogger {
 		
 		String logMessage = logTimeStamp+logModulePart+logLevelPart+message;
 
+		writeToFile(logMessage);
 	}
 
 	private static PrintWriter openFile(String filename) throws IOException {
@@ -54,6 +55,20 @@ public class FileLogger implements ILogger {
 		FileWriter fileWriter = new FileWriter(filename);
 		PrintWriter printWriter = new PrintWriter(fileWriter);
 		return printWriter;
+	}
+
+	private static void writeToFile(String logMessage) {
+		
+		PrintWriter printWriter = null;
+		try {
+			printWriter = openFile(logFilename);
+			printWriter.printf(logMessage);
+		} catch (IOException e) {
+			System.err.println(" Caught IOException: " + e.getMessage());
+		}
+		finally {
+			closeFile(printWriter);
+		}
 	}
 	
 	private static void closeFile(PrintWriter p) {
