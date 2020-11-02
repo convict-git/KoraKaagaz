@@ -19,7 +19,7 @@ public interface IUser {
 	 * @param userName Username of the user
 	 * @param ipAddress IP Address of the server
 	 * @param boardId Board ID of the requested board, if any
-	 * @return It will return the userId to the UI module
+	 * @return It will return the Board ID to the UI module
 	 */
 	String giveUserDetails(String userName, String ipAddress, String boardId);
 	
@@ -28,7 +28,7 @@ public interface IUser {
 	 * 
 	 * @param positions List of position where a part of object is there, whose
 	 * user they need to identify
-	 * @return UserId of the user
+	 * @return Username of the user
 	 */
 	String getUser(ArrayList<Position> positions);
 	
