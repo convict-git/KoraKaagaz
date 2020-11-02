@@ -20,7 +20,7 @@ public class FileLogger implements ILogger {
 	/** stores the format specified for the time-stamp */
 	private DateTimeFormatter timeStampFormat;
 	
-	/** string that holds the file name */
+	/** string that holds the name of the log file */
 	private static String logFilename;
 	
 	/**
@@ -28,9 +28,17 @@ public class FileLogger implements ILogger {
 	 */
 	protected FileLogger() {
 		
-		// set up DateTime format
+		// sets DateTime format as per the spec
 		timeStampFormat = DateTimeFormatter.ofPattern("yyyy:MM:dd HH:mm:ss");
 		
+		// sets the logFilename as per the spec
+		DateTimeFormatter logFilenameFormat;
+		logFilenameFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm-ss");
+		
+		LocalDateTime now = LocalDateTime.now();
+		String logTimeStamp = now.format(logFilenameFormat);
+		
+		logFilename = logTimeStamp+"-release.log";
 	}
 
 	@Override
