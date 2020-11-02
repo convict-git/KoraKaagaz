@@ -215,7 +215,7 @@ public class SocketListener implements Runnable {
 				 */
 				catch(Exception exp){
 					//Logs exception
-					logger.log(ModuleID.NETWORKING, LogLevel.WARNING, exp.toString())	
+					logger.log(ModuleID.NETWORKING, LogLevel.WARNING, exp.toString());
 				}
 			}
 
