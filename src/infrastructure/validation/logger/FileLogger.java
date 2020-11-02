@@ -60,7 +60,7 @@ public class FileLogger implements ILogger {
 
 	private static PrintWriter openFile(String filename) throws IOException {
 		
-		FileWriter fileWriter = new FileWriter(filename);
+		FileWriter fileWriter = new FileWriter(filename, true);
 		PrintWriter printWriter = new PrintWriter(fileWriter);
 		return printWriter;
 	}
