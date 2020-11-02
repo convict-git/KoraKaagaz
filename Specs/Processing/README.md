@@ -281,7 +281,7 @@ public interface IUser {
 	 * processing module.
 	 * 
 	 * @param userName Username of the user
-	 * @param ipAddress IP Address of the user
+	 * @param ipAddress IP Address of the server
 	 * @param boardId Board ID of the requested board, if any
 	 * @return It will return the userId to the UI module
 	 */
@@ -321,6 +321,21 @@ public interface IChanges {
 }
 ```
 
+```java
+public interface IClientIP {
+	
+	/**
+	 * This interface will be used by the content module to get the IP addresses of
+	 * all the clients connected to the particular board.
+	 * getClientIP will return a Map of all the clients to IP
+	 * 
+	 * @return Map from all the clients to IP
+	 */
+	public Map<Username, IpAddress> getClientIP(); 
+	
+}
+
+```
 ### Tasks Distribution
 ---
 #### Ahmed Zaheer Dadarkar 
