@@ -10,7 +10,7 @@ import java.io.IOException;
 
 /**
  * FileLogger class that is part of loggerManager,
- * and used for logging to the a file (the log file)
+ * and used for writing log entries to a log file
  * Implements ILogger interface
  * 
  * @author Navaneeth M Nambiar
@@ -24,7 +24,9 @@ public class FileLogger implements ILogger {
 	private static String logFile;
 	
 	/**
-	 *  
+	 *  constructor for FileLogger
+	 *  protected type since it needs to be only invoked by LoggerManager class
+	 *  @see logger.LoggerManager
 	 */
 	protected FileLogger() {
 		
@@ -42,6 +44,7 @@ public class FileLogger implements ILogger {
 		LocalDateTime now = LocalDateTime.now();
 		String logTimeStamp = now.format(logFilenameFormat);
 		
+		// set the path to the log file
 		logFile = logFilePath+logTimeStamp+"-release.log";
 	}
 
@@ -62,6 +65,9 @@ public class FileLogger implements ILogger {
 		writeToFile(logMessage);
 	}
 
+	/** private helper method that returns an object that can write content into a file 
+	 *  throws IOException error upon failure which is to be handled by the parent
+	 */
 	private static PrintWriter openFile(String filename) throws IOException {
 		
 		FileWriter fileWriter = new FileWriter(filename, true);
@@ -69,6 +75,10 @@ public class FileLogger implements ILogger {
 		return printWriter;
 	}
 
+	/** private helper method that opens the logFile, 
+	 *  appends the message to the file and closes the file
+	 *  Handles IOException errors
+	 */
 	private static void writeToFile(String logMessage) {
 		
 		PrintWriter printWriter = null;
@@ -83,10 +93,13 @@ public class FileLogger implements ILogger {
 		}
 	}
 	
+	/** private helper method that is used to properly close a file,
+	 *  if it is open.
+	 */
 	private static void closeFile(PrintWriter p) {
 		
-		if( p != null) {
-				p.close();
+		if(p != null) {
+			p.close();
 		}
 		else {
 			System.out.println(" PrintWriter not open ");
