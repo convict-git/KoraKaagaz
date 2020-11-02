@@ -43,7 +43,7 @@ public class SocketListener implements Runnable {
 	/** 
 	 * logger object from the LoggerFactory to log messages
 	*/
-	Ilogger logger = LoggerFactory.getLoggerInstance();
+	ILogger logger = LoggerFactory.getLoggerInstance();
 
 	/**
 	 * 
@@ -215,7 +215,7 @@ public class SocketListener implements Runnable {
 				 */
 				catch(Exception exp){
 					//Logs exception
-					logger.log(ModuleID.NETWORKING, LogLevel.WARNING, exp)	
+					logger.log(ModuleID.NETWORKING, LogLevel.WARNING, exp.toString())	
 				}
 			}
 
@@ -225,7 +225,7 @@ public class SocketListener implements Runnable {
 		 * This block gets executed when a exception arises in try block
 		 */
 		catch(IOException exp){
-			logger.log(ModuleID.NETWORKING, LogLevel.ERROR, exp);
+			logger.log(ModuleID.NETWORKING, LogLevel.ERROR, exp.toString());
 		}
 
 		/**
@@ -245,7 +245,7 @@ public class SocketListener implements Runnable {
 			 * This block gets executed when an exception arises while closing the socket.
 			 */
 			catch(IOException exp){
-				logger.log(ModuleID.NETWORKING, LogLevel.ERROR, exp);
+				logger.log(ModuleID.NETWORKING, LogLevel.ERROR, exp.toString());
 			}
 		}
     }
@@ -267,7 +267,7 @@ public class SocketListener implements Runnable {
 		 * This block gets executed when an exception arises while closing the socket.
 		 */
 		catch(IOException exp){
-			logger.log(ModuleID.NETWORKING, LogLevel.ERROR, exp);
+			logger.log(ModuleID.NETWORKING, LogLevel.ERROR, exp.toString());
 		}
 	}
 
