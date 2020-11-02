@@ -73,14 +73,11 @@ public class FileLogger implements ILogger {
 	
 	private static void closeFile(PrintWriter p) {
 		
-		try {
-			if( p != null) {
+		if( p != null) {
 				p.close();
-			}
 		}
-		catch (Exception e) {
-			e.printStackTrace();
+		else {
+			System.out.println(" PrintWriter not open ");
 		}
-	
 	}
 }
