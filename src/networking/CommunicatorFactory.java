@@ -9,7 +9,7 @@ import java.net.UnknownHostException;
 import networking.ICommunicator;
 import networking.LanCommunicator;
 import networking.utility.ClientInfo;
-
+import infrastructure.validation.logger.*;
 
 /**
 * This file contains information about CommunicatorFactory class, This class is used for implementation of creation logic 
@@ -25,7 +25,7 @@ public class CommunicatorFactory{
 	private static ICommunicator communicatorInstance=null;
 
 	/** saving logger object from LoggerFactory class to log messages */
-	//static ILogger logger=LoggerFactory.getLoggerInstance();
+	static ILogger logger=LoggerFactory.getLoggerInstance();
 	
 	/**
 	* Constructor of this class is not accessible to other packages or classes.
