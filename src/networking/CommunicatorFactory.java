@@ -2,7 +2,6 @@ package networking;
 
 import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.io.IOException;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 
@@ -11,6 +10,7 @@ import networking.ICommunicator;
 import networking.LanCommunicator;
 import networking.utility.ClientInfo;
 import infrastructure.validation.logger.*;
+
 
 /**
 * This file contains information about CommunicatorFactory class, This class is used for implementation of creation logic 
@@ -66,6 +66,7 @@ public class CommunicatorFactory{
 
 	
 
+
 	/**
 	* This method provides information about private IP address of the client and free port available at client without 
 	* creating the object of CommunicatorFactory class.
@@ -120,6 +121,7 @@ public class CommunicatorFactory{
 			/** This catch block is executed after raising the exception when there is given host is unkown. */
 			catch(UnknownHostException e){
 				logger.log(ModuleID.NETWORKING, LogLevel.ERROR,"UnknownHost "+e.toString());
+				sock.close();
 				return new ClientInfo();
 			}
 
@@ -172,6 +174,5 @@ public class CommunicatorFactory{
 		* releases the given communicator.
 		*/
 		communicatorInstance=null;
-		logger.log(ModuleID.NETWORKING, LogLevel.SUCCESS, "freed Communicator at CommunicatorFactory");
 	}
 }

@@ -172,10 +172,11 @@ public class LanCommunicator implements ICommunicator{
         logger.log(ModuleID.NETWORKING, LogLevel.INFO, "Communication is stopped");
     }
 
+  
+    
     /**
      * This method creates a object with the params
      * and enqueues this object into the sendQueue
-     * 
      * @param destination contains the ip and port
      * @param message that needs to be sent
      * @param identifier specifies who want to send it
@@ -232,3 +233,6 @@ public class LanCommunicator implements ICommunicator{
     	}
     }
 }
+
+    
+

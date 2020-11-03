@@ -1,6 +1,6 @@
 package networking.utility;
-
 import infrastructure.validation.logger.*;
+
 
 /**
 * This file contains ClientInfo class, which is used as utility for providing client's IP address
@@ -42,6 +42,7 @@ public class ClientInfo{
 	}
 
 
+
 	/**
 	* @return String which is client's private IP address.
 	*/
@@ -49,10 +50,5 @@ public class ClientInfo{
 		return this.ip;
 	}
 
-	/**
-	* @return int which is free port number available at client. 
-	*/
-	public int getPort(){
-		return this.port;
-	}
+
 }

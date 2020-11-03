@@ -56,7 +56,7 @@ public class ConcurrentBlockingQueue<T> implements IQueue<T> {
      */
     public void dequeue(){
         try {
-            T item = q.take();
+           q.take();
         } catch (InterruptedException e){
             logger.log(ModuleID.NETWORKING, LogLevel.ERROR, "Raised in QueueManagement because a interruption is caused while the queue is waiting");
         }
