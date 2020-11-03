@@ -44,4 +44,6 @@ public class ClientBoardState {
 	
 	public static BrushRadius brushSize;
 	
+	public static Dimension boardDimension;
+	
 }
