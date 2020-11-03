@@ -33,7 +33,7 @@ public class ClientBoardState {
 	public static ArrayList <UserId> users = new ArrayList <UserId>();
 	
 	//to store the selected object
-	public static PriorityQueueObject selectedObject;
+	private static PriorityQueueObject selectedObject;
 	
 	//to store the username and userId
 	public static Username username;
@@ -43,5 +43,14 @@ public class ClientBoardState {
 	public static IpAddress serverIp;
 	
 	public static BrushRadius brushSize;
-	
+
+	/** Synchronized handles to get and set the 'selectedObject' data member in ClientBoardState class */
+	public static synchronized void setSelectedObject(PriorityQueueObject pqObject) {
+		ClientBoardState.selectedObject = new PriorityQueueObject(pqObject);
+	}
+
+	public static synchronized PriorityQueueObject getSelectedObject() {
+		return ClientBoardState.selectedObject;
+	}
+
 }
