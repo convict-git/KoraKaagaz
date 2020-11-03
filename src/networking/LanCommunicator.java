@@ -5,6 +5,8 @@ package networking;
  * for messages that they should be receiving.
  *
  * @author Madaka Srikar Reddy
+ * 
+ * @author Prudhvi Vardhan Reddy Pulagam  for subscribeForNotifications method
  */
 
 
@@ -198,4 +200,35 @@ public class LanCommunicator implements ICommunicator{
         logger.log(ModuleID.NETWORKING, LogLevel.INFO, "Pushed the message into the send queue");
     }
 
+    /**
+    * This method used to implement Publisher-Subscriber pattern. This method takes two arguments Identifier and handler. Based on the Identifier,
+    * the provided handler gets the data accordingly. The handler is the object of the class which implements INotificationHandler interface.
+    * Upon receiving the message through network, the networking module transfers the received message to subscribed module by invoking the onMessageReceived method
+    * of the provided handler object.
+    *
+    * @param identifier specifies the module subscribing.
+    *
+    * @param handler should handle message transfered from networking module.
+    */
+    @Override
+    public void subscribeForNotifications(String identifier, INotificationHandler handler){
+
+    	/** validating the handler */
+    	if(handler==null)
+    		logger.log(ModuleID.NETWORKING, LogLevel.WARNING, "Provide a valid handler");
+
+    	/** validating the identifier */
+    	else if(identifier=="" || identifier==null)
+    		logger.log(ModuleID.NETWORKING, LogLevel.WARNING,"Provide a valid identifier");
+
+    	else{
+
+    		/** logging the info as the handler might be overridden if the specified identifier exists */
+    		if(handlerMap.containsKey(identifier))
+    			logger.log(ModuleID.NETWORKING,LogLevel.INFO,"Already have the specified identifier");
+
+    		/** inserting the specified identifier and handler into the hashmap */
+    		handlerMap.put(identifier,handler);
+    	}
+    }
 }
