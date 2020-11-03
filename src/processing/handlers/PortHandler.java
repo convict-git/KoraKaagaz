@@ -4,6 +4,14 @@ import networking.INotificationHandler;
 import processing.ClientBoardState;
 import processing.utility.*;
 
+/**
+ * This class handles Port message received from the server.
+ * 
+ * @author Satchit Desai
+ * @reviewer Himanshu Jain
+ *
+ */
+
 public class PortHandler implements INotificationHandler{
 	
 		public void onMessageReceived(String message) {
