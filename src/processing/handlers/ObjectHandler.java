@@ -5,6 +5,14 @@ import processing.*;
 import processing.boardobject.*;
 import networking.INotificationHandler;
 
+/**
+ * This class handles Board Object received from the server
+ * 
+ * @author Satchit Desai
+ * @reviewer Himanshu Jain
+ *
+ */
+
 public class ObjectHandler implements INotificationHandler{
 	
 	public void onMessageReceived(String message) {
