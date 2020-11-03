@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<!--  <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   -->
+
+<AnchorPane maxHeight="600.0" maxWidth="800.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   
+   <children>
+      <Pane layoutX="254.0" prefHeight="600.0" prefWidth="539.0" style="-fx-background-color: white;">
+         <children>
+            <Label layoutX="37.0" layoutY="169.0" prefHeight="35.0" prefWidth="166.0" text="Username">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label layoutX="37.0" layoutY="236.0" prefHeight="35.0" prefWidth="166.0" text="IP Address">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <TextField layoutX="219.0" layoutY="169.0" prefHeight="35.0" prefWidth="293.0" promptText="Enter Username" />
+            <TextField layoutX="218.0" layoutY="236.0" prefHeight="35.0" prefWidth="293.0" promptText="Enter IP address" />
+            <TextField layoutX="216.0" layoutY="290.0" prefHeight="35.0" prefWidth="293.0" promptText="Enter Board ID" />
+            <Label layoutX="37.0" layoutY="353.0" prefHeight="35.0" prefWidth="166.0" text="Profile Image">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label layoutX="37.0" layoutY="290.0" prefHeight="35.0" prefWidth="166.0" text="Board ID">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label layoutX="91.0" layoutY="46.0" prefHeight="54.0" prefWidth="358.0" text="START SESSION">
+               <font>
+                  <Font name="Arial Black" size="33.0" />
+               </font>
+            </Label>
+            <Button layoutX="104.0" layoutY="438.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="224.0" style="-fx-background-color: orange;" text="Start Session">
+               <font>
+                  <Font size="15.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="OPEN_HAND" />
+               </cursor></Button>
+            <Button layoutX="216.0" layoutY="358.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="142.0" text="Choose Image">
+               <cursor>
+                  <Cursor fx:constant="OPEN_HAND" />
+               </cursor></Button>
+         </children>
+      </Pane>
+      <VBox layoutY="176.0" prefHeight="218.0" prefWidth="252.0">
+         <children>
+              <ImageView fitHeight="226.0" fitWidth="253.0" pickOnBounds="true" smooth="false">
+             <image>
+            <Image url="@KoraKaagaz.jpg" />
+         </image>
+            </ImageView> 
+            
+           
+         
+      <!--      <ImageView fitHeight="188.0" fitWidth="253.0" pickOnBounds="true" smooth="false" /> -->
+         </children>
+      </VBox>
+   </children>
+
+</AnchorPane>
