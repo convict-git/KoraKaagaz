@@ -73,7 +73,7 @@ public class SelectDelete {
         UndoRedo.pushIntoStack(object);
 
         /** Provide the changes in pixels to the UI */
-        provideChanges(object.getPixels(), null);
+        CommunicateChange.provideChanges(object.getPixels(), null);
 
         /** if deletedObjectId == selectedObjectId then make selectedObject null and send changes in selected pixels to UI */
         PriorityQueueObject selectedObject = ClientBoardState.getSelectedObject();
