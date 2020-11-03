@@ -68,4 +68,7 @@ public class ClientBoardState {
 	public static synchronized PriorityQueueObject getSelectedObject() {
 		return ClientBoardState.selectedObject;
 	}
+	
+	public static Dimension boardDimension;
+	
 }
