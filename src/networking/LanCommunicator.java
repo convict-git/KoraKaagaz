@@ -148,13 +148,26 @@ public class LanCommunicator implements ICommunicator{
     /**
      * This method will help to terminate all the threads
      * initialized in the start method by setting isRunning to false
+     * and also changing all the instances to null
      */
     @Override
     public void stop(){
     	setStatus(false);
-    	CommunicatorFactory.freeCommunicator();
         socketListener.stop();
-    	logger.log(ModuleID.NETWORKING, LogLevel.INFO, "Communication is stopped");
+        sendQueueListener = null;
+        sendQueueListenerWorker = null;
+        socketListener = null;
+        socketListenerWorker = null;
+        processingReceiveQueueListener = null;
+        processingReceiveQueueListenerWorker = null;
+        contentReceiveQueueListener = null;
+        contentReceiveQueueListenerWorker = null;
+        sendQueue = null;
+        processingReceiveQueue = null;
+        contentReceiveQueue = null;
+        handlerMap = null;
+        CommunicatorFactory.freeCommunicator();
+        logger.log(ModuleID.NETWORKING, LogLevel.INFO, "Communication is stopped");
     }
 
     /**
@@ -182,7 +195,7 @@ public class LanCommunicator implements ICommunicator{
     	/** Creating the object for the outgoing packet that is being pushed into the send queue. */
         OutgoingPacket packet = new OutgoingPacket(destination, message, identifier);
         sendQueue.enqueue(packet);
-        logger.log(ModuleID.NETWORKING, LogLevel.INFO, "Pushed the message into the queue");
+        logger.log(ModuleID.NETWORKING, LogLevel.INFO, "Pushed the message into the send queue");
     }
 
 }
