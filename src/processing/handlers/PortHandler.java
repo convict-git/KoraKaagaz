@@ -4,10 +4,18 @@ import networking.INotificationHandler;
 import processing.ClientBoardState;
 import processing.utility.*;
 
-public class PortHandler implements INotification{
+/**
+ * This class handles Port number of the Board Server received from the server
+ * 
+ * @author Satchit Desai
+ * @reviewer Himanshu Jain
+ *
+ */
+
+public class PortHandler implements INotificationHandler{
 	
 		public void onMessageReceived(String message) {
-			Port portnumber = Port(Integer.parseInt(message));
+			Port portNumber = new Port(Integer.parseInt(message));
 			ClientBoardState.portNumber = portNumber;
 		}
 }
