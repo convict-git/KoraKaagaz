@@ -1,6 +1,8 @@
 package processing;
 
 import java.util.*;
+import networking.ICommunicator;
+import processing.handlers.*;
 import processing.boardobject.*;
 import processing.utility.*;
 
@@ -30,20 +32,43 @@ public class ClientBoardState {
 	 * Will remain empty on the client side, as there is no need to know all the users to the client.
 	 * Server will use this users List to maintain the list of all the users connected to this Board.
 	 */
-	public static ArrayList <UserId> users = new ArrayList <UserId>();
+	public static ArrayList <String> users = new ArrayList <String>();
 	
 	//to store the selected object
-	public static PriorityQueueObject selectedObject;
+	private static PriorityQueueObject selectedObject;
 	
 	//to store the username and userId
 	public static Username username;
 	public static UserId userId;
 	public static IpAddress userIP;
+	public static Port userPort;
 	
 	public static IpAddress serverIp;
 	
 	public static BrushRadius brushSize;
 	
+	public static ICommunicator communicator;
+	
+	public static void start() {
+		ClientBoardState.communicator.subscribeForNotifications("ProcessingObject", new ObjectHandler());
+		ClientBoardState.communicator.subscribeForNotifications("ProcessingBoardState", new BoardStateHandler());
+		ClientBoardState.communicator.subscribeForNotifications("ProcessingServerPort", new PortHandler());
+		ClientBoardState.communicator.subscribeForNotifications("ProcessingBoardId", new BoardIdHandler());
+		while(ClientBoardState.boardId != null) {
+			// wait until we receive a boardId from the server
+		}
+	}
+	
+	public static synchronized void setSelectedObject(PriorityQueueObject selectedObject) {
+		ClientBoardState.selectedObject = selectedObject;
+	}
+	
+	public static synchronized PriorityQueueObject getSelectedObject() {
+		return ClientBoardState.selectedObject;
+	}
+	
 	public static Dimension boardDimension;
+	
+	public static Port serverPort;
 	
 }

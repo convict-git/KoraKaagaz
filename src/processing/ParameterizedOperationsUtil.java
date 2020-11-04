@@ -168,9 +168,12 @@ public class ParameterizedOperationsUtil {
 
         obj = colorChangeUtil(obj, id, intensity);
         stackUtil(obj);
-        
+
         // To send all the pixel updates to UI
-        provideChanges(obj.getPrevIntensity(), obj.getPixels());
+        CommunicateChange.provideChanges(obj.getPrevIntensity(), obj.getPixels());
+
+        // To send selection updates to UI
+        CommunicateChange.identifierToHandler(CommunicateChange.identifierUI).giveSelectedPixels(obj.getPixels());
 
         return obj.getObjectId();
     }
@@ -182,9 +185,12 @@ public class ParameterizedOperationsUtil {
 
         obj = rotationUtil(obj, id, angleOfRotation);
         stackUtil(obj);
-        
+
         // To send all the pixel updates to UI
-        provideChanges(obj.getPrevIntensity(), obj.getPixels());
+        CommunicateChange.provideChanges(obj.getPrevIntensity(), obj.getPixels());
+
+        // To send selection updates to UI
+        CommunicateChange.identifierToHandler(CommunicateChange.identifierUI).giveSelectedPixels(obj.getPixels());
 
         return obj.getObjectId();
     }
