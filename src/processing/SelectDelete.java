@@ -31,7 +31,7 @@ public class SelectDelete {
 
         if (mostProbableObjectId == null) {
             ClientBoardState.setSelectedObject(noObjectSelected);
-            giveSelectedPixels(new ArrayList<Pixel>());     // returning empty list to UI
+            // giveSelectedPixels(new ArrayList<Pixel>());     // returning empty list to UI
             return emptyPositionList;                       // returning empty list
         }
 
@@ -40,12 +40,12 @@ public class SelectDelete {
 
         if (selected == null) {
             ClientBoardState.setSelectedObject(noObjectSelected);
-            giveSelectedPixels(new ArrayList<Pixel>());     // returning empty list to UI
+            // giveSelectedPixels(new ArrayList<Pixel>());     // returning empty list to UI
             return emptyPositionList;                       // returning empty list
         }
 
         /** Pass selected positions to UI for display */
-        giveSelectedPixels(selected.getPositions());
+        // giveSelectedPixels(selected.getPositions());
 
         /** Updated selectedObject data member in ClientBoardState */
         PriorityQueueObject newSelectedObject = new PriorityQueueObject(selected.getObjectId(), selected.getTimestamp());
@@ -79,7 +79,7 @@ public class SelectDelete {
         PriorityQueueObject selectedObject = ClientBoardState.getSelectedObject();
         if (selectedObject.objectId == object.getObjectId()) {
             ClientBoardState.setSelectedObject(null);
-            giveSelectedPixels(new ArrayList<Pixel>());     // returning empty list
+            // giveSelectedPixels(new ArrayList<Pixel>());     // returning empty list
         }
     }
 
