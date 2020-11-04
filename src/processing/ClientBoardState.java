@@ -47,7 +47,7 @@ public class ClientBoardState {
 	
 	public static BrushRadius brushSize;
 	
-public static ICommunicator communicator;
+	public static ICommunicator communicator;
 	
 	public static void start() {
 		ClientBoardState.communicator.subscribeForNotifications("ProcessingObject", new ObjectHandler());
