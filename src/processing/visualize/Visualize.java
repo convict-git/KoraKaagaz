@@ -91,9 +91,6 @@ public class Visualize {
 		// Construct frame in which to display
 		JFrame frame = new JFrame("Visualize");
 		
-		// Exit on Closing the frame
-		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		
 		// Construct Image Icon using Buffered Image
 		ImageIcon imageIcon = new ImageIcon(bufferedImage);
 		
