@@ -1,7 +1,7 @@
 package processing.server.board;
 
 /**
- * This is a factory class. Its function getDetailsHandler() will be called by the
+ * This is a factory class. Its function getIPHandler() will be called by the
  * content team so that they can use the function getClientDetails defined in the 
  * IClientDetails interface.
  * 

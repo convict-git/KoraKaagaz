@@ -26,7 +26,7 @@ public class ServerCommunication {
 	}
 
 	public void getBoardState() {
-		ClientBoardState.communicator.send(serverAddress, null, "BoardStateRequest");
+		ClientBoardState.send(serverAddress, null, "BoardStateRequest");
 	}
 	
 	public void sendObject(BoardObject obj) {
@@ -39,7 +39,7 @@ public class ServerCommunication {
 			// log the exception
 		}
 		
-		ClientBoardState.communicator.send(serverAddress, message, "ObjectBroadcast");
+		ClientBoardState.send(serverAddress, message, "ObjectBroadcast");
 	}
 	
 	public void stopConnection() {
@@ -47,7 +47,7 @@ public class ServerCommunication {
 					   + ":"
 					   + ClientBoardState.userPort.toString();
 		
-		ClientBoardState.communicator.send(serverAddress, message, "StopConnection");
+		ClientBoardState.send(serverAddress, message, "StopConnection");
 	}
 	
 }

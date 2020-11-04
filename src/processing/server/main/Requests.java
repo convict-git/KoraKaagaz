@@ -27,7 +27,7 @@ public class Requests implements IRequests{
 						 + ":"
 						 + portNumber.toString();
 		
-		ClientBoardState.communicator.send(serverAddr,message,"NewBoard");
+		ClientBoardState.send(serverAddr,message,"NewBoard");
 		
 	}
 	
@@ -39,7 +39,7 @@ public class Requests implements IRequests{
 					   + ":"
 					   + portNumber.toString();
 		
-		ClientBoardState.communicator.send(serverAddr, message, "ExistingBoard");
+		ClientBoardState.send(serverAddr, message, "ExistingBoard");
 		
 	}
 	

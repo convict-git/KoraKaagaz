@@ -1,6 +1,7 @@
 package processing.handlers;
 
 import java.io.IOException;
+import processing.threading.*;
 import processing.*;
 import processing.boardobject.*;
 import networking.INotificationHandler;
@@ -15,8 +16,9 @@ import networking.INotificationHandler;
 
 public class ObjectHandler implements INotificationHandler{
 	
-	public void onMessageReceived(String message) {
+	public static void handleBoardObject(String message) {
 		
+
 		try {
 				BoardObject boardObject = (BoardObject)Serialize.deSerialize(message);
 				boardObject.getOperation();
@@ -25,5 +27,14 @@ public class ObjectHandler implements INotificationHandler{
 		} catch (IOException e) {
 			//Log the exception
 		}
+		
+	}
+	
+	public void onMessageReceived(String message) {
+	
+		HandleBoardObject runnable = new HandleBoardObject(message);
+		Thread objectHandler = new Thread(runnable);
+		objectHandler.start();
+		
 	}
 }

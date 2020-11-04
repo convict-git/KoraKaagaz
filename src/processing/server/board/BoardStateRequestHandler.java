@@ -31,7 +31,7 @@ public class BoardStateRequestHandler implements INotificationHandler{
 		
 		ClientBoardState.users.add(clientAddress);
 		
-		ClientBoardState.communicator.send(
+		ClientBoardState.send(
 				clientAddress, 
 				boardState, 
 				"ProcessingBoardState"

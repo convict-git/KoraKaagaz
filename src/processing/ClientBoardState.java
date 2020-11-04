@@ -84,6 +84,18 @@ public class ClientBoardState {
 	public static ICommunicator communicator;
 	
 	/**
+	 * boardDimension will store the dimensions of the canvas board defined
+	 * by the UI. This will be used while drawing shapes.
+	 */
+	public static Dimension boardDimension;
+	
+	/**
+	 * serverPort will store the port number of the Main Server which is kept
+	 * fixed as 8467 by default.
+	 */
+	public static Port serverPort = new Port(8467);
+	
+	/**
 	 * This will be called at the start of the program to setup the connection 
 	 * from the networking. To subscribe for notifications for different events that 
 	 * can happen, it also spawn a thread to wait till we get the board ID in case 
@@ -138,13 +150,16 @@ public class ClientBoardState {
 		);
 		
 		/**
-		 * We need to return the Board ID back to the UI when the process starts. As
-		 * this function is called in the start of the process it will wait till we receive
-		 * the BoardID from the Main Server so for it we need to spawn a new thread to wait 
-		 * for the BoardID from the server.
+		 * We need to wait until we receive BoardID from the server.
+		 * This start function will be called by the giveUserDetails function
+		 * in IUser and it will be run in a thread in the processor class, so 
+		 * this while loop will not halt the process.
 		 */
-		Thread waitForBoardID = new Thread(new StartThread());
-		waitForBoardID.start();
+		while(ClientBoardState.boardId == null) {
+			
+			// wait till BoardID is set by the server
+			
+		}
 	}
 	
 	/**
@@ -166,15 +181,24 @@ public class ClientBoardState {
 	}
 	
 	/**
-	 * boardDimension will store the dimensions of the canvas board defined
-	 * by the UI. This will be used while drawing shapes.
+	 * wrapper send function of the networking module send so as to spawn a thread
+	 * and then call the send function of networking module inside that thread.
+	 * 
+	 * @param address address of the receiver
+	 * @param message message to be sent
+	 * @param identifier identifier of the message
 	 */
-	public static Dimension boardDimension;
-	
-	/**
-	 * serverPort will store the port number of the Main Server which is kept
-	 * fixed as 8467 by default.
-	 */
-	public static Port serverPort = new Port(8467);
+	public static void send(String address, String message, String identifier) {
+		
+		// create a runnable object of the class HandleSend
+		HandleSend runnable = new HandleSend(address,message,identifier);
+		
+		// spawn a new thread with runnable as the object
+		Thread handleSend = new Thread(runnable);
+		
+		// start the process in the thread
+		handleSend.start();
+		
+	}
 	
 }

@@ -61,7 +61,7 @@ public class BoardRequestHandler implements INotificationHandler{
 			ServerState.boardToPort.put(boardId, boardServerPort);
 		}
 		
-		ServerState.communicator.send(
+		ServerState.send(
 				clientAddress, 
 				boardServerPort.toString(), 
 				"ProcessingServerPort"

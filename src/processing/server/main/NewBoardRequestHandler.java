@@ -33,13 +33,13 @@ public class NewBoardRequestHandler implements INotificationHandler{
 		
 		BoardRequestHandler.startBoardServer(boardServerPort, boardId, null);
 		
-		ServerState.communicator.send(
+		ServerState.send(
 				clientAddress, 
 				boardId.toString(), 
 				"ProcessingBoardId"
 		);
 		
-		ServerState.communicator.send(
+		ServerState.send(
 				clientAddress, 
 				boardServerPort.toString(), 
 				"ProcessingServerPort"
