@@ -30,15 +30,6 @@ public class BoardState implements Serializable {
 		posToObjects = new HashMap <Position, PriorityQueue <PriorityQueueObject>> ();
 	}
 
-	/** Synchronized handles to get and set the 'selectedObject' data member in ClientBoardState class */
-	public synchronized void setSelectedObject(PriorityQueueObject pqObject) {
-		ClientBoardState.selectedObject = new PriorityQueueObject(pqObject);
-	}
-
-	public synchronized PriorityQueueObject getSelectedObject() {
-		return ClientBoardState.selectedObject;
-	}
-
 	/** Looks up BoardObject for the ObjectId key in the argument */
 	public synchronized BoardObject getBoardObjectFromId(ObjectId objId) {
 		return objIdToBoardObject.get(objId);

@@ -1,6 +1,8 @@
 package processing;
 
 import java.util.*;
+import networking.ICommunicator;
+import processing.handlers.*;
 import processing.boardobject.*;
 import processing.utility.*;
 
@@ -43,6 +45,26 @@ public class ClientBoardState {
 	public static IpAddress serverIp;
 	
 	public static BrushRadius brushSize;
+	
+public static ICommunicator communicator;
+	
+	public static void start() {
+		ClientBoardState.communicator.subscribeForNotifications("ProcessingObject", new ObjectHandler());
+		ClientBoardState.communicator.subscribeForNotifications("ProcessingBoardState", new BoardStateHandler());
+		ClientBoardState.communicator.subscribeForNotifications("ProcessingServerPort", new PortHandler());
+		ClientBoardState.communicator.subscribeForNotifications("ProcessingBoardId", new BoardIdHandler());
+		while(ClientBoardState.boardId != null) {
+			// wait until we receive a boardId from the server
+		}
+	}
+	
+	public static synchronized void setSelectedObject(PriorityQueueObject selectedObject) {
+		ClientBoardState.selectedObject = selectedObject;
+	}
+	
+	public static synchronized PriorityQueueObject getSelectedObject() {
+		return ClientBoardState.selectedObject;
+	}
 	
 	public static Dimension boardDimension;
 	
