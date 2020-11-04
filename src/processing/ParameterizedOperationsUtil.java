@@ -173,8 +173,8 @@ public class ParameterizedOperationsUtil {
         CommunicateChange.provideChanges(obj.getPrevIntensity(), obj.getPixels());
 
         // To send selection updates to UI
-        IChanges.giveSelectedPixels(obj.getPixels());
-        
+        // IChangesImplementingClass.giveSelectedPixels(obj.getPixels());
+
         return obj.getObjectId();
     }
 
@@ -190,7 +190,7 @@ public class ParameterizedOperationsUtil {
         CommunicateChange.provideChanges(obj.getPrevIntensity(), obj.getPixels());
 
         // To send selection updates to UI
-        IChanges.giveSelectedPixels(obj.getPixels());
+        // IChangesImplementingClass.giveSelectedPixels(obj.getPixels());
 
         return obj.getObjectId();
     }
