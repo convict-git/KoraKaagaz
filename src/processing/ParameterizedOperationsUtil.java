@@ -27,9 +27,9 @@ public class ParameterizedOperationsUtil {
     }
 
     /**
-     * Function to calculate the centre of object's pixel by averaging the x and y coordinates of
-     * all the pixels in the given object.
-     */
+    * Function to calculate the centre of object's pixel by averaging the x and y coordinates of
+    * all the pixels in the given object.
+    */
     private static Position findCentre(ArrayList<Pixel>pixels) {
 
         Position centrePos = new Position(0, 0);
@@ -48,8 +48,8 @@ public class ParameterizedOperationsUtil {
     }
 
     /**
-     * Function calculates the rotation matrix.
-     */
+    * Function calculates the rotation matrix.
+    */
     private static double[][] rotationMatrix(Angle angleOfRotation) {
 
         // calculating angle, sin, cosine values
@@ -67,11 +67,11 @@ public class ParameterizedOperationsUtil {
     }
 
     /**
-     * Function to change colors of object, store all required object's data members in local
-     * variables, call for removing previous object from all utility maps, and finally create
-     * new updated object.
-     * To be called by ClientSideProcessing(vis colorChange function) and UndoRedo sections.
-     */
+    * Function to change colors of object, store all required object's data members in local
+    * variables, call for removing previous object from all utility maps, and finally create
+    * new updated object.
+    * To be called by ClientSideProcessing(vis colorChange function) and UndoRedo sections.
+    */
     public static BoardObject colorChangeUtil(BoardObject obj, UserId id, Intensity newIntensity) {
 
         // storing initial intensities of pixels (to be used during undo-operation)
@@ -93,6 +93,63 @@ public class ParameterizedOperationsUtil {
 
         // set (COLOR_CHANGE) as the operation which is applied on object.
         IBoardObjectOperation newBoardOp = new ColorChangeOperation(newIntensity);
+
+        // remove previous object from maps.
+        BoardObject dummyObj = ClientBoardState.maps.removeObjectFromMaps(obj.getObjectId());
+
+        // create a new object with same objectId, timestamp and other updated values.
+        BoardObject newObj = CurveBuilder.drawCurve(newPixelSet, newBoardOp, newObjectId, newTime,
+        id, prevPixelIntensities, false);
+
+        return newObj;
+    }
+
+    /**
+    * Function to rotate the object, store all required object's data members in local
+    * variables, call for removing previous object from all utility maps, and finally create
+    * new updated object.
+    * To be called by ClientSideProcessing(via rotation function) and UndoRedo sections.
+    */
+    public static BoardObject rotationUtil(BoardObject obj, UserId id, Angle angleOfRotation) {
+
+        // storing initial list of pixels (to be used in creation of new BoardObject)
+        ArrayList<Pixel> prevPixelIntensities = new ArrayList<Pixel>();
+        prevPixelIntensities = obj.getPixels();
+
+        // finding centre of rotation (i.e centre Position of previous pixels)
+        Position centre = new Position(findCentre(prevPixelIntensities));
+
+        // Calculating the required rotation matrix
+        double[][] rotMatrix = rotationMatrix(angleOfRotation);
+
+        // generating new list of object's pixels
+        ArrayList<Pixel> newPixelSet = new ArrayList<Pixel>();
+        newPixelSet = obj.getPixels();
+        for(int i = 0; i < newPixelSet.size(); i++) {
+
+            // shifting origin
+            Position posWithShiftedOrigin = new Position(newPixelSet.get(i).position.r - centre.r,
+            newPixelSet.get(i).position.c - centre.c);
+
+            // applying rotation matrix followed by Narrowing Type Casting
+            Position rotatedPos = new Position((int)(rotMatrix[0][0] * posWithShiftedOrigin.r +
+            rotMatrix[0][1] * posWithShiftedOrigin.c), (int)(rotMatrix[1][0] * posWithShiftedOrigin.r
+             + rotMatrix[1][1] * posWithShiftedOrigin.c));
+
+            // Re-align according to the calculated centre
+            Position finalPos = new Position(rotatedPos.r + centre.r, rotatedPos.c + centre.c);
+
+            // set final pixel, preserving the intensity
+            Pixel newPix = new Pixel(finalPos, newPixelSet.get(i).intensity);
+            newPixelSet.set(i, newPix);
+        }
+
+        // storing data members that remain same: objectId, and timestamp of object creation
+        ObjectId newObjectId = obj.getObjectId();
+        Timestamp newTime = obj.getTimestamp();
+
+        // set (ROTATE) as the operation which is applied on object.
+        IBoardObjectOperation newBoardOp = new RotateOperation(angleOfRotation);
 
         // remove previous object from maps.
         BoardObject dummyObj = ClientBoardState.maps.removeObjectFromMaps(obj.getObjectId());
@@ -170,21 +227,27 @@ public class ParameterizedOperationsUtil {
         stackUtil(obj);
 
         // To send all the pixel updates to UI
-        provideChanges(obj.getPrevIntensity(), obj.getPixels());
+        CommunicateChange.provideChanges(obj.getPrevIntensity(), obj.getPixels());
+
+        // To send selection updates to UI
+        IChanges.giveSelectedPixels(obj.getPixels());
 
         return obj.getObjectId();
     }
 
     /**
-     * Function for implementing rotation of select-able objects.
-     */
+    * Function for implementing rotation of select-able objects.
+    */
     public static ObjectId rotation(BoardObject obj, UserId id, Angle angleOfRotation) {
 
         obj = rotationUtil(obj, id, angleOfRotation);
         stackUtil(obj);
 
         // To send all the pixel updates to UI
-        provideChanges(obj.getPrevIntensity(), obj.getPixels());
+        CommunicateChange.provideChanges(obj.getPrevIntensity(), obj.getPixels());
+
+        // To send selection updates to UI
+        IChanges.giveSelectedPixels(obj.getPixels());
 
         return obj.getObjectId();
     }
