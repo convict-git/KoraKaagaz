@@ -35,7 +35,7 @@ public class ClientBoardState {
 	public static ArrayList <UserId> users = new ArrayList <UserId>();
 	
 	//to store the selected object
-	public static PriorityQueueObject selectedObject;
+	private static PriorityQueueObject selectedObject;
 	
 	//to store the username and userId
 	public static Username username;
