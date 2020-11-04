@@ -15,7 +15,7 @@ public class CommunicateChange {
 	/** identifier to IChanges handler map */
 	private static Map <String, IChanges> identifierToHandler;
 	/** UI identifier */
-	private static String identifierUI;
+	public static String identifierUI;
 
 	/**
      * Computes the set of pixels which will have effect
