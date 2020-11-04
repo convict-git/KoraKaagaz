@@ -50,5 +50,12 @@ public class ClientInfo{
 		return this.ip;
 	}
 
+	/**
+	* @return int which is available port number.
+	*/
+	public int getPort(){
+		return this.port;
+	}
+
 
 }

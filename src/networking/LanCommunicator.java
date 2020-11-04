@@ -109,7 +109,13 @@ public class LanCommunicator implements ICommunicator{
 	         */
 	        sendQueueListener = new SendQueueListener(sendQueue);
 	        sendQueueListenerWorker = new Thread(sendQueueListener);
-	        sendQueueListenerWorker.start();
+            try{
+                sendQueueListenerWorker.start();
+            }
+            catch(Exception e){
+                logger.log(ModuleID.NETWORKING, LogLevel.ERROR, "sendQueueListenerWorker is not able to start "+ e.toString());  
+                return;
+            }
 	        
 	        logger.log(ModuleID.NETWORKING, LogLevel.INFO, "sendQueueListener thread started");
 	        
@@ -119,7 +125,13 @@ public class LanCommunicator implements ICommunicator{
 	         */
 	        socketListener = new SocketListener(portNumber, processingReceiveQueue, contentReceiveQueue);
 	        socketListenerWorker = new Thread(socketListener);
-	        socketListenerWorker.start();
+            try{
+                socketListenerWorker.start();
+            }
+            catch(Exception e){
+                logger.log(ModuleID.NETWORKING, LogLevel.ERROR, "socketListenerWorker is not able to start "+ e.toString());  
+                return;
+            }
 	
 	        logger.log(ModuleID.NETWORKING, LogLevel.INFO, "socketListener thread started");
 	        
@@ -129,7 +141,14 @@ public class LanCommunicator implements ICommunicator{
 	         */
 	        processingReceiveQueueListener = new ReceiveQueueListener(processingReceiveQueue, handlerMap);
 	        processingReceiveQueueListenerWorker = new Thread(processingReceiveQueueListener);
-	        processingReceiveQueueListenerWorker.start();
+	        
+            try{
+                processingReceiveQueueListenerWorker.start();
+            }
+            catch(Exception e){
+                logger.log(ModuleID.NETWORKING, LogLevel.ERROR, "processingReceiveQueueListenerWorker is not able to start "+ e.toString());  
+                return;
+            }
 	        
 	        logger.log(ModuleID.NETWORKING, LogLevel.INFO, "processingReceiveQueueListener thread started");
 	        
@@ -139,7 +158,13 @@ public class LanCommunicator implements ICommunicator{
 	         */
 	        contentReceiveQueueListener = new ReceiveQueueListener(contentReceiveQueue, handlerMap);
 	        contentReceiveQueueListenerWorker = new Thread(contentReceiveQueueListener);
-	        contentReceiveQueueListenerWorker.start();
+            try{
+	           contentReceiveQueueListenerWorker.start();
+            }
+            catch(Exception e){
+                logger.log(ModuleID.NETWORKING, LogLevel.ERROR, "contentReceiveQueueListener is not able to start");  
+                return; 
+            }
 	        
 	        logger.log(ModuleID.NETWORKING, LogLevel.INFO, "contentReceiveQueueListener thread started");
 	        logger.log(ModuleID.NETWORKING, LogLevel.INFO, "Communication is started");

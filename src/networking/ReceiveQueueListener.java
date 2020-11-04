@@ -6,7 +6,7 @@ import networking.utility.*;
 import infrastructure.validation.logger.*;
 /**
  * 
- * The class "ReceiveQueueListener" helps in dequeuing the receiving queue and calling handler method
+ * The class "receiveQueueListener" helps in dequeuing the receiving queue and calling handler method
  * of the corresponding module ( either processing module or content module) by passing the message.
  * 
  * @author Drisya P
@@ -17,7 +17,7 @@ public class ReceiveQueueListener implements Runnable{
     /**
      * Receiving queue of the processing module or content module based.
      */
-    private IQueue<IncomingPacket> receivequeue;
+    private IQueue<IncomingPacket> receiveQueue;
     
     /**
      * Logger instance for logging errors and activities.
@@ -30,13 +30,13 @@ public class ReceiveQueueListener implements Runnable{
     private HashMap<String, INotificationHandler> handlerMap;
     
     /**
-     * Creates a new ReceiveQueueListener with the given queue and handlerMap.
-     * @param receivequeue     processing or content module's receiving queue.
+     * Creates a new receiveQueueListener with the given queue and handlerMap.
+     * @param receiveQueue     processing or content module's receiving queue.
      * @param handlerMap       map which contains identifier and corresponding module INotificationHandler handler.
     */
-    public ReceiveQueueListener( IQueue<IncomingPacket> receivequeue, HashMap<String, INotificationHandler> handlerMap ) {
+    public ReceiveQueueListener( IQueue<IncomingPacket> receiveQueue, HashMap<String, INotificationHandler> handlerMap ) {
         
-        this. receivequeue = receivequeue;
+        this. receiveQueue = receiveQueue;
         this.handlerMap = handlerMap;
         
     }
@@ -57,13 +57,13 @@ public class ReceiveQueueListener implements Runnable{
         
         while( LanCommunicator.getStatus() ){
             
-            if( !receivequeue.isEmpty() ){
+            if( !receiveQueue.isEmpty() ){
             
                 /**
                  * Incoming packet which contains message and identifier is removed from the front of the queue if queue is non empty.
                  */
-                IncomingPacket packet = receivequeue.front();
-                receivequeue.dequeue();
+                IncomingPacket packet = receiveQueue.front();
+                receiveQueue.dequeue();
                 
                 /**
                  * Calling helper function "sendMessage" for sending message to corresponding module.
