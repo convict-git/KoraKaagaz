@@ -40,7 +40,7 @@ public class Visualize {
 	}
 	
 	/**
-	 * Build the Buffered Image using the pixels provideds
+	 * Builds the Buffered Image using the pixels provided
 	 * 
 	 * @param pixels ArrayList of pixels which should be displayed
 	 * @param dimension Dimension of the board
@@ -82,17 +82,29 @@ public class Visualize {
 		return bufferedImage;
 	}
 	
+	/**
+	 * Displays the provided Buffered Image
+	 * 
+	 * @param bufferedImage Buffered Image to be displayed
+	 */
 	private static void displayImage(BufferedImage bufferedImage) {
+		// Construct frame in which to display
 		JFrame frame = new JFrame("Visualize");
 		
+		// Exit on Closing the frame
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		
+		// Construct Image Icon using Buffered Image
 		ImageIcon imageIcon = new ImageIcon(bufferedImage);
+		
+		// Construct Label using Icon
 		JLabel label = new JLabel();
 		label.setIcon(imageIcon);
 		
+		// Place the label on the frame
 		frame.getContentPane().add(label, BorderLayout.CENTER);
 		
+		// Make the Image Visible
 		frame.pack();
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
