@@ -32,7 +32,7 @@ public class ClientBoardState {
 	 * Will remain empty on the client side, as there is no need to know all the users to the client.
 	 * Server will use this users List to maintain the list of all the users connected to this Board.
 	 */
-	public static ArrayList <UserId> users = new ArrayList <UserId>();
+	public static ArrayList <String> users = new ArrayList <String>();
 	
 	//to store the selected object
 	private static PriorityQueueObject selectedObject;
@@ -41,6 +41,7 @@ public class ClientBoardState {
 	public static Username username;
 	public static UserId userId;
 	public static IpAddress userIP;
+	public static Port userPort;
 	
 	public static IpAddress serverIp;
 	
@@ -67,5 +68,7 @@ public static ICommunicator communicator;
 	}
 	
 	public static Dimension boardDimension;
+	
+	public static Port serverPort;
 	
 }
