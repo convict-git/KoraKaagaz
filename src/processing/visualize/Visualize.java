@@ -94,7 +94,7 @@ public class Visualize {
 		// Construct Image Icon using Buffered Image
 		ImageIcon imageIcon = new ImageIcon(bufferedImage);
 		
-		// Dispose Frame Object on Closing the Frame
+		// Close Application on Closing the Frame
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		
 		// Construct Label using Icon
