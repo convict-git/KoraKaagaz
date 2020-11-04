@@ -95,7 +95,7 @@ public class Visualize {
 		ImageIcon imageIcon = new ImageIcon(bufferedImage);
 		
 		// Dispose Frame Object on Closing the Frame
-		frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		
 		// Construct Label using Icon
 		JLabel label = new JLabel();
