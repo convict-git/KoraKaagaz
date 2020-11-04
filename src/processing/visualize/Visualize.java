@@ -13,43 +13,58 @@ import javax.swing.WindowConstants;
 import processing.utility.Dimension;
 import processing.utility.Pixel;
 
+/**
+ * Class for Visualizing ArrayList of Pixels
+ * 
+ * @author Ahmed Zaheer Dadarkar
+ * @reviewer Rakesh Kumar
+ */
+
 public class Visualize {
+
+	/**
+	 * Display the pixels provided as an ArrayList
+	 * 
+	 * @param pixels ArrayList of pixels which should be displayed
+	 * @param dimension Dimension of the board
+	 */
 	public static void visualize(
 		ArrayList<Pixel> pixels,
 		Dimension dimension
 	) {
+		// Build the Buffered Image
 		BufferedImage bufferedImage = buildImage(pixels, dimension);
-		JFrame frame = new JFrame("Visualize");
 		
-		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		
-		ImageIcon imageIcon = new ImageIcon(bufferedImage);
-		JLabel label = new JLabel();
-		label.setIcon(imageIcon);
-		
-		frame.getContentPane().add(label, BorderLayout.CENTER);
-		
-		frame.pack();
-		frame.setLocationRelativeTo(null);
-		frame.setVisible(true);
+		// Display the Buffered Image
+		displayImage(bufferedImage);
 	}
 	
+	/**
+	 * Build the Buffered Image using the pixels provideds
+	 * 
+	 * @param pixels ArrayList of pixels which should be displayed
+	 * @param dimension Dimension of the board
+	 * @return image containing the required pixels and a white background
+	 */
 	private static BufferedImage buildImage(
 		ArrayList<Pixel> pixels,
 		Dimension dimension
 	) {
+		// Construct the Buffered Image
 		BufferedImage bufferedImage = new BufferedImage(
 			dimension.numCols,
 			dimension.numRows,
 			BufferedImage.TYPE_INT_RGB
 		);
 		
+		// Initialize it with white (255, 255, 255)
 		for(int r = 0;r < dimension.numRows;r++) {
 			for(int c = 0;c < dimension.numCols;c++) {
 				bufferedImage.setRGB(c, r, Color.WHITE.getRGB());
 			}
 		}
 		
+		// Add all the pixels in the ArrayList into the image
 		for(Pixel pixel : pixels) {
 			Color color = new Color(
 				pixel.intensity.r,
@@ -63,6 +78,23 @@ public class Visualize {
 			bufferedImage.setRGB(x, y, color.getRGB());
 		}
 		
+		// Return the computed Buffered Image
 		return bufferedImage;
+	}
+	
+	private static void displayImage(BufferedImage bufferedImage) {
+		JFrame frame = new JFrame("Visualize");
+		
+		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		
+		ImageIcon imageIcon = new ImageIcon(bufferedImage);
+		JLabel label = new JLabel();
+		label.setIcon(imageIcon);
+		
+		frame.getContentPane().add(label, BorderLayout.CENTER);
+		
+		frame.pack();
+		frame.setLocationRelativeTo(null);
+		frame.setVisible(true);
 	}
 }
