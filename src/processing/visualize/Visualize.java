@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.WindowConstants;
 
 import processing.utility.Dimension;
 import processing.utility.Pixel;
@@ -94,7 +95,7 @@ public class Visualize {
 		ImageIcon imageIcon = new ImageIcon(bufferedImage);
 		
 		// Dispose Frame Object on Closing the Frame
-		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		
 		// Construct Label using Icon
 		JLabel label = new JLabel();
