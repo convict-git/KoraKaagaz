@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.WindowConstants;
 
 import processing.utility.Dimension;
 import processing.utility.Pixel;
