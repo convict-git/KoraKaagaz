@@ -5,21 +5,21 @@ import processing.boardobject.*;
 import processing.utility.*;
 
 /**
-*
-* @author Devansh Singh Rathore
-* @reviewer Shruti Umat
-*/
+ *
+ * @author Devansh Singh Rathore
+ * @reviewer Shruti Umat
+ */
 
 /**
-* Class for implementing selected(non-erase, non-reset) object's Color-change and Rotate
-* operation.
-*/
+ * Class for implementing selected(non-erase, non-reset) object's Color-change and Rotate
+ * operation.
+ */
 public class ParameterizedOperationsUtil {
 
     /**
-    * Function to update undo-redo stack. Undo-Redo module cannot call this function inorder to
-    * avoid logical errors.
-    */
+     * Function to update undo-redo stack. Undo-Redo module cannot call this function inorder to
+     * avoid logical errors.
+     */
     private static void stackUtil(BoardObject newObj) {
 
         UndoRedo.pushIntoStack(newObj);
@@ -27,9 +27,9 @@ public class ParameterizedOperationsUtil {
     }
 
     /**
-    * Function to calculate the centre of object's pixel by averaging the x and y coordinates of
-    * all the pixels in the given object.
-    */
+     * Function to calculate the centre of object's pixel by averaging the x and y coordinates of
+     * all the pixels in the given object.
+     */
     private static Position findCentre(ArrayList<Pixel>pixels) {
 
         Position centrePos = new Position(0, 0);
@@ -48,8 +48,8 @@ public class ParameterizedOperationsUtil {
     }
 
     /**
-    * Function calculates the rotation matrix.
-    */
+     * Function calculates the rotation matrix.
+     */
     private static double[][] rotationMatrix(Angle angleOfRotation) {
 
         // calculating angle, sin, cosine values
@@ -67,11 +67,11 @@ public class ParameterizedOperationsUtil {
     }
 
     /**
-    * Function to change colors of object, store all required object's data members in local
-    * variables, call for removing previous object from all utility maps, and finally create
-    * new updated object.
-    * To be called by ClientSideProcessing(vis colorChange function) and UndoRedo sections.
-    */
+     * Function to change colors of object, store all required object's data members in local
+     * variables, call for removing previous object from all utility maps, and finally create
+     * new updated object.
+     * To be called by ClientSideProcessing(vis colorChange function) and UndoRedo sections.
+     */
     public static BoardObject colorChangeUtil(BoardObject obj, UserId id, Intensity newIntensity) {
 
         // storing initial intensities of pixels (to be used during undo-operation)
@@ -105,11 +105,11 @@ public class ParameterizedOperationsUtil {
     }
 
     /**
-    * Function to rotate the object, store all required object's data members in local
-    * variables, call for removing previous object from all utility maps, and finally create
-    * new updated object.
-    * To be called by ClientSideProcessing(via rotation function) and UndoRedo sections.
-    */
+     * Function to rotate the object, store all required object's data members in local
+     * variables, call for removing previous object from all utility maps, and finally create
+     * new updated object.
+     * To be called by ClientSideProcessing(via rotation function) and UndoRedo sections.
+     */
     public static BoardObject rotationUtil(BoardObject obj, UserId id, Angle angleOfRotation) {
 
         // storing initial list of pixels (to be used in creation of new BoardObject)
@@ -162,8 +162,8 @@ public class ParameterizedOperationsUtil {
     }
 
     /**
-    * Function for implementing color-change of select-able objects.
-    */
+     * Function for implementing color-change of select-able objects.
+     */
     public static ObjectId colorChange(BoardObject obj, UserId id, Intensity intensity) {
 
         obj = colorChangeUtil(obj, id, intensity);
@@ -179,8 +179,8 @@ public class ParameterizedOperationsUtil {
     }
 
     /**
-    * Function for implementing rotation of select-able objects.
-    */
+     * Function for implementing rotation of select-able objects.
+     */
     public static ObjectId rotation(BoardObject obj, UserId id, Angle angleOfRotation) {
 
         obj = rotationUtil(obj, id, angleOfRotation);
