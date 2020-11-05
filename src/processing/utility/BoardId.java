@@ -40,7 +40,7 @@ public class BoardId {
 	@Override
 	public boolean equals(Object obj) {
 		if(obj instanceof BoardId)
-			return boardId == ((BoardId)obj).boardId;
+			return boardId.equals(((BoardId)obj).boardId);
 		else
 			return false;
 	}
