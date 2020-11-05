@@ -79,7 +79,7 @@ public class UndoRedo {
 				obj.getObjectId(),
 				obj.getTimestamp(),
 				obj.getUserId(),
-				false
+				obj.isResetObject()
 				);
 				
 		//sets the CREATE operation in the created object
@@ -251,6 +251,10 @@ public class UndoRedo {
     * @param object object to be pushed
     */
    public static void pushIntoStack(BoardObject object) {
+	   
+	   //If the object is created by other user then do not push it into the stack
+	   if (object.getUserId().equals(ClientBoardState.userId) == false)
+		   return;
 	   
 	   // pushes into undo stack
 	   addIntoStack(ClientBoardState.undoStack, object);
