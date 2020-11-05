@@ -13,7 +13,7 @@ import processing.utility.*;
 public class CommunicateChange {
 	
 	/** identifier to IChanges handler map */
-	private static Map <String, IChanges> identifierToHandler;
+	public static Map <String, IChanges> identifierToHandler;
 	/** UI identifier */
 	public static String identifierUI;
 
