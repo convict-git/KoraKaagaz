@@ -4,7 +4,7 @@ import processing.boardobject.*;
 
 /**
  * This interface provides function to communicate with
- * the Board Server.
+ * the Board Server once the client gets it's port number.
  * 
  * @author Himanshu Jain
  * @reviewer Ahmed Zaheer Dadarkar
@@ -13,10 +13,13 @@ import processing.boardobject.*;
 
 public interface IServerCommunication {
 
-	/** This function will send the Board State to the client */
+	/**
+	 * As soon as the client gets the port number on which the Board
+	 * server is listening it will use this function to get the BoardState.
+	 */
 	public void getBoardState();
 	
-	/** This funciton will be used to send the object for
+	/** This function will be used to send the object to
 	 *  the server for broadcasting it.
 	 *  
 	 *  @param obj BoardObject to be sent on the Board Server

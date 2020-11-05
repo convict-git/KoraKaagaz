@@ -1,7 +1,7 @@
 package processing.server.board;
 
 import java.io.IOException;
-
+import processing.utility.*;
 import networking.INotificationHandler;
 import processing.*;
 import processing.server.main.Requests;
@@ -20,8 +20,7 @@ public class StopRequestHandler implements INotificationHandler {
 	
 	public void onMessageReceived(String message) {
 		
-		String client = message;
-		ClientBoardState.users.remove(client);
+		ClientBoardState.users.remove(new Username(message));
 		
 		if(ClientBoardState.users.isEmpty()) {
 			

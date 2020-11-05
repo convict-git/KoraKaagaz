@@ -45,7 +45,7 @@ public class ClientBoardState {
 	 * Server will use this users List to maintain the list of all the users 
 	 * connected to this Board.
 	 */
-	public static ArrayList <String> users = new ArrayList <String>();
+	public static Map <Username, IpAddress> users = new HashMap <Username,IpAddress>();
 	
 	/**
 	 * selectedObject will store the object that is currently selected by this client.
