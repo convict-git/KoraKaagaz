@@ -29,7 +29,8 @@ public class SelectDelete {
 
         if (mostProbableObjectId == null) {
             ClientBoardState.setSelectedObject(noObjectSelected);
-            CommunicateChange.identifierToHandler.get(CommunicateChange.identifierUI)
+            CommunicateChange.identifierToHandler
+                    .get(CommunicateChange.identifierUI)
                     .giveSelectedPixels(new ArrayList<Pixel>());
             return new ArrayList<Position>();                      // returning empty Position list
         }
@@ -39,13 +40,15 @@ public class SelectDelete {
 
         if (selected == null) {
             ClientBoardState.setSelectedObject(noObjectSelected);
-            CommunicateChange.identifierToHandler.get(CommunicateChange.identifierUI)
+            CommunicateChange.identifierToHandler
+                    .get(CommunicateChange.identifierUI)
                     .giveSelectedPixels(new ArrayList<Pixel>());
             return new ArrayList<Position>();                      // returning empty Position list
         }
 
         /* Pass selected positions to UI for display */
-        CommunicateChange.identifierToHandler.get(CommunicateChange.identifierUI)
+        CommunicateChange.identifierToHandler
+                .get(CommunicateChange.identifierUI)
                 .giveSelectedPixels(selected.getPixels());
 
         /* Updated selectedObject data member in ClientBoardState */
@@ -62,12 +65,16 @@ public class SelectDelete {
      * and selected positions to the UI
      *
      * @param object object to be deleted
+     * @param userId userId of the user who performed the deletion
      */
-    public static void delete (BoardObject object) {
+    public static void delete (BoardObject object, UserId userId) {
 
         /* Set Delete Operation in Object */
         IBoardObjectOperation deleteOperation = new DeleteOperation();
         object.setOperation(deleteOperation);
+
+        /* Set UserId of the user who performed the operation in Object */
+        object.setUserId(userId);
 
         /* Delete the object from the maps */
         board.removeObjectFromMaps(object.getObjectId());
@@ -85,7 +92,8 @@ public class SelectDelete {
         PriorityQueueObject selectedObject = ClientBoardState.getSelectedObject();
         if (selectedObject.objectId == object.getObjectId()) {
             ClientBoardState.setSelectedObject(null);
-            CommunicateChange.identifierToHandler.get(CommunicateChange.identifierUI)
+            CommunicateChange.identifierToHandler
+                    .get(CommunicateChange.identifierUI)
                     .giveSelectedPixels(new ArrayList<Pixel>());
         }
     }
