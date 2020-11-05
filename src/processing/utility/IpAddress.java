@@ -38,7 +38,7 @@ public class IpAddress {
 	@Override
 	public boolean equals(Object obj) {
 		if(obj instanceof IpAddress)
-			return ipAddress == ((IpAddress)obj).ipAddress;
+			return ipAddress.equals(((IpAddress)obj).ipAddress);
 		else
 			return false;
 	}

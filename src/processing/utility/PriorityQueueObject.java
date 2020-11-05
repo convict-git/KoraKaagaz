@@ -5,7 +5,7 @@ package processing.utility;
 * It will store the obejct ID and the timestamp to sort the objects in the
 * priority queue.
 *
-* @author Ahmed Zaheer Dadarkar, Shruti Umat
+* @author Himanshu Jain, Shruti Umat
 */
 
 public class PriorityQueueObject {
@@ -13,13 +13,13 @@ public class PriorityQueueObject {
 	public ObjectId objectId;
 	public Timestamp timestamp;
 
-	//constructor to set the object ID and the time
+	/** constructor to set the object ID and the time */
 	public PriorityQueueObject(ObjectId objId, Timestamp time) {
 		objectId = objId;
 		timestamp = time;
 	}
 
-	//Copy constructor
+	/** Copy constructor */
 	public PriorityQueueObject(PriorityQueueObject obj) {
 		this.objectId = obj.objectId;
 		this.timestamp = obj.timestamp;
