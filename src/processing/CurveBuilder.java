@@ -54,12 +54,13 @@ public class CurveBuilder {
 		
 		ArrayList<Pixel> pixel = new ArrayList<Pixel>();
 		
+		//Give each channel white intensity
+		int r = 255;
+		int g = 255;
+		int b = 255;
+		
 		for(int i = 0; i < pixelSize; i++)
 		{
-			//Give each channel white intensity
-			int r = 255;
-			int g = 255;
-			int b = 255;
 			
 			//White intensity object
 			Intensity whiteIntensity = new Intensity(r,g,b);
