@@ -4,7 +4,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.LocalDateTime;
 
 /**
- * ConsoleLogger class that is part of loggingManager,
+ * ConsoleLogger class that is part of loggerManager,
  * and used for logging to the command line
  * Implements ILogger interface
  * 
