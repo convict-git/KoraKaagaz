@@ -79,7 +79,7 @@ public class UndoRedo {
 				obj.getObjectId(),
 				obj.getTimestamp(),
 				obj.getUserId(),
-				false
+				obj.isResetObject()
 				);
 				
 		//sets the CREATE operation in the created object
