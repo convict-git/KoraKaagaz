@@ -34,12 +34,22 @@ public class ConcurrentBlockingQueue<T> implements IQueue<T> {
     Ilogger logger = LoggerFactory.getLoggerInstance();
 
     /**
-     * Constructor which initialises capacity and creates a ArrayBlocking queue instance of size equal to
+     * Default Constructor which initialises capacity and creates a ArrayBlocking queue instance of size equal to
      *  capacity.
      */
     public ConcurrentBlockingQueue(){
         capacity = 100000;
         q = new ArrayBlockingQueue<T>(capacity);
+        logger.log(ModuleID.NETWORKING, LogLevel.SUCCESS, "A new queue has been constructed which is thread-safe and blocking");
+    }
+
+    /**
+     * Overloaded Constructor which initialises capacity and creates a ArrayBlocking queue instance of size equal to
+     *  capacity.
+     */
+    public ConcurrentBlockingQueue(int capacity){
+        this.capacity = capacity;
+        q = new ArrayBlockingQueue<T>(this.capacity);
         logger.log(ModuleID.NETWORKING, LogLevel.SUCCESS, "A new queue has been constructed which is thread-safe and blocking");
     }
 
