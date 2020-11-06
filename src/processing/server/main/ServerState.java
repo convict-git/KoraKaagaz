@@ -15,13 +15,19 @@ import networking.ICommunicator;
 
 public class ServerState {
 
-
+	/**
+	 * boardToPort is map containing boardID of all the board servers currently running
+	 * in a map from boardID to their respective port number on which they are listening.
+	 */
 	public static Map <BoardId, Port> boardToPort = new HashMap <BoardId, Port>();
 	
-	public static Map <BoardId, String> persistencePath = new HashMap <BoardId, String>();
-	
+	/**
+	 * boardNumber will store the board number to be given as the boardID to the new board
+	 * that need to be started.
+	 */
 	public static int boardNumber = 0;
 
+	// communicator will store the communicator that we receive from the networking module.
 	public static ICommunicator communicator;
 	
 	//Main Server port number
