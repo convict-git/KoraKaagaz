@@ -31,7 +31,7 @@ public class ConcurrentBlockingQueue<T> implements IQueue<T> {
     /**
      *  Logger object from the LoggerFactory to log Messages.
      */
-    Ilogger logger = LoggerFactory.getLoggerInstance();
+    ILogger logger = LoggerFactory.getLoggerInstance();
 
     /**
      * Default Constructor which initialises capacity and creates a ArrayBlocking queue instance of size equal to
