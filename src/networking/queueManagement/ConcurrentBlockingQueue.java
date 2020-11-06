@@ -45,6 +45,8 @@ public class ConcurrentBlockingQueue<T> implements IQueue<T> {
     /**
      * Overloaded Constructor which initialises capacity and creates a ArrayBlocking queue instance of size equal to
      *  capacity.
+     *
+     * @param capacity the maximum number of elements that queue can hold.
      */
     public ConcurrentBlockingQueue(int capacity){
         this.capacity = capacity;
