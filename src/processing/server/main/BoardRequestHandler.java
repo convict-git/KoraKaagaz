@@ -2,6 +2,7 @@ package processing.server.main;
 
 import networking.INotificationHandler;
 import processing.ClientBoardState;
+import processing.PersistanceSupport;
 import processing.utility.*;
 import java.io.*;
 
@@ -128,7 +129,33 @@ public class BoardRequestHandler implements INotificationHandler{
 			 */
 			String persistence = null;
 			
-			//load persistence file if there
+			try {
+				PersistanceSupport.loadStateString(boardId);
+			} catch (ClassNotFoundException e) {
+				
+				ClientBoardState.logger.log(
+						ModuleID.PROCESSING, 
+						LogLevel.ERROR, 
+						"IOException occured while loading the persistence for board"
+				);
+				
+			} catch(UnsupportedEncodingException e) {
+				
+				ClientBoardState.logger.log(
+						ModuleID.PROCESSING, 
+						LogLevel.ERROR, 
+						"UnsupportedEncodingException occured while loading the persistence state"
+				);
+				
+			} catch (IOException e) {
+				
+				ClientBoardState.logger.log(
+						ModuleID.PROCESSING, 
+						LogLevel.ERROR, 
+						"IO Exception occured while loading the persistence state"
+				);
+				
+			}
 			
 			// starting the Board Server
 			startBoardServer(boardServerPort, boardId, persistence);

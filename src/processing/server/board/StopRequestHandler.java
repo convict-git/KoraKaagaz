@@ -1,6 +1,7 @@
 package processing.server.board;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 
 import infrastructure.validation.logger.LogLevel;
 import infrastructure.validation.logger.ModuleID;
@@ -47,7 +48,7 @@ public class StopRequestHandler implements INotificationHandler {
 		 */
 		if(ClientBoardState.users.isEmpty()) {
 			
-			String persistence;
+			String persistence = null;
 			
 			/**
 			 * As this Board Server is going to shut, we need to save the data of this server
@@ -68,7 +69,25 @@ public class StopRequestHandler implements INotificationHandler {
 			/**
 			 * Saving the serialized the data in the file with name same as the BoardID.
 			 */
-			// save the persistence file
+			try {
+				PersistanceSupport.storeStateString(persistence, ClientBoardState.boardId);
+			} catch (UnsupportedEncodingException e) {
+				
+				ClientBoardState.logger.log(
+						ModuleID.PROCESSING, 
+						LogLevel.ERROR, 
+						"UnsupportedEncodingException occured while saving the persistence state"
+				);
+				
+			} catch (IOException e) {
+				
+				ClientBoardState.logger.log(
+						ModuleID.PROCESSING, 
+						LogLevel.ERROR, 
+						"IO Exception occured during saving the persistence state"
+				);
+				
+			}
 			
 			ClientBoardState.logger.log(
 					ModuleID.PROCESSING, 
