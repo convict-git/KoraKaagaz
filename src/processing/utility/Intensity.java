@@ -50,4 +50,10 @@ public class Intensity {
 		else
 			return false;
 	}
+	
+	/** HashCode Method */
+	@Override
+	public int hashCode() {
+		return 31 * 31 * r + 31 * g + b;
+	}
 }

@@ -42,4 +42,10 @@ public class IpAddress {
 		else
 			return false;
 	}
+	
+	/** HashCode Method */
+	@Override
+	public int hashCode() {
+		return ipAddress.hashCode();
+	}
 }

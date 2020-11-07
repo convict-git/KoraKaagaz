@@ -44,4 +44,10 @@ public class BoardId {
 		else
 			return false;
 	}
+	
+	/** HashCode Method */
+	@Override
+	public int hashCode() {
+		return boardId.hashCode();
+	}
 }

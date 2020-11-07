@@ -24,4 +24,10 @@ public class PriorityQueueObject {
 		this.objectId = obj.objectId;
 		this.timestamp = obj.timestamp;
 	}
+	
+	/** HashCode Method */
+	@Override
+	public int hashCode() {
+		return 31 * objectId.hashCode() + timestamp.hashCode();
+	}
 }

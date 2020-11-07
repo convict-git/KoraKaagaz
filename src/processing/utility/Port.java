@@ -33,4 +33,10 @@ public class Port {
 		else
 			return false;
 	}
+	
+	/** HashCode Method */
+	@Override
+	public int hashCode() {
+		return port;
+	}
 }

@@ -48,4 +48,10 @@ public class ObjectId {
 		else
 			return false;
 	}
+	
+	/** HashCode Method */
+	@Override
+	public int hashCode() {
+		return objectId.hashCode();
+	}
 }

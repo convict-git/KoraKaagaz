@@ -45,4 +45,10 @@ public class Pixel {
 		else
 			return false;
 	}
+	
+	/** HashCode Method */
+	@Override
+	public int hashCode() {
+		return 31 * position.hashCode() + intensity.hashCode();
+	}
 }
