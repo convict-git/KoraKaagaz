@@ -2,7 +2,6 @@ package processing.server.main;
 
 import java.util.*;
 
-import processing.threading.HandleSend;
 import processing.utility.*;
 import networking.ICommunicator;
 

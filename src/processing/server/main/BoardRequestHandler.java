@@ -1,8 +1,12 @@
 package processing.server.main;
 
 import networking.INotificationHandler;
+import processing.ClientBoardState;
 import processing.utility.*;
 import java.io.*;
+
+import infrastructure.validation.logger.LogLevel;
+import infrastructure.validation.logger.ModuleID;
 import networking.CommunicatorFactory;
 
 /**
@@ -28,6 +32,12 @@ public class BoardRequestHandler implements INotificationHandler{
 	 * @param persistence persistent data
 	 */
 	public static void startBoardServer(Port port, BoardId boardId, String persistence) {
+		
+		ClientBoardState.logger.log(
+				ModuleID.PROCESSING, 
+				LogLevel.INFO, 
+				"Received a request to start a board server"
+		);
 		
 		/**
 		 * creating an object of ProcessBuilder which is used to run the operating 
@@ -61,7 +71,13 @@ public class BoardRequestHandler implements INotificationHandler{
 			processBuilder.start();
 			
 		} catch(IOException e) {
-			//handle exception
+			
+			ClientBoardState.logger.log(
+					ModuleID.PROCESSING, 
+					LogLevel.ERROR, 
+					"IO EXception occured while starting a new board server"
+			);
+			
 		}
 	}
 	
@@ -71,6 +87,12 @@ public class BoardRequestHandler implements INotificationHandler{
 	 * board request.
 	 */
 	public void onMessageReceived(String message) {
+		
+		ClientBoardState.logger.log(
+				ModuleID.PROCESSING, 
+				LogLevel.INFO, 
+				"New Board Request received on the Main Server"
+		);
 		
 		/**
 		 * First part of the message contains the boardID, as it is requesting for an
@@ -126,6 +148,12 @@ public class BoardRequestHandler implements INotificationHandler{
 				clientAddress, 
 				boardServerPort.toString(), 
 				"ProcessingServerPort"
+		);
+		
+		ClientBoardState.logger.log(
+				ModuleID.PROCESSING, 
+				LogLevel.SUCCESS, 
+				"Successfully sent the port number of the server to the client"
 		);
 	}
 	

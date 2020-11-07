@@ -1,5 +1,7 @@
 package processing.server.main;
 
+import infrastructure.validation.logger.LogLevel;
+import infrastructure.validation.logger.ModuleID;
 import processing.ClientBoardState;
 import processing.utility.*;
 
@@ -53,6 +55,12 @@ public class Requests implements IRequests{
 		 */
 		ClientBoardState.send(serverAddr,message,"NewBoard");
 		
+		ClientBoardState.logger.log(
+				ModuleID.PROCESSING, 
+				LogLevel.SUCCESS, 
+				"Successfully sent the request for new board from client to the server"
+		);
+		
 	}
 	
 	/**
@@ -81,6 +89,12 @@ public class Requests implements IRequests{
 		 * a server for this board.
 		 */
 		ClientBoardState.send(serverAddr, message, "ExistingBoard");
+		
+		ClientBoardState.logger.log(
+				ModuleID.PROCESSING, 
+				LogLevel.SUCCESS, 
+				"Successfully sent the request for existing board from client to the server"
+		);
 		
 	}
 	

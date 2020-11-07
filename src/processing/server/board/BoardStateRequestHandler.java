@@ -1,6 +1,9 @@
 package processing.server.board;
 
 import java.io.IOException;
+
+import infrastructure.validation.logger.LogLevel;
+import infrastructure.validation.logger.ModuleID;
 import processing.utility.*;
 import networking.INotificationHandler;
 import processing.ClientBoardState;
@@ -25,6 +28,12 @@ public class BoardStateRequestHandler implements INotificationHandler{
 	 * @param message the message received from the networking module
 	 */
 	public void onMessageReceived(String message) {
+		
+		ClientBoardState.logger.log(
+				ModuleID.PROCESSING, 
+				LogLevel.INFO, 
+				"BoardState request is made by the client"
+		);
 		
 		String[] arrOfArguments = message.split(":", 2);
 		
@@ -62,6 +71,12 @@ public class BoardStateRequestHandler implements INotificationHandler{
 				clientAddress.toString(), 
 				boardState, 
 				"ProcessingBoardState"
+		);
+		
+		ClientBoardState.logger.log(
+				ModuleID.PROCESSING, 
+				LogLevel.SUCCESS, 
+				"Successfully sent the Board State to the client"
 		);
 	}
 	

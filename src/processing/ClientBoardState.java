@@ -1,11 +1,13 @@
 package processing;
 
 import java.util.*;
-import processing.threading.*;
+import processing.server.main.*;
+import processing.threading.HandleSend;
 import networking.ICommunicator;
 import processing.handlers.*;
 import processing.boardobject.*;
 import processing.utility.*;
+import infrastructure.validation.logger.*;
 
 /**
 * This class contains all the info of the current board.
@@ -95,6 +97,9 @@ public class ClientBoardState {
 	 */
 	public static Port serverPort = new Port(8467);
 	
+	// logger of the infrastructure module for printing logs
+	public static ILogger logger = LoggerFactory.getLoggerInstance();
+	
 	/**
 	 * This will be called at the start of the program to setup the connection 
 	 * from the networking. To subscribe for notifications for different events that 
@@ -111,7 +116,13 @@ public class ClientBoardState {
 		 * This same identifier will be used by the Board Server to send the
 		 * board object which it receives from any client to broadcast it.
 		 */
-		ClientBoardState.communicator.subscribeForNotifications(
+		logger.log(
+				ModuleID.PROCESSING, 
+				LogLevel.INFO, 
+				"Subscribing for receiving Board objects from the server"
+		);
+		
+		communicator.subscribeForNotifications(
 				"ProcessingObject", 
 				new ObjectHandler()
 		);
@@ -123,7 +134,13 @@ public class ClientBoardState {
 		 * This same identifier will be used by the Board Server to send the Board State
 		 * as soon as the Board Server starts.
 		 */
-		ClientBoardState.communicator.subscribeForNotifications(
+		logger.log(
+				ModuleID.PROCESSING, 
+				LogLevel.INFO, 
+				"Subscribing for receiving Board State after start of board server"
+		);
+		
+		communicator.subscribeForNotifications(
 				"ProcessingBoardState", 
 				new BoardStateHandler()
 		);
@@ -135,7 +152,13 @@ public class ClientBoardState {
 		 * The main server will send the port using the same identifier as soon as it
 		 * starts the Board Server.
 		 */
-		ClientBoardState.communicator.subscribeForNotifications(
+		logger.log(
+				ModuleID.PROCESSING, 
+				LogLevel.INFO, 
+				"Subscribing for receving Port number of the Board Server from the main server"
+		);
+		
+		communicator.subscribeForNotifications(
 				"ProcessingServerPort", 
 				new PortHandler()
 		);
@@ -144,10 +167,30 @@ public class ClientBoardState {
 		 * Subscribing for receiving Board ID from the Main Server passing identifier as
 		 * "ProcessingBoardId" and handler as the object of BoardIdHandler class.
 		 */
-		ClientBoardState.communicator.subscribeForNotifications(
+		logger.log(
+				ModuleID.PROCESSING, 
+				LogLevel.INFO, 
+				"Subscribing for receiving BoardID from the server"
+		);
+		
+		communicator.subscribeForNotifications(
 				"ProcessingBoardId", 
 				new BoardIdHandler()
 		);
+		
+		/**
+		 * If the board ID is null then the user is requesting for a new board, otherwise
+		 * it request for an existing board with the given board ID.
+		 * Call the respective function defined in the interface IRequests in
+		 * processing.server.main package which is implemented in the class Requests.
+		 */
+		logger.log(ModuleID.PROCESSING, LogLevel.INFO, "Making Board Request to the server");
+		IRequests request = new Requests();
+		if(boardId == null) {
+			request.requestForNewBoard(userIP, userPort);
+		} else {
+			request.requestForExistingBoard(boardId, userIP, userPort);
+		}
 		
 		/**
 		 * We need to wait until we receive BoardID from the server.
@@ -155,7 +198,8 @@ public class ClientBoardState {
 		 * in IUser and it will be run in a thread in the processor class, so 
 		 * this while loop will not halt the process.
 		 */
-		while(ClientBoardState.boardId == null) {
+		logger.log(ModuleID.PROCESSING, LogLevel.INFO, "Waiting to receive boardID from the server");
+		while(boardId == null) {
 			
 			// wait till BoardID is set by the server
 			
@@ -177,7 +221,7 @@ public class ClientBoardState {
 	 * @return the selectedObject
 	 */
 	public static synchronized PriorityQueueObject getSelectedObject() {
-		return ClientBoardState.selectedObject;
+		return selectedObject;
 	}
 	
 	/**

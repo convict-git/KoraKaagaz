@@ -1,7 +1,10 @@
 package processing.server.main;
 
 import networking.INotificationHandler;
+import processing.ClientBoardState;
 import processing.utility.*;
+import infrastructure.validation.logger.LogLevel;
+import infrastructure.validation.logger.ModuleID;
 import networking.CommunicatorFactory;
 
 /**
@@ -21,6 +24,12 @@ public class NewBoardRequestHandler implements INotificationHandler{
 	 * new board request identifier.
 	 */
 	public void onMessageReceived(String message) {
+		
+		ClientBoardState.logger.log(
+				ModuleID.PROCESSING, 
+				LogLevel.INFO, 
+				"Existing Board Server Request on the Main Server"
+		);
 		
 		/**
 		 * While making a new board request, the client will send their full
@@ -71,6 +80,12 @@ public class NewBoardRequestHandler implements INotificationHandler{
 				"ProcessingBoardId"
 		);
 		
+		ClientBoardState.logger.log(
+				ModuleID.PROCESSING, 
+				LogLevel.SUCCESS, 
+				"Successfully sent the BoardID to the client"
+		);
+		
 		/**
 		 * We also need to send the port number of the board back to the same client who
 		 * made the new board request.
@@ -79,6 +94,12 @@ public class NewBoardRequestHandler implements INotificationHandler{
 				clientAddress, 
 				boardServerPort.toString(), 
 				"ProcessingServerPort"
+		);
+		
+		ClientBoardState.logger.log(
+				ModuleID.PROCESSING, 
+				LogLevel.SUCCESS, 
+				"Successfully sent the Port number of the server to the client"
 		);
 	}
 	

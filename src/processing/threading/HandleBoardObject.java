@@ -1,5 +1,8 @@
 package processing.threading;
 
+import infrastructure.validation.logger.LogLevel;
+import infrastructure.validation.logger.ModuleID;
+import processing.ClientBoardState;
 import processing.handlers.ObjectHandler;
 
 /**
@@ -34,6 +37,12 @@ public class HandleBoardObject implements Runnable{
 	 */
 	@Override
 	public void run() {
+		
+		ClientBoardState.logger.log(
+				ModuleID.PROCESSING, 
+				LogLevel.INFO, 
+				"Spawning a new thread to handle received BoardObject"
+		);
 		
 		ObjectHandler.handleBoardObject(message);
 	}

@@ -4,6 +4,8 @@ import processing.ClientBoardState;
 
 import java.io.IOException;
 
+import infrastructure.validation.logger.LogLevel;
+import infrastructure.validation.logger.ModuleID;
 import processing.*;
 import processing.boardobject.*;
 
@@ -64,6 +66,12 @@ public class ServerCommunication {
 		 * BoardStateRequest.
 		 */
 		ClientBoardState.send(serverAddress, message, "BoardStateRequest");
+		
+		ClientBoardState.logger.log(
+				ModuleID.PROCESSING, 
+				LogLevel.SUCCESS, 
+				"Successfully sent Board State request from client to server"
+		);
 	}
 	
 	/**
@@ -85,7 +93,13 @@ public class ServerCommunication {
 		try {
 			message = Serialize.serialize(obj);
 		} catch (IOException e) {
-			// log the exception
+			
+			ClientBoardState.logger.log(
+					ModuleID.PROCESSING, 
+					LogLevel.ERROR, 
+					"IO Exception occured during serializing the BoardObject"
+			);
+			
 		}
 		
 		/**
@@ -94,6 +108,12 @@ public class ServerCommunication {
 		 * the identifier ObjectBoardcast
 		 */
 		ClientBoardState.send(serverAddress, message, "ObjectBroadcast");
+		
+		ClientBoardState.logger.log(
+				ModuleID.PROCESSING, 
+				LogLevel.SUCCESS, 
+				"Successfully sent the Board Object from client to the server"
+		);
 	}
 	
 	/**
@@ -114,6 +134,12 @@ public class ServerCommunication {
 		 * as the StopConnection
 		 */
 		ClientBoardState.send(serverAddress, message, "StopConnection");
+		
+		ClientBoardState.logger.log(
+				ModuleID.PROCESSING, 
+				LogLevel.SUCCESS, 
+				"Successfully sent the Stop Connection request from client to the server"
+		);
 	}
 	
 }

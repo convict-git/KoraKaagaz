@@ -2,6 +2,8 @@ package processing.server.board;
 
 import java.io.IOException;
 
+import infrastructure.validation.logger.LogLevel;
+import infrastructure.validation.logger.ModuleID;
 import networking.CommunicatorFactory;
 import processing.*;
 import processing.utility.*;
@@ -20,6 +22,12 @@ import processing.utility.*;
 public class BoardServer {
 
 	public static void main(String[] args) {
+		
+		ClientBoardState.logger.log(
+				ModuleID.PROCESSING, 
+				LogLevel.INFO, 
+				"Starting a new Board Server"
+		);
 		
 		/**
 		 * While starting a new Board Server the port on which it should start 
@@ -41,6 +49,12 @@ public class BoardServer {
 		 * given above. It will now continuously listen on the port given as the input
 		 * while creating the communicator.
 		 */
+		ClientBoardState.logger.log(
+				ModuleID.PROCESSING, 
+				LogLevel.INFO, 
+				"Starting the communication on the Board Server"
+		);
+		
 		ClientBoardState.communicator.start();
 		
 		// set the Board Server's port as the port on which it is listening
@@ -74,9 +88,21 @@ public class BoardServer {
 						persistence
 				);
 			} catch (ClassNotFoundException e) {
-				// log the exception
+				
+				ClientBoardState.logger.log(
+						ModuleID.PROCESSING, 
+						LogLevel.ERROR, 
+						"BoardState class not found"
+				);
+				
 			} catch (IOException e) {
-				// log the exception
+				
+				ClientBoardState.logger.log(
+						ModuleID.PROCESSING, 
+						LogLevel.ERROR, 
+						"IO Exception occured while deserializing BoardState"
+				);
+				
 			}
 		}
 		
@@ -86,6 +112,12 @@ public class BoardServer {
 		 * BoardState, so the server need to subscribe for thus request using the same 
 		 * identifier the client is using to send BoardState Request.
 		 */
+		ClientBoardState.logger.log(
+				ModuleID.PROCESSING, 
+				LogLevel.INFO, 
+				"Board Server subscribing for BoardState Request"
+		);
+		
 		ClientBoardState.communicator.subscribeForNotifications(
 				"BoardStateRequest", 
 				new BoardStateRequestHandler()
@@ -97,6 +129,12 @@ public class BoardServer {
 		 * for this request using the same identifier as the client is using to send the
 		 * BoardObject.
 		 */
+		ClientBoardState.logger.log(
+				ModuleID.PROCESSING, 
+				LogLevel.INFO, 
+				"Board Server subscribing for receiving BoardObject for broadcasting it"
+		);
+		
 		ClientBoardState.communicator.subscribeForNotifications(
 				"ObjectBroadcast", 
 				new ObjectBroadcastHandler()
@@ -107,9 +145,21 @@ public class BoardServer {
 		 * so the client will send a message with identifier StopConnection and message as
 		 * their userID, so the server need to subscribe for this message to receive.
 		 */
+		ClientBoardState.logger.log(
+				ModuleID.PROCESSING, 
+				LogLevel.INFO, 
+				"Board Server subscribing for Stop Connection Request from client"
+		);
+		
 		ClientBoardState.communicator.subscribeForNotifications(
 				"StopConnection", 
-				new ObjectBroadcastHandler()
+				new StopRequestHandler()
+		);
+		
+		ClientBoardState.logger.log(
+				ModuleID.PROCESSING, 
+				LogLevel.SUCCESS, 
+				"Successfully started new Board Server"
 		);
 	}
 

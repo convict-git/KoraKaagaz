@@ -1,6 +1,9 @@
 package processing.server.board;
 
 import java.io.IOException;
+
+import infrastructure.validation.logger.LogLevel;
+import infrastructure.validation.logger.ModuleID;
 import processing.utility.*;
 import networking.INotificationHandler;
 import processing.*;
@@ -25,6 +28,12 @@ public class StopRequestHandler implements INotificationHandler {
 	 */
 	public void onMessageReceived(String message) {
 		
+		ClientBoardState.logger.log(
+				ModuleID.PROCESSING, 
+				LogLevel.INFO, 
+				"Received stop connection request from a client on the server"
+		);
+		
 		/**
 		 * As the client is closing it's application we need to remove it from 
 		 * the list of all the clients connected to this board.
@@ -38,20 +47,34 @@ public class StopRequestHandler implements INotificationHandler {
 		 */
 		if(ClientBoardState.users.isEmpty()) {
 			
+			String persistence;
+			
 			/**
 			 * As this Board Server is going to shut, we need to save the data of this server
 			 * for persistence, thus serializing the maps in ClientBoardState
 			 */
 			try {
-				String persistence = Serialize.serialize(ClientBoardState.maps);
+				persistence = Serialize.serialize(ClientBoardState.maps);
 			} catch (IOException e) {
-				// log the exception
+				
+				ClientBoardState.logger.log(
+						ModuleID.PROCESSING, 
+						LogLevel.ERROR, 
+						"IO Exception occured during serializing BoardState"
+				);
+				
 			}
 			
 			/**
 			 * Saving the serialized the data in the file with name same as the BoardID.
 			 */
 			// save the persistence file
+			
+			ClientBoardState.logger.log(
+					ModuleID.PROCESSING, 
+					LogLevel.SUCCESS, 
+					"Successfully saved the persistence file in the local machine"
+			);
 			
 			/**
 			 * Notifying the networking module to stop listening for this server

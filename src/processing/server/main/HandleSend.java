@@ -1,5 +1,8 @@
 package processing.server.main;
 
+import infrastructure.validation.logger.LogLevel;
+import infrastructure.validation.logger.ModuleID;
+import processing.ClientBoardState;
 
 /**
  * This implements Runnable so as to spawn a new thread to call the 
@@ -52,6 +55,12 @@ public class HandleSend implements Runnable{
 	 */
 	@Override
 	public void run() {
+		
+		ClientBoardState.logger.log(
+				ModuleID.PROCESSING, 
+				LogLevel.INFO, 
+				"Spawning a new thread to send a message across the network"
+		);
 		
 		/**
 		 * Call the networking module send function so now this
