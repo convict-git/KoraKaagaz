@@ -33,4 +33,10 @@ public class Angle {
 		else
 			return false;
 	}
+	
+	/** HashCode Method */
+	@Override
+	public int hashCode() {
+		return (int)angle;
+	}
 }

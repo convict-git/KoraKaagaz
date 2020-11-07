@@ -44,4 +44,10 @@ public class Filepath {
 		else
 			return false;
 	}
+	
+	/** HashCode Method */
+	@Override
+	public int hashCode() {
+		return filepath.hashCode();
+	}
 }
