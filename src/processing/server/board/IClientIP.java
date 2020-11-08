@@ -15,9 +15,9 @@ import java.util.*;
 public interface IClientIP {
 	
 	/**
-	 * getClientIP will return a Map of all the clients to IP
+	 * getClientIP will return a Map of all the clients to their addresses
 	 * 
-	 * @return Map from all the clients to IP
+	 * @return Map from all the clients to IP Addresses
 	 */
 	public Map<Username, IpAddress> getClientIP(); 
 	
