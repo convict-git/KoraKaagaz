@@ -130,7 +130,7 @@ public class BoardRequestHandler implements INotificationHandler{
 			String persistence = null;
 			
 			try {
-				PersistanceSupport.loadStateString(boardId);
+				persistence = PersistanceSupport.loadStateString(boardId);
 			} catch (ClassNotFoundException e) {
 				
 				ClientBoardState.logger.log(
