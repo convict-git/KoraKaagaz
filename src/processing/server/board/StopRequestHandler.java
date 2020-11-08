@@ -1,6 +1,7 @@
 package processing.server.board;
 
 import java.io.IOException;
+import processing.server.main.*;
 import java.io.UnsupportedEncodingException;
 import infrastructure.validation.logger.LogLevel;
 import infrastructure.validation.logger.ModuleID;
@@ -105,7 +106,7 @@ public class StopRequestHandler implements INotificationHandler {
 			 */
 			String mainServerAddress = ClientBoardState.userIP.toString()
 									 + ":"
-									 + Integer.toString(8467);
+									 + Integer.toString(ServerState.portNumber.port);
 			
 			ClientBoardState.send(
 					mainServerAddress, 
