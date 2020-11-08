@@ -21,8 +21,22 @@ public class ConsoleLogger implements ILogger {
 	 */
 	private static Console console;
 	
+	/** ANSI escape codes for using color in output */
+	
+	// reset to return to using console default
+	public static final String ANSI_RESET = "\u001B[0m";
+	
+	// ERROR log level with color RED
+	public static final String ANSI_RED = "\u001B[31m";
+	
+	// WARNING log level with color YELLOW
+	public static final String ANSI_YELLOW = "\u001B[33m";
+	
+	// SUCCESS log level with color GREEN
+	public static final String ANSI_GREEN = "\u001B[32m";
+	
 	/**
-	 * 
+	 *  Creates an object that logs to the console, if enabled and available
 	 */
 	protected ConsoleLogger() {
 		
@@ -49,6 +63,7 @@ public class ConsoleLogger implements ILogger {
 		
 		String logMessage = logTimeStamp+logModulePart+logLevelPart+message;
 
+		
 	}
 
 }
