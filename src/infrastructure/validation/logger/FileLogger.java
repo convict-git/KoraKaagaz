@@ -86,7 +86,11 @@ public class FileLogger implements ILogger {
 			printWriter = openFile(logFile);
 			printWriter.printf(logMessage);
 		} catch (IOException e) {
-			System.err.println(" Caught IOException: " + e.getMessage());
+			// check for console to print to
+			// if unavailable, do nothing
+			if(System.console() != null) {
+				System.err.println(" Caught IOException: " + e.getMessage());
+			}
 		}
 		finally {
 			closeFile(printWriter);
@@ -102,7 +106,11 @@ public class FileLogger implements ILogger {
 			p.close();
 		}
 		else {
-			System.out.println(" PrintWriter not open ");
+			// check for console to print to
+			// if unavailable, do nothing
+			if(System.console() != null) {
+				System.out.println(" PrintWriter not open ");
+			}
 		}
 	}
 }
