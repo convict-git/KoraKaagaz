@@ -101,7 +101,7 @@ public class Requests implements IRequests{
 	/**
 	 * This function will be called by a board server when every client gets disconnected from the 
 	 * server to stop the board server.
-	 * @param boardId baordID of the board server which needs to be stopped
+	 * @param boardId boardID of the board server which needs to be stopped
 	 */
 	public static void removeBoardServer(BoardId boardId) {
 		ServerState.boardToPort.remove(boardId);
