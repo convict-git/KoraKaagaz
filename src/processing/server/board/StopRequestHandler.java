@@ -2,13 +2,11 @@ package processing.server.board;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-
 import infrastructure.validation.logger.LogLevel;
 import infrastructure.validation.logger.ModuleID;
 import processing.utility.*;
 import networking.INotificationHandler;
 import processing.*;
-import processing.server.main.Requests;
 
 /**
  * This class implements INotificationHandlerr and 
@@ -105,7 +103,17 @@ public class StopRequestHandler implements INotificationHandler {
 			 * Notifying the main server to shut this board's server by passing board ID as
 			 * the argument.
 			 */
-			Requests.removeBoardServer(ClientBoardState.boardId);
+			String mainServerAddress = ClientBoardState.userIP.toString()
+									 + ":"
+									 + Integer.toString(8467);
+			
+			ClientBoardState.send(
+					mainServerAddress, 
+					ClientBoardState.boardId.toString(), 
+					"RemoveBoard"
+			);
+			
+			System.exit(0);
 		}
 	}
 	

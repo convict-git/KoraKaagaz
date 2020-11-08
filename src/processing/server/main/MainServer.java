@@ -49,7 +49,6 @@ public class MainServer {
 		 * Now Client can make a new board request to the server, for that Main Server
 		 * need to subscribe for this request to the networking module.
 		 */
-		
 		ClientBoardState.logger.log(
 				ModuleID.PROCESSING, 
 				LogLevel.INFO, 
@@ -65,7 +64,6 @@ public class MainServer {
 		 * Client can also make existing board request so subscribing for existing board
 		 * request, to the networking module.
 		 */
-		
 		ClientBoardState.logger.log(
 				ModuleID.PROCESSING, 
 				LogLevel.INFO, 
@@ -75,6 +73,21 @@ public class MainServer {
 		ServerState.communicator.subscribeForNotifications(
 				"ExistingBoard", 
 				new BoardRequestHandler()
+		);
+		
+		/**
+		 * Board Server will make Remove Board request when all the clients disconnected
+		 * from it so it needs to be shutdown.
+		 */
+		ClientBoardState.logger.log(
+				ModuleID.PROCESSING, 
+				LogLevel.INFO, 
+				"Subscribing for Remove Board event"
+		);
+		
+		ServerState.communicator.subscribeForNotifications(
+				"RemoveBoard", 
+				new RemoveBoardHandler()
 		);
 		
 		ClientBoardState.logger.log(

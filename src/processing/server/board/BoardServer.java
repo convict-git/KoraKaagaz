@@ -1,7 +1,6 @@
 package processing.server.board;
 
 import java.io.IOException;
-
 import infrastructure.validation.logger.LogLevel;
 import infrastructure.validation.logger.ModuleID;
 import networking.CommunicatorFactory;
@@ -59,6 +58,9 @@ public class BoardServer {
 		
 		// set the Board Server's port as the port on which it is listening
 		ClientBoardState.serverPort = serverPort;
+		
+		//set the user IP using the networking module getIP() function
+		ClientBoardState.userIP = new IpAddress(CommunicatorFactory.getClientInfo().getIp());
 		
 		/**
 		 * While starting a new Board Server, the Board ID is given as the second argument
