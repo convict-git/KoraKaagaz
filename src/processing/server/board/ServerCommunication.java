@@ -18,7 +18,7 @@ import processing.boardobject.*;
  *
  */
 
-public class ServerCommunication {
+public class ServerCommunication implements IServerCommunication{
 	
 	// variable to store the server address with ip and port
 	String serverAddress;
