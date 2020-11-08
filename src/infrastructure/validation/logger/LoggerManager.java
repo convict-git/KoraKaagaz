@@ -43,7 +43,7 @@ public class LoggerManager implements ILogger {
 	}
 
 	@Override
-	public void log(ModuleID moduleIdentifier, LogLevel level, String message) {
+	synchronized public void log(ModuleID moduleIdentifier, LogLevel level, String message) {
 		
 		if(allowFileLogging) {
 			fileLogger.log(moduleIdentifier, level, message);			
