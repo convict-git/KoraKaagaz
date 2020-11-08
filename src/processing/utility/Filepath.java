@@ -40,7 +40,7 @@ public class Filepath {
 	@Override
 	public boolean equals(Object obj) {
 		if(obj instanceof Filepath)
-			return filepath == ((Filepath)obj).filepath;
+			return filepath.equals(((Filepath)obj).filepath);
 		else
 			return false;
 	}
