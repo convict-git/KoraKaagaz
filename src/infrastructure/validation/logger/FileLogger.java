@@ -49,7 +49,7 @@ public class FileLogger implements ILogger {
 	}
 
 	@Override
-	public void log(ModuleID moduleIdentifier, LogLevel level, String message) {
+	synchronized public void log(ModuleID moduleIdentifier, LogLevel level, String message) {
 
 		LocalDateTime now = LocalDateTime.now();
 		String formatDateTime = now.format(timeStampFormat);
