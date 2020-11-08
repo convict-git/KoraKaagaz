@@ -1,29 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Authors : Jaya Madhav & Anish Jain -->
+
+<!-- @Author : Jaya Madhav, Anish Jain, Sajith Kumar and Shiva Dhanush-->
 <!-- This file contains the code for the UI page -->
 <!-- The UI is built using Scene Builder -->
 <!-- Contributors working on the Menu Bar, working using the Scene Builder is advisable -->
 <!-- Do not change the other part of the code -->
+
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ColorPicker?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.effect.ColorAdjust?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.shape.Polygon?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
 <?import javafx.scene.text.TextFlow?>
 
-<ScrollPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="1502.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<ScrollPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="1502.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="UI.CanvasController">
    <content>
       <AnchorPane>
          <children>
             <AnchorPane layoutX="13.0" layoutY="70.0" style="-fx-border-width: 5; -fx-border-color: black;" AnchorPane.bottomAnchor="18.0" AnchorPane.leftAnchor="13.0" AnchorPane.rightAnchor="386.0" AnchorPane.topAnchor="70.0">
                <children>
-                  <Canvas focusTraversable="true" height="723.0" width="1102.0">
+                  <Canvas fx:id="canvasB" height="723.0" width="1102.0" />
+                  <Canvas fx:id="canvasF" focusTraversable="true" height="723.0" onMouseDragged="#mouseDragged" onMousePressed="#mousePressed" onMouseReleased="#mouseReleased" width="1102.0">
                      <cursor>
                         <Cursor fx:constant="DEFAULT" />
                      </cursor>
@@ -55,19 +68,98 @@
             <AnchorPane layoutX="1135.0" layoutY="299.0" prefHeight="504.0" prefWidth="347.0" style="-fx-border-width: 3; -fx-border-color: black;">
                <children>
                   <Canvas height="492.0" width="341.0" />
-                  <Button layoutX="265.0" layoutY="438.0" mnemonicParsing="false" prefHeight="53.0" prefWidth="80.0" text="SEND" />
-                  <ScrollPane layoutX="4.0" layoutY="4.0">
+                  <Button fx:id="sendButton" layoutX="266.0" layoutY="440.0" mnemonicParsing="false" onAction="#sendButtonClicked" prefHeight="60.0" prefWidth="80.0" style="-fx-border-color: black; -fx-border-width: 3;" text="SEND">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font></Button>
+                  <ScrollPane fx:id="chatScroll" layoutX="4.0" layoutY="4.0" vvalue="1.0">
                      <content>
-                        <VBox prefHeight="434.0" prefWidth="340.0" />
+                        <VBox fx:id="chatDisplayBox" prefHeight="434.0" prefWidth="340.0" style="-fx-background-color: yellow; -fx-border-color: black; -fx-border-width: 3;" />
                      </content>
                   </ScrollPane>
                </children>
             </AnchorPane>
             <TextFlow layoutX="1126.0" layoutY="738.0">
                <children>
-                  <TextArea prefHeight="53.0" prefWidth="259.0" translateX="14.0" wrapText="true" />
+                  <TextArea fx:id="sendMessage" prefHeight="53.0" prefWidth="259.0" style="-fx-border-color: black; -fx-border-width: 3;" translateX="14.0" wrapText="true">
+                     <font>
+                        <Font size="18.0" />
+                     </font></TextArea>
                </children>
             </TextFlow>
+            <HBox alignment="CENTER" prefHeight="67.0" prefWidth="1485.0">
+               <children>
+                  <HBox alignment="CENTER" prefHeight="67.0" prefWidth="72.0">
+                     <children>
+                        <Button fx:id="undo" mnemonicParsing="false" onAction="#undoClicked" prefHeight="26.0" prefWidth="73.0" text="undo" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" prefHeight="67.0" prefWidth="71.0">
+                     <children>
+                        <Button fx:id="redo" mnemonicParsing="false" onAction="#redoClicked" prefHeight="26.0" prefWidth="67.0" text="redo" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" prefHeight="67.0" prefWidth="68.0">
+                     <children>
+                        <Button fx:id="eraser" mnemonicParsing="false" onAction="#eraserClicked" prefHeight="26.0" prefWidth="67.0" text="Eraser" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" prefHeight="67.0" prefWidth="60.0">
+                     <children>
+                        <Button fx:id="brush" mnemonicParsing="false" onAction="#brushClicked" prefHeight="26.0" prefWidth="59.0" text="Brush" />
+                     </children>
+                  </HBox>
+                  <ComboBox fx:id="brushSize" onAction="#brushSizeChanged" prefWidth="150.0" promptText="Brush Size" />
+                  <HBox alignment="CENTER_LEFT" layoutX="585.0" layoutY="-1.0" prefHeight="67.0" prefWidth="693.0">
+                  <children>
+                        <Button fx:id="line" mnemonicParsing="false" onAction="#lineSelected" prefHeight="23.0" prefWidth="28.0">
+                     <graphic>
+                        <Line endX="-88.70710754394531" endY="13.292893409729004" smooth="false" startX="-100.0" />
+                     </graphic>
+                     <tooltip>
+                        <Tooltip text="Line" />
+                     </tooltip></Button>
+                  <Button fx:id="rect" layoutX="18.0" layoutY="18.0" mnemonicParsing="false" onAction="#rectSelected" prefHeight="23.0" prefWidth="28.0">
+                     <graphic>
+                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ffffff2b" height="15.0" smooth="false" stroke="BLACK" strokeType="INSIDE" width="27.0" />
+                     </graphic>
+                     <tooltip>
+                        <Tooltip text="Rectangle" />
+                     </tooltip>
+                  </Button>
+                  <Button fx:id="square" layoutX="61.0" layoutY="18.0" mnemonicParsing="false" onAction="#squareSelected" prefHeight="23.0" prefWidth="28.0">
+                     <graphic>
+                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ffffff3d" height="16.0" smooth="false" stroke="BLACK" strokeType="INSIDE" width="15.0" />
+                     </graphic>
+                     <tooltip>
+                        <Tooltip text="Square" />
+                     </tooltip>
+                  </Button>
+                  <Button fx:id="triangle" layoutX="104.0" layoutY="18.0" mnemonicParsing="false" onAction="#triangleSelected" prefHeight="23.0" prefWidth="28.0">
+                     <graphic>
+                        <Polygon fill="#ffffff3d" points="29.0, -40.0, 9.0, -40.0, 18.0, -57.0" smooth="false" stroke="BLACK" strokeType="INSIDE" />
+                     </graphic>
+                     <tooltip>
+                        <Tooltip text="Triangle" />
+                     </tooltip>
+                  </Button>
+                  <Button fx:id="circle" layoutX="147.0" layoutY="18.0" mnemonicParsing="false" onAction="#circleSelected" prefHeight="23.0" prefWidth="28.0">
+                     <graphic>
+                        <Circle fill="#ffffff3e" radius="9.0" smooth="false" stroke="BLACK" strokeType="INSIDE" />
+                     </graphic>
+                     <tooltip>
+                        <Tooltip text="Circle" />
+                     </tooltip>
+                  </Button>
+                  <ColorPicker fx:id="colorpicker" />
+                        <Button fx:id="cursor" mnemonicParsing="false" onAction="#cursorClicked" text="Cursor" />
+                     </children>
+                     <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                  </HBox>
+               </children>
+            </HBox>
          </children>
       </AnchorPane>
    </content>
