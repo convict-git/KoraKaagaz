@@ -17,5 +17,5 @@ public interface IBoardObjectOperation {
 	 * 
 	 * @return the enum type of the operation to be performed
 	 */
-    public BoardObjectOperationType getOperationType();
+	public BoardObjectOperationType getOperationType();
 }

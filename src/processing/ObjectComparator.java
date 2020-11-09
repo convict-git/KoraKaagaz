@@ -4,11 +4,11 @@ import processing.utility.*;
 import java.util.*;
 
 /**
-* This is to compare two PriorityQueueObject objects, to store them in a sorted way according
-* to timestamp in the priority queue.
-*
-* @author Himanshu Jain
-*/
+ * This is to compare two PriorityQueueObject objects, to store them in a sorted way according
+ * to timestamp in the priority queue.
+ *
+ * @author Himanshu Jain
+ */
 
 public class ObjectComparator implements Comparator <PriorityQueueObject>{
 	
