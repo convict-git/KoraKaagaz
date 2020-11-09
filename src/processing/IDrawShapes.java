@@ -44,5 +44,14 @@ public interface IDrawShapes {
 	 * @param start start position with RGB values
 	 * @param end end position with RGB values
 	 */
-	void drawLine(Pixel start, Pixel end);        
+	void drawLine(Pixel start, Pixel end); 
+	
+	/**
+	 * Constructs a Triangle based on the three vertices provided
+	 * 
+	 * @param vertA First vertex of the triangle
+	 * @param vertB Second vertex of the triangle
+	 * @param vertC Third vertex of the triangle
+	 */
+	void drawTriangle(Pixel vertA, Pixel vertB, Pixel vertC); 
 }

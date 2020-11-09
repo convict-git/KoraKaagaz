@@ -6,12 +6,12 @@ import processing.utility.*;
 import processing.boardobject.*;
 
 /**
-* This BoardState class stores two maps which should be serializable for persistence.
-* ClientBoardState and ServerBoardState will store the object of this class in their class.
-*
-* @author Himanshu Jain, Shruti Umat
-* @reviewer Ahmed Zaheer Dadarkar, Satchit Desai
-*/
+ * This BoardState class stores two maps which should be serializable for persistence.
+ * ClientBoardState and ServerBoardState will store the object of this class in their class.
+ *
+ * @author Himanshu Jain, Shruti Umat
+ * @reviewer Ahmed Zaheer Dadarkar, Satchit Desai
+ */
 
 public class BoardState implements Serializable {
 
