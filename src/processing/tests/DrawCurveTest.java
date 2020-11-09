@@ -1,5 +1,6 @@
 package processing.tests;
 
+import processing.test.*;
 import java.util.ArrayList;
 
 import infrastructure.validation.testing.TestCase;
@@ -7,22 +8,24 @@ import processing.ProcessingFactory;
 import processing.Processor;
 import processing.utility.*;
 
-/**
- *
- * @author Sakshi Rathore
- */
+import processing.test.*;
+import processing.test.*;
 
-public class CurveBuilderTest extends TestCase{
+public class DrawCurveTest extends TestCase {
 	
-	@Override
 	public boolean run() {
 		
-		this.setDescription("Test the drawCurve interface.");
-		this.setCategory("Processing");
-		this.setPriority(2);
+		setDescription("Test the drawCurve interface.");
+		setCategory("Processing");
+		setPriority(2);
 		
-		Processor processor = ProcessorFactoryObject.getProcessor();
-				
+		ClientUI.setTestIdentifier("DrawCurveTest");
+		TestUtil.initialiseProcessorForTest();
+		
+		Processor processor = ProcessingFactory.getProcessor();
+		
+		processor.subscribeForChanges("TestProcessor", new ChangesHandler());
+		
 		Position pos = new Position(1,2);
 		Intensity intensity = new Intensity(1,2,3);
 		Pixel pixel  = new Pixel(pos, intensity);
@@ -33,7 +36,10 @@ public class CurveBuilderTest extends TestCase{
 			processor.drawCurve(arrayPixel);	
 		} catch (Exception error) {
 			this.setError(error.toString());
+			return false;
 		}
+		
+		
 		
 		return true;
 	}
