@@ -21,8 +21,8 @@ public class CurveBuilderTest extends TestCase{
 		this.setCategory("Processing");
 		this.setPriority(2);
 		
-		Processor processor = ProcessingFactory.getProcessor();
-		
+		Processor processor = ProcessorFactoryObject.getProcessor();
+				
 		Position pos = new Position(1,2);
 		Intensity intensity = new Intensity(1,2,3);
 		Pixel pixel  = new Pixel(pos, intensity);
@@ -34,7 +34,6 @@ public class CurveBuilderTest extends TestCase{
 		} catch (Exception error) {
 			this.setError(error.toString());
 		}
-		
 		
 		return true;
 	}
