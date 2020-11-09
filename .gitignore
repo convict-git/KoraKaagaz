@@ -1,1 +1,17 @@
 /bin/
+.metadata
+*.pydevproject
+.project
+.metadata
+bin/**
+tmp/**
+tmp/**/*
+*.tmp
+*.bak
+*.swp
+*~.nib
+
+*.jar
+*.war
+*.ear
+*.class

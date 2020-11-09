@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Authors : Jaya Madhav & Anish Jain -->
+<!-- This file contains the code for the UI page -->
+<!-- The UI is built using Scene Builder -->
+<!-- Contributors working on the Menu Bar, working using the Scene Builder is advisable -->
+<!-- Do not change the other part of the code -->
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.effect.ColorAdjust?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.TextFlow?>
+
+<ScrollPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="1502.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <content>
+      <AnchorPane>
+         <children>
+            <AnchorPane layoutX="13.0" layoutY="70.0" style="-fx-border-width: 5; -fx-border-color: black;" AnchorPane.bottomAnchor="18.0" AnchorPane.leftAnchor="13.0" AnchorPane.rightAnchor="386.0" AnchorPane.topAnchor="70.0">
+               <children>
+                  <Canvas focusTraversable="true" height="723.0" width="1102.0">
+                     <cursor>
+                        <Cursor fx:constant="DEFAULT" />
+                     </cursor>
+                     <effect>
+                        <ColorAdjust />
+                     </effect>
+                  </Canvas>
+               </children>
+            </AnchorPane>
+            <MenuBar layoutY="-1.0" prefHeight="66.0" prefWidth="1500.0">
+              <menus>
+                <Menu mnemonicParsing="false" text="File">
+                  <items>
+                    <MenuItem mnemonicParsing="false" text="Close" />
+                  </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Edit">
+                  <items>
+                    <MenuItem mnemonicParsing="false" text="Delete" />
+                  </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Help">
+                  <items>
+                    <MenuItem mnemonicParsing="false" text="About" />
+                  </items>
+                </Menu>
+              </menus>
+            </MenuBar>
+            <AnchorPane layoutX="1135.0" layoutY="299.0" prefHeight="504.0" prefWidth="347.0" style="-fx-border-width: 3; -fx-border-color: black;">
+               <children>
+                  <Canvas height="492.0" width="341.0" />
+                  <Button layoutX="265.0" layoutY="438.0" mnemonicParsing="false" prefHeight="53.0" prefWidth="80.0" text="SEND" />
+                  <ScrollPane layoutX="4.0" layoutY="4.0">
+                     <content>
+                        <VBox prefHeight="434.0" prefWidth="340.0" />
+                     </content>
+                  </ScrollPane>
+               </children>
+            </AnchorPane>
+            <TextFlow layoutX="1126.0" layoutY="738.0">
+               <children>
+                  <TextArea prefHeight="53.0" prefWidth="259.0" translateX="14.0" wrapText="true" />
+               </children>
+            </TextFlow>
+         </children>
+      </AnchorPane>
+   </content>
+</ScrollPane>
