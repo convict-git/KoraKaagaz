@@ -46,6 +46,11 @@ public class Processor implements IDrawErase, IDrawShapes, IOperation, IUndoRedo
 	}
 	
 	@Override
+	public void drawTriangle(Pixel vertA, Pixel vertB, Pixel vertC) {
+		return;
+	}
+	
+	@Override
 	public ArrayList<Position> select (ArrayList <Position> positions) {
 		ArrayList<Position> selectedPixels = new ArrayList<Position>();
 		return selectedPixels;
