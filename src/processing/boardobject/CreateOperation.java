@@ -14,9 +14,6 @@ public class CreateOperation implements IBoardObjectOperation, Serializable {
 	
 	/** UID of this serializable class */
 	private static final long serialVersionUID = 8647835000907198741L;
-
-	/** Constructor for the Create Operation */
-	public CreateOperation() {}
 	
 	/** Returns the type of operation */
 	public BoardObjectOperationType getOperationType() {

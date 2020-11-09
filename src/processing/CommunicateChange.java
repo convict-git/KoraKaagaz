@@ -16,14 +16,14 @@ public class CommunicateChange {
 	public static Map <String, IChanges> identifierToHandler;
 	/** UI identifier */
 	public static String identifierUI;
-
+	
 	/**
-     * Computes the set of pixels which will have effect
-     * on the screen and notify the UI using the getChanges
-     * method of IChanges handler.
-     *
-     *
-     * @param identifier identifier of the handler
+	 * Computes the set of pixels which will have effect
+	 * on the screen and notify the UI using the getChanges
+	 * method of IChanges handler.
+	 *
+	 *
+	 * @param identifier identifier of the handler
 	 * @param oldPixels previous pixels of the object
 	 * @param newPixels new pixels of the object
 	 */

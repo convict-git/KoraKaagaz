@@ -33,66 +33,66 @@ public class Serialize {
 	 * @return the Serializable object as a String
 	 * @throws IOException
 	 */
-    public static String serialize (
-    	Serializable serialObj
-    ) throws IOException, UnsupportedEncodingException {
-    	// Create Stream for outputting object as Bytes
-    	ByteArrayOutputStream byteOutputStream = 
-    		new ByteArrayOutputStream();
-  
-    	// Create Stream for passing serializable object to
-    	// ByteArrayOutputStream
-    	ObjectOutputStream objOutStream = 
-    		new ObjectOutputStream(byteOutputStream);
-    	
-    	// Write the object and flush it (so that
-    	// it is written immediately)
-    	objOutStream.writeObject(serialObj);
-    	objOutStream.flush();
-    	
-    	// Get the serialized String from stream
-    	// The ISO-8859-1 preserves 1-to-1 mapping between bytes and characters,
-    	// Read this: https://stackoverflow.com/questions/9098022/
-    	// problems-converting-byte-array-to-string-and-back-to-byte-array
-    	String serialString = byteOutputStream.toString("ISO-8859-1");
-    	
-    	// Close the streams
-    	objOutStream.close();
-    	byteOutputStream.close();
-    	
-    	return serialString;
-    }
-    
-    /**
-     * Takes a String representing a Serialized Object, and returns the object
-     * 
-     * @param serialString A String representing a Serializable object
-     * @return the Serializable object from the String
-     * @throws IOException
-     * @throws ClassNotFoundException
-     */
-    public static Serializable deSerialize (
-    	String serialString
-    ) throws IOException, ClassNotFoundException, UnsupportedEncodingException {
-    	
-    	// Create Stream for reading the bytes of the object present in the string
-    	// The ISO-8859-1 preserves 1-to-1 mapping between bytes and characters,
-    	ByteArrayInputStream byteInputStream = 
-    		new ByteArrayInputStream(serialString.getBytes("ISO-8859-1"));
-    	
-    	// Create Stream for reading the object from the
-    	// ByteArrayInputStream stream
-    	ObjectInputStream objInputStream = 
-    		new ObjectInputStream(byteInputStream);
-    	
-    	// Read the serialized object from the object input stream
-    	Serializable serialObj = 
-    		(Serializable)objInputStream.readObject();
-    	
-    	// Close the streams
-    	objInputStream.close();
-    	byteInputStream.close();
-    	
-    	return serialObj;
-    }
+	public static String serialize (
+		Serializable serialObj
+	) throws IOException, UnsupportedEncodingException {
+		// Create Stream for outputting object as Bytes
+	    	ByteArrayOutputStream byteOutputStream = 
+	    		new ByteArrayOutputStream();
+	  
+	    	// Create Stream for passing serializable object to
+		// ByteArrayOutputStream
+		ObjectOutputStream objOutStream = 
+			new ObjectOutputStream(byteOutputStream);
+		
+		// Write the object and flush it (so that
+		// it is written immediately)
+		objOutStream.writeObject(serialObj);
+		objOutStream.flush();
+		
+		// Get the serialized String from stream
+		// The ISO-8859-1 preserves 1-to-1 mapping between bytes and characters,
+		// Read this: https://stackoverflow.com/questions/9098022/
+		// problems-converting-byte-array-to-string-and-back-to-byte-array
+		String serialString = byteOutputStream.toString("ISO-8859-1");
+		
+		// Close the streams
+		objOutStream.close();
+		byteOutputStream.close();
+		
+		return serialString;
+	}
+	
+	/**
+	 * Takes a String representing a Serialized Object, and returns the object
+	 * 
+	 * @param serialString A String representing a Serializable object
+	 * @return the Serializable object from the String
+	 * @throws IOException
+	 * @throws ClassNotFoundException
+	 */
+	public static Serializable deSerialize (
+		String serialString
+	) throws IOException, ClassNotFoundException, UnsupportedEncodingException {
+		
+		// Create Stream for reading the bytes of the object present in the string
+		// The ISO-8859-1 preserves 1-to-1 mapping between bytes and characters,
+		ByteArrayInputStream byteInputStream = 
+			new ByteArrayInputStream(serialString.getBytes("ISO-8859-1"));
+		
+		// Create Stream for reading the object from the
+		// ByteArrayInputStream stream
+		ObjectInputStream objInputStream = 
+			new ObjectInputStream(byteInputStream);
+		
+		// Read the serialized object from the object input stream
+		Serializable serialObj = 
+			(Serializable)objInputStream.readObject();
+		
+		// Close the streams
+		objInputStream.close();
+		byteInputStream.close();
+		
+		return serialObj;
+	}
 }

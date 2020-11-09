@@ -15,9 +15,6 @@ public class DeleteOperation implements IBoardObjectOperation, Serializable {
 	/** UID of this serializable class */
 	private static final long serialVersionUID = 1648404666296301004L;
 
-	/** Constructor for the Delete Operation */
-	public DeleteOperation() {}
-	
 	/** Returns the type of operation */
 	public BoardObjectOperationType getOperationType() {
 		return BoardObjectOperationType.DELETE;
