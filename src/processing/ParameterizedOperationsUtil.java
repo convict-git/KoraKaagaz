@@ -50,7 +50,7 @@ public class ParameterizedOperationsUtil {
     /**
      * Function calculates the rotation matrix.
      */
-    private static double[][] rotationMatrix(Angle angleOfRotation) {
+    private static double[][] computeRotationMatrix(Angle angleOfRotation) {
 
         // calculating angle, sin, cosine values
         double radians = Math.toRadians(angleOfRotation.angle);
@@ -120,7 +120,7 @@ public class ParameterizedOperationsUtil {
         Position centre = new Position(findCentre(prevPixelIntensities));
 
         // Calculating the required rotation matrix
-        double[][] rotMatrix = rotationMatrix(angleOfRotation);
+        double[][] rotMatrix = computeRotationMatrix(angleOfRotation);
 
         // generating new list of object's pixels
         ArrayList<Pixel> newPixelSet = new ArrayList<Pixel>();

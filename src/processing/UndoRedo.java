@@ -4,6 +4,7 @@ package processing;
 import processing.utility.*;
 import processing.boardobject.*;
 import java.util.*;
+import infrastructure.validation.logger.*;
 
 /**
  * UndoRedo class implements undo-redo operations
@@ -13,6 +14,9 @@ import java.util.*;
  */
 
 public class UndoRedo {
+	
+	// gets the logger instance
+	private static ILogger logger = LoggerFactory.getLoggerInstance();
 	
 	/** 
 	 *  maximum stack size 
@@ -45,7 +49,7 @@ public class UndoRedo {
 	 *  Will be visited later
 	 *  map for access in the list
    	 *  private static Map <ObjectId, ListIterator> idToIterator;
-     */
+     	 */
 	
 	/**
 	 * This helper method will push the object into the given stack
@@ -56,8 +60,9 @@ public class UndoRedo {
 	private static void addIntoStack(ArrayList <BoardObject> stack, BoardObject obj) {
 		
 		// If stack size becomes full, delete the bottom (first) object
-		if (stack.size() >= STACK_CAPACITY)
+		if (stack.size() >= STACK_CAPACITY) {
 			stack.remove(0);
+		}
 		
 		// Push the object to the top (last)
 		stack.add(obj);
@@ -80,14 +85,20 @@ public class UndoRedo {
 				obj.getTimestamp(),
 				obj.getUserId(),
 				obj.isResetObject()
-				);
+		);
 				
 		//sets the CREATE operation in the created object
 		newObj.setOperation(newOp);
 		
 		//Insert the object into the Map
 		ClientBoardState.maps.insertObjectIntoMaps(newObj);
-		
+
+		logger.log(
+			   	ModuleID.PROCESSING, 
+			   	LogLevel.SUCCESS, 
+			   	"Undo / Redo : object " + obj.getObjectId() + " created"
+		);
+
 		return newObj;
 	}
 	
@@ -103,6 +114,11 @@ public class UndoRedo {
 		UserId id = obj.getUserId();
 		// gets the newly created color changed object
 		BoardObject newObj = ParameterizedOperationsUtil.colorChangeUtil(obj, id, intensity);
+		logger.log(
+			   	ModuleID.PROCESSING, 
+			   	LogLevel.SUCCESS, 
+			   	"Undo / Redo : object " + obj.getObjectId() + " color changed"
+		);
 		return newObj;
 	}
 	
@@ -118,6 +134,11 @@ public class UndoRedo {
 		UserId id = obj.getUserId();
 		// gets the newly rotated object
 		BoardObject newObj = ParameterizedOperationsUtil.rotationUtil(obj, id, angle);
+		logger.log(
+			   	ModuleID.PROCESSING, 
+			   	LogLevel.SUCCESS, 
+			   	"Undo / Redo : object " + obj.getObjectId() + " rotated"
+		);
 		return newObj;
 	}
 	
@@ -133,7 +154,7 @@ public class UndoRedo {
 			ArrayList <BoardObject> curStack,
 			ArrayList <BoardObject> otherStack,
 			Operation operation
-			) {
+	) {
 		
 		// No undo or redo operation possible
     	if (curStack.size() <= 0)
@@ -147,46 +168,75 @@ public class UndoRedo {
     	BoardObject newObj = null;
     	
     	switch (operationType) {
-    		case CREATE :	if (operation == Operation.REDO)
-    							newObj = createOperation(topObj);
-    						else
-    							// performs simple delete operation
-    							ClientBoardState.maps.removeObjectFromMaps(topObj.getObjectId());
-    						break;
-    		case DELETE :	if (operation == Operation.UNDO)
-    							newObj = createOperation(topObj);
-    						else 
-    							// performs simple delete operation
-    							ClientBoardState.maps.removeObjectFromMaps(topObj.getObjectId());
-    						break;
+		case CREATE :	
+				if (operation == Operation.REDO) {
+					newObj = createOperation(topObj);
+				}
+				else {
+					// performs simple delete operation
+					ClientBoardState.maps.removeObjectFromMaps(topObj.getObjectId());
+					logger.log(
+							ModuleID.PROCESSING, 
+							LogLevel.SUCCESS, 
+							"Undo : object " + topObj.getObjectId() + " deleted"
+					);
+				}
+				break;
+			
+		case DELETE :	
+				if (operation == Operation.UNDO) {
+					newObj = createOperation(topObj);
+				}
+				else {
+					// performs simple delete operation
+					ClientBoardState.maps.removeObjectFromMaps(topObj.getObjectId());
+					logger.log(
+							ModuleID.PROCESSING, 
+							LogLevel.SUCCESS, 
+							"Redo : object " + topObj.getObjectId() + " deleted"
+					);
+				}
+				break;
     					  
-    		case ROTATE : Angle angleCCW = ((RotateOperation) topObj.getOperation()).getAngle();
-    					  Angle newAngle = null;
-    					  /** 
-    					   *  For undo, the object should be rotated -angle CCW
-    					   *  For redo, the object should be rotated angle CCW
-    					   */
-    					  if (operation == Operation.UNDO)
-    						  newAngle = new Angle(-angleCCW.angle);
-    					  else
-    						  newAngle = new Angle(angleCCW.angle);
-    					  newObj = rotateOperation(topObj, newAngle);
-    					  break;
+		case ROTATE :	
+				Angle angleCCW = ((RotateOperation) topObj.getOperation()).getAngle();
+				Angle newAngle = null;
+				/** 
+				 *  For undo, the object should be rotated -angle CCW
+				 *  For redo, the object should be rotated angle CCW
+				 */
+				if (operation == Operation.UNDO) {
+					newAngle = new Angle(-angleCCW.angle);
+				}
+				else {
+					newAngle = new Angle(angleCCW.angle);
+				}
+				newObj = rotateOperation(topObj, newAngle);
+				break;
     					   
-    		case COLOR_CHANGE : ArrayList <Pixel> newPixels;
-    							/** 
-    							 *  For undo, the object's should be changed to previous color
-    							 *  For redo, the object's should be changed to current color
-    							 */
-    							if (operation == Operation.UNDO)
-    								newPixels = topObj.getPrevIntensity();
-    							else
-    								newPixels = topObj.getPixels();
-    							Intensity newIntensity = newPixels.get(0).intensity;
-    							newObj = colorChangeOperation(topObj, newIntensity);
-    							break;
+		case COLOR_CHANGE :	
+    				ArrayList <Pixel> newPixels;
+				/** 
+				 *  For undo, the object's should be changed to previous color
+				 *  For redo, the object's should be changed to current color
+				 */
+				if (operation == Operation.UNDO) {
+					newPixels = topObj.getPrevIntensity();
+				}
+				else {
+					newPixels = topObj.getPixels();
+				}
+				Intensity newIntensity = newPixels.get(0).intensity;
+				newObj = colorChangeOperation(topObj, newIntensity);
+				break;
     							
-    		default : break; /** Invalid operation*/
+		default : 	// Invalid operation 
+    				logger.log(
+					ModuleID.PROCESSING, 
+					LogLevel.ERROR, 
+					"Undefined Operation type : " + operationType
+    				); 
+    				return;
     	}
     	
     	// Transfers the object from one stack to other
@@ -196,10 +246,18 @@ public class UndoRedo {
     	 *  Send the modified pixels to the UI 
     	 *  null value occurs when delete operation is performed 
     	 */
-    	if (newObj != null)
+    	if (newObj != null) {
     		CommunicateChange.provideChanges(newObj.getPrevIntensity(), newObj.getPixels());
-    	else
+    	}
+    	else {
     		CommunicateChange.provideChanges(topObj.getPixels(), null);
+    	}
+    	logger.log(
+			ModuleID.PROCESSING, 
+			LogLevel.SUCCESS, 
+			"Undo / Redo successfully performed"
+    	); 
+    	
 	}
 	
 	/**
@@ -214,8 +272,9 @@ public class UndoRedo {
 		   ListIterator <BoardObject> iterStack = stack.listIterator();
 		   while (iterStack.hasNext()) {
 			   BoardObject obj = iterStack.next();
-			   if (obj.getObjectId().equals(objectId))
+			   if (obj.getObjectId().equals(objectId)) {
 				   iterStack.remove();
+			   }
 		   }
 		   return;
 	}
@@ -253,11 +312,19 @@ public class UndoRedo {
    public static void pushIntoStack(BoardObject object) {
 	   
 	   //If the object is created by other user then do not push it into the stack
-	   if (object.getUserId().equals(ClientBoardState.userId) == false)
+	   if (object.getUserId().equals(ClientBoardState.userId) == false) {
 		   return;
+	   }
 	   
 	   // pushes into undo stack
 	   addIntoStack(ClientBoardState.undoStack, object);
+	   
+	   logger.log(
+			ModuleID.PROCESSING, 
+			LogLevel.SUCCESS, 
+			"Object pushed into the Undo stack"
+		);
+	   
 	   /** 
 	    * No iterator map for now
 	    * Will be added later 
@@ -277,5 +344,11 @@ public class UndoRedo {
 	   deleteFromStack(ClientBoardState.undoStack, objectId);
 	   // Deletes from redo stack
 	   deleteFromStack(ClientBoardState.redoStack, objectId);
+	   
+	   logger.log(
+			ModuleID.PROCESSING, 
+			LogLevel.SUCCESS, 
+			"Object deleted from the stacks"
+		);
    }
 }
