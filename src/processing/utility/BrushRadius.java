@@ -34,4 +34,10 @@ public class BrushRadius {
 		else
 			return false;
 	}
+	
+	/** HashCode Method */
+	@Override
+	public int hashCode() {
+		return (int)brushRadius;
+	}
 }

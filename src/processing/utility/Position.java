@@ -44,4 +44,10 @@ public class Position {
 		else
 			return false;
 	}
+	
+	/** HashCode Method */
+	@Override
+	public int hashCode() {
+		return 31 * r + c;
+	}
 }

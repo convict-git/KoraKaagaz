@@ -70,4 +70,10 @@ public class Timestamp implements Comparable<Timestamp> {
 	public int compareTo(Timestamp timestamp) {
 		return date.compareTo(timestamp.date);
 	}
+	
+	/** HashCode Method */
+	@Override
+	public int hashCode() {
+		return date.hashCode();
+	}
 }

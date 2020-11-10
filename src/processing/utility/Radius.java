@@ -32,4 +32,10 @@ public class Radius {
 		else
 			return false;
 	}
+	
+	/** HashCode Method */
+	@Override
+	public int hashCode() {
+		return (int)radius;
+	}
 }

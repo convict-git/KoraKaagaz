@@ -55,4 +55,10 @@ public class UserId {
 		else
 			return false;
 	}
+	
+	/** HashCode Method */
+	@Override
+	public int hashCode() {
+		return userId.hashCode();
+	}
 }

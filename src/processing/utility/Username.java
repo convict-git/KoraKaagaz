@@ -42,4 +42,10 @@ public class Username {
 		else
 			return false;
 	}
+    
+    /** HashCode Method */
+	@Override
+	public int hashCode() {
+		return username.hashCode();
+	}
 }
