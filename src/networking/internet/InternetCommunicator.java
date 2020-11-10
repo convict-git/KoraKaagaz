@@ -182,7 +182,8 @@ public class InternetCommunicator implements ICommunicator {
             try {
                 processingReceiveQueueListenerWorker.start();
             } catch (Exception e) {
-                logger.log(ModuleID.NETWORKING, LogLevel.ERROR, "processingReceiveQueueListenerWorker is not able to start " + e.toString());
+                logger.log(ModuleID.NETWORKING, LogLevel.ERROR,
+                        "processingReceiveQueueListenerWorker is not able to start " + e.toString());
                 return;
             }
 

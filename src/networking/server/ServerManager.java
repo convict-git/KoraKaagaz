@@ -1,61 +1,94 @@
 package networking.server;
-import networking.queueManagement.*;
+
+/**
+ * This file contains the class ServerManager which will be running on the server
+ * and used for checking if client is connected to internet, to get id for a client
+ * and to create two threads (for each client) for listening the messages from a client 
+ * and another for sending it back.
+ *
+ * @author Madaka Srikar Reddy
+ * 
+ */
 
 import java.io.*;
 import java.net.*;
 import java.util.HashMap;
+import networking.queueManagement.*;
 
 public class ServerManager {
-    public static void main(String[] args) throws IOException 
-	{
-        int client = 0;
-		// server is listening on port 5000 
-		ServerSocket ss = new ServerSocket(5000); 
+	/**
+	 * This is the main method that will be running in the server that is used as
+	 * intermediate between clients
+	 * 
+	 * @param args
+	 * @throws IOException
+	 */
+	public static void main(String[] args) throws IOException {
+		/**
+		 * Creating a socket and clientID contains the id that we will be giving the
+		 * clients
+		 */
+		int clientID = 0;
+		ServerSocket ss = new ServerSocket(5000);
 
-		HashMap<String, IQueue<String>>map = new HashMap<String, IQueue<String> >(); 
-		// running infinite loop for getting 
-		// client request 
-		while (true)
-		{ 
-			Socket s = null; 
-			
-			try
-			{ 
-				// socket object to receive incoming client requests 
+		/** This hashmap contains the map of the client id and their queue */
+		HashMap<String, IQueue<String>> map = new HashMap<String, IQueue<String>>();
+
+		/** Continously listening for connections from client */
+		while (true) {
+			Socket s = null;
+
+			try {
+				/** Accepting a connection from a client */
 				s = ss.accept();
+				/** Used for reading the data from client */
 				DataInputStream dis = new DataInputStream(s.getInputStream());
+				/** Used for writing data to the client */
 				DataOutputStream dos = new DataOutputStream(s.getOutputStream());
+				/** Reading message from the client */
 				String msg = dis.readUTF();
-				if(msg == "GET_CLIENT_INFO"){
-					String id = client+"";
-					dos.writeUTF(id);
-					client++;
+				/**
+				 * If the message is CHECK_INTERNET it is used to check if client can be
+				 * connected to the server
+				 */
+				if (msg == "CHECK_INTERNET") {
+					dos.writeUTF("CONNECTED");
+					s.close();
 				}
-				else{
+				/**
+				 * If the message is GET_CLIENT_INFO we give the client the id which is unique
+				 * to them
+				 */
+				else if (msg == "GET_CLIENT_INFO") {
+					String id = clientID + "";
+					dos.writeUTF(id);
+					clientID++;
+					s.close();
+				}
+				/**
+				 * If the message is like clientID:msg we create a queue and two threads for the
+				 * client to read message and send message to the client
+				 */
+				else {
 					String[] arr = msg.split(":");
 					String id = arr[0];
 					IQueue<String> q = new ConcurrentBlockingQueue<String>();
-					map.put(id,q);
-					// create a new thread object 
-					Thread t1 = new ReceiveThread(dis,map);
-					Thread t2 = new SendThread(dos,q);
-	
-					// Invoking the start() method 
+					map.put(id, q);
+					Thread t1 = new ReceiveThread(dis, map);
+					Thread t2 = new SendThread(dos, q);
 					t1.start();
 					t2.start();
 				}
-	
+
+			} catch (Exception e) {
+				s.close();
+				e.printStackTrace();
 			}
-			catch (Exception e){ 
-				s.close(); 
-				e.printStackTrace(); 
-			} 
-		} 
-		try{
-			ss.close();
 		}
-		catch(Exception e){
+		try {
+			ss.close();
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	} 
+	}
 }
