@@ -2,7 +2,6 @@ package networking;
 
 import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.io.IOException;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 
@@ -119,6 +118,7 @@ public class CommunicatorFactory{
 			/** This catch block is executed after raising the exception when there is given host is unkown. */
 			catch(UnknownHostException e){
 				logger.log(ModuleID.NETWORKING, LogLevel.ERROR,"UnknownHost "+e.toString());
+				sock.close();
 				return new ClientInfo();
 			}
 

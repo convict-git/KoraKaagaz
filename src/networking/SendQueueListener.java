@@ -29,7 +29,7 @@ public class SendQueueListener implements Runnable {
     /** 
 	 * logger object from the LoggerFactory to log messages
 	*/
-	Ilogger logger = LoggerFactory.getLoggerInstance();
+	ILogger logger = LoggerFactory.getLoggerInstance();
 
     /**
      * Constructor for this sendQueueListener class.
@@ -230,7 +230,7 @@ public class SendQueueListener implements Runnable {
                     /**
                      * if any exception occurs then log the error.
                      */
-                    logger.log(ModuleID.NETWORKING, LogLevel.ERROR, exp);
+                    logger.log(ModuleID.NETWORKING, LogLevel.ERROR, e.toString());
                 }
                 
                 /**
