@@ -1,6 +1,7 @@
 package infrastructure.validation.logger;
 
 import java.io.FileInputStream;
+import java.nio.file.Files;
 import java.io.File;
 import java.util.List;
 import java.util.ArrayList;
@@ -70,6 +71,50 @@ public class LoggerManager implements ILogger {
 	private List<ModuleID> parse(String filePath) {
 		
 		List<ModuleID> enabledLogLevelsList = new ArrayList<ModuleID>();
+		XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
+		
+		boolean isInLoggerOptions = false;
+		// boolean isInLogLevels = false;
+		
+		try {
+			
+			XMLEventReader reader = xmlInputFactory.createXMLEventReader(new FileInputStream(filePath));
+			while(reader.hasNext()) {
+				
+				XMLEvent nextEvent = reader.nextEvent();
+				if(nextEvent.isStartElement()) {
+					StartElement startElement = nextEvent.asStartElement();
+					switch(startElement.getName().getLocalPart()) {
+					case "loggerOptions":
+						isInLoggerOptions = true;
+						break;
+					case "loggerOption":
+						Attribute loggerTypeFile = startElement.getAttributeByName(new QName("FileLogger"));
+						if(loggerTypeFile != null) {
+							if("true".equals(loggerTypeFile.getValue())) {
+								allowFileLogging = true;
+							}
+						}
+						
+						Attribute consoleTypeFile = startElement.getAttributeByName(new QName("ConsoleLogger"));
+						if(consoleTypeFile != null) {
+							if("true".equals(consoleTypeFile.getValue())) {
+								allowConsoleLogging = true;
+							}
+						}
+					}
+				}
+				if(nextEvent.isEndElement()) {
+					EndElement endElement = nextEvent.asEndElement();
+					switch(endElement.getName().getLocalPart()) {
+					case "loggerOptions":
+						isInLoggerOptions = false;
+					}
+				}
+			}
+		} catch () {
+			
+		}
 		
 		return enabledLogLevelsList;
 	}
