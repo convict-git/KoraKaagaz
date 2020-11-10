@@ -1,5 +1,19 @@
 package infrastructure.validation.logger;
 
+import java.io.FileInputStream;
+import java.util.List;
+import java.util.ArrayList;
+
+import javax.xml.stream.events.XMLEvent;
+import javax.xml.stream.XMLEventReader;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.events.Attribute;
+import javax.xml.stream.events.EndElement;
+import javax.xml.stream.events.StartElement;
+import javax.xml.namespace.QName;
+
+
 /**
  * LoggerManager class that will be referenced by other modules,
  * for logging via the LoggerFactory
@@ -13,6 +27,9 @@ package infrastructure.validation.logger;
  */
 public class LoggerManager implements ILogger {
 
+	/** path to config file */
+	private String loggerConfigFilePath = "resources/infrastructure_logger.xml";
+	
 	/** object that holds an instance of FileLogger */
 	private ILogger fileLogger;
 
@@ -33,6 +50,8 @@ public class LoggerManager implements ILogger {
 	
 	protected LoggerManager() {
 		
+		List<ModuleID> enabledLogLevelsList = parse(loggerConfigFilePath);
+		
 		if(allowFileLogging) {
 			fileLogger = new FileLogger();
 		}
@@ -40,6 +59,13 @@ public class LoggerManager implements ILogger {
 		if(allowConsoleLogging) {
 			consoleLogger = new ConsoleLogger();
 		}
+	}
+
+	private List<ModuleID> parse(String filePath) {
+		
+		List<ModuleID> enabledLogLevelsList = new ArrayList<ModuleID>();
+		
+		return enabledLogLevelsList;
 	}
 
 	@Override
