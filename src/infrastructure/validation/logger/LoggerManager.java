@@ -53,7 +53,7 @@ public class LoggerManager implements ILogger {
 	protected LoggerManager() {
 		
 		File logConfigFile = new File(loggerConfigFilePath);
-		List<ModuleID> enabledLogLevelsList;
+		List<LogLevel> enabledLogLevelsList;
 		
 		if(logConfigFile.isFile()) {
 			enabledLogLevelsList = parse(loggerConfigFilePath);
@@ -68,9 +68,9 @@ public class LoggerManager implements ILogger {
 		}
 	}
 
-	private List<ModuleID> parse(String filePath) {
+	private List<LogLevel> parse(String filePath) {
 		
-		List<ModuleID> enabledLogLevelsList = new ArrayList<ModuleID>();
+		List<LogLevel> enabledLogLevelsList = new ArrayList<LogLevel>();
 		XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
 		
 		boolean isInLoggerOptions = false;
@@ -113,6 +113,37 @@ public class LoggerManager implements ILogger {
 						break;
 					case "logLevel":
 						
+						if(!isInLogLevels) {
+							break;
+						}
+						
+						Attribute logTypeError = startElement.getAttributeByName(new QName("ERROR"));
+						if(logTypeError != null) {
+							if(nextEvent.asCharacters().getData().equalsIgnoreCase("true")) {
+								enabledLogLevelsList.add(LogLevel.ERROR);
+							}
+						}
+
+						Attribute logTypeWarning = startElement.getAttributeByName(new QName("WARNING"));
+						if(logTypeWarning != null) {
+							if(nextEvent.asCharacters().getData().equalsIgnoreCase("true")) {
+								enabledLogLevelsList.add(LogLevel.WARNING);
+							}
+						}
+						
+						Attribute logTypeSuccess = startElement.getAttributeByName(new QName("SUCCESS"));
+						if(logTypeSuccess != null) {
+							if(nextEvent.asCharacters().getData().equalsIgnoreCase("true")) {
+								enabledLogLevelsList.add(LogLevel.SUCCESS);
+							}
+						}
+						
+						Attribute logTypeInfo = startElement.getAttributeByName(new QName("INFO"));
+						if(logTypeInfo != null) {
+							if(nextEvent.asCharacters().getData().equalsIgnoreCase("true")) {
+								enabledLogLevelsList.add(LogLevel.INFO);
+							}
+						}
 						break;
 					default:
 						break;
