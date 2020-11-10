@@ -74,7 +74,7 @@ public class LoggerManager implements ILogger {
 		XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
 		
 		boolean isInLoggerOptions = false;
-		// boolean isInLogLevels = false;
+		boolean isInLogLevels = false;
 		
 		try {
 			
@@ -89,19 +89,33 @@ public class LoggerManager implements ILogger {
 						isInLoggerOptions = true;
 						break;
 					case "loggerOption":
+						
+						if(!isInLoggerOptions) {
+							break;
+						}
+						
 						Attribute loggerTypeFile = startElement.getAttributeByName(new QName("FileLogger"));
 						if(loggerTypeFile != null) {
-							if("true".equals(loggerTypeFile.getValue())) {
+							if(nextEvent.asCharacters().getData().equalsIgnoreCase("true")) {
 								allowFileLogging = true;
 							}
 						}
 						
 						Attribute consoleTypeFile = startElement.getAttributeByName(new QName("ConsoleLogger"));
 						if(consoleTypeFile != null) {
-							if("true".equals(consoleTypeFile.getValue())) {
+							if(nextEvent.asCharacters().getData().equalsIgnoreCase("true")) {
 								allowConsoleLogging = true;
 							}
 						}
+						break;
+					case "logLevels":
+						isInLogLevels = true;
+						break;
+					case "logLevel":
+						
+						break;
+					default:
+						break;
 					}
 				}
 				if(nextEvent.isEndElement()) {
@@ -109,6 +123,12 @@ public class LoggerManager implements ILogger {
 					switch(endElement.getName().getLocalPart()) {
 					case "loggerOptions":
 						isInLoggerOptions = false;
+						break;
+					case "logLevels":
+						isInLogLevels = false;
+						break;
+					default:
+						break;
 					}
 				}
 			}
