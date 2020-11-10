@@ -3,7 +3,6 @@ package processing.handlers;
 import networking.INotificationHandler;
 import processing.ClientBoardState;
 import processing.utility.*;
-
 /**
  * This class handles Port number of the Board Server received from the server
  * 
