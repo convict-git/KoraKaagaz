@@ -5,6 +5,8 @@ package networking;
  * for messages that they should be receiving.
  *
  * @author Madaka Srikar Reddy
+ * 
+ * @author Prudhvi Vardhan Reddy Pulagam  for subscribeForNotifications method
  */
 
 
@@ -107,7 +109,13 @@ public class LanCommunicator implements ICommunicator{
 	         */
 	        sendQueueListener = new SendQueueListener(sendQueue);
 	        sendQueueListenerWorker = new Thread(sendQueueListener);
-	        sendQueueListenerWorker.start();
+            try{
+                sendQueueListenerWorker.start();
+            }
+            catch(Exception e){
+                logger.log(ModuleID.NETWORKING, LogLevel.ERROR, "sendQueueListenerWorker is not able to start "+ e.toString());  
+                return;
+            }
 	        
 	        logger.log(ModuleID.NETWORKING, LogLevel.INFO, "sendQueueListener thread started");
 	        
@@ -117,7 +125,13 @@ public class LanCommunicator implements ICommunicator{
 	         */
 	        socketListener = new SocketListener(portNumber, processingReceiveQueue, contentReceiveQueue);
 	        socketListenerWorker = new Thread(socketListener);
-	        socketListenerWorker.start();
+            try{
+                socketListenerWorker.start();
+            }
+            catch(Exception e){
+                logger.log(ModuleID.NETWORKING, LogLevel.ERROR, "socketListenerWorker is not able to start "+ e.toString());  
+                return;
+            }
 	
 	        logger.log(ModuleID.NETWORKING, LogLevel.INFO, "socketListener thread started");
 	        
@@ -127,7 +141,14 @@ public class LanCommunicator implements ICommunicator{
 	         */
 	        processingReceiveQueueListener = new ReceiveQueueListener(processingReceiveQueue, handlerMap);
 	        processingReceiveQueueListenerWorker = new Thread(processingReceiveQueueListener);
-	        processingReceiveQueueListenerWorker.start();
+	        
+            try{
+                processingReceiveQueueListenerWorker.start();
+            }
+            catch(Exception e){
+                logger.log(ModuleID.NETWORKING, LogLevel.ERROR, "processingReceiveQueueListenerWorker is not able to start "+ e.toString());  
+                return;
+            }
 	        
 	        logger.log(ModuleID.NETWORKING, LogLevel.INFO, "processingReceiveQueueListener thread started");
 	        
@@ -137,7 +158,13 @@ public class LanCommunicator implements ICommunicator{
 	         */
 	        contentReceiveQueueListener = new ReceiveQueueListener(contentReceiveQueue, handlerMap);
 	        contentReceiveQueueListenerWorker = new Thread(contentReceiveQueueListener);
-	        contentReceiveQueueListenerWorker.start();
+            try{
+	           contentReceiveQueueListenerWorker.start();
+            }
+            catch(Exception e){
+                logger.log(ModuleID.NETWORKING, LogLevel.ERROR, "contentReceiveQueueListener is not able to start");  
+                return; 
+            }
 	        
 	        logger.log(ModuleID.NETWORKING, LogLevel.INFO, "contentReceiveQueueListener thread started");
 	        logger.log(ModuleID.NETWORKING, LogLevel.INFO, "Communication is started");
@@ -148,19 +175,33 @@ public class LanCommunicator implements ICommunicator{
     /**
      * This method will help to terminate all the threads
      * initialized in the start method by setting isRunning to false
+     * and also changing all the instances to null
      */
     @Override
     public void stop(){
     	setStatus(false);
-    	CommunicatorFactory.freeCommunicator();
         socketListener.stop();
-    	logger.log(ModuleID.NETWORKING, LogLevel.INFO, "Communication is stopped");
+        sendQueueListener = null;
+        sendQueueListenerWorker = null;
+        socketListener = null;
+        socketListenerWorker = null;
+        processingReceiveQueueListener = null;
+        processingReceiveQueueListenerWorker = null;
+        contentReceiveQueueListener = null;
+        contentReceiveQueueListenerWorker = null;
+        sendQueue = null;
+        processingReceiveQueue = null;
+        contentReceiveQueue = null;
+        handlerMap = null;
+        CommunicatorFactory.freeCommunicator();
+        logger.log(ModuleID.NETWORKING, LogLevel.INFO, "Communication is stopped");
     }
 
+  
+    
     /**
      * This method creates a object with the params
      * and enqueues this object into the sendQueue
-     * 
      * @param destination contains the ip and port
      * @param message that needs to be sent
      * @param identifier specifies who want to send it
@@ -182,7 +223,7 @@ public class LanCommunicator implements ICommunicator{
     	/** Creating the object for the outgoing packet that is being pushed into the send queue. */
         OutgoingPacket packet = new OutgoingPacket(destination, message, identifier);
         sendQueue.enqueue(packet);
-        logger.log(ModuleID.NETWORKING, LogLevel.INFO, "Pushed the message into the queue");
+        logger.log(ModuleID.NETWORKING, LogLevel.INFO, "Pushed the message into the send queue");
     }
 
 }
