@@ -1,7 +1,7 @@
 package infrastructure.validation.logger;
 
 import java.io.FileInputStream;
-import java.nio.file.Files;
+import java.io.FileNotFoundException;
 import java.io.File;
 import java.util.List;
 import java.util.ArrayList;
@@ -163,8 +163,10 @@ public class LoggerManager implements ILogger {
 					}
 				}
 			}
-		} catch () {
-			
+		} catch (XMLStreamException xse) {
+			// do nothing and skip to default values
+		} catch (FileNotFoundException fnfe) {
+			// do nothing and skip to default values
 		}
 		
 		return enabledLogLevelsList;
