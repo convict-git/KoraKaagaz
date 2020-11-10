@@ -41,6 +41,7 @@ public class ClientInfo{
 		logger.log(ModuleID.NETWORKING, LogLevel.INFO, "created ClientInfo object with IP and port available at client");
 	}
 
+
 	/**
 	* @return String which is client's private IP address.
 	*/

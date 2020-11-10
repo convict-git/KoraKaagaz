@@ -11,6 +11,7 @@ import networking.LanCommunicator;
 import networking.utility.ClientInfo;
 import infrastructure.validation.logger.*;
 
+
 /**
 * This file contains information about CommunicatorFactory class, This class is used for implementation of creation logic 
 * of LanCommunicator object, which uses Singleton factory design pattern.
@@ -26,7 +27,7 @@ public class CommunicatorFactory{
 
 	/** saving logger object from LoggerFactory class to log messages */
 	static ILogger logger=LoggerFactory.getLoggerInstance();
-	
+
 	/**
 	* Constructor of this class is not accessible to other packages or classes.
 	*/
