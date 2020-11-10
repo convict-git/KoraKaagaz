@@ -1,6 +1,7 @@
 package infrastructure.validation.logger;
 
 import java.io.FileInputStream;
+import java.io.File;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -50,7 +51,12 @@ public class LoggerManager implements ILogger {
 	
 	protected LoggerManager() {
 		
-		List<ModuleID> enabledLogLevelsList = parse(loggerConfigFilePath);
+		File logConfigFile = new File(loggerConfigFilePath);
+		List<ModuleID> enabledLogLevelsList;
+		
+		if(logConfigFile.isFile()) {
+			enabledLogLevelsList = parse(loggerConfigFilePath);
+		}
 		
 		if(allowFileLogging) {
 			fileLogger = new FileLogger();
