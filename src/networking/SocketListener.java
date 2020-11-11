@@ -2,6 +2,7 @@ package networking;
 
 import java.io.*;
 import java.net.*;
+import org.json.*;
 
 import networking.queueManagement.*;
 import networking.utility.IncomingPacket;
@@ -66,31 +67,19 @@ public class SocketListener implements Runnable {
 	 * @return Identifier
 	 */
 	public String getIdFromPacket(String packet){
-		/**
-		 * converts String to char[] array
-		 */
-		char[] chars = packet.toCharArray();
-		
-		/**
-		 * String Builder to build a string for the identifier
-		 */
-		StringBuilder idBuilder = new StringBuilder();
-		
-		/**
-		 * Iterates over char[] array and appends to the Identifier Builder
-		 */
-		for (char ch : chars) {
-			if(ch == ':'){
-				break;
-			}
-			idBuilder.append(ch);
-		}
 
 		/**
-		 * Converts the String Builder to String
+		 * Converts a String into json object to retreive the required values
 		 */
-		String id = idBuilder.toString();
-		return id;
+		JSONObject json = new JSONObject(packet);
+
+		/**
+		 * Retreives the identifier from the json object
+		 */
+		String identifier = json.getString("identifier");
+
+		// Returns the identifier
+		return identifier;
 	}
 
 	/**
@@ -100,27 +89,18 @@ public class SocketListener implements Runnable {
 	 */
 	public String getMsgFromPacket(String packet){
 
-		char[] chars = packet.toCharArray();
-		
 		/**
-		 * String Builder to build required message
+		 * Converts a String into json object to retreive the required values
 		 */
-		StringBuilder msgBuilder = new StringBuilder();
+		JSONObject json = new JSONObject(packet);
 
 		/**
-		 * A Utility Boolean flag 
+		 * Retreives the message from the json object
 		 */
-		boolean flag = false;
-		for (char ch : chars) {
-			if(flag){
-				msgBuilder.append(ch);
-			}
-			if(ch == ':'){
-				flag = true;
-			}
-		}
-		String msg = msgBuilder.toString();
-		return msg;
+		String message = json.getString("message");
+
+		// Returns the message
+		return message;
 	}
 
 	/**
