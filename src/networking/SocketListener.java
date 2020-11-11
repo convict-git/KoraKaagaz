@@ -153,7 +153,8 @@ public class SocketListener implements Runnable {
 			 * socket keeps listening based on the static variable isRunning
 			 */
 			while(LanCommunicator.getStatus()) {
-
+				Socket socket;
+				DataInputStream input;
 				/**
 				 * This block of code inside the tries to accept the client requests if any exception occurs
 				 * it checks for appropriate catch.
@@ -162,13 +163,13 @@ public class SocketListener implements Runnable {
 					/**
 					 * creates a socket which connects with the client for message transfer.
 					 */
-					Socket socket = serverSocket.accept();
+					socket = serverSocket.accept();
 					logger.log(ModuleID.NETWORKING, LogLevel.INFO, "Server has accepted a client request for data transfer");
 
 					/**
 					 * Receives the input from socket. "Remember getInputStream is Blocking type.."
 					 */
-					DataInputStream input = new DataInputStream(socket.getInputStream());
+					input = new DataInputStream(socket.getInputStream());
 					logger.log(ModuleID.NETWORKING, LogLevel.INFO, "Successfully received data from client");
 
 					/**
@@ -182,23 +183,60 @@ public class SocketListener implements Runnable {
 					 * Calls the push function
 					 */
 					push(id, msg);
-
-					/**
-					 * Closes the socket used to connect with client for the transfer
-					 * and also input stream should be closed.
-					 */
-					socket.close();
-					input.close();
 				}
+
 				/**
-				 * This block gets executed when a exception arises in try block
+				 * This block gets executed the stream has been closed and the underlying input stream does not support 
+				 * reading after close, or another I/O error occurs.
 				 */
-				catch(Exception exp){
+				catch(IOException exp){
 					//Logs exception
 					logger.log(ModuleID.NETWORKING, LogLevel.WARNING, exp.toString());
 				}
-			}
 
+				/**
+				 * This block gets executed  if this stream reaches the end before reading all the bytes.
+				 */
+				catch(EOFException exp){
+					//Logs exception
+					logger.log(ModuleID.NETWORKING, LogLevel.WARNING, exp.toString());
+				}
+
+				/**
+				 * This block gets executed if the bytes do not represent a valid modified UTF-8 encoding of a string.
+				 */
+				catch(UTFDataFormatException exp){
+					//Logs exception
+					logger.log(ModuleID.NETWORKING, LogLevel.WARNING, exp.toString());
+				}
+
+			
+				finally{
+					try{
+						/**
+						 * Closes the input stream 
+						 */
+						if(input != null){
+							input.close();
+							logger.log(ModuleID.NETWORKING, LogLevel.INFO, "DataInputStream of client has been closed");
+						}
+
+						/**
+						 * Closes the socket connection
+						 */
+						if(socket != null){
+							socket.close();
+							logger.log(ModuleID.NETWORKING, LogLevel.INFO, "socket connection has been closed");
+						}
+					}
+					/**
+					 * This block gets executed when an exception arises while closing the input stream
+					 */
+					catch(IOException exp){
+						logger.log(ModuleID.NETWORKING, LogLevel.ERROR, exp.toString());
+					}
+				}
+			}
 		}
 		
 		/**
