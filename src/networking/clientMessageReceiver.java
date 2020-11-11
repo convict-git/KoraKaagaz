@@ -11,10 +11,9 @@ import infrastructure.validation.logger.*;
 /**
  * 
  * This is the file which contains the clientMessageReceiver Class which is a runnable class, that means it
- * has the functionality of threads. This thread basically keeps listening on a port for the client requests, whenever
- * there is a request it accepts(In a blocking manner) them and connects them to another socket which basically
- * receives the message. After receiving the message from the client these messages are 
- * pushed into either content module queue or processing module queue based on the identifier. 
+ * has the functionality of threads. This thread basically receives message from the server using DataInputStream.
+ * After receiving the message it will push it into either conntent module queue or processing module queue based 
+ * on the identifier. 
  * 
  * @author Marella Shiva Sai Teja
  */
@@ -124,73 +123,78 @@ public class clientMessageReceiver implements Runnable {
 	 * 
 	 * This is the default method that would be executed when the thread is started
 	 * because the class implements Runnable interface.
-	 * This is the method where the server starts listening for the client requests and 
-	 * when it finds one it connects it to a socket through which it receives the client message.
+	 * This method receives the message from the server and pushes it into the respective Queue.
 	 * 
 	 */
 	@Override
     public void run(){
 
 		/**
-		 * This block of code inside the try would try to execute instructions inside it and when it 
-		 * receives any exceptions it would look for appropriate catch block.
+		 * Loops until the socket gets closed by the internet communicator, when the socket gets closed
+		 * the appropriate catch would be executed.
 		 */
-		try{
-
+		while(true){
 			/**
-			 * Receives the input message from the input stream
+			 * This block of code inside the try would try to execute instructions inside it and when it 
+			 * receives any exceptions it would look for appropriate catch block.
 			 */
-			String recvMsg = dis.readUTF();
-			String id = getIdFromPacket(recvMsg);
-			String msg = getMsgFromPacket(recvMsg);
-
-			/**
-			 * Calls the push function
-			 */
-			push(id, msg);
-		}
-
-		/**
-		 * This block gets executed the stream has been closed and the underlying input stream does not support 
-		 * reading after close, or another I/O error occurs.
-		 */
-		catch(IOException exp){
-			//Logs exception
-			logger.log(ModuleID.NETWORKING, LogLevel.WARNING, exp.toString());
-		}
-
-		/**
-		 * This block gets executed  if this stream reaches the end before reading all the bytes.
-		 */
-		catch(EOFException exp){
-			//Logs exception
-			logger.log(ModuleID.NETWORKING, LogLevel.WARNING, exp.toString());
-		}
-
-		/**
-		 * This block gets executed if the bytes do not represent a valid modified UTF-8 encoding of a string.
-		 */
-		catch(UTFDataFormatException exp){
-			//Logs exception
-			logger.log(ModuleID.NETWORKING, LogLevel.WARNING, exp.toString());
-		}
-
-	
-		finally{
 			try{
+
 				/**
-				 * Closes the input stream 
+				 * Receives the input message from the input stream
 				 */
-				if(dis != null){
-					dis.close();
-					logger.log(ModuleID.NETWORKING, LogLevel.INFO, "DataInputStream of client has been closed");
-				}
+				String recvMsg = dis.readUTF();
+				String id = getIdFromPacket(recvMsg);
+				String msg = getMsgFromPacket(recvMsg);
+
+				/**
+				 * Calls the push function
+				 */
+				push(id, msg);
 			}
+
 			/**
-			 * This block gets executed when an exception arises while closing the input stream
+			 * This block gets executed the stream has been closed and the underlying input stream does not support 
+			 * reading after close, or another I/O error occurs.
 			 */
 			catch(IOException exp){
-				logger.log(ModuleID.NETWORKING, LogLevel.ERROR, exp.toString());
+				//Logs exception
+				logger.log(ModuleID.NETWORKING, LogLevel.WARNING, exp.toString());
+			}
+
+			/**
+			 * This block gets executed  if this stream reaches the end before reading all the bytes.
+			 */
+			catch(EOFException exp){
+				//Logs exception
+				logger.log(ModuleID.NETWORKING, LogLevel.WARNING, exp.toString());
+			}
+
+			/**
+			 * This block gets executed if the bytes do not represent a valid modified UTF-8 encoding of a string.
+			 */
+			catch(UTFDataFormatException exp){
+				//Logs exception
+				logger.log(ModuleID.NETWORKING, LogLevel.WARNING, exp.toString());
+			}
+
+		
+			finally{
+				try{
+					/**
+					 * Closes the input stream 
+					 */
+					if(dis != null){
+						dis.close();
+						logger.log(ModuleID.NETWORKING, LogLevel.INFO, "DataInputStream of client has been closed");
+					}
+				}
+				/**
+				 * This block gets executed when an exception arises while closing the input stream
+				 */
+				catch(IOException exp){
+					logger.log(ModuleID.NETWORKING, LogLevel.ERROR, exp.toString());
+				}
 			}
 		}
     }
