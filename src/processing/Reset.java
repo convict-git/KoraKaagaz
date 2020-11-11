@@ -23,7 +23,7 @@ public class Reset {
 	 * @param Reset flag so reset object is not selected
 	 * deleted rotated color changed
 	 */
-	public static void screenReset(UserId newUserId,boolean reset) {
+	public static BoardObject screenReset(UserId newUserId,boolean reset) {
 		
 		/* Get BoardDimensions from UI */
 		Dimension dimension = ClientBoardState.boardDimension;
@@ -73,7 +73,7 @@ public class Reset {
 		 * and added to client maps 
 		 */
 		
-		CurveBuilder.drawCurve(
+		BoardObject resetObject = CurveBuilder.drawCurve(
 				pixels,
 				newBoardOp,
 				newObjId,
@@ -89,6 +89,8 @@ public class Reset {
 				"[#" + Thread.currentThread().getId() + "] " +
 				"Screen Reset done Successfully"
 				);
+		
+		return resetObject;
 		
 	}
 }

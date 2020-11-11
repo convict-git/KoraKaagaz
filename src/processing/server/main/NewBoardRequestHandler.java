@@ -28,7 +28,8 @@ public class NewBoardRequestHandler implements INotificationHandler{
 		ClientBoardState.logger.log(
 				ModuleID.PROCESSING, 
 				LogLevel.INFO, 
-				"Existing Board Server Request on the Main Server"
+				"[#" + Thread.currentThread().getId() + "] "
+				+ "Existing Board Server Request on the Main Server"
 		);
 		
 		/**
@@ -52,9 +53,22 @@ public class NewBoardRequestHandler implements INotificationHandler{
 		 * Get a new free port from the networking module where to start 
 		 * this new board's server
 		 */
-		Port boardServerPort = new Port(
-				CommunicatorFactory.getClientInfo().getPort()
-		);
+		Port boardServerPort = null;
+		
+		try {
+			boardServerPort = new Port(
+					CommunicatorFactory.getClientInfo().getPort()
+			);
+		} catch (Exception e) {
+			
+			ClientBoardState.logger.log(
+					ModuleID.PROCESSING, 
+					LogLevel.ERROR, 
+					"[#" + Thread.currentThread().getId() + "] "
+					+ "Error while getting free port from the network module"
+			);
+			
+		}
 		
 		/**
 		 * Insert this board's port number information in the map boardToPort
@@ -83,7 +97,8 @@ public class NewBoardRequestHandler implements INotificationHandler{
 		ClientBoardState.logger.log(
 				ModuleID.PROCESSING, 
 				LogLevel.SUCCESS, 
-				"Successfully sent the BoardID to the client"
+				"[#" + Thread.currentThread().getId() + "] "
+				+ "Successfully sent the BoardID to the client"
 		);
 		
 		/**
@@ -99,7 +114,8 @@ public class NewBoardRequestHandler implements INotificationHandler{
 		ClientBoardState.logger.log(
 				ModuleID.PROCESSING, 
 				LogLevel.SUCCESS, 
-				"Successfully sent the Port number of the server to the client"
+				"[#" + Thread.currentThread().getId() + "] "
+				+ "Successfully sent the Port number of the server to the client"
 		);
 	}
 	

@@ -1,6 +1,5 @@
 package processing.threading;
 
-import processing.Reset;
 import processing.boardobject.BoardObject;
 import processing.utility.UserId;
 import infrastructure.validation.logger.*;
@@ -36,7 +35,7 @@ public class Reset implements Runnable {
         try {
             logger = LoggerFactory.getLoggerInstance();
 
-            BoardObject resetObject = Reset.screenReset(userId, reset);
+            BoardObject resetObject = processing.Reset.screenReset(userId, reset);
 
             Helper.log(
                     logger,

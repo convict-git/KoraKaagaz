@@ -235,5 +235,22 @@ public class BoardState implements Serializable {
 		}
 		return boardObject.getUserId().getUsername().toString();
 	}
+	
+	/**
+	 * Gives all the positions where there is something drawn on the board
+	 * 
+	 * @return List of all those positions
+	 */
+	public ArrayList<Position> getPositions() {
+		
+		ArrayList<Position> positions = new ArrayList<Position>();
+		
+		for (Map.Entry<Position, PriorityQueue <PriorityQueueObject>> entry : posToObjects.entrySet()) {
+			
+			positions.add(entry.getKey());
+		}
+		
+		return positions;
+	}
 
 }

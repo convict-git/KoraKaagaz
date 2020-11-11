@@ -31,14 +31,18 @@ public class StopRequestHandler implements INotificationHandler {
 		ClientBoardState.logger.log(
 				ModuleID.PROCESSING, 
 				LogLevel.INFO, 
-				"Received stop connection request from a client on the server"
+				"[#" + Thread.currentThread().getId() + "] "
+				+ "Received stop connection request from a client on the server"
 		);
 		
 		/**
 		 * As the client is closing it's application we need to remove it from 
 		 * the list of all the clients connected to this board.
 		 */
-		ClientBoardState.users.remove(new Username(message));
+		String[] id = message.split("_", 2);
+		IpAddress ipAddress = new IpAddress(id[0]);
+		Username username = new Username(id[1]);
+		ClientBoardState.users.remove(new UserId(ipAddress,username));
 		
 		/**
 		 * If after leaving this client user list becomes empty i.e no client is connected
@@ -60,7 +64,8 @@ public class StopRequestHandler implements INotificationHandler {
 				ClientBoardState.logger.log(
 						ModuleID.PROCESSING, 
 						LogLevel.ERROR, 
-						"IO Exception occured during serializing BoardState"
+						"[#" + Thread.currentThread().getId() + "] "
+						+ "IO Exception occured during serializing BoardState"
 				);
 				
 			}
@@ -75,7 +80,8 @@ public class StopRequestHandler implements INotificationHandler {
 				ClientBoardState.logger.log(
 						ModuleID.PROCESSING, 
 						LogLevel.ERROR, 
-						"UnsupportedEncodingException occured while saving the persistence state"
+						"[#" + Thread.currentThread().getId() + "] "
+						+ "UnsupportedEncodingException occured while saving the persistence state"
 				);
 				
 			} catch (IOException e) {
@@ -83,7 +89,8 @@ public class StopRequestHandler implements INotificationHandler {
 				ClientBoardState.logger.log(
 						ModuleID.PROCESSING, 
 						LogLevel.ERROR, 
-						"IO Exception occured during saving the persistence state"
+						"[#" + Thread.currentThread().getId() + "] "
+						+ "IO Exception occured during saving the persistence state"
 				);
 				
 			}
@@ -91,7 +98,8 @@ public class StopRequestHandler implements INotificationHandler {
 			ClientBoardState.logger.log(
 					ModuleID.PROCESSING, 
 					LogLevel.SUCCESS, 
-					"Successfully saved the persistence file in the local machine"
+					"[#" + Thread.currentThread().getId() + "] "
+					+ "Successfully saved the persistence file in the local machine"
 			);
 			
 			/**

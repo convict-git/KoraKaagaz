@@ -59,14 +59,26 @@ public class HandleSend implements Runnable{
 		ClientBoardState.logger.log(
 				ModuleID.PROCESSING, 
 				LogLevel.INFO, 
-				"Spawning a new thread to send a message over the network"
+				"[#" + Thread.currentThread().getId() + "] "
+				+ "Spawning a new thread to send a message over the network"
 		);
 		
 		/**
 		 * Call the networking module send function so now this
 		 * function will be run when the run is called of this class.
 		 */
-		ClientBoardState.communicator.send(address, message, identifier);
+		try {
+			ClientBoardState.communicator.send(address, message, identifier);
+		} catch(Exception e) {
+			
+			ClientBoardState.logger.log(
+					ModuleID.PROCESSING, 
+					LogLevel.ERROR, 
+					"[#" + Thread.currentThread().getId() + "] "
+					+ "Error while sending a message over the network"
+			);
+			
+		}
 		
 	}
 	

@@ -37,7 +37,8 @@ public class BoardRequestHandler implements INotificationHandler{
 		ClientBoardState.logger.log(
 				ModuleID.PROCESSING, 
 				LogLevel.INFO, 
-				"Received a request to start a board server"
+				"[#" + Thread.currentThread().getId() + "] "
+				+ "Received a request to start a board server"
 		);
 		
 		/**
@@ -76,7 +77,8 @@ public class BoardRequestHandler implements INotificationHandler{
 			ClientBoardState.logger.log(
 					ModuleID.PROCESSING, 
 					LogLevel.ERROR, 
-					"IO EXception occured while starting a new board server"
+					"[#" + Thread.currentThread().getId() + "] "
+					+ "IO EXception occured while starting a new board server"
 			);
 			
 		}
@@ -92,7 +94,8 @@ public class BoardRequestHandler implements INotificationHandler{
 		ClientBoardState.logger.log(
 				ModuleID.PROCESSING, 
 				LogLevel.INFO, 
-				"New Board Request received on the Main Server"
+				"[#" + Thread.currentThread().getId() + "] "
+				+ "New Board Request received on the Main Server"
 		);
 		
 		/**
@@ -136,7 +139,8 @@ public class BoardRequestHandler implements INotificationHandler{
 				ClientBoardState.logger.log(
 						ModuleID.PROCESSING, 
 						LogLevel.ERROR, 
-						"IOException occured while loading the persistence for board"
+						"[#" + Thread.currentThread().getId() + "] "
+						+ "IOException occured while loading the persistence for board"
 				);
 				
 			} catch(UnsupportedEncodingException e) {
@@ -144,7 +148,8 @@ public class BoardRequestHandler implements INotificationHandler{
 				ClientBoardState.logger.log(
 						ModuleID.PROCESSING, 
 						LogLevel.ERROR, 
-						"UnsupportedEncodingException occured while loading the persistence state"
+						"[#" + Thread.currentThread().getId() + "] "
+						+ "UnsupportedEncodingException occured while loading the persistence state"
 				);
 				
 			} catch (IOException e) {
@@ -152,7 +157,8 @@ public class BoardRequestHandler implements INotificationHandler{
 				ClientBoardState.logger.log(
 						ModuleID.PROCESSING, 
 						LogLevel.ERROR, 
-						"IO Exception occured while loading the persistence state"
+						"[#" + Thread.currentThread().getId() + "] "
+						+ "IO Exception occured while loading the persistence state"
 				);
 				
 			}
@@ -180,7 +186,8 @@ public class BoardRequestHandler implements INotificationHandler{
 		ClientBoardState.logger.log(
 				ModuleID.PROCESSING, 
 				LogLevel.SUCCESS, 
-				"Successfully sent the port number of the server to the client"
+				"[#" + Thread.currentThread().getId() + "] "
+				+ "Successfully sent the port number of the server to the client"
 		);
 	}
 	

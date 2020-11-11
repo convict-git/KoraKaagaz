@@ -26,7 +26,13 @@ public class ClientIP implements IClientIP {
 	
 	@Override
 	public Map<Username, IpAddress> getClientIP() {
-		return ClientBoardState.users;
+		Map<Username, IpAddress> userToIp = new HashMap<Username, IpAddress>();
+		
+		for(Map.Entry<UserId, IpAddress> user : ClientBoardState.users.entrySet()) {
+			userToIp.put(user.getKey().getUsername(), user.getValue());
+		}
+		
+		return userToIp;
 	}
 	
 }

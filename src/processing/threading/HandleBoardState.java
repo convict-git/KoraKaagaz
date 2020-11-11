@@ -41,7 +41,8 @@ public class HandleBoardState implements Runnable{
 		ClientBoardState.logger.log(
 				ModuleID.PROCESSING, 
 				LogLevel.INFO, 
-				"Spawning a new thread to handle received BoardState"
+				"[#" + Thread.currentThread().getId() + "] "
+				+ "Spawning a new thread to handle received BoardState"
 		);
 		
 		BoardStateHandler.handleBoardState(message);
