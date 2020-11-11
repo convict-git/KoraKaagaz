@@ -2,6 +2,7 @@ package networking;
 
 import java.io.*;
 import java.net.*;
+import org.json.*;
 
 import networking.queueManagement.*;
 import networking.utility.IncomingPacket;
@@ -66,31 +67,19 @@ public class SocketListener implements Runnable {
 	 * @return Identifier
 	 */
 	public String getIdFromPacket(String packet){
-		/**
-		 * converts String to char[] array
-		 */
-		char[] chars = packet.toCharArray();
-		
-		/**
-		 * String Builder to build a string for the identifier
-		 */
-		StringBuilder idBuilder = new StringBuilder();
-		
-		/**
-		 * Iterates over char[] array and appends to the Identifier Builder
-		 */
-		for (char ch : chars) {
-			if(ch == ':'){
-				break;
-			}
-			idBuilder.append(ch);
-		}
 
 		/**
-		 * Converts the String Builder to String
+		 * Converts a String into json object to retreive the required values
 		 */
-		String id = idBuilder.toString();
-		return id;
+		JSONObject json = new JSONObject(packet);
+
+		/**
+		 * Retreives the identifier from the json object
+		 */
+		String identifier = json.getString("identifier");
+
+		// Returns the identifier
+		return identifier;
 	}
 
 	/**
@@ -100,27 +89,18 @@ public class SocketListener implements Runnable {
 	 */
 	public String getMsgFromPacket(String packet){
 
-		char[] chars = packet.toCharArray();
-		
 		/**
-		 * String Builder to build required message
+		 * Converts a String into json object to retreive the required values
 		 */
-		StringBuilder msgBuilder = new StringBuilder();
+		JSONObject json = new JSONObject(packet);
 
 		/**
-		 * A Utility Boolean flag 
+		 * Retreives the message from the json object
 		 */
-		boolean flag = false;
-		for (char ch : chars) {
-			if(flag){
-				msgBuilder.append(ch);
-			}
-			if(ch == ':'){
-				flag = true;
-			}
-		}
-		String msg = msgBuilder.toString();
-		return msg;
+		String message = json.getString("message");
+
+		// Returns the message
+		return message;
 	}
 
 	/**
@@ -173,7 +153,8 @@ public class SocketListener implements Runnable {
 			 * socket keeps listening based on the static variable isRunning
 			 */
 			while(LanCommunicator.getStatus()) {
-
+				Socket socket = null;
+				DataInputStream input = null;
 				/**
 				 * This block of code inside the tries to accept the client requests if any exception occurs
 				 * it checks for appropriate catch.
@@ -182,13 +163,13 @@ public class SocketListener implements Runnable {
 					/**
 					 * creates a socket which connects with the client for message transfer.
 					 */
-					Socket socket = serverSocket.accept();
+					socket = serverSocket.accept();
 					logger.log(ModuleID.NETWORKING, LogLevel.INFO, "Server has accepted a client request for data transfer");
 
 					/**
 					 * Receives the input from socket. "Remember getInputStream is Blocking type.."
 					 */
-					DataInputStream input = new DataInputStream(socket.getInputStream());
+					input = new DataInputStream(socket.getInputStream());
 					logger.log(ModuleID.NETWORKING, LogLevel.INFO, "Successfully received data from client");
 
 					/**
@@ -202,23 +183,62 @@ public class SocketListener implements Runnable {
 					 * Calls the push function
 					 */
 					push(id, msg);
-
-					/**
-					 * Closes the socket used to connect with client for the transfer
-					 * and also input stream should be closed.
-					 */
-					socket.close();
-					input.close();
 				}
+
 				/**
-				 * This block gets executed when a exception arises in try block
+				 * This block gets executed  if this stream reaches the end before reading all the bytes.
 				 */
-				catch(Exception exp){
+				catch(EOFException exp){
 					//Logs exception
 					logger.log(ModuleID.NETWORKING, LogLevel.WARNING, exp.toString());
 				}
-			}
 
+				/**
+				 * This block gets executed if the bytes do not represent a valid modified UTF-8 encoding of a string.
+				 */
+				catch(UTFDataFormatException exp){
+					//Logs exception
+					logger.log(ModuleID.NETWORKING, LogLevel.WARNING, exp.toString());
+				}
+
+				/**
+				 * This block gets executed the stream has been closed and the underlying input stream does not support 
+				 * reading after close, or another I/O error occurs.
+				 */
+				catch(IOException exp){
+					//Logs exception
+					logger.log(ModuleID.NETWORKING, LogLevel.WARNING, exp.toString());
+				}
+
+				/**
+				 * This block gets executed whether there is an exception or not in try block
+				 */
+				finally{
+					try{
+						/**
+						 * Closes the input stream 
+						 */
+						if(input != null){
+							input.close();
+							logger.log(ModuleID.NETWORKING, LogLevel.INFO, "DataInputStream of client has been closed");
+						}
+
+						/**
+						 * Closes the socket connection
+						 */
+						if(socket != null){
+							socket.close();
+							logger.log(ModuleID.NETWORKING, LogLevel.INFO, "socket connection has been closed");
+						}
+					}
+					/**
+					 * This block gets executed when an exception arises while closing the input stream
+					 */
+					catch(IOException exp){
+						logger.log(ModuleID.NETWORKING, LogLevel.ERROR, exp.toString());
+					}
+				}
+			}
 		}
 		
 		/**
