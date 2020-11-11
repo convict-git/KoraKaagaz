@@ -157,11 +157,12 @@ public class SendQueueListener implements Runnable {
                 /** store the identifier variable into the identifier. */
                 String identifier = out.getIdentifier();
 
-                /
+                /** Encoding the data into json object */
                 JSONObject jsonData = new JSONObject();
                 jsonData.put("message", message);
                 jsonData.put("identifier", identifier);
 
+                /** converting the json object into string */
                 String encodedMessage = jsonData.toString();
                 
                 /** The following code in try block will try to send the message over the network. */
