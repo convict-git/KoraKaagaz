@@ -153,8 +153,8 @@ public class SocketListener implements Runnable {
 			 * socket keeps listening based on the static variable isRunning
 			 */
 			while(LanCommunicator.getStatus()) {
-				Socket socket;
-				DataInputStream input;
+				Socket socket = null;
+				DataInputStream input = null;
 				/**
 				 * This block of code inside the tries to accept the client requests if any exception occurs
 				 * it checks for appropriate catch.
@@ -186,15 +186,6 @@ public class SocketListener implements Runnable {
 				}
 
 				/**
-				 * This block gets executed the stream has been closed and the underlying input stream does not support 
-				 * reading after close, or another I/O error occurs.
-				 */
-				catch(IOException exp){
-					//Logs exception
-					logger.log(ModuleID.NETWORKING, LogLevel.WARNING, exp.toString());
-				}
-
-				/**
 				 * This block gets executed  if this stream reaches the end before reading all the bytes.
 				 */
 				catch(EOFException exp){
@@ -210,7 +201,18 @@ public class SocketListener implements Runnable {
 					logger.log(ModuleID.NETWORKING, LogLevel.WARNING, exp.toString());
 				}
 
-			
+				/**
+				 * This block gets executed the stream has been closed and the underlying input stream does not support 
+				 * reading after close, or another I/O error occurs.
+				 */
+				catch(IOException exp){
+					//Logs exception
+					logger.log(ModuleID.NETWORKING, LogLevel.WARNING, exp.toString());
+				}
+
+				/**
+				 * This block gets executed whether there is an exception or not in try block
+				 */
 				finally{
 					try{
 						/**
