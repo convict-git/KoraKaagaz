@@ -86,6 +86,7 @@ public class Reset {
 		logger.log(
 				ModuleID.PROCESSING,
 				LogLevel.SUCCESS,
+				"[#" + Thread.currentThread().getId() + "] " +
 				"Screen Reset done Successfully"
 				);
 		

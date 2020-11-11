@@ -53,6 +53,7 @@ public class CurveBuilder {
 			logger.log(
 					ModuleID.PROCESSING,
 					LogLevel.ERROR,
+					"[#" + Thread.currentThread().getId() + "] " +
 					"Error to insert object in Client maps"
 			);
 			
@@ -67,6 +68,7 @@ public class CurveBuilder {
 			logger.log(
 					ModuleID.PROCESSING,
 					LogLevel.ERROR,
+					"[#" + Thread.currentThread().getId() + "] " +
 					"Error to insert object in Undo stack"
 			);
 			
@@ -135,6 +137,7 @@ public class CurveBuilder {
 			logger.log(
 					ModuleID.PROCESSING,
 					LogLevel.ERROR,
+					"[#" + Thread.currentThread().getId() + "] " +
 					"Error to insert object in Client maps"
 			);
 			
@@ -149,6 +152,7 @@ public class CurveBuilder {
 			logger.log(
 					ModuleID.PROCESSING,
 					LogLevel.ERROR,
+					"[#" + Thread.currentThread().getId() + "] " +
 					"Error to insert object in Undo stack"
 			);
 			
@@ -157,6 +161,7 @@ public class CurveBuilder {
 		logger.log(
 				ModuleID.PROCESSING, 
 				LogLevel.SUCCESS, 
+				"[#" + Thread.currentThread().getId() + "] " +
 				"Created BoardObject and successfully processed the eraser"
 		);
 
