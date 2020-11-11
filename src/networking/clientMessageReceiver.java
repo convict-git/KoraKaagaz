@@ -10,7 +10,7 @@ import infrastructure.validation.logger.*;
 
 /**
  * 
- * This is the file which contains the SocketListener Class which is a runnable class, that means it
+ * This is the file which contains the clientMessageReceiver Class which is a runnable class, that means it
  * has the functionality of threads. This thread basically keeps listening on a port for the client requests, whenever
  * there is a request it accepts(In a blocking manner) them and connects them to another socket which basically
  * receives the message. After receiving the message from the client these messages are 
@@ -19,7 +19,7 @@ import infrastructure.validation.logger.*;
  * @author Marella Shiva Sai Teja
  */
 
-public class SocketListener implements Runnable {
+public class clientMessageReceiver implements Runnable {
 	
 	/**
 	 * Port number on which the socket will be listening for the client requests to connect with.
@@ -55,7 +55,7 @@ public class SocketListener implements Runnable {
 	 * 
 	 * There won't be any return type as it is a constructor of the class
 	 */
-	public SocketListener(int port, IQueue<IncomingPacket> contModuleQueue, IQueue<IncomingPacket> procModuleQueue){
+	public clientMessageReceiver(int port, IQueue<IncomingPacket> contModuleQueue, IQueue<IncomingPacket> procModuleQueue){
 		this.port = port;
 		this.contModuleQueue = contModuleQueue;
 		this.procModuleQueue = procModuleQueue;
