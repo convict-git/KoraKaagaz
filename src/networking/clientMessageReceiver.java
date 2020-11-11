@@ -154,15 +154,6 @@ public class clientMessageReceiver implements Runnable {
 			}
 
 			/**
-			 * This block gets executed the stream has been closed and the underlying input stream does not support 
-			 * reading after close, or another I/O error occurs.
-			 */
-			catch(IOException exp){
-				//Logs exception
-				logger.log(ModuleID.NETWORKING, LogLevel.WARNING, exp.toString());
-			}
-
-			/**
 			 * This block gets executed  if this stream reaches the end before reading all the bytes.
 			 */
 			catch(EOFException exp){
@@ -178,7 +169,18 @@ public class clientMessageReceiver implements Runnable {
 				logger.log(ModuleID.NETWORKING, LogLevel.WARNING, exp.toString());
 			}
 
-		
+			/**
+			 * This block gets executed the stream has been closed and the underlying input stream does not support 
+			 * reading after close, or another I/O error occurs.
+			 */
+			catch(IOException exp){
+				//Logs exception
+				logger.log(ModuleID.NETWORKING, LogLevel.WARNING, exp.toString());
+			}
+
+			/**
+			 * This block gets executed whether there is an exception or not in try block
+			 */		
 			finally{
 				try{
 					/**
@@ -197,6 +199,5 @@ public class clientMessageReceiver implements Runnable {
 				}
 			}
 		}
-    }
-
+	}
 }
