@@ -20,16 +20,6 @@ import infrastructure.validation.logger.*;
  */
 
 public class clientMessageReceiver implements Runnable {
-	
-	/**
-	 * Port number on which the socket will be listening for the client requests to connect with.
-	 */
-	private int port;
-
-	/**
-	 * socket object which keeps listening for the client requests.
-	 */
-	private ServerSocket serverSocket;
 
 	/**
 	 * Queue into which message from content module will be pushed
@@ -41,6 +31,11 @@ public class clientMessageReceiver implements Runnable {
 	 */
 	private IQueue<IncomingPacket> procModuleQueue;
 
+	/**
+	 * Input stream via which we receive the messages from the server
+	 */
+	private DataInputStream dis;
+
 	/** 
 	 * logger object from the LoggerFactory to log messages
 	*/
@@ -49,16 +44,15 @@ public class clientMessageReceiver implements Runnable {
 	/**
 	 * 
 	 * This method is the constructor of the class which initializes the params
-	 * @param port
 	 * @param contModuleQueue
 	 * @param procModuleQueue
-	 * 
+	 * @param dis
 	 * There won't be any return type as it is a constructor of the class
 	 */
-	public clientMessageReceiver(int port, IQueue<IncomingPacket> contModuleQueue, IQueue<IncomingPacket> procModuleQueue){
-		this.port = port;
+	public clientMessageReceiver(IQueue<IncomingPacket> contModuleQueue, IQueue<IncomingPacket> procModuleQueue, DataInputStream dis){
 		this.contModuleQueue = contModuleQueue;
 		this.procModuleQueue = procModuleQueue;
+		this.dis = dis;
 	}
 
 	/**
@@ -141,114 +135,64 @@ public class clientMessageReceiver implements Runnable {
 		 * This block of code inside the try would try to execute instructions inside it and when it 
 		 * receives any exceptions it would look for appropriate catch block.
 		 */
-		try {
+		try{
 
 			/**
-			 * creates a socket which keeps listening on the port for client requests
+			 * Receives the input message from the input stream
 			 */
-			serverSocket = new ServerSocket(port);
-			logger.log(ModuleID.NETWORKING, LogLevel.INFO, "Server started listening for client requests..");
+			String recvMsg = dis.readUTF();
+			String id = getIdFromPacket(recvMsg);
+			String msg = getMsgFromPacket(recvMsg);
 
 			/**
-			 * socket keeps listening based on the static variable isRunning
+			 * Calls the push function
 			 */
-			while(LanCommunicator.getStatus()) {
-
-				/**
-				 * This block of code inside the tries to accept the client requests if any exception occurs
-				 * it checks for appropriate catch.
-				 */
-				try{
-					/**
-					 * creates a socket which connects with the client for message transfer.
-					 */
-					Socket socket = serverSocket.accept();
-					logger.log(ModuleID.NETWORKING, LogLevel.INFO, "Server has accepted a client request for data transfer");
-
-					/**
-					 * Receives the input from socket. "Remember getInputStream is Blocking type.."
-					 */
-					DataInputStream input = new DataInputStream(socket.getInputStream());
-					logger.log(ModuleID.NETWORKING, LogLevel.INFO, "Successfully received data from client");
-
-					/**
-					 * Converts the received input into UTF format
-					 */
-					String recvMsg = input.readUTF();
-					String id = getIdFromPacket(recvMsg);
-					String msg = getMsgFromPacket(recvMsg);
-
-					/**
-					 * Calls the push function
-					 */
-					push(id, msg);
-
-					/**
-					 * Closes the socket used to connect with client for the transfer
-					 * and also input stream should be closed.
-					 */
-					socket.close();
-					input.close();
-				}
-				/**
-				 * This block gets executed when a exception arises in try block
-				 */
-				catch(Exception exp){
-					//Logs exception
-					logger.log(ModuleID.NETWORKING, LogLevel.WARNING, exp.toString());
-				}
-			}
-
+			push(id, msg);
 		}
-		
+
 		/**
-		 * This block gets executed when a exception arises in try block
+		 * This block gets executed the stream has been closed and the underlying input stream does not support 
+		 * reading after close, or another I/O error occurs.
 		 */
 		catch(IOException exp){
-			logger.log(ModuleID.NETWORKING, LogLevel.ERROR, exp.toString());
+			//Logs exception
+			logger.log(ModuleID.NETWORKING, LogLevel.WARNING, exp.toString());
 		}
 
 		/**
-		 * This block gets executed whether there is an exception or not in try block
+		 * This block gets executed  if this stream reaches the end before reading all the bytes.
 		 */
+		catch(EOFException exp){
+			//Logs exception
+			logger.log(ModuleID.NETWORKING, LogLevel.WARNING, exp.toString());
+		}
+
+		/**
+		 * This block gets executed if the bytes do not represent a valid modified UTF-8 encoding of a string.
+		 */
+		catch(UTFDataFormatException exp){
+			//Logs exception
+			logger.log(ModuleID.NETWORKING, LogLevel.WARNING, exp.toString());
+		}
+
+	
 		finally{
 			try{
 				/**
-				 * Closes the socket which keeps listening on the port 
+				 * Closes the input stream 
 				 */
-				if(serverSocket != null){
-					serverSocket.close();
-					logger.log(ModuleID.NETWORKING, LogLevel.INFO, "Server has been closed");
+				if(dis != null){
+					dis.close();
+					logger.log(ModuleID.NETWORKING, LogLevel.INFO, "DataInputStream of client has been closed");
 				}
 			}
 			/**
-			 * This block gets executed when an exception arises while closing the socket.
+			 * This block gets executed when an exception arises while closing the input stream
 			 */
 			catch(IOException exp){
 				logger.log(ModuleID.NETWORKING, LogLevel.ERROR, exp.toString());
 			}
 		}
     }
-	
-	/**
-	 * This method stops the server socket. This is called by LanCommunicator's stop method.
-	 */	
-	public void stop(){
-		try{
-			/**
-			 * Closes the socket which keeps listening on the port 
-			 */
-			if(serverSocket != null){
-				serverSocket.close();
-				logger.log(ModuleID.NETWORKING, LogLevel.INFO, "Server has been closed");
-			}
-		}
-		/**
-		 * This block gets executed when an exception arises while closing the socket.
-		 */
-		catch(IOException exp){
-			logger.log(ModuleID.NETWORKING, LogLevel.ERROR, exp.toString());
-		}
-	}
 
 }
