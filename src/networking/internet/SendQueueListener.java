@@ -3,6 +3,7 @@ package networking.internet;
 import java.io.*;
 import java.net.*;
 import java.util.regex.Pattern;
+import org.json.*;
 
 import networking.queueManagement.*;
 import networking.utility.*;
@@ -161,14 +162,22 @@ public class SendQueueListener implements Runnable {
                 /** store the identifier variable into the identifier. */
                 String identifier = out.getIdentifier();
 
-                message = destination + "," + identifier + "," + message;
+
+                /** Encoding the data into json */
+                JSONObject jsonData = new JSONObject();
+                jsonData.put("message", message);
+                jsonData.put("identifier", identifier);
+                jsonData.put("destination", destination);
+                
+                /** Converting json object into string */
+                String encodedMessage = jsonData.toString();
                 
                 /** The following code in try block will try to send the message over the network. */
                 try{
 
                     
                     /** encode the data into UTF format and write it to output stream */
-                    dout.writeUTF(message);
+                    dout.writeUTF(encodedMessage);
 
                     /** flush the byte stream into the network. */
                     dout.flush();
