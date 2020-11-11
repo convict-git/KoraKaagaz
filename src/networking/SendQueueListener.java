@@ -27,7 +27,10 @@ public class SendQueueListener implements Runnable {
      */
     private IQueue<OutgoingPacket> SendQueue;
 
-    /** logger object from the LoggerFactory to log messages */
+
+ /** 
+	 * logger object from the LoggerFactory to log messages
+	 */
 	ILogger logger = LoggerFactory.getLoggerInstance();
 
     /**
@@ -191,9 +194,11 @@ public class SendQueueListener implements Runnable {
                     logger.log(ModuleID.NETWORKING, LogLevel.SUCCESS, logMessage);
 
                 } catch (Exception e) {
-                    
-                    /** if any exception occurs then log the error. */
-                    logger.log(ModuleID.NETWORKING, LogLevel.ERROR, exp);
+                  
+                    /**
+                     * if any exception occurs then log the error.
+                     */
+                    logger.log(ModuleID.NETWORKING, LogLevel.ERROR, e.toString());
                 }
                 
                 /** Now dequeue the message from sendqueue. */
