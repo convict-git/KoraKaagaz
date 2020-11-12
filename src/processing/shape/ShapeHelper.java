@@ -29,19 +29,21 @@ public class ShapeHelper {
 		BrushRadius brushRadius,
 		Dimension boardDimension
 	) {
-		/* 
-		 Magnify each pixels to the radius of the brush,
-		 this gives an effect of the shape to be drawing
-		 using a brush of radius given by brushRadius
+		/**
+		 * Magnify each pixels to the radius of the brush,
+		 * this gives an effect of the shape to be drawing
+		 * using a brush of radius given by brushRadius
 		 */
 		pixels = magnifyPixels(pixels, brushRadius);
 		
 		// Remove any duplicate pixels if present
 		pixels = removeDuplicates(pixels);
 		
-		// Remove any illegal points present, like points
-		// with negative coordinates, or coordinates outside
-		// the board itself
+		/** 
+		 * Remove any illegal points present, like points
+		 * with negative coordinates, or coordinates outside
+		 * the board itself
+		 */
 		pixels = removeIllegalPoints(
 			pixels,
 			boardDimension

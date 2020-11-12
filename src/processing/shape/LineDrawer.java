@@ -95,7 +95,7 @@ public class LineDrawer {
 	 * Algorithm Link:
 	 * 
 	 * @see <a href="https://en.wikipedia.org/wiki/
-	 * Digital_differential_analyzer_(graphics_algorithm)</a>
+	 * Digital_differential_analyzer_(graphics_algorithm)">
 	 * 
 	 * @param pointA First end point of the line segment
 	 * @param pointB Second end point of the line segment

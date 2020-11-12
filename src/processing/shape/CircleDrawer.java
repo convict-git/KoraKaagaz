@@ -95,8 +95,8 @@ public class CircleDrawer {
 	 */
 	public static ArrayList<Pixel> drawCircleFill(
 		Position center,
-        Radius radius,
-        Intensity intensity
+		Radius radius,
+		Intensity intensity
 	) {
 		ILogger logger = LoggerFactory.getLoggerInstance();
 		
