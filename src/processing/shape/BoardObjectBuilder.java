@@ -198,7 +198,7 @@ public class BoardObjectBuilder {
         Intensity intensity
     ) {
     	ILogger logger = LoggerFactory.getLoggerInstance();
-    	
+
     	logger.log(
     		ModuleID.PROCESSING,
     		LogLevel.INFO, 

@@ -1,7 +1,9 @@
 package processing.shape;
 
 import java.util.ArrayList;
-
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.Queue;
 import processing.utility.*;
 import infrastructure.validation.logger.LoggerFactory;
 import infrastructure.validation.logger.ILogger;
@@ -11,8 +13,8 @@ import infrastructure.validation.logger.ModuleID;
 /**
  * Static Circle Drawing Methods
  *
- * @author Ahmed Zaheer Dadarkar
- * @reviewer Rakesh Kumar
+ * @author Ahmed Zaheer Dadarkar, Rakesh Kumar
+ * @reviewer Rakesh Kumar, Ahmed Zaheer Dadarkar
  */
 
 public class CircleDrawer {
@@ -21,7 +23,7 @@ public class CircleDrawer {
 	public enum AlgorithmCircle {MID_POINT};
 	
 	/** Algorithm for Circle Fill */
-	public enum AlgorithmFill {MID_POINT_BASED, DEVANSH};
+	public enum AlgorithmFill {MID_POINT_BASED, DEVANSH, BFS_FILL};
 	
 	/** Variable storing the algorithm for Circle Boundary */
 	private static AlgorithmCircle circleAlgorithm =
@@ -116,6 +118,17 @@ public class CircleDrawer {
 					+ "Using Devansh Circle Filling Algorithm"
 				);
 				pixels = devanshCircleFill(center, radius, intensity);
+				break;
+				
+			// If BFS method was selected, use BFS fill Circle algorithm
+			case BFS_FILL:
+				pixels = bfsCircleFill(center, radius, intensity);
+				logger.log(
+					ModuleID.PROCESSING, 
+					LogLevel.INFO, 
+					"[#" + Thread.currentThread().getId() + "] "
+					+ "Using BFS based Circle Filling Algorithm"
+					);
 				break;
 			
 			/*
@@ -360,5 +373,81 @@ public class CircleDrawer {
 	/** Function to square its input */
 	private static int square(int x) {
 		return x * x;
+	}
+	
+	/**
+	 * Draws a Filled Circle based on the center and radius provided
+	 * using the BFS algorithm
+	 * 
+	 * @author Rakesh Kumar
+	 * 
+	 * @param center Center of the filled circle
+	 * @param radius Radius of the filled circle
+	 * @param intensity Intensity of each pixel of the filled circle
+	 * @return the arraylist of pixels of the filled circle
+	 */
+	private static ArrayList <Pixel> bfsCircleFill(
+			Position center,
+	        Radius radius,
+	        Intensity intensity
+		) {
+		
+		int rad = (int) Math.round(radius.radius);
+		// Compute square of radius
+		int radSquare = rad * rad;
+		
+		// BFS queue
+		Queue <Position> queuePos = new LinkedList <Position> ();
+		// stores the filled circle pixels
+		ArrayList <Pixel> pixels = new ArrayList <Pixel> ();
+		
+		/**
+		 *  2D boolean array for marking the visited positions
+		 *  Size of the array is the size of the smallest square covering the circle 
+		 *  The circle is shifted such that the positive axes are its tangents
+		 */
+		boolean[][] visitPos = new boolean[(rad << 1) + 1][(rad << 1) + 1];
+		
+		
+		// BFS will start with center as the source position
+		queuePos.add(center);
+		// shifted circle center
+		visitPos[rad][rad] = true;
+		pixels.add(new Pixel(new Position(center), new Intensity(intensity)));
+		
+		/**
+		 * dr, dc are changes in rows and cols respectively.
+		 * These are used to find the adjacent positions
+		 */
+		ArrayList <Integer> dr = new ArrayList <Integer> (
+				Arrays.asList(-1, -1, -1, 0, 0, 1, 1, 1)
+				); 
+		ArrayList <Integer> dc = new ArrayList <Integer>(
+				Arrays.asList(-1, 0, 1, -1, 1, -1, 0, 1)
+				);
+
+		while (queuePos.size() > 0) {
+			Position front = queuePos.remove();
+			
+			// pushes the adjacent valid unvisited positions into the queue
+			for (Integer d = 0; d < dr.size(); d++) {
+				int r = dr.get(d) + front.r;
+				int c = dc.get(d) + front.c;
+				Position pos = new Position(r, c);
+				// Checks whether (r, c) is inside the circle or not
+				if (square(r - center.r) + square(c - center.c) > radSquare)
+					continue;
+				if (visitPos[r - center.r + rad][c - center.c + rad] == false) {
+					// if the position is not visited
+					visitPos[r - center.r + rad][c - center.c + rad] = true;
+					queuePos.add(pos);
+					pixels.add(new Pixel(pos, new Intensity(intensity)));
+				}
+						
+			}
+		}
+		
+		// filled circle pixels
+		return pixels;
 	}
 }

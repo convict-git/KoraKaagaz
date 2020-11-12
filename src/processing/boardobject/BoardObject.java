@@ -75,7 +75,7 @@ public class BoardObject implements Serializable {
     ) {
     	LoggerFactory.getLoggerInstance().log(
 			ModuleID.PROCESSING, 
-			LogLevel.INFO, 
+			LogLevel.INFO,
 			"[#" + Thread.currentThread().getId() + "] "
 			+ "Constructing Board Object"
 		);
@@ -149,7 +149,7 @@ public class BoardObject implements Serializable {
     public void setPixels (ArrayList <Pixel> pixels) {
     	LoggerFactory.getLoggerInstance().log(
 			ModuleID.PROCESSING, 
-			LogLevel.INFO, 
+			LogLevel.INFO,
 			"[#" + Thread.currentThread().getId() + "] "
 			+ "Set Pixels of the Board Object"
 		);

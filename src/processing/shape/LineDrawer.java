@@ -11,6 +11,7 @@ import infrastructure.validation.logger.ModuleID;
  * Static Line Segment Drawing Methods
  *
  * @author Ahmed Zaheer Dadarkar
+ * @reviewer Rakesh Kumar
  */
 
 public class LineDrawer {
