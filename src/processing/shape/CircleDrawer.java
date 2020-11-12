@@ -3,6 +3,10 @@ package processing.shape;
 import java.util.ArrayList;
 
 import processing.utility.*;
+import infrastructure.validation.logger.LoggerFactory;
+import infrastructure.validation.logger.ILogger;
+import infrastructure.validation.logger.LogLevel;
+import infrastructure.validation.logger.ModuleID;
 
 /**
  * Static Circle Drawing Methods
@@ -57,12 +61,20 @@ public class CircleDrawer {
 		// Select Algorithm based on choice
 		switch(circleAlgorithm) {
 		
-			// If Mid Point method was selected, use mid point circle
-			// drawing algorithm (fall through case)
+			/*
+			 *  If Mid Point method was selected, use mid point circle
+			 *  drawing algorithm (fall through case)
+			 */
 			case MID_POINT:
 				
 			// By default, use mid point based circle filling algorithm
 			default:
+				LoggerFactory.getLoggerInstance().log(
+					ModuleID.PROCESSING, 
+					LogLevel.INFO, 
+					"[#" + Thread.currentThread().getId() + "] "
+					+ "Using Mid Point Circle Drawing Algorithm"
+				);
 				pixels = midPointCircleDraw(center, radius, intensity);
 		}
 		
@@ -84,25 +96,42 @@ public class CircleDrawer {
         Radius radius,
         Intensity intensity
 	) {
+		ILogger logger = LoggerFactory.getLoggerInstance();
+		
 		// Initialize arraylist of pixels
 		ArrayList<Pixel> pixels = null;
 		
 		// Select Algorithm based on choice
 		switch(fillAlgorithm) {
 		
-			// If Devansh method was selected, use Devansh Circle
-			// Filling Algorithm
+			/* 
+			 * If Devansh method was selected, use Devansh Circle
+			 * Filling Algorithm
+			 */
 			case DEVANSH:
+				logger.log(
+					ModuleID.PROCESSING, 
+					LogLevel.INFO, 
+					"[#" + Thread.currentThread().getId() + "] "
+					+ "Using Devansh Circle Filling Algorithm"
+				);
 				pixels = devanshCircleFill(center, radius, intensity);
 				break;
 			
-			// If Mid Point Based method was selected, use Mid Point
-			// Based Filling Algorithm (fall through case)
+			/*
+			 *  If Mid Point Based method was selected, use Mid Point
+			 *  Based Filling Algorithm (fall through case)
+			 */
 			case MID_POINT_BASED:
 				
-			// By Default, use Mid Point
-			// Based Filling Algorithm
+			// By Default, use Mid Point Based Filling Algorithm
 			default:
+				logger.log(
+					ModuleID.PROCESSING, 
+					LogLevel.INFO, 
+					"[#" + Thread.currentThread().getId() + "] "
+					+ "Using Mid Point Based Circle Filling Algorithm"
+				);
 				pixels = midPointBasedCircleFill(center, radius, intensity);
 		}
 
@@ -141,8 +170,7 @@ public class CircleDrawer {
 		// Run until we complete one octant
 		while(pos.c > pos.r) {
 			
-			// If decision parameter is less than zero, then
-			// select East (E)
+			// If decision parameter is less than zero, then select East (E)
 			if(decisionParam < 0)
 				decisionParam += 2 * pos.r + 3;
 			
@@ -190,8 +218,10 @@ public class CircleDrawer {
 			new Position(-pos.r, pos.c)
 		};
 		
-		// Add all the symmetric positions after translating by
-		// the center coordinates
+		/*
+		 *  Add all the symmetric positions after translating by
+		 *  the center coordinates
+		 */
 		for(Position symmetricPos : allSymmetricPos) {
 			pixels.add(new Pixel(
 				new Position(
@@ -225,8 +255,7 @@ public class CircleDrawer {
 
 		while(pos.c > pos.r) {
 			
-			// If decision parameter is less than zero, then
-			// select East (E)
+			// If decision parameter is less than zero, then select East (E)
 			if(decisionParam < 0)
 				decisionParam += 2 * pos.r + 3;
 			
@@ -262,8 +291,10 @@ public class CircleDrawer {
 			new Position(pos.r, -pos.c)
 		};
 		
-		// For each point in allFillSymmetricPos construct a column
-		// from the negative of the row val till the positive
+		/*
+		 *  For each point in allFillSymmetricPos construct a column
+		 *  from the negative of the row val till the positive
+		 */
 		for(Position symmetricFillPos : allFillSymmetricPos) {
 			for(int r = -symmetricFillPos.r;r <= symmetricFillPos.r;r++) {
 				pixels.add(new Pixel(
@@ -300,15 +331,19 @@ public class CircleDrawer {
 		// Compute square of radius
 		int radSquare = rad * rad;
 		
-		// Go over every pixel of the smallest square that encompasses
-		// the circle (i.e. a square of side equal to the diameter of
-		// the circle) and then if the point lies on or inside the circle
-		// place it in our arraylist of pixels
+		/* 
+		 * Go over every pixel of the smallest square that encompasses
+		 * the circle (i.e. a square of side equal to the diameter of
+		 * the circle) and then if the point lies on or inside the circle
+		 * place it in our arraylist of pixels
+		 */
 		for(int r = center.r - rad;r <= center.r + rad;r++) {
 			for(int c = center.c - rad;c <= center.c + rad;c++) {
 				
-				// If the point lies on or inside the circle, then place it
-				// in our arraylist of pixels
+				/*
+				 *  If the point lies on or inside the circle, then place it
+				 *  in our arraylist of pixels
+				 */
 				if(square(r - center.r) + square(c - center.c) <= radSquare) {
 					pixels.add(new Pixel(
 						new Position(r, c),

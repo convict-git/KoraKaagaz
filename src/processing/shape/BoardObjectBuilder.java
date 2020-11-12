@@ -8,6 +8,10 @@ import processing.boardobject.BoardObject;
 import processing.boardobject.CreateOperation;
 import processing.boardobject.IBoardObjectOperation;
 import processing.utility.*;
+import infrastructure.validation.logger.LoggerFactory;
+import infrastructure.validation.logger.ILogger;
+import infrastructure.validation.logger.LogLevel;
+import infrastructure.validation.logger.ModuleID;
 
 /**
  * Static methods for constructing board objects from shapes and
@@ -34,15 +38,38 @@ public class BoardObjectBuilder {
         Radius radius,
         Intensity intensity
     ) {
+    	ILogger logger = LoggerFactory.getLoggerInstance();
+    	
+    	logger.log(
+    		ModuleID.PROCESSING, 
+    		LogLevel.INFO, 
+    		"[#" + Thread.currentThread().getId() + "] "
+			+ "Drawing The Circle"
+    	);
+    	
     	// Get arraylist of pixels of the circle
     	ArrayList<Pixel> circlePixels = 
     		CircleDrawer.drawCircle(center, radius, intensity);
+    	
+    	logger.log(
+			ModuleID.PROCESSING, 
+			LogLevel.INFO, 
+			"[#" + Thread.currentThread().getId() + "] "
+			+ "Circle Pixels Constructed"
+    	);
     	
     	// Perform post processing on the pixels
     	circlePixels = ShapeHelper.postDrawProcessing(
     		circlePixels,
     		ClientBoardState.brushSize,
     		ClientBoardState.boardDimension
+    	);
+    	
+    	logger.log(
+			ModuleID.PROCESSING, 
+			LogLevel.INFO, 
+			"[#" + Thread.currentThread().getId() + "] "
+			+ "Circle Post Processing Completed"
     	);
     	
     	// Draw the circle's pixels
@@ -64,14 +91,37 @@ public class BoardObjectBuilder {
         Radius radius,
         Intensity intensity
     ) {
+    	ILogger logger = LoggerFactory.getLoggerInstance();
+    	
+    	logger.log(
+    		ModuleID.PROCESSING, 
+    		LogLevel.INFO, 
+    		"[#" + Thread.currentThread().getId() + "] "
+			+ "Drawing The Filled Circle"
+    	);
+    	
     	// Get arraylist of pixels of the filled circle
     	ArrayList<Pixel> circleFillPixels = 
     		CircleDrawer.drawCircleFill(center, radius, intensity);
+    	
+    	logger.log(
+			ModuleID.PROCESSING, 
+			LogLevel.INFO, 
+			"[#" + Thread.currentThread().getId() + "] "
+			+ "Filled Circle Pixels Constructed"
+    	);
     	
     	// Perform post processing on the pixels
     	circleFillPixels = ShapeHelper.postFillProcessing(
     		circleFillPixels,
     		ClientBoardState.boardDimension
+    	);
+    	
+    	logger.log(
+			ModuleID.PROCESSING, 
+			LogLevel.INFO, 
+			"[#" + Thread.currentThread().getId() + "] "
+			+ "Filled Circle Post Processing Completed"
     	);
     	
     	// Draw the filled circle's pixels
@@ -92,6 +142,15 @@ public class BoardObjectBuilder {
         Position bottomRight,
         Intensity intensity
     ) {
+    	ILogger logger = LoggerFactory.getLoggerInstance();
+	
+    	logger.log(
+    		ModuleID.PROCESSING, 
+    		LogLevel.INFO, 
+    		"[#" + Thread.currentThread().getId() + "] "
+			+ "Drawing The Rectangle"
+    	);
+    	
     	// Get arraylist of pixels of the rectangle
     	ArrayList<Pixel> rectPixels = RectangleDrawer.drawRectangle(
     		topLeft, 
@@ -99,11 +158,25 @@ public class BoardObjectBuilder {
     		intensity
     	);
     	
+    	logger.log(
+			ModuleID.PROCESSING, 
+			LogLevel.INFO, 
+			"[#" + Thread.currentThread().getId() + "] "
+			+ "Rectangle Pixels Constructed"
+    	);
+    	
     	// Perform post processing on the pixels
     	rectPixels = ShapeHelper.postDrawProcessing(
     		rectPixels,
     		ClientBoardState.brushSize,
     		ClientBoardState.boardDimension
+    	);
+    	
+    	logger.log(
+			ModuleID.PROCESSING, 
+			LogLevel.INFO, 
+			"[#" + Thread.currentThread().getId() + "] "
+			+ "Rectangle Post Processing Completed"
     	);
     	
     	// Draw the rectangle's pixels
@@ -124,6 +197,15 @@ public class BoardObjectBuilder {
         Position bottomRight,
         Intensity intensity
     ) {
+    	ILogger logger = LoggerFactory.getLoggerInstance();
+    	
+    	logger.log(
+    		ModuleID.PROCESSING,
+    		LogLevel.INFO, 
+			"[#" + Thread.currentThread().getId() + "] "
+			+ "Drawing The Filled Rectangle"
+		);
+    	
     	// Get arraylist of pixels of the filled rectangle
     	ArrayList<Pixel> rectFillPixels = RectangleDrawer.drawRectangleFill(
     		topLeft, 
@@ -131,10 +213,24 @@ public class BoardObjectBuilder {
     		intensity
     	);
     	
+    	logger.log(
+			ModuleID.PROCESSING, 
+			LogLevel.INFO, 
+			"[#" + Thread.currentThread().getId() + "] "
+			+ "Filled Rectangle Pixels Constructed"
+    	);
+    	
     	// Perform post processing on the pixels
     	rectFillPixels = ShapeHelper.postFillProcessing(
     		rectFillPixels,
     		ClientBoardState.boardDimension
+    	);
+    	
+    	logger.log(
+			ModuleID.PROCESSING, 
+			LogLevel.INFO, 
+			"[#" + Thread.currentThread().getId() + "] "
+			+ "Rectangle Post Processing Completed"
     	);
     	
     	// Draw the filled rectangle's pixels
@@ -156,6 +252,15 @@ public class BoardObjectBuilder {
         Position vertC,
         Intensity intensity
     ) {
+    	ILogger logger = LoggerFactory.getLoggerInstance();
+    	
+    	logger.log(
+    		ModuleID.PROCESSING, 
+    		LogLevel.INFO, 
+    		"[#" + Thread.currentThread().getId() + "] "
+			+ "Drawing The Triangle"
+    	);
+    	
     	// Get arraylist of pixels of the triangle
     	ArrayList<Pixel> trianglePixels = TriangleDrawer.drawTriangle(
     		vertA, 
@@ -164,11 +269,25 @@ public class BoardObjectBuilder {
     		intensity
     	);
     	
+    	logger.log(
+			ModuleID.PROCESSING, 
+			LogLevel.INFO, 
+			"[#" + Thread.currentThread().getId() + "] "
+			+ "Triangle Pixels Constructed"
+    	);
+    	
     	// Perform post processing on the pixels
     	trianglePixels = ShapeHelper.postDrawProcessing(
 			trianglePixels,
     		ClientBoardState.brushSize,
     		ClientBoardState.boardDimension
+    	);
+    	
+    	logger.log(
+			ModuleID.PROCESSING, 
+			LogLevel.INFO, 
+			"[#" + Thread.currentThread().getId() + "] "
+			+ "Triangle Post Processing Completed"
     	);
     	
     	// Draw the triangle's pixels
@@ -189,6 +308,15 @@ public class BoardObjectBuilder {
         Position pointB,
         Intensity intensity
     ) {
+    	ILogger logger = LoggerFactory.getLoggerInstance();
+    	
+    	logger.log(
+    		ModuleID.PROCESSING, 
+    		LogLevel.INFO, 
+    		"[#" + Thread.currentThread().getId() + "] "
+			+ "Drawing The Line"
+    	);
+    	
     	// Get arraylist of pixels of the triangle
     	ArrayList<Pixel> segmentPixels = LineDrawer.drawSegment(
 			pointA, 
@@ -196,11 +324,25 @@ public class BoardObjectBuilder {
     		intensity
     	);
     	
+    	logger.log(
+			ModuleID.PROCESSING, 
+			LogLevel.INFO, 
+			"[#" + Thread.currentThread().getId() + "] "
+			+ "Line Pixels Constructed"
+    	);
+    	
     	// Perform post processing on the pixels
     	segmentPixels = ShapeHelper.postDrawProcessing(
 			segmentPixels,
     		ClientBoardState.brushSize,
     		ClientBoardState.boardDimension
+    	);
+    	
+    	logger.log(
+			ModuleID.PROCESSING, 
+			LogLevel.INFO, 
+			"[#" + Thread.currentThread().getId() + "] "
+			+ "Line Post Processing Completed"
     	);
     	
     	// Draw the line segment's pixels

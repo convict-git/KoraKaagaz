@@ -2,6 +2,10 @@ package processing.shape;
 
 import java.util.ArrayList;
 import processing.utility.*;
+import infrastructure.validation.logger.LoggerFactory;
+import infrastructure.validation.logger.ILogger;
+import infrastructure.validation.logger.LogLevel;
+import infrastructure.validation.logger.ModuleID;
 
 /**
  * Static Line Segment Drawing Methods
@@ -37,12 +41,20 @@ public class LineDrawer {
 	    Position pointB,
 	    Intensity intensity
 	) {
+		ILogger logger = LoggerFactory.getLoggerInstance();
+		
 		// Initialize arraylist of pixels
 		ArrayList<Pixel> pixels = null;
 		
 		switch(lineAlgorithm) {
 			// If DDA algorithm is to be used, then use it
 			case DDA:
+				logger.log(
+					ModuleID.PROCESSING, 
+					LogLevel.INFO, 
+					"[#" + Thread.currentThread().getId() + "] "
+					+ "Using DDA Line Drawing Algorithm"
+				);
 				pixels = digitalDifferentialAnalyser(
 					pointA,
 					pointB,
@@ -50,12 +62,17 @@ public class LineDrawer {
 				);
 				break;
 			
-			// If Bresenham algorithm is to be used, then use it
-			// (fall through case)
+			// If Bresenham algorithm is to be used, then use it (fall through case)
 			case BRESENHAM:
 				
 			// By Default, use Bresenham Algorithm
 			default:
+				logger.log(
+					ModuleID.PROCESSING, 
+					LogLevel.INFO, 
+					"[#" + Thread.currentThread().getId() + "] "
+					+ "Using Bresenham Line Drawing Algorithm"
+				);
 				pixels = bresenhamLineDraw(
 					pointA,
 					pointB,
@@ -105,8 +122,10 @@ public class LineDrawer {
 		// Initial Coordinates
 		double r = (double) pointA.r, c = (double) pointA.c;
 		
-		// We iterate one more than the number of steps to take
-		// since we must also cover the initial coordinate
+		/*
+		 *  We iterate one more than the number of steps to take
+		 *  since we must also cover the initial coordinate
+		 */
 		for(int i = 0; i <= steps; i++, r += rInc, c += cInc) {
 			// Round the double position to integer
 			Position pos = new Position(
@@ -154,24 +173,32 @@ public class LineDrawer {
 		// Pixel arraylist which must be returned
 		ArrayList<Pixel> pixels = null;
 		
-		// If difference along col axis is more, we can sample more points
-		// along col axis (in increments of 1) compared to row axis
+		/*
+		 *  If difference along col axis is more, we can sample more points
+		 *  along col axis (in increments of 1) compared to row axis
+		 */
 		if(dcAbs >= drAbs) {
 			if(pointB.c < pointA.c)
 				swapPosition(pointA, pointB);
 			
-			// Use drawLineLow to draw a "low" line, i.e. line with slope
-			// having absolute value between 0 and 1
+			/*
+			 *  Use drawLineLow to draw a "low" line, i.e. line with slope
+			 *  having absolute value between 0 and 1
+			 */
 			pixels = drawLineLow(pointA, pointB, intensity);
 		}
 		else {
-			// If difference along row axis is more, we can sample more
-			// points along row axis compared to col axis
+			/*
+			 *  If difference along row axis is more, we can sample more
+			 *  points along row axis compared to col axis
+			 */
 			if(pointB.r < pointA.r)
 				swapPosition(pointA, pointB);
 			
-			// Use drawLineHigh to draw a "high" line, i.e. line with slope
-			// having absolute value greater than 1
+			/*
+			 *  Use drawLineHigh to draw a "high" line, i.e. line with slope
+			 *  having absolute value greater than 1
+			 */
 			pixels = drawLineHigh(pointA, pointB, intensity);
 		}
 		
@@ -225,17 +252,22 @@ public class LineDrawer {
 		int dr = end.r - start.r; // Difference in row
 		int dc = end.c - start.c; // Difference in col
 		
-		// Decision parameter is used to decide whether to increment
-		// (or decrement) the row for the next iteration
+		/* 
+		 * Decision parameter is used to decide whether to increment
+		 * (or decrement) the row for the next iteration
+		 */
 		int decisionParam;
 		
-		// Value to be added to row on an iteration when decision
-		// parameter indicates it to be added
+		/* Value to be added to row on an iteration when decision
+		 * parameter indicates it to be added
+		 */
 		int rInc = 1;
 		
-		// If change in row is less than 0, then our line is heading
-		// from a higher row value to a lower row value, so our increment
-		// in row is actually negative
+		/*
+		 *  If change in row is less than 0, then our line is heading
+		 *  from a higher row value to a lower row value, so our increment
+		 *  in row is actually negative
+		 */
 		if(dr < 0) {
 			dr = -dr;
 			rInc = -1;
@@ -245,16 +277,19 @@ public class LineDrawer {
 		decisionParam = 2 * dr - dc;
 		int prevRow = start.r; // Starting point's row value
 
-		// Start from the 1st point (0-based) since we have
-		// already taken the 0th point
+		/* Start from the 1st point (0-based) since we have
+		 * already taken the 0th point
+		 */
 		for(int c = start.c + 1;c <= end.c;c++) {
 			
 			// Compute position assuming row remains the same
 			Position pos = new Position(prevRow, c);
 
-			// If decision parameter is greater than zero, we increment
-			// row value and update decision parameter else we only
-			// update the decision parameter
+			/* 
+			 * If decision parameter is greater than zero, we increment
+			 * row value and update decision parameter else we only
+			 * update the decision parameter
+			 */
 			if(decisionParam > 0) {
 				pos.r += rInc;
 				decisionParam += 2 * (dr - dc);
@@ -302,17 +337,23 @@ public class LineDrawer {
 		int dr = end.r - start.r; // Difference in row
 		int dc = end.c - start.c; // Difference in col
 		
-		// Decision parameter is used to decide whether to increment
-		// (or decrement) the col for the next iteration
+		/*
+		 *  Decision parameter is used to decide whether to increment
+		 *  (or decrement) the col for the next iteration
+		 */
 		int decisionParam;
 
-		// Value to be added to col on an iteration when decision
-		// parameter indicates it to be added
+		/*
+		 *  Value to be added to col on an iteration when decision
+		 *  parameter indicates it to be added
+		 */
 		int cInc = 1;
 		
-		// If change in col is less than 0, then our line is heading
-		// from a higher col value to a lower col value, so our increment
-		// in col is actually negative
+		/*
+		 *  If change in col is less than 0, then our line is heading
+		 *  from a higher col value to a lower col value, so our increments
+		 *  in col is actually negatives
+		 */
 		if(dc < 0) {
 			dc = -dc;
 			cInc = -1;
@@ -322,16 +363,20 @@ public class LineDrawer {
 		decisionParam = 2 * dc - dr;
 		int prevCol = start.c; // Starting point's col value
 
-		// Start from the 1st point (0-based) since we have
-		// already taken the 0th point
+		/*
+		 *  Start from the 1st point (0-based) since we have
+		 *  already taken the 0th point
+		 */
 		for(int r = start.r + 1;r <= end.r;r++) {
 			
 			// Compute position assuming col remains the sames
 			Position pos = new Position(r, prevCol);
 
-			// If decision parameter is greater than zero, we increment
-			// col value and update decision parameter else we only
-			// update the decision parameter
+			/*
+			 *  If decision parameter is greater than zero, we increment
+			 *  col value and update decision parameter else we only
+			 *  update the decision parameter
+			 */
 			if(decisionParam > 0) {
 				pos.c += cInc;
 				decisionParam += 2 * (dc - dr);

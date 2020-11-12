@@ -29,9 +29,11 @@ public class ShapeHelper {
 		BrushRadius brushRadius,
 		Dimension boardDimension
 	) {
-		// Magnify each pixels to the radius of the brush,
-		// this gives an effect of the shape to be drawing
-		// using a brush of radius given by brushRadius
+		/* 
+		 Magnify each pixels to the radius of the brush,
+		 this gives an effect of the shape to be drawing
+		 using a brush of radius given by brushRadius
+		 */
 		pixels = magnifyPixels(pixels, brushRadius);
 		
 		// Remove any duplicate pixels if present
@@ -72,9 +74,11 @@ public class ShapeHelper {
 		// Remove any duplicate pixels if present
 		pixels = removeDuplicates(pixels);
 		
-		// Remove any illegal points present, like points
-		// with negative coordinates, or coordinates outside
-		// the board itself
+		/*
+		 *  Remove any illegal points present, like points
+		 *  with negative coordinates, or coordinates outside
+		 *  the board itself
+		 */
 		pixels = removeIllegalPoints(
 			pixels,
 			boardDimension
@@ -103,20 +107,26 @@ public class ShapeHelper {
 		// Initialize updated arraylist
 		ArrayList<Pixel> updatedPixels = new ArrayList<Pixel>();
 
-		// Iterate over each pixel in the input arraylist and
-		// "magnify" it (i.e. draw a filled circle about it)
+		/*
+		 *  Iterate over each pixel in the input arraylist and
+		 *  "magnify" it (i.e. draw a filled circle about it)
+		 */
 		for(Pixel pixel : pixels) {
 			
-			// Draw a filled circle about pixel with radius given by
-			// the brush radius
+			/*
+			 *  Draw a filled circle about pixel with radius given by
+			 *  the brush radius
+			 */
 			ArrayList<Pixel> magnifiedPixels = CircleDrawer.drawCircleFill(
 				pixel.position, 
 				new Radius(brushRadius.brushRadius), 
 				pixel.intensity
 			);
 			
-			// Place each of the pixel corresponding to the filled circle
-			// into our updated arraylist
+			/*
+			 *  Place each of the pixel corresponding to the filled circle
+			 *  into our updated arraylist
+			 */
 			for(Pixel magPixel : magnifiedPixels)
 				updatedPixels.add(magPixel);
 		}
@@ -135,8 +145,10 @@ public class ShapeHelper {
 	private static ArrayList<Pixel> removeDuplicates(
 		ArrayList<Pixel> pixels
 	) {
-		// Construct a HashsSet using the pixels, this automatically
-		// removes all duplicates
+		/*
+		 *  Construct a HashsSet using the pixels, this automatically
+		 *  removes all duplicates
+		 */
 		Set<Pixel> pixelSet = new HashSet<Pixel>(pixels);
 		
 		// Return the arraylist of pixels without duplicates
@@ -157,8 +169,10 @@ public class ShapeHelper {
 		// Initialize updated arraylist
 		ArrayList<Pixel> updatedPixels = new ArrayList<Pixel>();
 		
-		// Iterate over all pixels and add only those pixels to
-		// our updated arraylist if they are valid
+		/*
+		 *  Iterate over all pixels and add only those pixels to
+		 *  our updated arraylist if they are valid
+		 */
 		for(Pixel pixel : pixels) {
 			if(
 				pixel.position.r >= 0
