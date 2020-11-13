@@ -23,6 +23,18 @@ public class FileLogger implements ILogger {
 	/** string that holds the location of the log file */
 	private static String logFile;
 	
+	/** */
+	private boolean enableErrorLog = false;
+	
+	/** */
+	private boolean enableWarnLog = false;
+
+	/** */
+	private boolean enableSuccessLog = false;
+
+	/** */
+	private boolean enableInfoLog = false;
+
 	/**
 	 *  constructor for FileLogger
 	 *  protected type since it needs to be only invoked by LoggerManager class
