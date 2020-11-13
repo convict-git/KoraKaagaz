@@ -52,16 +52,48 @@ public class ConsoleLogger implements ILogger {
 	 *  Creates an object that logs to the console, if enabled and available
 	 */
 	protected ConsoleLogger(List<LogLevel> enabledLogLevelsList) {
-	// protected ConsoleLogger(List<LogLevel> enabledLogLevelsList) {
 		
 		timeStampFormat = DateTimeFormatter.ofPattern("yyyy:MM:dd HH:mm:ss");
 		
 		console = System.console();
 		
-		if(console == null) {
-			// Houston, we need to disable all the log level filters and have no messages
+		if(null == console) {
+			
+			// no console to print found
+			// disable all the log levels i.e. have no messages logged
+			enableErrorLog = false;
+			enableWarningLog = false;
+			enableSuccessLog = false;
+			enableInfoLog = false;
+		
+		} else if (null == enabledLogLevelsList) {
+		
+			// no info specified
+			// use default value
+			enableErrorLog = false;
+			enableWarningLog = false;
+			enableSuccessLog = false;
+			enableInfoLog = false;
+		
+		} else {
+			
+			// check the List to see which LogLevel enum are sent
+			// for every member of the List, set the corresponding boolean to true i.e. enabled
+			if (enabledLogLevelsList.contains(LogLevel.ERROR)) {
+				enableErrorLog = true;
+			}
+			if (enabledLogLevelsList.contains(LogLevel.WARNING)) {
+				enableWarningLog = true;
+			}
+			if (enabledLogLevelsList.contains(LogLevel.SUCCESS)) {
+				enableSuccessLog = true;
+			}
+			if (enabledLogLevelsList.contains(LogLevel.INFO)) {
+				enableInfoLog = true;
+			}
+			
 		}
-
+		
 	}
 
 	@Override

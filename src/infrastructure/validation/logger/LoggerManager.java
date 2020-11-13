@@ -64,7 +64,7 @@ public class LoggerManager implements ILogger {
 		}
 		
 		if(allowConsoleLogging) {
-			consoleLogger = new ConsoleLogger();
+			consoleLogger = new ConsoleLogger(enabledLogLevelsList);
 		}
 	}
 
