@@ -74,12 +74,18 @@ public class CanvasController implements Initializable {
     @FXML
     private Button line, rect, square, triangle, circle, oval;
     
+    /** Delete Button, allows one to delete the selected object */
     @FXML
     private Button deleteButton;
     
+    /** 
+     * Rotate ComboBox Button, allows one to select
+     * angle of	rotation
+     */
     @FXML
     private ComboBox<String> rotateButton;
     
+    /** The Canvas Object */
 	@FXML
 	private Canvas canvas;
 	
@@ -92,8 +98,10 @@ public class CanvasController implements Initializable {
     
     private Color color;
     
+    /** Current Mode of the UI */
     private CurrentMode currentMode = CurrentMode.NO_MODE;
     
+    /** Dimension of the UI Canvas */
     private final Dimension dimension = new Dimension(720, 1200);
 
     @FXML
@@ -101,8 +109,14 @@ public class CanvasController implements Initializable {
 		
 	}
     
+    /**
+     * When the cursor button is clicked, we enter the Cursor Mode
+     * and the cursor changes to '+' (Crosshair Cursor)
+     * 
+     * @param cursorButtonClick
+     */
     @FXML
-   	public void cursorClicked(ActionEvent e) {
+   	public void cursorClicked(ActionEvent cursorButtonClick) {
    		currentMode = CurrentMode.CURSOR_MODE;
    		canvas.setCursor(Cursor.CROSSHAIR);
    	}
@@ -184,10 +198,15 @@ public class CanvasController implements Initializable {
      */
     @FXML
     void chooseColor(ActionEvent actionEvent) {
+    	
+    	// Get the logger
     	ILogger logger = LoggerFactory.getLoggerInstance();
     	
+    	// Get the chosen color
     	Color color = colorPicker.getValue();
     		
+    	// If in Cursor Mode, then perform the color
+    	// change operation
     	if(currentMode == CurrentMode.CURSOR_MODE) {
     		
     		logger.log(
@@ -196,6 +215,7 @@ public class CanvasController implements Initializable {
 				"Cursor Mode Active: Updating Color of Selected Object"
 			);
     		
+    		// Construct an Intensity object using the chosen color
     		Intensity intensity =
 	    		new Intensity(
 	    			(int) Math.round(255 * color.getRed()), 
@@ -218,6 +238,7 @@ public class CanvasController implements Initializable {
 				"Performing Color Change"
 			);
     		
+    		// Perform Color Change
     		ProcessingFactory
     			.getProcessor()
     			.colorChange(intensity);
@@ -228,7 +249,7 @@ public class CanvasController implements Initializable {
 				"Color Change Performed"
 			);
     	}
-    	else
+    	else // Cursor Mode not selected 
     		logger.log(
 				ModuleID.UI, 
 				LogLevel.INFO, 
@@ -259,8 +280,11 @@ public class CanvasController implements Initializable {
      */
     @FXML
     void clickCanvas(MouseEvent canvasMouseClickEvent) {
+    	
+    	// Get the logger
     	ILogger logger = LoggerFactory.getLoggerInstance();
     	
+    	// If current mode is not the Cursor Mode, return
     	if(currentMode != CurrentMode.CURSOR_MODE) {
     		logger.log(
 				ModuleID.UI, 
@@ -270,11 +294,16 @@ public class CanvasController implements Initializable {
 	    	return;
     	}
     	
+    	// Get approximate selected row and column coordinate
     	int rowCoord = (int) Math.round(canvasMouseClickEvent.getY());
     	int colCoord = (int) Math.round(canvasMouseClickEvent.getX());
     	
+    	// selPosition would represent a small region around the
+    	// approximate selected position
     	ArrayList<Position> selPosition = new ArrayList<Position>();
     	
+    	// Construct selPosition by building a small square as the
+    	// selected region
     	for(int r : selRange) {
     		for(int c : selRange) {
     			int row = rowCoord + r;
@@ -295,6 +324,7 @@ public class CanvasController implements Initializable {
 			"Getting Selected Object's Pixels from Processing Module"
 		);
     	
+    	// Get Selected Object Pixels from the Processor
     	ArrayList<Position> objectPixels = 
     		ProcessingFactory
 				.getProcessor()
@@ -306,6 +336,7 @@ public class CanvasController implements Initializable {
 			"Got Pixels from Processing Module"
 		);
     	
+    	// No Object was selected by the processor
     	if(objectPixels.size() == 0)
     		return;
     }
@@ -320,8 +351,11 @@ public class CanvasController implements Initializable {
      */
     @FXML
     void deleteObject(ActionEvent deleteButtonClickEvent) {
+    	
+    	// Get the logger
     	ILogger logger = LoggerFactory.getLoggerInstance();
     	
+    	// If current mode is not the Cursor Mode, return
     	if(currentMode != CurrentMode.CURSOR_MODE) {
     		logger.log(
     			ModuleID.UI, 
@@ -337,6 +371,7 @@ public class CanvasController implements Initializable {
 			"Performing Deletion"
 		);
     	
+    	// Perform Delete Operation
     	ProcessingFactory
     		.getProcessor()
     		.delete();
@@ -358,8 +393,11 @@ public class CanvasController implements Initializable {
      */
     @FXML
     void rotateObject(ActionEvent rotateButtonClickEvent) {
+    	
+    	// Get the logger
     	ILogger logger = LoggerFactory.getLoggerInstance();
     	
+    	// If Current Mode is not Cursor Mode, then return
     	if(currentMode != CurrentMode.CURSOR_MODE) {
     		logger.log(
     			ModuleID.UI, 
@@ -368,10 +406,14 @@ public class CanvasController implements Initializable {
     		);
     		return;
     	}
-    		
+    	
+    	// Chosen Angle String
     	String chosenAngleString = rotateButton.getValue();
+    	
+    	// Chosen Angle as a double value (to be filled)
     	double angleCCW;
     	
+    	// Get angle from String
     	if(chosenAngleString == "90")
     		angleCCW = 90;
     	
@@ -386,7 +428,8 @@ public class CanvasController implements Initializable {
 			LogLevel.INFO, 
 			"Performing Rotation with Chosen Angle: " + angleCCW
 		);
-    		
+    	
+    	// Perform rotation using the selected angle
 		ProcessingFactory
 			.getProcessor()
 			.rotate(new Angle(angleCCW));	
@@ -414,6 +457,8 @@ public class CanvasController implements Initializable {
 		URL url, 
 		ResourceBundle resourceBundle
 	) {
+		
+		// Get the logger
 		ILogger logger = LoggerFactory.getLoggerInstance();
 		
 		logger.log(
@@ -422,6 +467,7 @@ public class CanvasController implements Initializable {
 			"Initializing Canvas Controller"
 		);
 		
+		// Add drop down angles to the rotate Button ComboBox 
 		rotateButton
 			.getItems()
 			.addAll("90", "180", "270");
