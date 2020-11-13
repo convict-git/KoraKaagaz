@@ -115,13 +115,31 @@ public class ConsoleLogger implements ILogger {
 
 	private void printToConsole(LogLevel level, String message) {
 		
-		if(console != null) {
-			
-			String ANSI_COLOR = getColorFromLevel(level);
-			
-			System.out.println(ANSI_COLOR+message+ANSI_RESET);
-			
+		String ANSI_COLOR = getColorFromLevel(level);
+		
+		switch(level) {
+		case ERROR:
+			if(enableErrorLog) {
+				System.out.println(ANSI_COLOR+message+ANSI_RESET);
+			}
+			break;
+		case WARNING:
+			if(enableWarningLog) {
+				System.out.println(ANSI_COLOR+message+ANSI_RESET);
+			}
+			break;
+		case SUCCESS:
+			if(enableSuccessLog) {
+				System.out.println(ANSI_COLOR+message+ANSI_RESET);
+			}
+			break;
+		case INFO:
+			if(enableInfoLog) {
+				System.out.println(ANSI_COLOR+message+ANSI_RESET);
+			}
+			break;
 		}
+
 	}
 	
 	private String getColorFromLevel(LogLevel level) {
