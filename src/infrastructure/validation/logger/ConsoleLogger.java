@@ -1,6 +1,7 @@
 package infrastructure.validation.logger;
 
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.time.LocalDateTime;
 import java.io.Console;
 
@@ -35,10 +36,23 @@ public class ConsoleLogger implements ILogger {
 	// SUCCESS log level with color GREEN
 	public static final String ANSI_GREEN = "\u001B[32m";
 	
+	/**  */
+	private boolean enableErrorLog = false;
+	
+	/**  */
+	private boolean enableWarningLog = false;
+
+	/**  */
+	private boolean enableSuccessLog = false;
+
+	/**  */
+	private boolean enableInfoLog = false;
+
 	/**
 	 *  Creates an object that logs to the console, if enabled and available
 	 */
-	protected ConsoleLogger() {
+	protected ConsoleLogger(List<LogLevel> enabledLogLevelsList) {
+	// protected ConsoleLogger(List<LogLevel> enabledLogLevelsList) {
 		
 		timeStampFormat = DateTimeFormatter.ofPattern("yyyy:MM:dd HH:mm:ss");
 		
@@ -47,6 +61,7 @@ public class ConsoleLogger implements ILogger {
 		if(console == null) {
 			// Houston, we need to disable all the log level filters and have no messages
 		}
+
 	}
 
 	@Override
