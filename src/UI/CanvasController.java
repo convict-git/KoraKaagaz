@@ -176,8 +176,14 @@ public class CanvasController implements Initializable {
     	
     }
     
+    /**
+     * Choose a Color from the Color Picker Object
+     * 
+     * @param actionEvent Event representing the picking of
+     * a color
+     */
     @FXML
-    void chooseColor(ActionEvent e) {
+    void chooseColor(ActionEvent actionEvent) {
     	ILogger logger = LoggerFactory.getLoggerInstance();
     	
     	Color color = colorPicker.getValue();
@@ -230,12 +236,29 @@ public class CanvasController implements Initializable {
 			);
     }
     
+    /** Selected Object's pixels would be made into this color */
     private final Intensity HIGHLIGHT_COLOR = new Intensity(0, 255, 255);
     
-    private int[] selRange = new int[] {-1, 0, 1};
+    /** 
+     * This is used for constructing a small square around the selected point
+     * since it is possible that the user may make slight errors in choosing
+     * a point. We assume that the user selected the entire small square, not
+     * just a single point
+     */
+    private final int[] selRange = new int[] {-1, 0, 1};
     
+    /**
+     * When a point in the canvas in clicked, then this method is called.
+     * If the UI is in Cursor Mode, we pass a small square around the
+     * selected point to the processor so that we may get the object
+     * corresponding to the selected pixels. We highlight the pixels of the
+     * object by representing them with a specific color
+     * 
+     * @param canvasMouseClickEvent Mouse Click Event which lead to this
+     * function being called
+     */
     @FXML
-    void clickCanvas(MouseEvent mouseEvent) {
+    void clickCanvas(MouseEvent canvasMouseClickEvent) {
     	ILogger logger = LoggerFactory.getLoggerInstance();
     	
     	if(currentMode != CurrentMode.CURSOR_MODE) {
@@ -247,8 +270,8 @@ public class CanvasController implements Initializable {
 	    	return;
     	}
     	
-    	int rowCoord = (int) Math.round(mouseEvent.getY());
-    	int colCoord = (int) Math.round(mouseEvent.getX());
+    	int rowCoord = (int) Math.round(canvasMouseClickEvent.getY());
+    	int colCoord = (int) Math.round(canvasMouseClickEvent.getX());
     	
     	ArrayList<Position> selPosition = new ArrayList<Position>();
     	
@@ -287,8 +310,16 @@ public class CanvasController implements Initializable {
     		return;
     }
     
+    /**
+     * When the delete button is clicked, this method is called. If the
+     * UI is in Cursor Mode, then the selected object is deleted (if any
+     * object was selected)
+     * 
+     * @param deleteButtonClickEvent Event corresponding to the clicking
+     * of the delete button
+     */
     @FXML
-    void deleteObject(ActionEvent e) {
+    void deleteObject(ActionEvent deleteButtonClickEvent) {
     	ILogger logger = LoggerFactory.getLoggerInstance();
     	
     	if(currentMode != CurrentMode.CURSOR_MODE) {
@@ -317,8 +348,16 @@ public class CanvasController implements Initializable {
 		);
     }
     
+    /**
+     * When the Rotate Button (ComboBox) is clicked, this method
+     * is called. It rotates the object which is selected (if an
+     * object is selected)
+     * 
+     * @param rotateButtonClickEvent Event corresponding to the clicking
+     * of the rotate button (ComboBox)
+     */
     @FXML
-    void rotateObject(ActionEvent e) {
+    void rotateObject(ActionEvent rotateButtonClickEvent) {
     	ILogger logger = LoggerFactory.getLoggerInstance();
     	
     	if(currentMode != CurrentMode.CURSOR_MODE) {
@@ -345,13 +384,7 @@ public class CanvasController implements Initializable {
     	logger.log(
 			ModuleID.UI, 
 			LogLevel.INFO, 
-			"Chosen Angle: " + angleCCW
-		);
-    	
-    	logger.log(
-			ModuleID.UI, 
-			LogLevel.INFO, 
-			"Performing Rotation: " + angleCCW
+			"Performing Rotation with Chosen Angle: " + angleCCW
 		);
     		
 		ProcessingFactory
@@ -365,11 +398,30 @@ public class CanvasController implements Initializable {
 		);
     }
 
+    /**
+     * Initialize the Canvas Controller
+     * 
+     * @see <a href="https://docs.oracle.com/javase/8/javafx/api/javafx/fxml/Initializable.html">
+     * Initializable Interface</a>
+     * 
+     * @param url The location used to resolve relative paths for the root object,
+     * or null if the location is not known.
+     * @param resourceBundle The resources used to localize the root object, or null
+     * if the root object was not localized.
+     */
 	@Override
 	public void initialize(
 		URL url, 
 		ResourceBundle resourceBundle
 	) {
+		ILogger logger = LoggerFactory.getLoggerInstance();
+		
+		logger.log(
+			ModuleID.UI, 
+			LogLevel.INFO, 
+			"Initializing Canvas Controller"
+		);
+		
 		rotateButton
 			.getItems()
 			.addAll("90", "180", "270");
