@@ -98,7 +98,32 @@ public class FileLogger implements ILogger {
 		
 		String logMessage = logTimeStamp+logModulePart+logLevelPart+message;
 
-		writeToFile(logMessage);
+		switch(level) {
+		case ERROR:
+			if(enableErrorLog) {
+				writeToFile(logMessage);				
+			}
+			break;
+		case WARNING:
+			if(enableWarnLog) {
+				writeToFile(logMessage);				
+			}
+			break;
+		case SUCCESS:
+			if(enableSuccessLog) {
+				writeToFile(logMessage);				
+			}
+			break;
+		case INFO:
+			if(enableInfoLog) {
+				writeToFile(logMessage);				
+			}
+			break;
+		default:
+			// do nothing
+			break;
+		}
+		// writeToFile(logMessage);
 	}
 
 	/** private helper method that returns an object that can write content into a file 
