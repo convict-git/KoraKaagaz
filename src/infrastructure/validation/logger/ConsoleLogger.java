@@ -36,16 +36,24 @@ public class ConsoleLogger implements ILogger {
 	// SUCCESS log level with color GREEN
 	public static final String ANSI_GREEN = "\u001B[32m";
 	
-	/**  */
+	/** boolean that enables/disables ERROR logs, 
+	 *  defaults to false (no ERROR logs are logged)
+	 */
 	private boolean enableErrorLog = false;
 	
-	/**  */
+	/** boolean that enables/disables WARNING logs, 
+	 *  defaults to false (no WARNING logs are logged)
+	 */
 	private boolean enableWarningLog = false;
 
-	/**  */
+	/** boolean that enables/disables SUCCESS logs, 
+	 *  defaults to false (no SUCCESS logs are logged)
+	 */
 	private boolean enableSuccessLog = false;
 
-	/**  */
+	/** boolean that enables/disables INFO logs, 
+	 *  defaults to false (no INFO logs are logged)
+	 */
 	private boolean enableInfoLog = false;
 
 	/**

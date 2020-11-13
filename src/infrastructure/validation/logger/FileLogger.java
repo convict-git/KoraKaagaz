@@ -24,16 +24,24 @@ public class FileLogger implements ILogger {
 	/** string that holds the location of the log file */
 	private static String logFile;
 	
-	/** */
+	/** boolean that enables/disables ERROR logs, 
+	 *  defaults to false (no ERROR logs are logged)
+	 */
 	private boolean enableErrorLog = false;
 	
-	/** */
+	/** boolean that enables/disables WARNING logs, 
+	 *  defaults to false (no WARNING logs are logged)
+	 */
 	private boolean enableWarnLog = false;
 
-	/** */
+	/** boolean that enables/disables SUCCESS logs, 
+	 *  defaults to false (no SUCCESS logs are logged)
+	 */
 	private boolean enableSuccessLog = false;
 
-	/** */
+	/** boolean that enables/disables INFO logs, 
+	 *  defaults to false (no INFO logs are logged)
+	 */
 	private boolean enableInfoLog = false;
 
 	/**
@@ -123,7 +131,6 @@ public class FileLogger implements ILogger {
 			// do nothing
 			break;
 		}
-		// writeToFile(logMessage);
 	}
 
 	/** private helper method that returns an object that can write content into a file 
