@@ -1,6 +1,7 @@
 package infrastructure.validation.logger;
 
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.time.LocalDateTime;
 
 import java.io.File;
@@ -36,11 +37,11 @@ public class FileLogger implements ILogger {
 	private boolean enableInfoLog = false;
 
 	/**
-	 *  constructor for FileLogger
-	 *  protected type since it needs to be only invoked by LoggerManager class
+	 *  constructor for FileLogger.
+	 *  Protected type since it needs to be only invoked by LoggerManager class
 	 *  @see logger.LoggerManager
 	 */
-	protected FileLogger() {
+	protected FileLogger(List<LogLevel> enabledLogLevelsList) {
 		
 		// sets DateTime format as per the spec
 		timeStampFormat = DateTimeFormatter.ofPattern("yyyy:MM:dd HH:mm:ss");
@@ -58,6 +59,29 @@ public class FileLogger implements ILogger {
 		
 		// set the path to the log file
 		logFile = logFilePath+logTimeStamp+"-release.log";
+	
+		// set booleans that enable/disable Log Level
+		if (null == enabledLogLevelsList) {
+			// nothing to be done
+			// default values will be used
+		} else {
+			
+			// check which LogLevel enum are sent
+			// if an enum is available, set the corresponding boolean to true i.e. enabled
+			if (enabledLogLevelsList.contains(LogLevel.ERROR)) {
+				enableErrorLog = true;
+			}
+			if (enabledLogLevelsList.contains(LogLevel.WARNING)) {
+				enableWarnLog = true;
+			}
+			if (enabledLogLevelsList.contains(LogLevel.SUCCESS)) {
+				enableSuccessLog = true;
+			}
+			if (enabledLogLevelsList.contains(LogLevel.INFO)) {
+				enableInfoLog = true;
+			}
+			
+		}
 	}
 
 	@Override

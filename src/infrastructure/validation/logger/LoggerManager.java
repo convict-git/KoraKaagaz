@@ -53,14 +53,14 @@ public class LoggerManager implements ILogger {
 	protected LoggerManager() {
 		
 		File logConfigFile = new File(loggerConfigFilePath);
-		List<LogLevel> enabledLogLevelsList;
+		List<LogLevel> enabledLogLevelsList = null;
 		
 		if(logConfigFile.isFile()) {
 			enabledLogLevelsList = parse(loggerConfigFilePath);
 		}
 		
 		if(allowFileLogging) {
-			fileLogger = new FileLogger();
+			fileLogger = new FileLogger(enabledLogLevelsList);
 		}
 		
 		if(allowConsoleLogging) {
