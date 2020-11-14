@@ -126,8 +126,10 @@ public class CanvasController implements Initializable {
      */
     @FXML
    	public void cursorClicked(ActionEvent cursorButtonClick) {
-   		currentMode = CurrentMode.CURSOR_MODE;
-   		canvas.setCursor(Cursor.CROSSHAIR);
+    	synchronized(this) {
+	   		currentMode = CurrentMode.CURSOR_MODE;
+	   		canvas.setCursor(Cursor.CROSSHAIR);
+    	}
    	}
     
     @FXML
@@ -208,69 +210,72 @@ public class CanvasController implements Initializable {
     @FXML
     void chooseColor(ActionEvent actionEvent) {
     	
-    	// Get the logger
-    	ILogger logger = LoggerFactory.getLoggerInstance();
-    	
-    	// Get the chosen color
-    	Color color = colorPicker.getValue();
-    		
-    	// If in Cursor Mode, then perform the color
-    	// change operation
-    	if(
-			currentMode == CurrentMode.CURSOR_MODE
-			&&
-			isObjectSelected
-    	) {
-    		
-    		logger.log(
-				ModuleID.UI, 
-				LogLevel.INFO, 
-				"Cursor Mode Active: Updating Color of Selected Object"
-			);
-    		
-    		// Construct an Intensity object using the chosen color
-    		Intensity intensity =
-	    		new Intensity(
-	    			(int) Math.round(255 * color.getRed()), 
-	    			(int) Math.round(255 * color.getGreen()), 
-	    			(int) Math.round(255 * color.getBlue())
-	    		);
-    		
-    		logger.log(
-				ModuleID.UI, 
-				LogLevel.INFO, 
-				"Color chosen - "
-				+ "red: " + intensity.r
-				+ "green: " + intensity.g
-				+ "blue: " + intensity.b
-			);
-    		
-    		logger.log(
-				ModuleID.UI, 
-				LogLevel.INFO, 
-				"Performing Color Change"
-			);
-    		
-    		// Perform Color Change
-    		ProcessingFactory
-    			.getProcessor()
-    			.colorChange(intensity);
-    		
-    		logger.log(
-				ModuleID.UI, 
-				LogLevel.INFO, 
-				"Color Change Performed"
-			);
-    		
-    		// Unselect currently selected object
-        	updateSelectedPixels(null);
+    	synchronized(this) {
+
+	    	// Get the logger
+	    	ILogger logger = LoggerFactory.getLoggerInstance();
+	    	
+	    	// Get the chosen color
+	    	Color color = colorPicker.getValue();
+	    		
+	    	// If in Cursor Mode, then perform the color
+	    	// change operation
+	    	if(
+				currentMode == CurrentMode.CURSOR_MODE
+				&&
+				isObjectSelected
+	    	) {
+	    		
+	    		logger.log(
+					ModuleID.UI, 
+					LogLevel.INFO, 
+					"Cursor Mode Active: Updating Color of Selected Object"
+				);
+	    		
+	    		// Construct an Intensity object using the chosen color
+	    		Intensity intensity =
+		    		new Intensity(
+		    			(int) Math.round(255 * color.getRed()), 
+		    			(int) Math.round(255 * color.getGreen()), 
+		    			(int) Math.round(255 * color.getBlue())
+		    		);
+	    		
+	    		logger.log(
+					ModuleID.UI, 
+					LogLevel.INFO, 
+					"Color chosen - "
+					+ "red: " + intensity.r
+					+ "green: " + intensity.g
+					+ "blue: " + intensity.b
+				);
+	    		
+	    		logger.log(
+					ModuleID.UI, 
+					LogLevel.INFO, 
+					"Performing Color Change"
+				);
+	    		
+	    		// Perform Color Change
+	    		ProcessingFactory
+	    			.getProcessor()
+	    			.colorChange(intensity);
+	    		
+	    		logger.log(
+					ModuleID.UI, 
+					LogLevel.INFO, 
+					"Color Change Performed"
+				);
+	    		
+	    		// Unselect currently selected object
+	        	updateSelectedPixels(null);
+	    	}
+	    	else // Not in cursor Mode or object not selected
+	    		logger.log(
+					ModuleID.UI, 
+					LogLevel.INFO, 
+					"Not in Cursor Mode or Object not selected"
+				);
     	}
-    	else // Not in cursor Mode or object not selected
-    		logger.log(
-				ModuleID.UI, 
-				LogLevel.INFO, 
-				"Not in Cursor Mode or Object not selected"
-			);
     }
 
     /** 
@@ -294,63 +299,66 @@ public class CanvasController implements Initializable {
     @FXML
     void clickCanvas(MouseEvent canvasMouseClickEvent) {
     	
-    	// Get the logger
-    	ILogger logger = LoggerFactory.getLoggerInstance();
+    	synchronized(this) {
     	
-    	// If current mode is not the Cursor Mode, return
-    	if(currentMode != CurrentMode.CURSOR_MODE) {
-    		logger.log(
+	    	// Get the logger
+	    	ILogger logger = LoggerFactory.getLoggerInstance();
+	    	
+	    	// If current mode is not the Cursor Mode, return
+	    	if(currentMode != CurrentMode.CURSOR_MODE) {
+	    		logger.log(
+					ModuleID.UI, 
+					LogLevel.INFO, 
+					"Unable to Select Object: Not in Cursor Mode"
+				);
+		    	return;
+	    	}
+	    	
+	    	// Get approximate selected row and column coordinate
+	    	int rowCoord = (int) Math.round(canvasMouseClickEvent.getY());
+	    	int colCoord = (int) Math.round(canvasMouseClickEvent.getX());
+	    	
+	    	// selPosition would represent a small region around the
+	    	// approximate selected position
+	    	ArrayList<Position> selPosition = new ArrayList<Position>();
+	    	
+	    	// Construct selPosition by building a small square as the
+	    	// selected region
+	    	for(int r : selRange) {
+	    		for(int c : selRange) {
+	    			int row = rowCoord + r;
+	    			int col = colCoord + c;
+	    			
+	    			if(
+						0 <= row && row < dimension.numRows
+						&&
+						0 <= col && col < dimension.numCols
+	    			)
+	    				selPosition.add(new Position(row, col));
+	    		}
+	    	}
+	    	
+	    	logger.log(
 				ModuleID.UI, 
 				LogLevel.INFO, 
-				"Unable to Select Object: Not in Cursor Mode"
+				"Getting Selected Object's Pixels from Processing Module"
 			);
-	    	return;
+	    	
+	    	// Get Selected Object Pixels from the Processor
+	    	ArrayList<Pixel> objectPixels = 
+	    		ProcessingFactory
+					.getProcessor()
+					.select(selPosition);
+	    	
+	    	logger.log(
+				ModuleID.UI, 
+				LogLevel.INFO, 
+				"Got Pixels from Processing Module"
+			);
+	    	
+	    	// Update Selected Pixels
+	    	updateSelectedPixels(objectPixels);
     	}
-    	
-    	// Get approximate selected row and column coordinate
-    	int rowCoord = (int) Math.round(canvasMouseClickEvent.getY());
-    	int colCoord = (int) Math.round(canvasMouseClickEvent.getX());
-    	
-    	// selPosition would represent a small region around the
-    	// approximate selected position
-    	ArrayList<Position> selPosition = new ArrayList<Position>();
-    	
-    	// Construct selPosition by building a small square as the
-    	// selected region
-    	for(int r : selRange) {
-    		for(int c : selRange) {
-    			int row = rowCoord + r;
-    			int col = colCoord + c;
-    			
-    			if(
-					0 <= row && row < dimension.numRows
-					&&
-					0 <= col && col < dimension.numCols
-    			)
-    				selPosition.add(new Position(row, col));
-    		}
-    	}
-    	
-    	logger.log(
-			ModuleID.UI, 
-			LogLevel.INFO, 
-			"Getting Selected Object's Pixels from Processing Module"
-		);
-    	
-    	// Get Selected Object Pixels from the Processor
-    	ArrayList<Pixel> objectPixels = 
-    		ProcessingFactory
-				.getProcessor()
-				.select(selPosition);
-    	
-    	logger.log(
-			ModuleID.UI, 
-			LogLevel.INFO, 
-			"Got Pixels from Processing Module"
-		);
-    	
-    	// Update Selected Pixels
-    	updateSelectedPixels(objectPixels);
     }
     
     /**
@@ -364,48 +372,51 @@ public class CanvasController implements Initializable {
     @FXML
     void deleteObject(ActionEvent deleteButtonClickEvent) {
     	
-    	// Get the logger
-    	ILogger logger = LoggerFactory.getLoggerInstance();
+    	synchronized(this) {
     	
-    	// If current mode is not the Cursor Mode, return
-    	if(currentMode != CurrentMode.CURSOR_MODE) {
-    		logger.log(
-    			ModuleID.UI, 
-    			LogLevel.INFO, 
-    			"Deletion cannot be performed: Not in Cursor Mode"
-    		);
-    		return;
+	    	// Get the logger
+	    	ILogger logger = LoggerFactory.getLoggerInstance();
+	    	
+	    	// If current mode is not the Cursor Mode, return
+	    	if(currentMode != CurrentMode.CURSOR_MODE) {
+	    		logger.log(
+	    			ModuleID.UI, 
+	    			LogLevel.INFO, 
+	    			"Deletion cannot be performed: Not in Cursor Mode"
+	    		);
+	    		return;
+	    	}
+	    	
+	    	// If no object is selected, return
+	    	if(!isObjectSelected) {
+	    		logger.log(
+	    			ModuleID.UI, 
+	    			LogLevel.INFO, 
+	    			"Deletion cannot be performed: No object Selected"
+	    		);
+	    		return;
+	    	}
+	    	
+	    	logger.log(
+				ModuleID.UI, 
+				LogLevel.INFO, 
+				"Performing Deletion"
+			);
+	    	
+	    	// Perform Delete Operation
+	    	ProcessingFactory
+	    		.getProcessor()
+	    		.delete();
+	    	
+	    	logger.log(
+				ModuleID.UI, 
+				LogLevel.INFO, 
+				"Deletion Performed"
+			);
+	    	
+	    	// Unselect currently selected object
+	    	updateSelectedPixels(null);
     	}
-    	
-    	// If no object is selected, return
-    	if(!isObjectSelected) {
-    		logger.log(
-    			ModuleID.UI, 
-    			LogLevel.INFO, 
-    			"Deletion cannot be performed: No object Selected"
-    		);
-    		return;
-    	}
-    	
-    	logger.log(
-			ModuleID.UI, 
-			LogLevel.INFO, 
-			"Performing Deletion"
-		);
-    	
-    	// Perform Delete Operation
-    	ProcessingFactory
-    		.getProcessor()
-    		.delete();
-    	
-    	logger.log(
-			ModuleID.UI, 
-			LogLevel.INFO, 
-			"Deletion Performed"
-		);
-    	
-    	// Unselect currently selected object
-    	updateSelectedPixels(null);
     }
     
     /**
@@ -419,64 +430,67 @@ public class CanvasController implements Initializable {
     @FXML
     void rotateObject(ActionEvent rotateButtonClickEvent) {
     	
-    	// Get the logger
-    	ILogger logger = LoggerFactory.getLoggerInstance();
+    	synchronized(this) {
     	
-    	// If Current Mode is not Cursor Mode, then return
-    	if(currentMode != CurrentMode.CURSOR_MODE) {
-    		logger.log(
-    			ModuleID.UI, 
-    			LogLevel.INFO, 
-    			"Rotate cannot be performed: Not in Cursor Mode"
-    		);
-    		return;
+	    	// Get the logger
+	    	ILogger logger = LoggerFactory.getLoggerInstance();
+	    	
+	    	// If Current Mode is not Cursor Mode, then return
+	    	if(currentMode != CurrentMode.CURSOR_MODE) {
+	    		logger.log(
+	    			ModuleID.UI, 
+	    			LogLevel.INFO, 
+	    			"Rotate cannot be performed: Not in Cursor Mode"
+	    		);
+	    		return;
+	    	}
+	    	
+	    	// If no object is selected, return
+	    	if(!isObjectSelected) {
+	    		logger.log(
+	    			ModuleID.UI, 
+	    			LogLevel.INFO, 
+	    			"Deletion cannot be performed: No object Selected"
+	    		);
+	    		return;
+	    	}
+	    	
+	    	// Chosen Angle String
+	    	String chosenAngleString = rotateButton.getValue();
+	    	
+	    	// Chosen Angle as a double value (to be filled)
+	    	double angleCCW;
+	    	
+	    	// Get angle from String
+	    	if(chosenAngleString == "90")
+	    		angleCCW = 90;
+	    	
+	    	else if(chosenAngleString == "180")
+	    		angleCCW = 180;
+	    	
+	    	else
+	    		angleCCW = 270;
+	    	
+	    	logger.log(
+				ModuleID.UI, 
+				LogLevel.INFO, 
+				"Performing Rotation with Chosen Angle: " + angleCCW
+			);
+	    	
+	    	// Perform rotation using the selected angle
+			ProcessingFactory
+				.getProcessor()
+				.rotate(new Angle(angleCCW));	
+			
+			logger.log(
+				ModuleID.UI, 
+				LogLevel.INFO, 
+				"Rotation Performed: " + angleCCW
+			);
+			
+			// Unselect currently selected object
+	    	updateSelectedPixels(null);
     	}
-    	
-    	// If no object is selected, return
-    	if(!isObjectSelected) {
-    		logger.log(
-    			ModuleID.UI, 
-    			LogLevel.INFO, 
-    			"Deletion cannot be performed: No object Selected"
-    		);
-    		return;
-    	}
-    	
-    	// Chosen Angle String
-    	String chosenAngleString = rotateButton.getValue();
-    	
-    	// Chosen Angle as a double value (to be filled)
-    	double angleCCW;
-    	
-    	// Get angle from String
-    	if(chosenAngleString == "90")
-    		angleCCW = 90;
-    	
-    	else if(chosenAngleString == "180")
-    		angleCCW = 180;
-    	
-    	else
-    		angleCCW = 270;
-    	
-    	logger.log(
-			ModuleID.UI, 
-			LogLevel.INFO, 
-			"Performing Rotation with Chosen Angle: " + angleCCW
-		);
-    	
-    	// Perform rotation using the selected angle
-		ProcessingFactory
-			.getProcessor()
-			.rotate(new Angle(angleCCW));	
-		
-		logger.log(
-			ModuleID.UI, 
-			LogLevel.INFO, 
-			"Rotation Performed: " + angleCCW
-		);
-		
-		// Unselect currently selected object
-    	updateSelectedPixels(null);
     }
     
     /** Selected Object's pixels would be made into this color */
@@ -491,65 +505,71 @@ public class CanvasController implements Initializable {
     public void updateSelectedPixels(
     	ArrayList<Pixel> selectedPixels
     ) {
-    	// Update previous selected pixels to their original value
-    	updatePrevSelectedPixels();
+    	synchronized(this) {
     	
-    	// If no pixels are selected currently, then set the
-    	// members accordingly
-    	if(selectedPixels == null || selectedPixels.size() == 0) {
-    		isObjectSelected = false;
-    		selPrevPixels = null;
-    	}
-    	else { // Else update selected prev pixel values to current
-    		   // and write highlighted object pixels to canvas
-    		
-    		isObjectSelected = true;
-    		selPrevPixels = new ArrayList<Pixel>(selectedPixels);
-    		
-    		// Highlight currently selected pixels 
-    		for(Pixel pixel : selectedPixels) {
-    			Position position = pixel.position;
-    			canvas
-    				.getGraphicsContext2D()
-    				.getPixelWriter()
-    				.setColor(
-    					position.c, 
-    					position.r,
-    					HIGHLIGHT_COLOR
-    				);
-    		}
+	    	// Update previous selected pixels to their original value
+	    	updatePrevSelectedPixels();
+	    	
+	    	// If no pixels are selected currently, then set the
+	    	// members accordingly
+	    	if(selectedPixels == null || selectedPixels.size() == 0) {
+	    		isObjectSelected = false;
+	    		selPrevPixels = null;
+	    	}
+	    	else { // Else update selected prev pixel values to current
+	    		   // and write highlighted object pixels to canvas
+	    		
+	    		isObjectSelected = true;
+	    		selPrevPixels = new ArrayList<Pixel>(selectedPixels);
+	    		
+	    		// Highlight currently selected pixels 
+	    		for(Pixel pixel : selectedPixels) {
+	    			Position position = pixel.position;
+	    			canvas
+	    				.getGraphicsContext2D()
+	    				.getPixelWriter()
+	    				.setColor(
+	    					position.c, 
+	    					position.r,
+	    					HIGHLIGHT_COLOR
+	    				);
+	    		}
+	    	}
     	}
     }
     
     /** Replaces Previous Selected Pixels with their original values */
     public void updatePrevSelectedPixels() {
     	
-    	// If no object was selected, return
-    	if(!isObjectSelected)
-    		return;
-    	
-    	// Set previous selected pixels to their original value
-    	for(Pixel pixel : selPrevPixels) {
+    	synchronized(this) {
     		
-    		// Convert to double value between 0.0 and 1.0
-    		Color color = Color.color(
-    			(double) pixel.intensity.r / 255.0,
-    			(double) pixel.intensity.g / 255.0,
-    			(double) pixel.intensity.b / 255.0
-    		);
-    		
-    		// Get position from pixel
-    		Position position = pixel.position;
-    		
-    		// Update the canvas
-			canvas
-				.getGraphicsContext2D()
-				.getPixelWriter()
-				.setColor(
-					position.c, 
-					position.r,
-					color
-				);
+	    	// If no object was selected, return
+	    	if(!isObjectSelected)
+	    		return;
+	    	
+	    	// Set previous selected pixels to their original value
+	    	for(Pixel pixel : selPrevPixels) {
+	    		
+	    		// Convert to double value between 0.0 and 1.0
+	    		Color color = Color.color(
+	    			(double) pixel.intensity.r / 255.0,
+	    			(double) pixel.intensity.g / 255.0,
+	    			(double) pixel.intensity.b / 255.0
+	    		);
+	    		
+	    		// Get position from pixel
+	    		Position position = pixel.position;
+	    		
+	    		// Update the canvas
+				canvas
+					.getGraphicsContext2D()
+					.getPixelWriter()
+					.setColor(
+						position.c, 
+						position.r,
+						color
+					);
+	    	}
     	}
     }
 
