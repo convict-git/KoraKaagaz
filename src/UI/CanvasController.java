@@ -252,7 +252,6 @@ public class CanvasController implements Initializable {
 	public TextArea getsendMessage() {
 		synchronized(this) {
 			return this.sendMessage;
-		return this.sendMessage;
 		}
 	}
 	
@@ -262,7 +261,6 @@ public class CanvasController implements Initializable {
 	public VBox getchatDisplayBox() {
 		synchronized(this) {
 			return this.chatDisplayBox;
-		return this.chatDisplayBox;
 		}
 	}
 	
@@ -272,7 +270,6 @@ public class CanvasController implements Initializable {
 	public ScrollPane getchatScroll() {
 		synchronized(this) {
 			return this.chatScroll;
-		return this.chatScroll;
 		}
 	}
 	
@@ -393,9 +390,10 @@ public class CanvasController implements Initializable {
 	@FXML
 	void mouseReleased(MouseEvent ev) {
 		synchronized(this) {
-					gc = canvasF.getGraphicsContext2D();
-					setEndPoint(ev.getX(), ev.getY());
-					color = colorpicker.getValue();
+			gc = canvasF.getGraphicsContext2D();
+			setEndPoint(ev.getX(), ev.getY());
+			color = colorpicker.getValue();
+			
 			if(Shapes.rectselected) {
 				Shapes.drawPerfectRect(color,gc,x1, y1, x2, y2);
 			}
@@ -430,10 +428,10 @@ public class CanvasController implements Initializable {
 	void mouseDragged(MouseEvent ev) {
 		synchronized(this) {
 
-					gc = canvasB.getGraphicsContext2D();
-					double x3=ev.getX();
-					double y3=ev.getY();
-					color = colorpicker.getValue();
+			gc = canvasB.getGraphicsContext2D();
+			double x3=ev.getX();
+			double y3=ev.getY();
+			color = colorpicker.getValue();
 
 			if(Shapes.rectselected) {
 				Shapes.drawPerfectRectEffect(canvasB,color,gc,x1, y1, x3, y3);
@@ -489,8 +487,8 @@ public class CanvasController implements Initializable {
 		synchronized(this) {
 			gc = canvasF.getGraphicsContext2D();
 			for (Pixel pix:pixels) {
-	    		Intensity i= pix.intensity;
-	    		Position p = pix.position;
+				Intensity i= pix.intensity;
+				Position p = pix.position;
 				gc.setStroke(Color.rgb(i.r, i.g, i.b));
 				gc.strokeRect(p.r,p.c,2,2);
 			}
@@ -508,12 +506,12 @@ public class CanvasController implements Initializable {
      */
     @FXML
    	public void cursorClicked(ActionEvent cursorButtonClick) {
-    	synchronized(this) {
-		currentMode = CurrentMode.CURSOR_MODE;
-		canvas.setCursor(Cursor.CROSSHAIR);
-    	}
+		synchronized(this) {
+			currentMode = CurrentMode.CURSOR_MODE;
+			canvas.setCursor(Cursor.CROSSHAIR);
+		}
    	}
-    
+   
     /**
      * Choose a Color from the Color Picker Object, if in cursor mode,
      * and an object was selected, then updates the color of the object
