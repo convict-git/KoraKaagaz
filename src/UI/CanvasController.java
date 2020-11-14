@@ -155,14 +155,14 @@ public class CanvasController implements Initializable {
 		synchronized(this) {
 		/** This function notifies processing and content module that the user is exiting and then closes the canvas */
 		infrastructure.content.IContentCommunicator communicator = ContentFactory.getContentCommunicator();
-	    communicator.notifyUserExit();
-	 	logger.log(ModuleID.UI, LogLevel.SUCCESS, "Notified content module about exiting of user");
-	 	/**Notifying to Stop board session */
-	    Processor processor = ProcessingFactory.getProcessor() ;
-	    IUser user = processor;  
-	    user.stopBoardSession();
-	    logger.log(ModuleID.UI, LogLevel.SUCCESS, "Notified Processing module to stop board session.");
-	    ((Stage)(((Button)e.getSource()).getScene().getWindow())).close();  
+		communicator.notifyUserExit();
+		logger.log(ModuleID.UI, LogLevel.SUCCESS, "Notified content module about exiting of user");
+		/**Notifying to Stop board session */
+		Processor processor = ProcessingFactory.getProcessor() ;
+		IUser user = processor;  
+		user.stopBoardSession();
+		logger.log(ModuleID.UI, LogLevel.SUCCESS, "Notified Processing module to stop board session.");
+		((Stage)(((Button)e.getSource()).getScene().getWindow())).close();  
 		}
 	}
 	
