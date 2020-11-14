@@ -101,6 +101,15 @@ public class CanvasController implements Initializable {
     /** Current Mode of the UI */
     private CurrentMode currentMode = CurrentMode.NO_MODE;
     
+    /** Is an Object Selected ? */
+    private boolean isObjectSelected = false;
+    
+    /**
+     * Selected Pixel's Previous Pixel Values, If no object is
+     * selected, then this would be null
+     */
+    private ArrayList<Pixel> selPrevPixels = null;
+    
     /** Dimension of the UI Canvas */
     private final Dimension dimension = new Dimension(720, 1200);
 
@@ -191,10 +200,10 @@ public class CanvasController implements Initializable {
     }
     
     /**
-     * Choose a Color from the Color Picker Object
+     * Choose a Color from the Color Picker Object, if in cursor mode,
+     * and an object was selected, then updates the color of the object
      * 
-     * @param actionEvent Event representing the picking of
-     * a color
+     * @param actionEvent Event representing the picking of a color
      */
     @FXML
     void chooseColor(ActionEvent actionEvent) {
@@ -207,7 +216,11 @@ public class CanvasController implements Initializable {
     		
     	// If in Cursor Mode, then perform the color
     	// change operation
-    	if(currentMode == CurrentMode.CURSOR_MODE) {
+    	if(
+			currentMode == CurrentMode.CURSOR_MODE
+			&&
+			isObjectSelected
+    	) {
     		
     		logger.log(
 				ModuleID.UI, 
@@ -248,18 +261,18 @@ public class CanvasController implements Initializable {
 				LogLevel.INFO, 
 				"Color Change Performed"
 			);
+    		
+    		// Unselect currently selected object
+        	updateSelectedPixels(null);
     	}
-    	else // Cursor Mode not selected 
+    	else // Not in cursor Mode or object not selected
     		logger.log(
 				ModuleID.UI, 
 				LogLevel.INFO, 
-				"Not in Cursor Mode"
+				"Not in Cursor Mode or Object not selected"
 			);
     }
-    
-    /** Selected Object's pixels would be made into this color */
-    private final Intensity HIGHLIGHT_COLOR = new Intensity(0, 255, 255);
-    
+
     /** 
      * This is used for constructing a small square around the selected point
      * since it is possible that the user may make slight errors in choosing
@@ -325,7 +338,7 @@ public class CanvasController implements Initializable {
 		);
     	
     	// Get Selected Object Pixels from the Processor
-    	ArrayList<Position> objectPixels = 
+    	ArrayList<Pixel> objectPixels = 
     		ProcessingFactory
 				.getProcessor()
 				.select(selPosition);
@@ -336,9 +349,8 @@ public class CanvasController implements Initializable {
 			"Got Pixels from Processing Module"
 		);
     	
-    	// No Object was selected by the processor
-    	if(objectPixels.size() == 0)
-    		return;
+    	// Update Selected Pixels
+    	updateSelectedPixels(objectPixels);
     }
     
     /**
@@ -365,6 +377,16 @@ public class CanvasController implements Initializable {
     		return;
     	}
     	
+    	// If no object is selected, return
+    	if(!isObjectSelected) {
+    		logger.log(
+    			ModuleID.UI, 
+    			LogLevel.INFO, 
+    			"Deletion cannot be performed: No object Selected"
+    		);
+    		return;
+    	}
+    	
     	logger.log(
 			ModuleID.UI, 
 			LogLevel.INFO, 
@@ -381,6 +403,9 @@ public class CanvasController implements Initializable {
 			LogLevel.INFO, 
 			"Deletion Performed"
 		);
+    	
+    	// Unselect currently selected object
+    	updateSelectedPixels(null);
     }
     
     /**
@@ -403,6 +428,16 @@ public class CanvasController implements Initializable {
     			ModuleID.UI, 
     			LogLevel.INFO, 
     			"Rotate cannot be performed: Not in Cursor Mode"
+    		);
+    		return;
+    	}
+    	
+    	// If no object is selected, return
+    	if(!isObjectSelected) {
+    		logger.log(
+    			ModuleID.UI, 
+    			LogLevel.INFO, 
+    			"Deletion cannot be performed: No object Selected"
     		);
     		return;
     	}
@@ -439,6 +474,83 @@ public class CanvasController implements Initializable {
 			LogLevel.INFO, 
 			"Rotation Performed: " + angleCCW
 		);
+		
+		// Unselect currently selected object
+    	updateSelectedPixels(null);
+    }
+    
+    /** Selected Object's pixels would be made into this color */
+    private final Color HIGHLIGHT_COLOR = Color.color(0.0, 1.0, 1.0);
+    
+    /**
+     * Updates the Selected Pixels by highlighting them, and replaces
+     * previous selected (highlighted) pixels with their original value
+     * 
+     * @param selectedPixels The Selected Pixels
+     */
+    public void updateSelectedPixels(
+    	ArrayList<Pixel> selectedPixels
+    ) {
+    	// Update previous selected pixels to their original value
+    	updatePrevSelectedPixels();
+    	
+    	// If no pixels are selected currently, then set the
+    	// members accordingly
+    	if(selectedPixels == null || selectedPixels.size() == 0) {
+    		isObjectSelected = false;
+    		selPrevPixels = null;
+    	}
+    	else { // Else update selected prev pixel values to current
+    		   // and write highlighted object pixels to canvas
+    		
+    		isObjectSelected = true;
+    		selPrevPixels = new ArrayList<Pixel>(selectedPixels);
+    		
+    		// Highlight currently selected pixels 
+    		for(Pixel pixel : selectedPixels) {
+    			Position position = pixel.position;
+    			canvas
+    				.getGraphicsContext2D()
+    				.getPixelWriter()
+    				.setColor(
+    					position.c, 
+    					position.r,
+    					HIGHLIGHT_COLOR
+    				);
+    		}
+    	}
+    }
+    
+    /** Replaces Previous Selected Pixels with their original values */
+    public void updatePrevSelectedPixels() {
+    	
+    	// If no object was selected, return
+    	if(!isObjectSelected)
+    		return;
+    	
+    	// Set previous selected pixels to their original value
+    	for(Pixel pixel : selPrevPixels) {
+    		
+    		// Convert to double value between 0.0 and 1.0
+    		Color color = Color.color(
+    			(double) pixel.intensity.r / 255.0,
+    			(double) pixel.intensity.g / 255.0,
+    			(double) pixel.intensity.b / 255.0
+    		);
+    		
+    		// Get position from pixel
+    		Position position = pixel.position;
+    		
+    		// Update the canvas
+			canvas
+				.getGraphicsContext2D()
+				.getPixelWriter()
+				.setColor(
+					position.c, 
+					position.r,
+					color
+				);
+    	}
     }
 
     /**
