@@ -11,12 +11,12 @@
  * Import all the necessary javafx packages, if required.
  ***/
 package UI;
-
+import infrastructure.validation.logger.*;
+import infrastructure.content.*;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
-
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -25,6 +25,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.stage.Stage;
+import processing.IUser;
+import processing.ProcessingFactory;
+import processing.Processor;
 import processing.utility.Intensity;
 import processing.utility.Pixel;
 import processing.utility.Position;
@@ -42,18 +45,17 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
-
 public class CanvasController implements Initializable {
-	
 	/***
 	 * Declare and use all the javafx components and events here.
 	 * sendButton is the id of 'SEND' button in Chatbox
 	 * sendMessage is the id of text entered in the text area of Chatbox
 	 * chatDisplayBox is the id of the component which displays the Chatbox
 	 ***/
+	static ILogger logger = LoggerFactory.getLoggerInstance();
 	/**
-	    * ComboBox below has a list of values for dropdown in brushSize.
-	    */
+	 * ComboBox below has a list of values for dropdown in brushSize.
+	 */
 	@FXML
 	public ComboBox<Integer> brushSize;
 	ObservableList<Integer> list = FXCollections.observableArrayList(2,4,6,8);
@@ -67,62 +69,96 @@ public class CanvasController implements Initializable {
 	private Button undo;
 	@FXML
 	private Button redo;
-	
+	@FXML
+	private Button reset;
 	@FXML
 	private Button sendButton;
-	
 	@FXML
 	private TextArea sendMessage;
-	
 	@FXML
 	private VBox chatDisplayBox;
-	
 	@FXML
 	private ScrollPane chatScroll;
-	
     @FXML
     private Button line,rect,square,triangle,circle,oval;
-    
 	@FXML
 	public static Canvas canvasF;
 	@FXML
 	private Canvas canvasB;
-	
     @FXML
     private ColorPicker colorpicker;
-	
     static GraphicsContext gc;
     double x1,y1,x2,y2,x3,y3;
     Color color;
+    
     /***
-	 * Javafx event handling the changes after clicking the brush,cursor, eraser ,undo and redo buttons.
-	 * function for handling brushSize dropdown
+	 * Function called when eraser is clicked.
 	 ***/
     @FXML
 	public void eraserClicked(ActionEvent e ) {
     	Shapes.defaultSelected();
 	}
+    /***
+	 * Function called when cursor is clicked.
+	 ***/
     @FXML
    	public void cursorClicked(ActionEvent e ) {
     	
    	}
+    /***
+	 * Function called when undo button is clicked.
+	 ***/
     @FXML
    	public void undoClicked(ActionEvent e ) {
    		
    	}
+    /***
+	 * Function called when redo button is clicked.
+	 ***/
     @FXML
    	public void redoClicked(ActionEvent e ) {
    		
    	}
-    
+    /***
+	 * Function called when reset button is clicked.
+	 ***/
+    @FXML
+   	public void resetClicked(ActionEvent e ) {
+   		
+   	}
+    /***
+	 * Function called when brush is clicked.
+	 ***/
     @FXML
    	public void brushClicked(ActionEvent e ) {
     	Shapes.defaultSelected();
    	}
+    /***
+	 * Function called when brush size is changed.
+	 ***/
     @FXML
    	public void brushSizeChanged(ActionEvent e ) {
    		
    	}
+    /***
+	 * Function called when leave session button is clicked.
+	 ***/
+    @FXML
+   	public void leaveSession(ActionEvent e ) {
+    	synchronized(this) {
+    	/** This function notifies processing and content module that the user is exiting and then closes the canvas */
+    	infrastructure.content.IContentCommunicator communicator = ContentFactory.getContentCommunicator();
+        communicator.notifyUserExit();
+     	logger.log(ModuleID.UI, LogLevel.SUCCESS, "Notified content module about exiting of user");
+     	/**Notifying to Stop board session */
+        Processor processor = ProcessingFactory.getProcessor() ;
+        IUser user = processor;  
+        user.stopBoardSession();
+        logger.log(ModuleID.UI, LogLevel.SUCCESS, "Notified Processing module to stop board session.");
+        ((Stage)(((Button)e.getSource()).getScene().getWindow())).close();  
+    	}
+   	}
+    
     /***
 	 * Function to get the send button of the chatbox 
 	 ***/
@@ -156,12 +192,9 @@ public class CanvasController implements Initializable {
 		}
 	}
 	
-
-	
 	/***
 	 * Javafx event handling the changes after clicking the 'SEND' button in the ChatBox.
 	 ***/
-	
 	@FXML
 	public void sendButtonClicked(ActionEvent e ) {
 		String message = sendMessage.getText();
@@ -281,33 +314,7 @@ public class CanvasController implements Initializable {
 	 ***/
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		
-		brushSize.setItems(list);
-		// TODO Auto-generated method stub
-		
+		brushSize.setItems(list);		
 	}
-	
-	/***
-	 * This is the method to load the javafx file and display it.
-	 ***/
-/*	@Override
-	public void start(Stage primaryStage){
-		try {
-			
-				Parent root = FXMLLoader.load(getClass().getResource("canvas.fxml"));
-				Scene scene = new Scene(root);
-				primaryStage.setTitle("Whiteboard Application"); //setting the title of the application
-				primaryStage.setScene(scene);
-				primaryStage.show(); //displaying the user page to draw on the canvas and message using Chatbox
-			
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
-		
-	}          */
-		
-
-
-
 }
 

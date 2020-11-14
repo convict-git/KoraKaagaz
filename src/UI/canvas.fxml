@@ -91,6 +91,11 @@
                <children>
                   <HBox alignment="CENTER" prefHeight="67.0" prefWidth="72.0">
                      <children>
+                        <Button fx:id="reset" mnemonicParsing="false" onAction="#resetClicked" prefHeight="26.0" prefWidth="74.0" text="reset" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" prefHeight="67.0" prefWidth="72.0">
+                     <children>
                         <Button fx:id="undo" mnemonicParsing="false" onAction="#undoClicked" prefHeight="26.0" prefWidth="73.0" text="undo" />
                      </children>
                   </HBox>
@@ -153,6 +158,7 @@
                   </Button>
                   <ColorPicker fx:id="colorpicker" />
                         <Button fx:id="cursor" mnemonicParsing="false" onAction="#cursorClicked" text="Cursor" />
+                        <Button fx:id="leaveSession" mnemonicParsing="false" onAction="#leaveSession" text="Leave Session" />
                      </children>
                      <padding>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
