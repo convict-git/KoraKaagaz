@@ -212,32 +212,11 @@ public class CanvasController implements Initializable {
 	    		Brush.sizeSelected =true;
 	    	}
 	}
-	   
-	@FXML
-	public void brushSizeChanged(ActionEvent e ) {
-		
-	}
-	
+
 	/***
 	 * Function called when leave session button is clicked.
 	 ***/
 	@FXML
-   	public void leaveSession(ActionEvent e ) {
-    		synchronized(this) {
-		    	/** This function notifies processing and content module that the user is exiting and then closes the canvas */
-		    	infrastructure.content.IContentCommunicator communicator = ContentFactory.getContentCommunicator();
-				communicator.notifyUserExit();
-		    	logger.log(ModuleID.UI, LogLevel.SUCCESS, "Notified content module about exiting of user");
-		     	
-				/**Notifying to Stop board session */
-				Processor processor = ProcessingFactory.getProcessor() ;
-				IUser user = processor;  
-				user.stopBoardSession();
-				logger.log(ModuleID.UI, LogLevel.SUCCESS, "Notified Processing module to stop board session.");
-				((Stage)(((Button)e.getSource()).getScene().getWindow())).close();  
-	    	}
-   	}
-
 	public void leaveSession(ActionEvent e ) {
 		synchronized(this) {
 			/** This function notifies processing and content module that the user is exiting and then closes the canvas */
@@ -339,10 +318,8 @@ public class CanvasController implements Initializable {
 	void circleSelected(ActionEvent event) {
 		synchronized(this) {
 			Brush.defaultSelected();
-	    		Shapes.defaultSelected(); 
-	    		Shapes.circleselected = true;
-	    	Shapes.defaultSelected(); 
-	    	Shapes.circleselected = true;
+			Shapes.defaultSelected(); 
+			Shapes.circleselected = true;
 		}
 	}
 	
@@ -354,10 +331,8 @@ public class CanvasController implements Initializable {
 	void lineSelected(ActionEvent event) {
 		synchronized(this) {
 			Brush.defaultSelected();
-	    		Shapes.defaultSelected(); 
-	    		Shapes.lineselected = true;
-	    	Shapes.defaultSelected(); 
-	    	Shapes.lineselected = true;
+			Shapes.defaultSelected(); 
+			Shapes.lineselected = true;
 		}
 	}
 	
@@ -369,10 +344,8 @@ public class CanvasController implements Initializable {
 	void rectSelected(ActionEvent event) {
 		synchronized(this) {
 			Brush.defaultSelected();
-	    		Shapes.defaultSelected(); 
-	    		Shapes.rectselected = true;
-	    	Shapes.defaultSelected(); 
-	    	Shapes.rectselected = true;
+			Shapes.defaultSelected(); 
+			Shapes.rectselected = true;
 		}
 	}
 	
@@ -388,6 +361,7 @@ public class CanvasController implements Initializable {
 			Shapes.squareselected = true;
 		}
 	}
+
 	/***
 	 * This method will be called when triangle is selected
 	 * @param event
@@ -419,9 +393,9 @@ public class CanvasController implements Initializable {
 	@FXML
 	void mouseReleased(MouseEvent ev) {
 		synchronized(this) {
-	    	gc = canvasF.getGraphicsContext2D();
-	    	setEndPoint(ev.getX(), ev.getY());
-	    	color = colorpicker.getValue();
+					gc = canvasF.getGraphicsContext2D();
+					setEndPoint(ev.getX(), ev.getY());
+					color = colorpicker.getValue();
 			if(Shapes.rectselected) {
 				Shapes.drawPerfectRect(color,gc,x1, y1, x2, y2);
 			}
@@ -439,11 +413,11 @@ public class CanvasController implements Initializable {
 			}
 			if(Brush.brushSelected) {
 				Shapes.defaultSelected(); 
-				Brush.drawBrush(color,gcF,x1, y1, x2, y2);
+				Brush.drawBrush(color,gc,x1, y1, x2, y2);
 			}
 			if(Brush.erasorSelected) {
 				Shapes.defaultSelected(); 
-				Brush.drawEraser(color,gcF,x1, y1, x2, y2);
+				Brush.drawEraser(color,gc,x1, y1, x2, y2);
 			}
 		}
 	}
@@ -456,10 +430,10 @@ public class CanvasController implements Initializable {
 	void mouseDragged(MouseEvent ev) {
 		synchronized(this) {
 
-	    	gc = canvasB.getGraphicsContext2D();
-	    	double x3=ev.getX();
-	    	double y3=ev.getY();
-	    	color = colorpicker.getValue();
+					gc = canvasB.getGraphicsContext2D();
+					double x3=ev.getX();
+					double y3=ev.getY();
+					color = colorpicker.getValue();
 
 			if(Shapes.rectselected) {
 				Shapes.drawPerfectRectEffect(canvasB,color,gc,x1, y1, x3, y3);
@@ -476,7 +450,7 @@ public class CanvasController implements Initializable {
 			if(Shapes.squareselected) {
 				Shapes.drawPerfectSquareEffect(canvasB,color,gc,x1, y1, x3, y3);
 			}
-			s
+
 			if(Brush.brushSelected) {
 				ILogger logger = LoggerFactory.getLoggerInstance();
 					
@@ -488,7 +462,7 @@ public class CanvasController implements Initializable {
 				}
 					
 				Shapes.defaultSelected(); 
-				Brush.drawBrushEffect(canvasB,color, gcF, x1, y1, x3, y3,size);
+				Brush.drawBrushEffect(canvasB,color, gc, x1, y1, x3, y3,size);
 			}
 			if(Brush.erasorSelected) {
 				ILogger logger = LoggerFactory.getLoggerInstance();
@@ -501,7 +475,7 @@ public class CanvasController implements Initializable {
 				}
 					
 				Shapes.defaultSelected(); 
-				Brush.drawEraserEffect(canvasB,color, gcF, x1, y1, x3, y3,size);
+				Brush.drawEraserEffect(canvasB,color, gc, x1, y1, x3, y3,size);
 			}
 
 		}
@@ -535,8 +509,8 @@ public class CanvasController implements Initializable {
     @FXML
    	public void cursorClicked(ActionEvent cursorButtonClick) {
     	synchronized(this) {
-	   		currentMode = CurrentMode.CURSOR_MODE;
-	   		canvas.setCursor(Cursor.CROSSHAIR);
+		currentMode = CurrentMode.CURSOR_MODE;
+		canvas.setCursor(Cursor.CROSSHAIR);
     	}
    	}
     
@@ -841,9 +815,7 @@ public class CanvasController implements Initializable {
      * 
      * @param selectedPixels The Selected Pixels
      */
-    public void updateSelectedPixels(
-    	ArrayList<Pixel> selectedPixels
-    ) {
+    public void updateSelectedPixels(ArrayList<Pixel> selectedPixels) {
     	synchronized(this) {
     	
 	    	// Update previous selected pixels to their original value
