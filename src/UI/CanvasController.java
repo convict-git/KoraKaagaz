@@ -299,7 +299,6 @@ public class CanvasController implements Initializable {
 				primaryStage.setTitle("Whiteboard Application"); //setting the title of the application
 				primaryStage.setScene(scene);
 				primaryStage.show(); //displaying the user page to draw on the canvas and message using Chatbox
-
 			
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -308,4 +307,7 @@ public class CanvasController implements Initializable {
 	}          */
 		
 
+
+
 }
+
