@@ -1,5 +1,5 @@
 /***
- * @Author	 : Jaya Madhav, Sajith Kumar,Shiva Dhanush,Ahmed Z D
+ * @Author	 : Jaya Madhav, Sajith Kumar,Shiva Dhanush,Anish Jain,Ahmed Z D
  * File name : CanvasController
  * File Type : Java
  * 
@@ -18,6 +18,11 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+
+import infrastructure.validation.logger.ILogger;
+import infrastructure.validation.logger.LogLevel;
+import infrastructure.validation.logger.LoggerFactory;
+import infrastructure.validation.logger.ModuleID;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -32,6 +37,8 @@ import processing.Processor;
 import processing.utility.Intensity;
 import processing.utility.Pixel;
 import processing.utility.Position;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.Cursor;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -46,13 +53,15 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
 public class CanvasController implements Initializable {
-	
-	/**
+	/***
 	 * Declare and use all the javafx components and events here.
 	 * sendButton is the id of 'SEND' button in Chatbox
 	 * sendMessage is the id of text entered in the text area of Chatbox
 	 * chatDisplayBox is the id of the component which displays the Chatbox
-	 */
+	 ***/
+
+	int size;
+
 	public static ILogger logger = LoggerFactory.getLoggerInstance();
 	
 	/**
@@ -145,7 +154,11 @@ public class CanvasController implements Initializable {
 	 ***/
 	@FXML
 	public void eraserClicked(ActionEvent e ) {
-		Shapes.defaultSelected();
+	    	synchronized(this) {
+			Shapes.defaultSelected();
+	    		Brush.defaultSelected();
+	    		Brush.erasorSelected =true;
+	    	}
 	}
 	
 	/***
@@ -168,9 +181,17 @@ public class CanvasController implements Initializable {
 	 * Function called when reset button is clicked.
 	 ***/
 	@FXML
-	public void resetClicked(ActionEvent e ) {
-		
-	}
+   	public void brushClicked(ActionEvent e ) {
+	    	synchronized(this) {
+	    		Shapes.defaultSelected();
+	    		Brush.defaultSelected();
+	    		Brush.brushSelected =true;
+	    	}
+   	}
+
+   	public void resetClicked(ActionEvent e ) {
+   		
+   	}
 	
 	/***
 	 * Function called when brush is clicked.
@@ -183,6 +204,15 @@ public class CanvasController implements Initializable {
 	/***
 	 * Function called when brush size is changed.
 	 ***/
+
+	@FXML
+   	public void brushSizeChanged(ActionEvent e ) {
+	    	synchronized(this) {
+	    		size = (int)brushSize.getValue();
+	    		Brush.sizeSelected =true;
+	    	}
+	}
+	   
 	@FXML
 	public void brushSizeChanged(ActionEvent e ) {
 		
@@ -192,18 +222,35 @@ public class CanvasController implements Initializable {
 	 * Function called when leave session button is clicked.
 	 ***/
 	@FXML
+   	public void leaveSession(ActionEvent e ) {
+    		synchronized(this) {
+		    	/** This function notifies processing and content module that the user is exiting and then closes the canvas */
+		    	infrastructure.content.IContentCommunicator communicator = ContentFactory.getContentCommunicator();
+				communicator.notifyUserExit();
+		    	logger.log(ModuleID.UI, LogLevel.SUCCESS, "Notified content module about exiting of user");
+		     	
+				/**Notifying to Stop board session */
+				Processor processor = ProcessingFactory.getProcessor() ;
+				IUser user = processor;  
+				user.stopBoardSession();
+				logger.log(ModuleID.UI, LogLevel.SUCCESS, "Notified Processing module to stop board session.");
+				((Stage)(((Button)e.getSource()).getScene().getWindow())).close();  
+	    	}
+   	}
+
 	public void leaveSession(ActionEvent e ) {
 		synchronized(this) {
-		/** This function notifies processing and content module that the user is exiting and then closes the canvas */
-		infrastructure.content.IContentCommunicator communicator = ContentFactory.getContentCommunicator();
-		communicator.notifyUserExit();
-		logger.log(ModuleID.UI, LogLevel.SUCCESS, "Notified content module about exiting of user");
-		/**Notifying to Stop board session */
-		Processor processor = ProcessingFactory.getProcessor() ;
-		IUser user = processor;  
-		user.stopBoardSession();
-		logger.log(ModuleID.UI, LogLevel.SUCCESS, "Notified Processing module to stop board session.");
-		((Stage)(((Button)e.getSource()).getScene().getWindow())).close();  
+			/** This function notifies processing and content module that the user is exiting and then closes the canvas */
+			infrastructure.content.IContentCommunicator communicator = ContentFactory.getContentCommunicator();
+			communicator.notifyUserExit();
+			logger.log(ModuleID.UI, LogLevel.SUCCESS, "Notified content module about exiting of user");
+
+			/**Notifying to Stop board session */
+			Processor processor = ProcessingFactory.getProcessor() ;
+			IUser user = processor;  
+			user.stopBoardSession();
+			logger.log(ModuleID.UI, LogLevel.SUCCESS, "Notified Processing module to stop board session.");
+			((Stage)(((Button)e.getSource()).getScene().getWindow())).close();  
 		}
 	}
 	
@@ -211,9 +258,13 @@ public class CanvasController implements Initializable {
 	 * Function to get the send button of the chatbox 
 	 ***/
 	public Button getSendButton() {
+		Button button;
+
 		synchronized(this) {
-		return this.sendButton;
+			button = this.sendButton;
 		}
+
+		return button;
 	}
 	
 	/***
@@ -221,6 +272,7 @@ public class CanvasController implements Initializable {
 	 ***/
 	public TextArea getsendMessage() {
 		synchronized(this) {
+			return this.sendMessage;
 		return this.sendMessage;
 		}
 	}
@@ -230,6 +282,7 @@ public class CanvasController implements Initializable {
 	 ***/
 	public VBox getchatDisplayBox() {
 		synchronized(this) {
+			return this.chatDisplayBox;
 		return this.chatDisplayBox;
 		}
 	}
@@ -239,6 +292,7 @@ public class CanvasController implements Initializable {
 	 ***/
 	public ScrollPane getchatScroll() {
 		synchronized(this) {
+			return this.chatScroll;
 		return this.chatScroll;
 		}
 	}
@@ -284,6 +338,9 @@ public class CanvasController implements Initializable {
 	@FXML
 	void circleSelected(ActionEvent event) {
 		synchronized(this) {
+			Brush.defaultSelected();
+	    		Shapes.defaultSelected(); 
+	    		Shapes.circleselected = true;
 	    	Shapes.defaultSelected(); 
 	    	Shapes.circleselected = true;
 		}
@@ -296,6 +353,9 @@ public class CanvasController implements Initializable {
 	@FXML
 	void lineSelected(ActionEvent event) {
 		synchronized(this) {
+			Brush.defaultSelected();
+	    		Shapes.defaultSelected(); 
+	    		Shapes.lineselected = true;
 	    	Shapes.defaultSelected(); 
 	    	Shapes.lineselected = true;
 		}
@@ -308,6 +368,9 @@ public class CanvasController implements Initializable {
 	@FXML
 	void rectSelected(ActionEvent event) {
 		synchronized(this) {
+			Brush.defaultSelected();
+	    		Shapes.defaultSelected(); 
+	    		Shapes.rectselected = true;
 	    	Shapes.defaultSelected(); 
 	    	Shapes.rectselected = true;
 		}
@@ -320,11 +383,11 @@ public class CanvasController implements Initializable {
 	@FXML
 	void squareSelected(ActionEvent event) {
 		synchronized(this) {
-	    	Shapes.defaultSelected(); 
-	    	Shapes.squareselected = true;
+			Brush.defaultSelected();
+			Shapes.defaultSelected(); 
+			Shapes.squareselected = true;
 		}
 	}
-	
 	/***
 	 * This method will be called when triangle is selected
 	 * @param event
@@ -332,8 +395,9 @@ public class CanvasController implements Initializable {
 	@FXML
 	void triangleSelected(ActionEvent event) {
 		synchronized(this) {
-	    	Shapes.defaultSelected(); 
-	    	Shapes.triangleselected = true;
+			Brush.defaultSelected();
+			Shapes.defaultSelected(); 
+			Shapes.triangleselected = true;
 		}
 	}
 	
@@ -373,6 +437,14 @@ public class CanvasController implements Initializable {
 			if(Shapes.squareselected) {
 				Shapes.drawPerfectSquare(color,gc,x1, y1, x2, y2);
 			}
+			if(Brush.brushSelected) {
+				Shapes.defaultSelected(); 
+				Brush.drawBrush(color,gcF,x1, y1, x2, y2);
+			}
+			if(Brush.erasorSelected) {
+				Shapes.defaultSelected(); 
+				Brush.drawEraser(color,gcF,x1, y1, x2, y2);
+			}
 		}
 	}
 	
@@ -383,10 +455,12 @@ public class CanvasController implements Initializable {
 	@FXML
 	void mouseDragged(MouseEvent ev) {
 		synchronized(this) {
+
 	    	gc = canvasB.getGraphicsContext2D();
 	    	double x3=ev.getX();
 	    	double y3=ev.getY();
 	    	color = colorpicker.getValue();
+
 			if(Shapes.rectselected) {
 				Shapes.drawPerfectRectEffect(canvasB,color,gc,x1, y1, x3, y3);
 			}
@@ -402,6 +476,34 @@ public class CanvasController implements Initializable {
 			if(Shapes.squareselected) {
 				Shapes.drawPerfectSquareEffect(canvasB,color,gc,x1, y1, x3, y3);
 			}
+			s
+			if(Brush.brushSelected) {
+				ILogger logger = LoggerFactory.getLoggerInstance();
+					
+				if(Brush.sizeSelected==true) {
+					logger.log(ModuleID.UI,LogLevel.SUCCESS,"Brush is selected");
+				}
+				else {
+					logger.log(ModuleID.UI,LogLevel.INFO,"Select size of the brush");
+				}
+					
+				Shapes.defaultSelected(); 
+				Brush.drawBrushEffect(canvasB,color, gcF, x1, y1, x3, y3,size);
+			}
+			if(Brush.erasorSelected) {
+				ILogger logger = LoggerFactory.getLoggerInstance();
+					
+				if(Brush.sizeSelected==true) {
+					logger.log(ModuleID.UI,LogLevel.SUCCESS,"Eraser is selected");
+				}
+				else {
+					logger.log(ModuleID.UI,LogLevel.INFO,"Select size of the eraser");
+				}
+					
+				Shapes.defaultSelected(); 
+				Brush.drawEraserEffect(canvasB,color, gcF, x1, y1, x3, y3,size);
+			}
+
 		}
 	}
 	
@@ -415,11 +517,13 @@ public class CanvasController implements Initializable {
 			for (Pixel pix:pixels) {
 	    		Intensity i= pix.intensity;
 	    		Position p = pix.position;
-	            gc.setStroke(Color.rgb(i.r, i.g, i.b));
-	            gc.strokeRect(p.r,p.c,2,2);
+				gc.setStroke(Color.rgb(i.r, i.g, i.b));
+				gc.strokeRect(p.r,p.c,2,2);
 			}
 			logger.log(ModuleID.UI, LogLevel.SUCCESS, "Canvas Updated Successfuly");
 		}
+
+		
 	}
     
     /**
