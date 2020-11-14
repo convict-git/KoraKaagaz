@@ -117,7 +117,40 @@ public class CanvasController implements Initializable {
    	public void brushSizeChanged(ActionEvent e ) {
    		
    	}
-    
+    /***
+	 * Function to get the send button of the chatbox 
+	 ***/
+	public Button getSendButton() {
+		synchronized(this) {
+		return this.sendButton;
+		}
+	}
+	/***
+	 * Function to get the text area field of the chatbox
+	 ***/
+	public TextArea getsendMessage() {
+		synchronized(this) {
+		return this.sendMessage;
+		}
+	}
+	/***
+	 * Function to get the chat display box of the chatbox 
+	 ***/
+	public VBox getchatDisplayBox() {
+		synchronized(this) {
+		return this.chatDisplayBox;
+		}
+	}
+	/***
+	 * Function to get the scroll pane of the chatbox 
+	 ***/
+	public ScrollPane getchatScroll() {
+		synchronized(this) {
+		return this.chatScroll;
+		}
+	}
+	
+
 	
 	/***
 	 * Javafx event handling the changes after clicking the 'SEND' button in the ChatBox.
