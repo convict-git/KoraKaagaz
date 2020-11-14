@@ -104,7 +104,7 @@ public class CanvasController implements Initializable {
 	private Button line,rect,square,triangle,circle,oval;
 	
 	@FXML
-	public static Canvas canvasF;
+	private static Canvas canvasF;
 	
 	@FXML
 	private Canvas canvasB;
@@ -505,12 +505,12 @@ public class CanvasController implements Initializable {
      * @param cursorButtonClick
      */
     @FXML
-   	public void cursorClicked(ActionEvent cursorButtonClick) {
+	public void cursorClicked(ActionEvent cursorButtonClick) {
 		synchronized(this) {
 			currentMode = CurrentMode.CURSOR_MODE;
 			canvas.setCursor(Cursor.CROSSHAIR);
 		}
-   	}
+	}
    
     /**
      * Choose a Color from the Color Picker Object, if in cursor mode,
