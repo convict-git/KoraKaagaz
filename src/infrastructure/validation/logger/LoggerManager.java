@@ -1,5 +1,21 @@
 package infrastructure.validation.logger;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.File;
+import java.util.List;
+import java.util.ArrayList;
+
+import javax.xml.stream.events.XMLEvent;
+import javax.xml.stream.XMLEventReader;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.events.Attribute;
+import javax.xml.stream.events.EndElement;
+import javax.xml.stream.events.StartElement;
+import javax.xml.namespace.QName;
+
+
 /**
  * LoggerManager class that will be referenced by other modules,
  * for logging via the LoggerFactory
@@ -13,6 +29,9 @@ package infrastructure.validation.logger;
  */
 public class LoggerManager implements ILogger {
 
+	/** path to config file */
+	private String loggerConfigFilePath = "resources/infrastructure_logger.xml";
+	
 	/** object that holds an instance of FileLogger */
 	private ILogger fileLogger;
 
@@ -33,13 +52,124 @@ public class LoggerManager implements ILogger {
 	
 	protected LoggerManager() {
 		
+		File logConfigFile = new File(loggerConfigFilePath);
+		List<LogLevel> enabledLogLevelsList = null;
+		
+		if(logConfigFile.isFile()) {
+			enabledLogLevelsList = parse(loggerConfigFilePath);
+		}
+		
 		if(allowFileLogging) {
-			fileLogger = new FileLogger();
+			fileLogger = new FileLogger(enabledLogLevelsList);
 		}
 		
 		if(allowConsoleLogging) {
-			consoleLogger = new ConsoleLogger();
+			consoleLogger = new ConsoleLogger(enabledLogLevelsList);
 		}
+	}
+
+	private List<LogLevel> parse(String filePath) {
+		
+		List<LogLevel> enabledLogLevelsList = new ArrayList<LogLevel>();
+		XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
+		
+		boolean isInLoggerOptions = false;
+		boolean isInLogLevels = false;
+		
+		try {
+			
+			XMLEventReader reader = xmlInputFactory.createXMLEventReader(new FileInputStream(filePath));
+			while(reader.hasNext()) {
+				
+				XMLEvent nextEvent = reader.nextEvent();
+				if(nextEvent.isStartElement()) {
+					StartElement startElement = nextEvent.asStartElement();
+					switch(startElement.getName().getLocalPart()) {
+					case "loggerOptions":
+						isInLoggerOptions = true;
+						break;
+					case "loggerOption":
+						
+						if(!isInLoggerOptions) {
+							break;
+						}
+						
+						Attribute loggerTypeFile = startElement.getAttributeByName(new QName("FileLogger"));
+						if(loggerTypeFile != null) {
+							if(nextEvent.asCharacters().getData().equalsIgnoreCase("true")) {
+								allowFileLogging = true;
+							}
+						}
+						
+						Attribute consoleTypeFile = startElement.getAttributeByName(new QName("ConsoleLogger"));
+						if(consoleTypeFile != null) {
+							if(nextEvent.asCharacters().getData().equalsIgnoreCase("true")) {
+								allowConsoleLogging = true;
+							}
+						}
+						break;
+					case "logLevels":
+						isInLogLevels = true;
+						break;
+					case "logLevel":
+						
+						if(!isInLogLevels) {
+							break;
+						}
+						
+						Attribute logTypeError = startElement.getAttributeByName(new QName("ERROR"));
+						if(logTypeError != null) {
+							if(nextEvent.asCharacters().getData().equalsIgnoreCase("true")) {
+								enabledLogLevelsList.add(LogLevel.ERROR);
+							}
+						}
+
+						Attribute logTypeWarning = startElement.getAttributeByName(new QName("WARNING"));
+						if(logTypeWarning != null) {
+							if(nextEvent.asCharacters().getData().equalsIgnoreCase("true")) {
+								enabledLogLevelsList.add(LogLevel.WARNING);
+							}
+						}
+						
+						Attribute logTypeSuccess = startElement.getAttributeByName(new QName("SUCCESS"));
+						if(logTypeSuccess != null) {
+							if(nextEvent.asCharacters().getData().equalsIgnoreCase("true")) {
+								enabledLogLevelsList.add(LogLevel.SUCCESS);
+							}
+						}
+						
+						Attribute logTypeInfo = startElement.getAttributeByName(new QName("INFO"));
+						if(logTypeInfo != null) {
+							if(nextEvent.asCharacters().getData().equalsIgnoreCase("true")) {
+								enabledLogLevelsList.add(LogLevel.INFO);
+							}
+						}
+						break;
+					default:
+						break;
+					}
+				}
+				if(nextEvent.isEndElement()) {
+					EndElement endElement = nextEvent.asEndElement();
+					switch(endElement.getName().getLocalPart()) {
+					case "loggerOptions":
+						isInLoggerOptions = false;
+						break;
+					case "logLevels":
+						isInLogLevels = false;
+						break;
+					default:
+						break;
+					}
+				}
+			}
+		} catch (XMLStreamException xse) {
+			// do nothing and skip to default values
+		} catch (FileNotFoundException fnfe) {
+			// do nothing and skip to default values
+		}
+		
+		return enabledLogLevelsList;
 	}
 
 	@Override

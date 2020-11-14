@@ -1,6 +1,7 @@
 package infrastructure.validation.logger;
 
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.time.LocalDateTime;
 import java.io.Console;
 
@@ -35,18 +36,72 @@ public class ConsoleLogger implements ILogger {
 	// SUCCESS log level with color GREEN
 	public static final String ANSI_GREEN = "\u001B[32m";
 	
+	/** boolean that enables/disables ERROR logs, 
+	 *  defaults to false (no ERROR logs are logged)
+	 */
+	private boolean enableErrorLog = false;
+	
+	/** boolean that enables/disables WARNING logs, 
+	 *  defaults to false (no WARNING logs are logged)
+	 */
+	private boolean enableWarningLog = false;
+
+	/** boolean that enables/disables SUCCESS logs, 
+	 *  defaults to false (no SUCCESS logs are logged)
+	 */
+	private boolean enableSuccessLog = false;
+
+	/** boolean that enables/disables INFO logs, 
+	 *  defaults to false (no INFO logs are logged)
+	 */
+	private boolean enableInfoLog = false;
+
 	/**
 	 *  Creates an object that logs to the console, if enabled and available
 	 */
-	protected ConsoleLogger() {
+	protected ConsoleLogger(List<LogLevel> enabledLogLevelsList) {
 		
 		timeStampFormat = DateTimeFormatter.ofPattern("yyyy:MM:dd HH:mm:ss");
 		
 		console = System.console();
 		
-		if(console == null) {
-			// Houston, we need to disable all the log level filters and have no messages
+		if(null == console) {
+			
+			// no console to print found
+			// disable all the log levels i.e. have no messages logged
+			enableErrorLog = false;
+			enableWarningLog = false;
+			enableSuccessLog = false;
+			enableInfoLog = false;
+		
+		} else if (null == enabledLogLevelsList) {
+		
+			// no info specified
+			// use default value
+			enableErrorLog = false;
+			enableWarningLog = false;
+			enableSuccessLog = false;
+			enableInfoLog = false;
+		
+		} else {
+			
+			// check the List to see which LogLevel enum are sent
+			// for every member of the List, set the corresponding boolean to true i.e. enabled
+			if (enabledLogLevelsList.contains(LogLevel.ERROR)) {
+				enableErrorLog = true;
+			}
+			if (enabledLogLevelsList.contains(LogLevel.WARNING)) {
+				enableWarningLog = true;
+			}
+			if (enabledLogLevelsList.contains(LogLevel.SUCCESS)) {
+				enableSuccessLog = true;
+			}
+			if (enabledLogLevelsList.contains(LogLevel.INFO)) {
+				enableInfoLog = true;
+			}
+			
 		}
+		
 	}
 
 	@Override
@@ -68,13 +123,31 @@ public class ConsoleLogger implements ILogger {
 
 	private void printToConsole(LogLevel level, String message) {
 		
-		if(console != null) {
-			
-			String ANSI_COLOR = getColorFromLevel(level);
-			
-			System.out.println(ANSI_COLOR+message+ANSI_RESET);
-			
+		String ANSI_COLOR = getColorFromLevel(level);
+		
+		switch(level) {
+		case ERROR:
+			if(enableErrorLog) {
+				System.out.println(ANSI_COLOR+message+ANSI_RESET);
+			}
+			break;
+		case WARNING:
+			if(enableWarningLog) {
+				System.out.println(ANSI_COLOR+message+ANSI_RESET);
+			}
+			break;
+		case SUCCESS:
+			if(enableSuccessLog) {
+				System.out.println(ANSI_COLOR+message+ANSI_RESET);
+			}
+			break;
+		case INFO:
+			if(enableInfoLog) {
+				System.out.println(ANSI_COLOR+message+ANSI_RESET);
+			}
+			break;
 		}
+
 	}
 	
 	private String getColorFromLevel(LogLevel level) {

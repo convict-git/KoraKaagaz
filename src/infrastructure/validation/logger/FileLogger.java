@@ -1,6 +1,7 @@
 package infrastructure.validation.logger;
 
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.time.LocalDateTime;
 
 import java.io.File;
@@ -23,12 +24,32 @@ public class FileLogger implements ILogger {
 	/** string that holds the location of the log file */
 	private static String logFile;
 	
+	/** boolean that enables/disables ERROR logs, 
+	 *  defaults to false (no ERROR logs are logged)
+	 */
+	private boolean enableErrorLog = false;
+	
+	/** boolean that enables/disables WARNING logs, 
+	 *  defaults to false (no WARNING logs are logged)
+	 */
+	private boolean enableWarnLog = false;
+
+	/** boolean that enables/disables SUCCESS logs, 
+	 *  defaults to false (no SUCCESS logs are logged)
+	 */
+	private boolean enableSuccessLog = false;
+
+	/** boolean that enables/disables INFO logs, 
+	 *  defaults to false (no INFO logs are logged)
+	 */
+	private boolean enableInfoLog = false;
+
 	/**
-	 *  constructor for FileLogger
-	 *  protected type since it needs to be only invoked by LoggerManager class
+	 *  constructor for FileLogger.
+	 *  Protected type since it needs to be only invoked by LoggerManager class
 	 *  @see logger.LoggerManager
 	 */
-	protected FileLogger() {
+	protected FileLogger(List<LogLevel> enabledLogLevelsList) {
 		
 		// sets DateTime format as per the spec
 		timeStampFormat = DateTimeFormatter.ofPattern("yyyy:MM:dd HH:mm:ss");
@@ -46,6 +67,29 @@ public class FileLogger implements ILogger {
 		
 		// set the path to the log file
 		logFile = logFilePath+logTimeStamp+"-release.log";
+	
+		// set booleans that enable/disable Log Level
+		if (null == enabledLogLevelsList) {
+			// nothing to be done
+			// default values will be used
+		} else {
+			
+			// check which LogLevel enum are sent
+			// if an enum is available, set the corresponding boolean to true i.e. enabled
+			if (enabledLogLevelsList.contains(LogLevel.ERROR)) {
+				enableErrorLog = true;
+			}
+			if (enabledLogLevelsList.contains(LogLevel.WARNING)) {
+				enableWarnLog = true;
+			}
+			if (enabledLogLevelsList.contains(LogLevel.SUCCESS)) {
+				enableSuccessLog = true;
+			}
+			if (enabledLogLevelsList.contains(LogLevel.INFO)) {
+				enableInfoLog = true;
+			}
+			
+		}
 	}
 
 	@Override
@@ -62,7 +106,31 @@ public class FileLogger implements ILogger {
 		
 		String logMessage = logTimeStamp+logModulePart+logLevelPart+message;
 
-		writeToFile(logMessage);
+		switch(level) {
+		case ERROR:
+			if(enableErrorLog) {
+				writeToFile(logMessage);				
+			}
+			break;
+		case WARNING:
+			if(enableWarnLog) {
+				writeToFile(logMessage);				
+			}
+			break;
+		case SUCCESS:
+			if(enableSuccessLog) {
+				writeToFile(logMessage);				
+			}
+			break;
+		case INFO:
+			if(enableInfoLog) {
+				writeToFile(logMessage);				
+			}
+			break;
+		default:
+			// do nothing
+			break;
+		}
 	}
 
 	/** private helper method that returns an object that can write content into a file 
