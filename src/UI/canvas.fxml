@@ -162,7 +162,6 @@
                         <Tooltip text="Circle" />
                      </tooltip>
                   </Button>
-                        <Button fx:id="cursor" mnemonicParsing="false" onAction="#cursorClicked" text="Cursor" />
                         <Button fx:id="leaveSession" mnemonicParsing="false" onAction="#leaveSession" text="Leave Session" />
                   <ColorPicker fx:id="colorPicker" onAction="#chooseColor" />
                         <Button fx:id="cursorButton" mnemonicParsing="false" onAction="#cursorClicked" text="Cursor" />

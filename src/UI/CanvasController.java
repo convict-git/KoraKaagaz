@@ -1,5 +1,5 @@
 /***
- * @Author	 : Jaya Madhav, Sajith Kumar,Shiva Dhanush
+ * @Author	 : Jaya Madhav, Sajith Kumar,Shiva Dhanush,Ahmed Z D
  * File name : CanvasController
  * File Type : Java
  * 
@@ -69,9 +69,6 @@ public class CanvasController implements Initializable {
 	
 	@FXML
 	private Button brush;
-	
-	@FXML
-	private Button cursor;
 	
 	@FXML
 	private Button undo;
