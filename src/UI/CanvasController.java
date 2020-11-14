@@ -14,6 +14,7 @@ package UI;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import javafx.application.Application;
@@ -24,6 +25,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.stage.Stage;
+import processing.utility.Intensity;
+import processing.utility.Pixel;
+import processing.utility.Position;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -80,12 +84,14 @@ public class CanvasController implements Initializable {
     private Button line,rect,square,triangle,circle,oval;
     
 	@FXML
-	private Canvas canvasF,canvasB;
+	public static Canvas canvasF;
+	@FXML
+	private Canvas canvasB;
 	
     @FXML
     private ColorPicker colorpicker;
 	
-    GraphicsContext gcF,gcB;
+    static GraphicsContext gc;
     double x1,y1,x2,y2,x3,y3;
     Color color;
     /***
@@ -94,11 +100,11 @@ public class CanvasController implements Initializable {
 	 ***/
     @FXML
 	public void eraserClicked(ActionEvent e ) {
-		
+    	Shapes.defaultSelected();
 	}
     @FXML
    	public void cursorClicked(ActionEvent e ) {
-   		
+    	
    	}
     @FXML
    	public void undoClicked(ActionEvent e ) {
@@ -111,7 +117,7 @@ public class CanvasController implements Initializable {
     
     @FXML
    	public void brushClicked(ActionEvent e ) {
-   		
+    	Shapes.defaultSelected();
    	}
     @FXML
    	public void brushSizeChanged(ActionEvent e ) {
@@ -125,7 +131,6 @@ public class CanvasController implements Initializable {
 	
 	@FXML
 	public void sendButtonClicked(ActionEvent e ) {
-		
 		String message = sendMessage.getText();
 		Chatbox.buttonClick(e,message,chatDisplayBox,chatScroll);
 		sendMessage.setText(null);
@@ -154,12 +159,6 @@ public class CanvasController implements Initializable {
     }
 
     @FXML
-    void ovalSelected(ActionEvent event) {
-    	Shapes.defaultSelected(); 
-    	Shapes.ovalselected = true;
-    }
-
-    @FXML
     void rectSelected(ActionEvent event) {
     	Shapes.defaultSelected(); 
     	Shapes.rectselected = true;
@@ -178,60 +177,72 @@ public class CanvasController implements Initializable {
     }
     
     @FXML
-    void mousePressed(MouseEvent e) {
-    	setStartPoint(e.getX(), e.getY());
+    void mousePressed(MouseEvent ev) {
+    	setStartPoint(ev.getX(), ev.getY());
     }
 
     @FXML
     void mouseReleased(MouseEvent e) {
-    	gcF = canvasF.getGraphicsContext2D();
+    	gc = canvasF.getGraphicsContext2D();
     	setEndPoint(e.getX(), e.getY());
     	color = colorpicker.getValue();
 		if(Shapes.rectselected) {
-			Shapes.drawPerfectRect(color,gcF,x1, y1, x2, y2);
+			Shapes.drawPerfectRect(color,gc,x1, y1, x2, y2);
 		}
 		if(Shapes.circleselected) {
-			Shapes.drawPerfectCircle(color,gcF,x1, y1, x2, y2);
+			Shapes.drawPerfectCircle(color,gc,x1, y1, x2, y2);
 		}
 		if(Shapes.lineselected) {
-			Shapes.drawPerfectLine(color,gcF,x1, y1, x2, y2);
-		}
-		if(Shapes.ovalselected) {
-			Shapes.drawPerfectOval(color,gcF,x1, y1, x2, y2);
+			Shapes.drawPerfectLine(color,gc,x1, y1, x2, y2);
 		}
 		if(Shapes.triangleselected) {
-			Shapes.drawPerfectTriangle(color,gcF,x1, y1, x2, y2);
+			Shapes.drawPerfectTriangle(color,gc,x1, y1, x2, y2);
 		}
 		if(Shapes.squareselected) {
-			Shapes.drawPerfectSquare(color,gcF,x1, y1, x2, y2);
+			Shapes.drawPerfectSquare(color,gc,x1, y1, x2, y2);
 		}
     }
     
+    /***
+     * 
+     * @param e
+     ***/
     @FXML
-    void mouseDragged(MouseEvent e) {
-    	gcB = canvasB.getGraphicsContext2D();
-    	double x3=e.getX();
-    	double y3=e.getY();
+    void mouseDragged(MouseEvent ev) {
+    	gc = canvasB.getGraphicsContext2D();
+    	double x3=ev.getX();
+    	double y3=ev.getY();
     	color = colorpicker.getValue();
 		if(Shapes.rectselected) {
-			Shapes.drawPerfectRectEffect(canvasB,color,gcB,x1, y1, x3, y3);
+			Shapes.drawPerfectRectEffect(canvasB,color,gc,x1, y1, x3, y3);
 		}
 		if(Shapes.circleselected) {
-			Shapes.drawPerfectCircleEffect(canvasB,color,gcB,x1, y1, x3, y3);
+			Shapes.drawPerfectCircleEffect(canvasB,color,gc,x1, y1, x3, y3);
 		}
 		if(Shapes.lineselected) {
-			Shapes.drawPerfectLineEffect(canvasB,color,gcB,x1, y1, x3, y3);
-		}
-		if(Shapes.ovalselected) {
-			Shapes.drawPerfectOvalEffect(canvasB,color,gcB,x1, y1, x3, y3);
+			Shapes.drawPerfectLineEffect(canvasB,color,gc,x1, y1, x3, y3);
 		}
 		if(Shapes.triangleselected) {
-			Shapes.drawPerfectTriangleEffect(canvasB,color,gcB,x1, y1, x3, y3);
+			Shapes.drawPerfectTriangleEffect(canvasB,color,gc,x1, y1, x3, y3);
 		}
 		if(Shapes.squareselected) {
-			Shapes.drawPerfectSquareEffect(canvasB,color,gcB,x1, y1, x3, y3);
+			Shapes.drawPerfectSquareEffect(canvasB,color,gc,x1, y1, x3, y3);
 		}
     }
+    
+    /***
+     * UpdateCanvas method updates the canvas with the given pixel array
+     ***/
+    public static void UpdateCanvas(ArrayList<Pixel> pixels) {
+    	gc = canvasF.getGraphicsContext2D();
+    	for (Pixel pix:pixels) {
+    		Intensity i= pix.intensity;
+    		Position p = pix.position;
+            gc.setStroke(Color.rgb(i.r, i.g, i.b));
+            gc.strokeRect(p.r,p.c,2,2);
+    	}
+    }
+    
     /***
 	 * The following code initializes the dropdown of brushSize.
 	 ***/
