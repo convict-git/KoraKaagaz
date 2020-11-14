@@ -212,6 +212,11 @@ public class CanvasController implements Initializable {
 		sendMessage.setText(null);
 	}
 	
+	/***
+	 * This method will store the start position of mouse drag 
+	 * @param d
+	 * @param e
+	 */
 	public void setStartPoint(double d, double e) {
 		synchronized(this) {
 	        x1 = (d);
@@ -219,6 +224,11 @@ public class CanvasController implements Initializable {
 		}
 	}
 	
+	/***
+	 * This method will store the end position of mouse drag
+	 * @param d
+	 * @param e
+	 */
 	public void setEndPoint(double d, double e) {
 		synchronized(this) {
 	        x2 = (d);
@@ -226,6 +236,10 @@ public class CanvasController implements Initializable {
 		}
 	}
 	
+	/***
+	 * This method will be called when circle is selected
+	 * @param event
+	 */
 	@FXML
 	void circleSelected(ActionEvent event) {
 		synchronized(this) {
@@ -234,6 +248,10 @@ public class CanvasController implements Initializable {
 		}
 	}
 	
+	/***
+	 * This method will be called when line is selected
+	 * @param event
+	 */
 	@FXML
 	void lineSelected(ActionEvent event) {
 		synchronized(this) {
@@ -242,6 +260,10 @@ public class CanvasController implements Initializable {
 		}
 	}
 	
+	/***
+	 * This method will be called when rectangle is selected
+	 * @param event
+	 */
 	@FXML
 	void rectSelected(ActionEvent event) {
 		synchronized(this) {
@@ -250,6 +272,10 @@ public class CanvasController implements Initializable {
 		}
 	}
 	
+	/***
+	 * This method will be called when square is selected
+	 * @param event
+	 */
 	@FXML
 	void squareSelected(ActionEvent event) {
 		synchronized(this) {
@@ -258,6 +284,10 @@ public class CanvasController implements Initializable {
 		}
 	}
 	
+	/***
+	 * This method will be called when triangle is selected
+	 * @param event
+	 */
 	@FXML
 	void triangleSelected(ActionEvent event) {
 		synchronized(this) {
@@ -267,7 +297,8 @@ public class CanvasController implements Initializable {
 	}
 	
 	/***
-	 * This method records the coordinates on canvas when the mouse is pressed
+	 * This method is called when the mouse is pressed on canvas.
+	 * It records the position on canvas when the mouse is pressed
 	 ***/
 	@FXML
 	void mousePressed(MouseEvent ev) {
@@ -277,6 +308,7 @@ public class CanvasController implements Initializable {
 	}
 	
 	/***
+	 * This method is called when the mouse is released on canvas.
 	 * This method draws the shapes on front canvas when mouse is released after selecting a shape
 	 ***/
 	@FXML
@@ -304,6 +336,7 @@ public class CanvasController implements Initializable {
 	}
 	
 	/***
+	 * This method is called when the mouse is being dragged on canvas.
 	 * This method creates the scaling effect on rear canvas for shapes when mouse is dragged
 	 ***/
 	@FXML
