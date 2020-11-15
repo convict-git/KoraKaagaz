@@ -96,7 +96,10 @@ public class Chatbox implements Initializable{
 	
 	/*
 	* Function buttonClick() will be called in the CnvasController.java, when a user clicks the send button in the chatbox
-	* @param : e-ActionEvent of button click, msg-message entered in the text area, VBOX-chat displaying box, chatScroll - scroll pane of the chatbox
+	* @param : e-ActionEvent of button click
+	* @param : userMessage-message entered in the text area, 
+	* @param :chatDisplayBox-chat displaying box, 
+	* @param :chatScroll-scroll pane of the chatbox
 	* 
 	*/
 	
