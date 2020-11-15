@@ -52,6 +52,7 @@ public class ContentNotificationHandler implements IContentNotificationHandler {
 	/*
 	 * The function onNewUserJoined() displays an alert when a new user joins the canvas
 	 * @param : username- A JSON String of the user name of the user entered
+	 * @return : none
 	 */
 
 	@Override
@@ -96,6 +97,7 @@ public class ContentNotificationHandler implements IContentNotificationHandler {
 	/*
 	 * Function onMessageReceived() will be called by the content module. It displays the received messages.
 	 * @param : messageDetails - It is a json string whose meta fields are username (identifer of the user who sent the message), message (actual message sent by user), image (profile picture of user who sent the message) and time (the time the user sent this message)
+	 * @return : none
 	 */
 	@Override
 	public  void onMessageReceived (String messageDetails) {
@@ -169,6 +171,7 @@ public class ContentNotificationHandler implements IContentNotificationHandler {
 	/*
 	 * The function onNewUserJoined() displays an alert when a new user joins the canvas
 	 * @param : username- A JSON String of the user name of the user entered
+	 * @return : none
 	 */
 	
 	@Override
