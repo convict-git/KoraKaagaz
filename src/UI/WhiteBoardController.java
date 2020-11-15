@@ -61,27 +61,27 @@ public class WhiteBoardController {
 	{   
 		/** Sending the data filled to the processing module */
 		Processor processor = ProcessingFactory.getProcessor() ;
-        IUser user = processor;  
-        String returnval= user.giveUserDetails(userName.getText(),ipAddress.getText(),boardId.getText());
-    	logger.log(ModuleID.UI, LogLevel.SUCCESS, "Userdetails to processing module have been sent successfully");
+		IUser user = processor;  
+		String returnval= user.giveUserDetails(userName.getText(),ipAddress.getText(),boardId.getText());
+		logger.log(ModuleID.UI, LogLevel.SUCCESS, "Userdetails to processing module have been sent successfully");
   
-        /** Keeping the userdetails information into json object and sending it to content module. */
-        JSONObject obj=new JSONObject();    
-   	    obj.put("ipAddress",ipAddress.getText());  
-   	    obj.put("username",userName.getText());
-   	    obj.put("image",encodedImage);
-   	    String userDetails = obj.toString();
-        IContentCommunicator communicator = new ContentCommunicator();
-        communicator.initialiseUser(userDetails);
-    	logger.log(ModuleID.UI, LogLevel.SUCCESS, "Userdetails and image have been sent to content module to initialise user");
+		/** Keeping the userdetails information into json object and sending it to content module. */
+		JSONObject obj=new JSONObject();    
+		obj.put("ipAddress",ipAddress.getText());  
+		obj.put("username",userName.getText());
+		obj.put("image",encodedImage);
+		String userDetails = obj.toString();
+		IContentCommunicator communicator = new ContentCommunicator();
+		communicator.initialiseUser(userDetails);
+		logger.log(ModuleID.UI, LogLevel.SUCCESS, "Userdetails and image have been sent to content module to initialise user");
         
-        /** Closing the Start session window and opening the canvas.fxml page. */
+		/** Closing the Start session window and opening the canvas.fxml page. */
 		((Stage)(((Button)event.getSource()).getScene().getWindow())).close();
 		Stage primaryStage = new Stage();
 		Parent root = FXMLLoader.load(getClass().getResource("canvas.fxml"));
 		Scene scene = new Scene(root,600,800);
 		primaryStage.setScene(scene);
 		primaryStage.show(); 
-    	logger.log(ModuleID.UI, LogLevel.SUCCESS, "Opening the canvas fxml page.");
+		logger.log(ModuleID.UI, LogLevel.SUCCESS, "Opening the canvas fxml page.");
 	} 
 }

@@ -34,6 +34,7 @@ import javafx.stage.Stage;
 import processing.IUser;
 import processing.ProcessingFactory;
 import processing.Processor;
+import processing.utility.Dimension;
 import processing.utility.Intensity;
 import processing.utility.Pixel;
 import processing.utility.Position;
@@ -104,7 +105,7 @@ public class CanvasController implements Initializable {
 	private Button line,rect,square,triangle,circle,oval;
 	
 	@FXML
-	private Canvas canvasF;
+	private static Canvas canvasF;
 	
 	@FXML
 	private Canvas canvasB;
@@ -178,7 +179,7 @@ public class CanvasController implements Initializable {
 	}
 	
 	/***
-	 * Function called when reset button is clicked.
+	 * Function called when brush is clicked.
 	 ***/
 	@FXML
    	public void brushClicked(ActionEvent e ) {
@@ -189,22 +190,16 @@ public class CanvasController implements Initializable {
 	    	}
    	}
 
+	/***
+	 * Function called when reset button is clicked.
+	 ***/
    	public void resetClicked(ActionEvent e ) {
    		
    	}
 	
 	/***
-	 * Function called when brush is clicked.
-	 ***/
-	@FXML
-	public void brushClicked(ActionEvent e ) {
-		Shapes.defaultSelected();
-	}
-	
-	/***
 	 * Function called when brush size is changed.
 	 ***/
-
 	@FXML
    	public void brushSizeChanged(ActionEvent e ) {
 	    	synchronized(this) {
@@ -490,7 +485,7 @@ public class CanvasController implements Initializable {
 				Intensity i= pix.intensity;
 				Position p = pix.position;
 				gc.setStroke(Color.rgb(i.r, i.g, i.b));
-				gc.strokeRect(p.r/100,p.c/100,2,2);
+				gc.strokeRect(p.r,p.c,2,2);
 			}
 			logger.log(ModuleID.UI, LogLevel.SUCCESS, "Canvas Updated Successfuly");
 		}
@@ -508,7 +503,7 @@ public class CanvasController implements Initializable {
 	public void cursorClicked(ActionEvent cursorButtonClick) {
 		synchronized(this) {
 			currentMode = CurrentMode.CURSOR_MODE;
-			canvas.setCursor(Cursor.CROSSHAIR);
+			canvasF.setCursor(Cursor.CROSSHAIR);
 		}
 	}
    
