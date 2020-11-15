@@ -38,11 +38,20 @@ public class UserId {
 		return userId;
 	}
 	
+	/**
+	 * Gets the Username present in the User ID
+	 * 
+	 * @return username who has this User ID
+	 */
+	public Username getUsername() {
+		return new Username(userId.split("_", 2)[1]);
+	}
+	
 	/** Equals Method  */
 	@Override
 	public boolean equals(Object obj) {
 		if(obj instanceof UserId)
-			return userId == ((UserId)obj).userId;
+			return userId.equals(((UserId)obj).userId);
 		else
 			return false;
 	}

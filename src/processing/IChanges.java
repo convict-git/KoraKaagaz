@@ -12,7 +12,6 @@ import processing.utility.*;
  */
 
 public interface IChanges {
-	
 	/** 
 	 * getChanges will take all the changes as the input and passed to the UI
 	 * 

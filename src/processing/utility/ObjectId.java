@@ -44,7 +44,7 @@ public class ObjectId {
 	public boolean equals(Object obj) {
 		if(obj instanceof ObjectId)
 			return 
-				objectId == ((ObjectId)obj).objectId;
+				objectId.equals(((ObjectId)obj).objectId);
 		else
 			return false;
 	}

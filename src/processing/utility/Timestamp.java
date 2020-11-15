@@ -27,6 +27,15 @@ public class Timestamp implements Comparable<Timestamp> {
 		date = new Date(timestampObj.date.getTime());
 	}
 	
+	/** Get Current Time */
+	public static Timestamp getCurrentTime() {
+		// Date() constructor when used, contains the time at which the
+		// object of Date is built
+		// read this:
+		// https://docs.oracle.com/javase/7/docs/api/java/util/Date.html#Date()
+		return new Timestamp(new Date());
+	}
+	
 	/**
 	 * Converts to String
 	 * 
