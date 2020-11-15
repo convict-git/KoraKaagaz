@@ -88,7 +88,9 @@ public class ContentNotificationHandler implements IContentNotificationHandler {
                     }
                 }
             }
-        }).run();
+		}).run();
+		//log message on entry of user
+		logger.log(ModuleID.UI, LogLevel.SUCCESS, "User"+ username +"successfully entered the canvas");
 	}
 	
 	/*
@@ -153,7 +155,9 @@ public class ContentNotificationHandler implements IContentNotificationHandler {
             //Setting the spacing between each element in the chatDisplayBox
             chatDisplayBox.setSpacing(10);
             //Making sure the chatScroll is always at the bottom
-            chatScroll.setVvalue(1);
+			chatScroll.setVvalue(1);
+			//log message on receiving message
+			logger.log(ModuleID.UI, LogLevel.SUCCESS, "Message received from the user and displayed on the Chatbox");
        
     	}
 		else
@@ -200,7 +204,9 @@ public class ContentNotificationHandler implements IContentNotificationHandler {
 		                    }
 		                }
 		            }
-		        }).run();
+				}).run();
+				//log message on exit of user
+				logger.log(ModuleID.UI, LogLevel.SUCCESS, "User"+ username +"successfully left the canvas");
 	}
 }
 
