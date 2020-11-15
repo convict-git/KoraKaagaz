@@ -31,6 +31,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.stage.Stage;
+import processing.IChanges;
 import processing.IUser;
 import processing.ProcessingFactory;
 import processing.Processor;
@@ -274,18 +275,20 @@ public class CanvasController implements Initializable {
 	    	}
 	}
 
-	/***
-	 * Function called when leave session button is clicked.
-	 ***/
+	/**
+	 *This function is called when leave session button is clicked.
+	 *It notifies processing,content module about exit and closes the window.
+	 *@param e This event is clicking Leave session button.
+	 *@returns nothing
+	 */
 	@FXML
 	public void leaveSession(ActionEvent e ) {
 		synchronized(this) {
-			/** This function notifies processing and content module that the user is exiting and then closes the canvas */
 			infrastructure.content.IContentCommunicator communicator = ContentFactory.getContentCommunicator();
+			//Notifying content module.
 			communicator.notifyUserExit();
 			logger.log(ModuleID.UI, LogLevel.SUCCESS, "Notified content module about exiting of user");
-
-			/**Notifying to Stop board session */
+			//Notifying to Stop board session 
 			Processor processor = ProcessingFactory.getProcessor() ;
 			IUser user = processor;
 			user.stopBoardSession();
@@ -989,7 +992,16 @@ public class CanvasController implements Initializable {
 		rotateButton
 			.getItems()
 			.addAll("90", "180", "270");
-
+		
+		// Subscribing for notifications from processing and content module.
+		IContentNotificationHandler contentSubscribe = new ContentNotificationHandler();
+		IChanges processingSubscribe = new PixelListener();
+		Processor processor = ProcessingFactory.getProcessor() ;
+		IUser user = processor; 
+		user.subscribeForChanges("UI", processingSubscribe);
+		IContentCommunicator communicator = new ContentCommunicator();
+		communicator.subscribeForNotifications("UI",contentSubscribe );
+		
 		// The following code initializes the dropdown of brushSize.
 		brushSize.setItems(list);
 	}

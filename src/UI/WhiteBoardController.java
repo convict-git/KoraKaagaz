@@ -38,9 +38,15 @@ public class WhiteBoardController {
 	private Button imageChoose;
 	private String encodedImage;
 	static ILogger logger = LoggerFactory.getLoggerInstance();
-
+	
+	/**
+	 *This function takes jpg image and converts it to base64 string.
+	 *@param event The event is selecting image.
+	 *@returns nothing
+	 */
 	public void getImage (ActionEvent event) throws Exception
 	{
+	try {
 		/** This method takes in the image of jpg type and encodes it into a string. */
 		FileChooser fc = new FileChooser();
 		File f = fc.showOpenDialog(null);
@@ -55,10 +61,20 @@ public class WhiteBoardController {
 			encodedImage = Base64.getEncoder().encodeToString(imagebyte);
 			baos.close();
 		}
+		}
+	catch(Exception e){
+		logger.log(ModuleID.UI, LogLevel.ERROR, "Error in encoding image");
+		}
 	}
 	
+	/**
+	 *This function sends data to processing,content moudles and opens canvas.
+	 *@param event The event is clicking start session button.
+	 *@returns nothing
+	 */
 	public void startSession (ActionEvent event) throws Exception
 	{   
+	try {
 		/** Sending the data filled to the processing module */
 		Processor processor = ProcessingFactory.getProcessor() ;
 		IUser user = processor;  
@@ -83,5 +99,9 @@ public class WhiteBoardController {
 		primaryStage.setScene(scene);
 		primaryStage.show(); 
 		logger.log(ModuleID.UI, LogLevel.SUCCESS, "Opening the canvas fxml page.");
+		}
+	catch(Exception e) {
+		logger.log(ModuleID.UI, LogLevel.ERROR, "Error in opening canvas fxml page");
+		}
 	} 
 }
