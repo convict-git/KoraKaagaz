@@ -104,8 +104,10 @@ public class LoggerManager implements ILogger {
 				if(nextEvent.isStartElement()) {
 					StartElement startElement = nextEvent.asStartElement();
 					if(startElement.getName().getLocalPart().equalsIgnoreCase("testMode")) {
-						Attribute filePath = startElement.getAttributeByName(new QName("filePath"));
-						fileToParse = filePath.getValue();
+						if(nextEvent.asCharacters().getData().equalsIgnoreCase("true")) {
+							Attribute filePath = startElement.getAttributeByName(new QName("filePath"));
+							fileToParse = filePath.getValue();
+						}
 					}
 				}
 			}
