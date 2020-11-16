@@ -67,6 +67,43 @@ public class LoggerManager implements ILogger {
 			consoleLogger = new ConsoleLogger(enabledLogLevelsList);
 		}
 	}
+	
+	/** 
+	 *  helper method that checks whether the logger is to be initialized in test mode,
+	 *  works by the testMode tag in the default XML file
+	 *  If no such tag exists, then the file is considered to be not in test mode and so,
+	 *  the default configuration XML file itself is used.
+	 * 
+	 * @param defaultFilePath location of the default XML file configuration
+	 * @return a string that will be the location of the XML configuration file to be parsed further
+	 */
+	private String configFileToParse(String defaultFilePath) {
+		
+		String fileToParse = defaultFilePath;
+		XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
+		
+		try {
+			
+			XMLEventReader reader = xmlInputFactory.createXMLEventReader(new FileInputStream(defaultFilePath));
+			while(reader.hasNext()) {
+				
+				XMLEvent nextEvent = reader.nextEvent();
+				if(nextEvent.isStartElement()) {
+					StartElement startElement = nextEvent.asStartElement();
+					if(startElement.getName().getLocalPart().equalsIgnoreCase("testMode")) {
+						Attribute filePath = startElement.getAttributeByName(new QName("filePath"));
+						fileToParse = filePath.getValue();
+					}
+				}
+			}
+		} catch (XMLStreamException xse) {
+			// do nothing and skip to default values
+		} catch (FileNotFoundException fnfe) {
+			// do nothing and skip to default values
+		}
+		
+		return fileToParse;
+	}
 
 	private List<LogLevel> parse(String filePath) {
 		
