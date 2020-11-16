@@ -44,5 +44,18 @@ public class VisualizeCircleFill {
 			dimension
 		);
 		Visualize.visualize(pixels, dimension);
+		
+		// BFS Based Algorithm
+		CircleDrawer.setAlgorithmFill(CircleDrawer.AlgorithmFill.BFS_FILL);
+		pixels = CircleDrawer.drawCircleFill(
+			new Position(500, 500),
+			new Radius(50),
+			new Intensity(255, 0, 0)
+		);
+		pixels = ShapeHelper.postFillProcessing(
+			pixels,
+			dimension
+		);
+		Visualize.visualize(pixels, dimension);
 	}
 }

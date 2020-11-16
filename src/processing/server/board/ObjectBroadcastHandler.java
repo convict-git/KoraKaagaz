@@ -28,7 +28,8 @@ public class ObjectBroadcastHandler implements INotificationHandler {
 		ClientBoardState.logger.log(
 				ModuleID.PROCESSING, 
 				LogLevel.INFO, 
-				"Received Board Object at the server for broadcasting"
+				"[#" + Thread.currentThread().getId() + "] "
+				+ "Received Board Object at the server for broadcasting"
 		);
 		
 		BoardObject obj = null;
@@ -44,7 +45,9 @@ public class ObjectBroadcastHandler implements INotificationHandler {
 			ClientBoardState.logger.log(
 					ModuleID.PROCESSING, 
 					LogLevel.ERROR, 
-					"BoardState class not found"
+					"[#" + Thread.currentThread().getId() + "] "
+					+ "BoardState class not found while deserializing BoardState"
+					+ " in Board State"
 			);
 			
 		} catch (IOException e) {
@@ -52,7 +55,8 @@ public class ObjectBroadcastHandler implements INotificationHandler {
 			ClientBoardState.logger.log(
 					ModuleID.PROCESSING, 
 					LogLevel.ERROR, 
-					"IO Exception occured while deserializing BoardState"
+					"[#" + Thread.currentThread().getId() + "] "
+					+ "IO Exception occured while deserializing BoardState"
 			);
 			
 		}
@@ -61,16 +65,27 @@ public class ObjectBroadcastHandler implements INotificationHandler {
 		 * Handle all the processing related to the board object by calling the
 		 * static function of ObjectHandler
 		 */
-		ObjectHandler.handleBoardObject(message);
+		try {
+			ObjectHandler.handleBoardObject(message);
+		} catch (Exception e) {
+			
+			ClientBoardState.logger.log(
+					ModuleID.PROCESSING, 
+					LogLevel.ERROR, 
+					"[#" + Thread.currentThread().getId() + "] "
+					+ "Error while handling received object on the Board Server"
+			);
+			
+		}
 		
 		// get the username of the user who created the object
-		Username objectUser = obj.getUserId().getUsername();
+		UserId objectUser = obj.getUserId();
 		
 		/**
 		 * Send the same message to all the clients except for the client who sent it
 		 * for broadcasting.
 		 */
-		for(Map.Entry<Username, IpAddress> user : ClientBoardState.users.entrySet()) {
+		for(Map.Entry<UserId, IpAddress> user : ClientBoardState.users.entrySet()) {
 			
 			// check if the user is not the same who sent the object
 			if(!user.getKey().equals(objectUser)) {
@@ -82,7 +97,8 @@ public class ObjectBroadcastHandler implements INotificationHandler {
 		ClientBoardState.logger.log(
 				ModuleID.PROCESSING, 
 				LogLevel.SUCCESS, 
-				"Successfully sent the received object to all the other clients"
+				"[#" + Thread.currentThread().getId() + "] "
+				+ "Successfully sent the received object to all the other clients"
 		);
 	}
 	

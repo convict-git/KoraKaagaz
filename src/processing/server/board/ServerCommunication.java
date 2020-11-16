@@ -55,7 +55,7 @@ public class ServerCommunication implements IServerCommunication{
 		 * 
 		 * We are sending username and the client full address
 		 */
-		String message = ClientBoardState.username.toString()
+		String message = ClientBoardState.userId.toString()
 					   + ":"
 					   + ClientBoardState.userIP.toString()
 					   + ":"
@@ -70,7 +70,8 @@ public class ServerCommunication implements IServerCommunication{
 		ClientBoardState.logger.log(
 				ModuleID.PROCESSING, 
 				LogLevel.SUCCESS, 
-				"Successfully sent Board State request from client to server"
+				"[#" + Thread.currentThread().getId() + "] "
+				+ "Successfully sent Board State request from client to server"
 		);
 	}
 	
@@ -97,7 +98,8 @@ public class ServerCommunication implements IServerCommunication{
 			ClientBoardState.logger.log(
 					ModuleID.PROCESSING, 
 					LogLevel.ERROR, 
-					"IO Exception occured during serializing the BoardObject"
+					"[#" + Thread.currentThread().getId() + "] "
+					+ "IO Exception occured during serializing the BoardObject"
 			);
 			
 		}
@@ -112,7 +114,8 @@ public class ServerCommunication implements IServerCommunication{
 		ClientBoardState.logger.log(
 				ModuleID.PROCESSING, 
 				LogLevel.SUCCESS, 
-				"Successfully sent the Board Object from client to the server"
+				"[#" + Thread.currentThread().getId() + "] "
+				+ "Successfully sent the Board Object from client to the server"
 		);
 	}
 	
@@ -138,7 +141,8 @@ public class ServerCommunication implements IServerCommunication{
 		ClientBoardState.logger.log(
 				ModuleID.PROCESSING, 
 				LogLevel.SUCCESS, 
-				"Successfully sent the Stop Connection request from client to the server"
+				"[#" + Thread.currentThread().getId() + "] "
+				+ "Successfully sent the Stop Connection request from client to the server"
 		);
 	}
 	

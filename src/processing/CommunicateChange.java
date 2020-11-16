@@ -2,6 +2,7 @@ package processing;
 
 import java.util.*;
 import processing.utility.*;
+import infrastructure.validation.logger.*;
 
 /**
  * Class for Communicating Changes to the UI
@@ -12,17 +13,19 @@ import processing.utility.*;
 
 public class CommunicateChange {
 	
-	/** identifier to IChanges handler map */
-	public static Map <String, IChanges> identifierToHandler;
-	/** UI identifier */
+	// gets the logger instance
+	private static ILogger logger = LoggerFactory.getLoggerInstance();
+	
+	// identifier to IChanges handler map
+	public static Map <String, IChanges> identifierToHandler = new HashMap <String, IChanges> ();
+	// UI identifier
 	public static String identifierUI;
 	
 	/**
 	 * Computes the set of pixels which will have effect
 	 * on the screen and notify the UI using the getChanges
 	 * method of IChanges handler.
-	 *
-	 *
+	 * 
 	 * @param identifier identifier of the handler
 	 * @param oldPixels previous pixels of the object
 	 * @param newPixels new pixels of the object
@@ -59,8 +62,25 @@ public class CommunicateChange {
 		// gets the handler for the subscriber
 		IChanges handler = identifierToHandler.get(identifier);
 		
+		if (handler == null) {
+			logger.log(
+					ModuleID.PROCESSING, 
+					LogLevel.ERROR, 
+					"[#" + Thread.currentThread().getId() + "] "
+					+ "Couldn't find the handler for the identifier"
+			);
+			return;
+		}
+		
 		// sends the modified pixels to the handler
 		handler.getChanges(modifiedPixels);
+		
+		logger.log(
+				ModuleID.PROCESSING, 
+				LogLevel.SUCCESS, 
+				"[#" + Thread.currentThread().getId() + "] "
+				+ "Sent the modified pixels to the UI"
+		);
 	}
 	
 	/**
@@ -95,5 +115,11 @@ public class CommunicateChange {
 		 *  Needs to modified when more modules can subscribe
 		 */
 		identifierUI = identifier;
+		logger.log(
+				ModuleID.PROCESSING, 
+				LogLevel.SUCCESS, 
+				"[#" + Thread.currentThread().getId() + "] "
+				+ "Successfully subscribed for the changes"
+		);
 	}
 }

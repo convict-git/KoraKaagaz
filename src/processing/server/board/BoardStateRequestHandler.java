@@ -32,12 +32,16 @@ public class BoardStateRequestHandler implements INotificationHandler{
 		ClientBoardState.logger.log(
 				ModuleID.PROCESSING, 
 				LogLevel.INFO, 
-				"BoardState request is made by the client"
+				"[#" + Thread.currentThread().getId() + "] "
+				+ "BoardState request is made by the client"
 		);
 		
 		String[] arrOfArguments = message.split(":", 2);
 		
-		Username username = new Username(arrOfArguments[0]);
+		// extract userID from the first part of the message
+		String user = arrOfArguments[1];
+		String[] id = user.split("_", 2);
+		UserId userId = new UserId(new IpAddress(id[0]), new Username(id[1]));
 		
 		/**
 		 * While requesting for BoardState the client passes it's address
@@ -54,14 +58,19 @@ public class BoardStateRequestHandler implements INotificationHandler{
 		try {
 			boardState = Serialize.serialize(ClientBoardState.maps);
 		} catch (IOException e) {
-			// log the exception
+			ClientBoardState.logger.log(
+					ModuleID.PROCESSING, 
+					LogLevel.ERROR, 
+					"[#" + Thread.currentThread().getId() + "] "
+					+ "IOException occured while serializing BoardState on BoardServer"
+			);
 		}
 		
 		/**
 		 * As the users will make the BoardState request in the start we need to save
 		 * the user detail in the users list ClientBoardState.
 		 */
-		ClientBoardState.users.put(username,clientAddress);
+		ClientBoardState.users.put(userId,clientAddress);
 		
 		/**
 		 * Finally send the serialized boardState using the identifier ProcessingBoardState
@@ -76,7 +85,8 @@ public class BoardStateRequestHandler implements INotificationHandler{
 		ClientBoardState.logger.log(
 				ModuleID.PROCESSING, 
 				LogLevel.SUCCESS, 
-				"Successfully sent the Board State to the client"
+				"[#" + Thread.currentThread().getId() + "] "
+				+ "Successfully sent the Board State to the client"
 		);
 	}
 	

@@ -10,6 +10,7 @@ import processing.utility.Angle;
  * It is parameterized by the Angle of rotation
  *
  * @author Ahmed Zaheer Dadarkar
+ * @reviewer Rakesh Kumar
  */
 
 public class RotateOperation implements IBoardObjectOperation, Serializable {

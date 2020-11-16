@@ -21,7 +21,8 @@ public class MainServer {
 		ClientBoardState.logger.log(
 				ModuleID.PROCESSING, 
 				LogLevel.INFO, 
-				"Starting the Main Server"
+				"[#" + Thread.currentThread().getId() + "] "
+				+ "Starting the Main Server"
 		);
 		
 		/**
@@ -40,7 +41,8 @@ public class MainServer {
 		ClientBoardState.logger.log(
 				ModuleID.PROCESSING, 
 				LogLevel.INFO, 
-				"Starting communication on the Main Server"
+				"[#" + Thread.currentThread().getId() + "] "
+				+ "Starting communication on the Main Server"
 		);
 		
 		ServerState.communicator.start();
@@ -52,7 +54,8 @@ public class MainServer {
 		ClientBoardState.logger.log(
 				ModuleID.PROCESSING, 
 				LogLevel.INFO, 
-				"Subscribing for new board request on the Main Server"
+				"[#" + Thread.currentThread().getId() + "] "
+				+ "Subscribing for new board request on the Main Server"
 		);
 		
 		ServerState.communicator.subscribeForNotifications(
@@ -67,7 +70,8 @@ public class MainServer {
 		ClientBoardState.logger.log(
 				ModuleID.PROCESSING, 
 				LogLevel.INFO, 
-				"Subscribing for existing board request on the Main Server"
+				"[#" + Thread.currentThread().getId() + "] "
+				+ "Subscribing for existing board request on the Main Server"
 		);
 		
 		ServerState.communicator.subscribeForNotifications(
@@ -82,7 +86,8 @@ public class MainServer {
 		ClientBoardState.logger.log(
 				ModuleID.PROCESSING, 
 				LogLevel.INFO, 
-				"Subscribing for Remove Board event"
+				"[#" + Thread.currentThread().getId() + "] "
+				+ "Subscribing for Remove Board event"
 		);
 		
 		ServerState.communicator.subscribeForNotifications(
@@ -93,7 +98,8 @@ public class MainServer {
 		ClientBoardState.logger.log(
 				ModuleID.PROCESSING, 
 				LogLevel.SUCCESS, 
-				"Successfully started the Main Server"
+				"[#" + Thread.currentThread().getId() + "] "
+				+ "Successfully started the Main Server"
 		);
 		
 	}
