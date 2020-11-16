@@ -31,6 +31,7 @@ public class EraseTest extends TestCase {
 		
 		user.subscribeForChanges("ProcessorTest", new ChangesHandler());
 		ChangesHandler.receivedOutput = null;
+		
 		try {
 			processor.erase(arrayPositions);	
 		} catch (Exception error) {
@@ -39,8 +40,7 @@ public class EraseTest extends TestCase {
 			System.out.println(error);
 			return false;
 		}
-		int count = 1;
-		System.out.println("reached1");
+
 		while (ChangesHandler.receivedOutput == null) {
 			try{
 				Thread.currentThread().sleep(50);
@@ -48,8 +48,7 @@ public class EraseTest extends TestCase {
 				 // wait until output received
 			 }
 		}
-		System.out.println("reached");
-
+		
 		if (ChangesHandler.receivedOutput.equals(arrayPixels)) {
 			ChangesHandler.receivedOutput = null;
 			System.out.println("reached");
