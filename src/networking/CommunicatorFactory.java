@@ -148,8 +148,8 @@ public class CommunicatorFactory{
 			/** Creates a stream socket and connects it to the specified port number at the specified IP address. */
 			Socket sock=new Socket(str[0],Integer.parseInt(str[1]));
 			
-			/** Creating DataInputStream that uses underlying input stream of the socket through BufferedInputStream. */
-			DataInputStream in=new DataInputStream(new BufferedInputStream(sock.getInputStream()));
+			/** Creating DataInputStream that gets input underlying input stream of the socket */
+			DataInputStream in=new DataInputStream(sock.getInputStream());
 
 			/** Creating DataOutputStream that uses underlying output stream of socket. */
 			DataOutputStream out=new DataOutputStream(sock.getOutputStream());
@@ -157,11 +157,8 @@ public class CommunicatorFactory{
 			/** Sending message to server to get Client id of respective client */
 			out.writeUTF("GET_CLIENT_INFO");
 
-			int i=0;
-			/** reading only client id and nothing else */
-			while(i!=1 && (from=in.readUTF())!=null){
-				i++;
-			}
+			/** reading client id from socket's input stream through datainputstream */
+			from=in.readUTF();
 		}
 		catch(ConnectException e){
 			logger.log(ModuleID.NETWORKING, LogLevel.ERROR,"Check with server, Error in establishing connection "+e.toString());
@@ -231,6 +228,8 @@ public class CommunicatorFactory{
 					*/ 
 					if(port==-1){
 						setTypeOfCommunicator("LAN");
+						/** getting local port for LAN communication */
+						port=sock.getLocalPort();
 					}
 					
 					/** 
