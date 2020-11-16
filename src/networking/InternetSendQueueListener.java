@@ -19,7 +19,7 @@ import infrastructure.validation.logger.*;
  *  @author Sirpa Sahul
  */
 
-public class SendQueueListener implements Runnable {
+public class InternetSendQueueListener implements Runnable {
     
     /**
      * It is the sendqueue which will contain the outgoing packets which needs to be 
