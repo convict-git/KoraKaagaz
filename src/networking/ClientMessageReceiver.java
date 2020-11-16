@@ -18,7 +18,7 @@ import infrastructure.validation.logger.*;
  * @author Marella Shiva Sai Teja
  */
 
-public class clientMessageReceiver implements Runnable {
+public class ClientMessageReceiver implements Runnable {
 
 	/**
 	 * Queue into which message from content module will be pushed
