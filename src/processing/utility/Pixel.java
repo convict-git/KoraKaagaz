@@ -1,5 +1,7 @@
 package processing.utility;
 
+import java.io.Serializable;
+
 /**
  * Class Representing a Pixel
  *
@@ -8,7 +10,11 @@ package processing.utility;
  */
 
 
-public class Pixel {
+public class Pixel implements Serializable {
+	
+	/** Serial UID */
+	private static final long serialVersionUID = -3052611990076537074L;
+
 	/** Position of this pixel on the Board */
 	public Position position;
 
