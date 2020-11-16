@@ -1,4 +1,4 @@
-package processing.test;
+package processing.testsimulator;
 
 import processing.utility.*;
 import java.util.*;

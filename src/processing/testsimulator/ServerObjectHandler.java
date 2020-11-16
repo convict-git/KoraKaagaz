@@ -1,4 +1,4 @@
-package processing.test;
+package processing.testsimulator;
 
 import networking.INotificationHandler;
 import processing.handlers.*;

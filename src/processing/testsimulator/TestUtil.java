@@ -1,4 +1,4 @@
-package processing.test;
+package processing.testsimulator;
 
 import infrastructure.validation.logger.*;
 import processing.ClientBoardState;

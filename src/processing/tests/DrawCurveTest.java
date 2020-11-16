@@ -3,8 +3,8 @@ package processing.tests;
 import java.util.ArrayList;
 import infrastructure.validation.testing.TestCase;
 import processing.*;
+import processing.testsimulator.*;
 import processing.utility.*;
-import processing.test.*;
 
 public class DrawCurveTest extends TestCase {
 	

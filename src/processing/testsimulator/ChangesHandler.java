@@ -1,4 +1,4 @@
-package processing.test;
+package processing.testsimulator;
 
 import java.util.ArrayList;
 
@@ -12,6 +12,7 @@ public class ChangesHandler implements IChanges{
 	ILogger logger = LoggerFactory.getLoggerInstance();
 	
 	public static ArrayList<Pixel> receivedOutput = null; 
+	
 	@Override
 	public void getChanges(ArrayList<Pixel> pixels) {
 		

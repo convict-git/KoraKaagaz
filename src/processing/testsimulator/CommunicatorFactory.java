@@ -1,4 +1,4 @@
-package processing.test;
+package processing.testsimulator;
 
 public class CommunicatorFactory {
 
