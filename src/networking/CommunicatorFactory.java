@@ -98,7 +98,7 @@ public class CommunicatorFactory{
 	*
 	* @return String[] which consists of aws server IP address and port
 	*/
-	private static String[] getServerInfo(){
+	static String[] getServerInfo(){
 		try{
 			/** creating DocumentBuilder object */
 			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
