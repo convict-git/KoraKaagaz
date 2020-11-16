@@ -17,8 +17,8 @@ public class ChangesHandler implements IChanges{
 		// can create enum type for test
 		switch(testIdentifier) {
 			case "DrawCurveTest": logger.log(ModuleID.PROCESSING, 
-							    			 LogLevel.INFO, 
-							    			"Check the output");
+					LogLevel.INFO, 
+					"Check the output");
 			default: logger.log(ModuleID.PROCESSING, LogLevel.INFO, "Unknown test" + testIdentifier);
 		}
 		return;

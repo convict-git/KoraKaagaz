@@ -15,15 +15,15 @@ public class TestUtil {
 		String boardId = "1";
 		String userIP = "192.168.1.1";
 		Port userPort  = new Port(8080);
-    	
+		
 		ClientBoardState.username  = new Username(username);
-    	ClientBoardState.serverIp  = new IpAddress(ipAddress);
-    	ClientBoardState.boardId   = new BoardId(boardId);
-    	ClientBoardState.userIP  = new IpAddress(userIP);
-    	ClientBoardState.userPort = new Port(userPort);
-    	ClientBoardState.communicator = CommunicatorFactory.getCommunicator();
-    	ClientBoardState.communicator.start();
-    	ClientBoardState.start();
+		ClientBoardState.serverIp  = new IpAddress(ipAddress);
+		ClientBoardState.boardId   = new BoardId(boardId);
+		ClientBoardState.userIP  = new IpAddress(userIP);
+		ClientBoardState.userPort = new Port(userPort);
+		ClientBoardState.communicator = CommunicatorFactory.getCommunicator();
+		ClientBoardState.communicator.start();
+		ClientBoardState.start();
     	
     	logger.log(
     			ModuleID.PROCESSING, 
