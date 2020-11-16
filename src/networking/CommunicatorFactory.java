@@ -269,19 +269,16 @@ public class CommunicatorFactory{
 				logger.log(ModuleID.NETWORKING, LogLevel.ERROR,"Security Manager exists "+e.toString());
 			}
 
-			finally{
-				/** disconnecting and closing the datagram socket.So now port used in this file for finding IP is free */
-				sock.disconnect();
-				sock.close();
-				logger.log(ModuleID.NETWORKING,LogLevel.SUCCESS,"closed the Datagram socket");
-
-				if(ip.equals("")||ip.equals("0.0.0.0")||port==-1){
-					/** Found no valid IP or port So returning default IP and port,which are invalid too */
-					return new ClientInfo();
-				}
-				else{
-					return new ClientInfo(ip,port);
-				}
+			/** disconnecting and closing the datagram socket.So now port used in this file for finding IP is free */
+			sock.disconnect();
+			sock.close();
+			logger.log(ModuleID.NETWORKING,LogLevel.SUCCESS,"closed the Datagram socket");
+			if(ip.equals("")||ip.equals("0.0.0.0")||port==-1){
+			/** Found no valid IP or port So returning default IP and port,which are invalid too */
+				return new ClientInfo();
+			}
+			else{
+				return new ClientInfo(ip,port);
 			}
 		}
 
@@ -300,10 +297,8 @@ public class CommunicatorFactory{
 		catch (SecurityException e) {
 			logger.log(ModuleID.NETWORKING, LogLevel.ERROR,"Security Manager exists "+e.toString());
 		}
-		finally{
-				/** Found no valid IP or port So returning default IP and port,which are invalid too */
-				return new ClientInfo();
-		}
+		/** Found no valid IP or port So returning default IP and port,which are invalid too */
+		return new ClientInfo();
 	}
 
 	/**
