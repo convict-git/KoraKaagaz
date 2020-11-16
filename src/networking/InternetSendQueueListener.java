@@ -38,7 +38,7 @@ public class InternetSendQueueListener implements Runnable {
      * @param SendQueue, requires the sendqeue as parameter.
      * @param dout, requires dataOutputStream as parameter.
      */
-    public SendQueueListener(IQueue<OutgoingPacket> SendQueue, DataOutputStream dout){
+    public InternetSendQueueListener(IQueue<OutgoingPacket> SendQueue, DataOutputStream dout){
 
         /** logging when the instance of the class is created */
         logger.log(ModuleID.NETWORKING, LogLevel.INFO, "Send Queue Listener object created");
