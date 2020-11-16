@@ -177,27 +177,6 @@ public class ClientMessageReceiver implements Runnable {
 				//Logs exception
 				logger.log(ModuleID.NETWORKING, LogLevel.WARNING, exp.toString());
 			}
-
-			/**
-			 * This block gets executed whether there is an exception or not in try block
-			 */		
-			finally{
-				try{
-					/**
-					 * Closes the input stream 
-					 */
-					if(dis != null){
-						dis.close();
-						logger.log(ModuleID.NETWORKING, LogLevel.INFO, "DataInputStream of client has been closed");
-					}
-				}
-				/**
-				 * This block gets executed when an exception arises while closing the input stream
-				 */
-				catch(IOException exp){
-					logger.log(ModuleID.NETWORKING, LogLevel.ERROR, exp.toString());
-				}
-			}
 		}
 	}
 }
