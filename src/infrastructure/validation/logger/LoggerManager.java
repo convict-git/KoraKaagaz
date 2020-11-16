@@ -50,6 +50,9 @@ public class LoggerManager implements ILogger {
 	 */
 	private boolean allowConsoleLogging = false;
 	
+	/**
+	 * constructor for LoggerManager class
+	 */
 	protected LoggerManager() {
 		
 		File logConfigFile = new File(loggerConfigFilePath);
@@ -115,6 +118,13 @@ public class LoggerManager implements ILogger {
 		return fileToParse;
 	}
 
+	/**
+	 *  helper method to parse an XML file to set the various settings in the logging framework
+	 *  settings include enabling/disabling file or console logger, enabling/disabling log levels globally
+	 *  
+	 * @param filePath String pointing to path of the XML file.
+	 * @return list of LogLevel enums. Members of this List correspond to LogLevels to be enabled. 
+	 */
 	private List<LogLevel> parse(String filePath) {
 		
 		List<LogLevel> enabledLogLevelsList = new ArrayList<LogLevel>();
