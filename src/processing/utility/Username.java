@@ -1,5 +1,7 @@
 package processing.utility;
 
+import java.io.Serializable;
+
 /**
  * Class Representing a user's Username
  *
@@ -7,7 +9,11 @@ package processing.utility;
  * @reviewer Himanshu Jain
  */
 
-public class Username {
+public class Username implements Serializable {
+	
+	/** Serial UID */
+	private static final long serialVersionUID = -8485675822804355578L;
+	
 	/** Username is stored as a String */
     private String username;
     

@@ -1,5 +1,7 @@
 package processing.utility;
 
+import java.io.Serializable;
+
 /**
 * This class describes the object to be stored in the Priority Queue.
 * It will store the obejct ID and the timestamp to sort the objects in the
@@ -8,7 +10,10 @@ package processing.utility;
 * @author Himanshu Jain, Shruti Umat
 */
 
-public class PriorityQueueObject {
+public class PriorityQueueObject implements Serializable {
+	
+	/** Serial UID */
+	private static final long serialVersionUID = -2213699374085459395L;
 	
 	public ObjectId objectId;
 	public Timestamp timestamp;
