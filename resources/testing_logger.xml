@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <logging>
-    <testMode filePath="resources/testing_logger.xml">true</testMode>
     <loggerOptions>
-        <loggerOption LoggerName="FileLogger"   >false</loggerOption>
+        <loggerOption LoggerName="FileLogger"   >true</loggerOption>
         <loggerOption LoggerName="ConsoleLogger">false</loggerOption>
     </loggerOptions>
     <logLevels>
-        <logLevel level="ERROR"  >false</logLevel>
+        <logLevel level="ERROR"  >true</logLevel>
         <logLevel level="WARNING">false</logLevel>
         <logLevel level="SUCCESS">false</logLevel>
         <logLevel level="INFO"   >false</logLevel>
