@@ -1,4 +1,4 @@
-package networking.internet;
+package networking;
 
 /**
  * This file contains the class InternetCommunicator which is the object that other modules
@@ -20,12 +20,12 @@ import infrastructure.validation.logger.*;
 public class InternetCommunicator implements ICommunicator {
 
     /** SendQueueListener that will be listening on the send Queue */
-    private SendQueueListener sendQueueListener;
-    private Thread sendQueueListenerWorker;
+    private InternetSendQueueListener internetSendQueueListener;
+    private Thread internetSendQueueListenerWorker;
 
     /** NetworkListener that will be listening on the network */
-    private SocketListener socketListener;
-    private Thread socketListenerWorker;
+    private ClientMessageReceiver clientMessageReceiver;
+    private Thread clientMessageReceiverWorker;
 
     /**
      * ProcessingReceiveQueueListener that will be listening on the Processing
@@ -113,8 +113,13 @@ public class InternetCommunicator implements ICommunicator {
             setStatus(true);
             DataOutputStream dos;
             DataInputStream dis;
+            String[] serverInfo = CommunicatorFactory.getServerInfo();
+            if(serverInfo[0] == null || serverInfo[1] == null){
+                setStatus(false);
+                return;
+            }
             try {
-                s = new Socket("52.66.253.179", 5000);
+                s = new Socket(serverInfo[0],Integer.parseInt(serverInfo[1]));
                 dos = new DataOutputStream(s.getOutputStream());
                 dis = new DataInputStream(s.getInputStream());
                 String msg = clientId + ":CONNECT";
@@ -141,17 +146,17 @@ public class InternetCommunicator implements ICommunicator {
              * lan network to the destination IP A thread is spawn to perform this
              * continuously whenever we have packets in the queue
              */
-            sendQueueListener = new SendQueueListener(sendQueue, dos);
-            sendQueueListenerWorker = new Thread(sendQueueListener);
+            internetSendQueueListener = new InternetSendQueueListener(sendQueue, dos);
+            internetSendQueueListenerWorker = new Thread(internetSendQueueListener);
             try {
-                sendQueueListenerWorker.start();
+                internetSendQueueListenerWorker.start();
             } catch (Exception e) {
                 logger.log(ModuleID.NETWORKING, LogLevel.ERROR,
                         "sendQueueListenerWorker is not able to start " + e.toString());
                 return;
             }
 
-            logger.log(ModuleID.NETWORKING, LogLevel.INFO, "sendQueueListener thread started");
+            logger.log(ModuleID.NETWORKING, LogLevel.INFO, "internetSendQueueListener thread started");
 
             /**
              * The listener that will be listening on the network and that receives the
@@ -159,17 +164,17 @@ public class InternetCommunicator implements ICommunicator {
              * processing module message and content module's message and push into their
              * respective queues
              */
-            socketListener = new SocketListener(processingReceiveQueue, contentReceiveQueue, dis);
-            socketListenerWorker = new Thread(socketListener);
+            clientMessageReceiver = new ClientMessageReceiver(processingReceiveQueue, contentReceiveQueue, dis);
+            clientMessageReceiverWorker = new Thread(clientMessageReceiver);
             try {
-                socketListenerWorker.start();
+                clientMessageReceiverWorker.start();
             } catch (Exception e) {
                 logger.log(ModuleID.NETWORKING, LogLevel.ERROR,
                         "socketListenerWorker is not able to start " + e.toString());
                 return;
             }
 
-            logger.log(ModuleID.NETWORKING, LogLevel.INFO, "socketListener thread started");
+            logger.log(ModuleID.NETWORKING, LogLevel.INFO, "clientMessageReceiver thread started");
 
             /**
              * This listener will be listening on the receive queue which is for the
