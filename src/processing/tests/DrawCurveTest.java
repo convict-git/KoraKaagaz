@@ -1,30 +1,19 @@
 package processing.tests;
 
-import processing.test.*;
 import java.util.ArrayList;
-
 import infrastructure.validation.testing.TestCase;
-import processing.ProcessingFactory;
-import processing.Processor;
+import processing.*;
 import processing.utility.*;
-
-import processing.test.*;
 import processing.test.*;
 
 public class DrawCurveTest extends TestCase {
 	
 	public boolean run() {
 		
-		setDescription("Test the drawCurve interface.");
+		// use methods in TestCase to set the variables for test
+		setDescription("Test the drawCurve function in IDrawCurve interface.");
 		setCategory("Processing");
 		setPriority(2);
-		
-		ClientUI.setTestIdentifier("DrawCurveTest");
-		TestUtil.initialiseProcessorForTest();
-		
-		Processor processor = ProcessingFactory.getProcessor();
-		
-		processor.subscribeForChanges("TestProcessor", new ChangesHandler());
 		
 		Position pos = new Position(1,2);
 		Intensity intensity = new Intensity(1,2,3);
@@ -32,15 +21,35 @@ public class DrawCurveTest extends TestCase {
 		ArrayList<Pixel> arrayPixel = new ArrayList<Pixel>();
 		arrayPixel.add(pixel);
 		
+		TestUtil.initialiseProcessorForTest();
+		
+		IDrawErase processor = ProcessingFactory.getProcessor();
+		
+		IUser user = ProcessingFactory.getProcessor();
+		
+		user.subscribeForChanges("ProcessorTest", new ChangesHandler());
+		
 		try {
 			processor.drawCurve(arrayPixel);	
 		} catch (Exception error) {
 			this.setError(error.toString());
+			ChangesHandler.receivedOutput = null;
+			System.out.println(error);
 			return false;
 		}
 		
+		while (ChangesHandler.receivedOutput == null) {
+			// wait till output received
+		}
 		
-		
-		return true;
+		if (ChangesHandler.receivedOutput.equals(arrayPixel)) {
+			ChangesHandler.receivedOutput = null;
+			return true;
+		} else {
+			setError("Draw Curve Output failed. Output is different from the input.");
+			ChangesHandler.receivedOutput = null;
+			System.out.println("here");
+			return false;
+		}
 	}
 }

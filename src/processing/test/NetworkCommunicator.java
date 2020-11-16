@@ -13,7 +13,7 @@ public class NetworkCommunicator implements ICommunicator{
 	
 	ILogger logger = LoggerFactory.getLoggerInstance();
 	
-	private HashMap<String, INotificationHandler> handlerMap;
+	private HashMap<String, INotificationHandler> handlerMap = new HashMap < > ();
 	
 	@Override
 	public void start() {
@@ -55,4 +55,5 @@ public class NetworkCommunicator implements ICommunicator{
 			
 		}
 
+	}
 }

@@ -21,10 +21,11 @@ public class TestUtil {
 		ClientBoardState.boardId   = new BoardId(boardId);
 		ClientBoardState.userIP  = new IpAddress(userIP);
 		ClientBoardState.userPort = new Port(userPort);
+		ClientBoardState.userId = new UserId(ClientBoardState.userIP, ClientBoardState.username);
 		ClientBoardState.communicator = CommunicatorFactory.getCommunicator();
 		ClientBoardState.communicator.start();
-		ClientBoardState.start();
-    	
+//		ClientBoardState.start();
+    	ClientBoardState.communicator.subscribeForNotifications("ObjectBroadcast", new ServerObjectHandler());
     	logger.log(
     			ModuleID.PROCESSING, 
     			LogLevel.SUCCESS, 

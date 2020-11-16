@@ -4,23 +4,18 @@ import java.util.ArrayList;
 
 import infrastructure.validation.logger.*;
 import processing.IChanges;
-import processing.utility.Pixel;
+import processing.utility.*;
+
 
 public class ChangesHandler implements IChanges{
 
 	ILogger logger = LoggerFactory.getLoggerInstance();
 	
+	public static ArrayList<Pixel> receivedOutput = null; 
 	@Override
 	public void getChanges(ArrayList<Pixel> pixels) {
-		String testIdentifier = ClientUI.getTestIdentifier();
 		
-		// can create enum type for test
-		switch(testIdentifier) {
-			case "DrawCurveTest": logger.log(ModuleID.PROCESSING, 
-					LogLevel.INFO, 
-					"Check the output");
-			default: logger.log(ModuleID.PROCESSING, LogLevel.INFO, "Unknown test" + testIdentifier);
-		}
+		receivedOutput = pixels;
 		return;
 	}
 
