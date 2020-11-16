@@ -15,7 +15,7 @@ public class ChangesHandler implements IChanges{
 	
 	@Override
 	public void getChanges(ArrayList<Pixel> pixels) {
-		
+		System.out.println("result");
 		receivedOutput = pixels;
 		return;
 	}

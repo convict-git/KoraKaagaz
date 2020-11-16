@@ -5,9 +5,14 @@ import processing.utility.*;
 public class Main {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		DrawCurveTest test = new DrawCurveTest();
+//		
+//		DrawCurveTest test = new DrawCurveTest();
+//		boolean result = test.run();
+//		System.out.println(result);
+		
+		EraseTest test = new EraseTest();
 		boolean result = test.run();
 		System.out.println(result);
+		
 	}
 }
