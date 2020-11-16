@@ -84,7 +84,9 @@ public class LoggerManager implements ILogger {
 	/** 
 	 *  helper method that checks whether the logger is to be initialized in test mode,
 	 *  works by the testMode tag in the default XML file
-	 *  If no such tag exists, then the file is considered to be not in test mode and so,
+	 *  If the tag exists and is set to true, then the test mode is considered enabled and,
+	 *  a different XML file is to be used.
+	 *  Otherwise, the file is considered to be not in test mode and so,
 	 *  the default configuration XML file itself is used.
 	 * 
 	 * @param defaultFilePath location of the default XML file configuration
