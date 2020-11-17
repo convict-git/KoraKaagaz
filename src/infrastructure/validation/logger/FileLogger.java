@@ -45,11 +45,17 @@ public class FileLogger implements ILogger {
 	private boolean enableInfoLog = false;
 
 	/**
+	 *  boolean to enable/disable testMode while logging
+	 *  If in testMode, logs won't have module or timestamp information attached with it. 
+	 */
+	private boolean inTestMode = false;
+	
+	/**
 	 *  constructor for FileLogger.
 	 *  Protected type since it needs to be only invoked by LoggerManager class
 	 *  @see logger.LoggerManager
 	 */
-	protected FileLogger(List<LogLevel> enabledLogLevelsList) {
+	protected FileLogger(List<LogLevel> enabledLogLevelsList, boolean enableTestMode) {
 		
 		// sets DateTime format as per the spec
 		timeStampFormat = DateTimeFormatter.ofPattern("yyyy:MM:dd HH:mm:ss");
@@ -68,6 +74,11 @@ public class FileLogger implements ILogger {
 		// set the path to the log file
 		logFile = logFilePath+logTimeStamp+"-release.log";
 	
+		// set testMode to enabled/disabled
+		// variable enableTestMode is a boolean which is a primitive data type and,
+		// has a default value of false if unassigned
+		inTestMode = enableTestMode;
+		
 		// set booleans that enable/disable Log Level
 		if (null == enabledLogLevelsList) {
 			// nothing to be done
@@ -98,14 +109,23 @@ public class FileLogger implements ILogger {
 		LocalDateTime now = LocalDateTime.now();
 		String formatDateTime = now.format(timeStampFormat);
 		
-		String logTimeStamp = "["+formatDateTime+"] ";
+		String logTimeStamp = "";
 		
-		String logModulePart = "["+moduleIdentifier.toString()+"] ";
+		String logModulePart = "";
 		
-		String logLevelPart = "["+level.toString()+"] ";
+		String logLevelPart = "";
+		
+		if(!inTestMode) {
+
+			logTimeStamp = "["+formatDateTime+"] ";
+			
+			logModulePart = "["+moduleIdentifier.toString()+"] ";
+			
+			logLevelPart = "["+level.toString()+"] ";
+		}
 		
 		String logMessage = logTimeStamp+logModulePart+logLevelPart+message;
-
+		
 		switch(level) {
 		case ERROR:
 			if(enableErrorLog) {
