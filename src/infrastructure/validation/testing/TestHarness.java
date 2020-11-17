@@ -9,6 +9,7 @@
 package infrastructure.validation.testing;
 import java.io.File;
 import java.util.*;
+
 public class TestHarness{
   
   private String savePath;
@@ -21,116 +22,11 @@ public class TestHarness{
     return this.savePath;
   }
   
-  /* 
-  * Manas Sanjay may start righting his two methods runByCategroy() and run by Priority() from here. 
-  * The guideline to avoid merge conflicts is as follows-
-  * The spacing must follow a tab being two spaces otherwise identation may get messy with tabs + spaces combination.
-  * If one is using file editor gedit, then tab width has to be 2 spaces with use spaces option enabled. 
-  * Please don't edit anything beyond the space alloted to you otherwise we might get into a messy merge conflict.
-  * 
-  * For your two methods and their javadocs, 90 lines of code space(line no 38 - line no 127) is alloted to you. 
-  * In case A) you need more lines to be alloted or B) there is any need to make some changes outside the alloted space, 
-  * A pull request has to be made on my branch.
-  * I'll merge your branch and A) modify my branch to make requested changes or B) give some more lines of code space in my branch. 
-  * You need to then fetch my branch and again make a pull request on my branch for final merge.
+  /**
+  * static helper method to return all the test cases of project
+  * @return    ArrayList of File type containing all the test cases with valid naming
   */
-  //Manas's code starts from here.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  // Manas's code finishes here
-
- /**
-  * Run all test cases of all modules one by one 
-  */
-  void runAll(){
+  private static ArrayList<File> getAllTests(){
     File[] modules = new File("../../../").listFiles(File::isDirectory);
     ArrayList<File> allTests = new ArrayList<File>();
 		for(File module : modules){
@@ -138,12 +34,11 @@ public class TestHarness{
 		  	String strModule = module.getName();
 		  	System.out.println(strModule);
 			  try {
-				  File f = new File("src/"+strModule+"/tests/");
+			    File f = new File("src/"+strModule+"/tests/");
 				  File[] tests  = f.listFiles(File::isFile);
 				  for (File test : tests){
 					  if(test.getName().endsWith("Test.java")){
-						  allTests.add(test);
-						  runByName(test.getName());  
+						  allTests.add(test); 
 					  }
 				  } 
 	    	}
@@ -151,8 +46,82 @@ public class TestHarness{
 	  		  System.out.println("Exception in module: "+strModule+" >> "+e);
 		    }
 		  }
-    }   
+    } 
+    return allTests;
+  }
+
+
+ /**
+  * Void method to run test case of a given category
+  * @param Category    The name of the category of tests to be run
+  */
+  public void runByCategory(String Category){
+    String path = "../../../" + Category + "/tests";
+    try{
+		  File directoryPath = new File(path);
+		  //get all the test cases in tests directory of respective category 
+		  String tests[] = directoryPath.list();
+
+		  //create object of each test case class to run and get the result of each test
+		  for(int i =0; i<tests.length; i++){
+		    String[] arrOfStr = tests[i].split(".", 2); 
+		    String testClassName = arrOfStr[0];
+		    Class<?> testClass = Class.forName("testClassName");
+		    Object test = testClass.getDeclaredConstructor().newInstance();
+		    if(Category.equals(test.getCategory())){
+		      boolean result = test.run();
+		    }
+		  }
+	  }
+	  catch (Exception e){
+	    System.out.println("Exception in module: "+Category+" >> "+e);
+		}
+	  
+
+    //result logging
+  }
+
+
+ /**
+  * Void method to run test case of a given priority
+  * @param Category    The name of the category of tests to be run
+  */
+  public void runBypriority(int priority){
+    //get list of all the tests using helper static method getAllTests()
+    ArrayList<File> allTests = getAllTests();
+    for (File testFile : allTests){
+      String testName = testFile.getName();
+      String[] arrOfStr = testName.split(".", 2); 
+      String testClassName = arrOfStr[0];
+      Class<?> testClass = Class.forName("testClassName");
+      Object test = testClass.getDeclaredConstructor().newInstance();
+      if(priority==(test.getPriority())){
+         boolean result = test.run();   
+      } 
+    }
+    
+    //result logging
+  }
+
+
+ /**
+  * Run all test cases of all modules one by one 
+  */
+  public void runAll(){
+    //call the helper method to get list of all test cases 
+    ArrayList<File> allTests = getAllTests();
+    for (File testFile : allTests){
+      String testName = testFile.getName();
+      String[] arrOfStr = testName.split(".", 2); 
+      String testClassName = arrOfStr[0];
+      Class<?> testClass = Class.forName("testClassName");
+      Object test = testClass.getDeclaredConstructor().newInstance();
+      boolean result = test.run();   
+    }
+    
+    //result logging 
   } 
+	 
 	  
  /**
   * Boolean method to give result of the Test Case Class
@@ -164,8 +133,8 @@ public class TestHarness{
   public boolean runByName(String testName){
     String[] arrOfStr = testName.split(".", 2); 
     String testClassName = arrOfStr[0];
-    Class<?> clazz = Class.forName("testClassName");
-    Object test = clazz.getDeclaredConstructor().newInstance();
+    Class<?> testClass = Class.forName("testClassName");
+    Object test = testClass.getDeclaredConstructor().newInstance();
     boolean result = test.run();
     
     //after saving the result using logger
