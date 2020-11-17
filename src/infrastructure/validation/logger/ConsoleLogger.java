@@ -57,13 +57,24 @@ public class ConsoleLogger implements ILogger {
 	private boolean enableInfoLog = false;
 
 	/**
+	 *  boolean to enable/disable testMode while logging
+	 *  If in testMode, logs won't have module or timestamp information attached with it. 
+	 */
+	private boolean inTestMode = false;
+	
+	/**
 	 *  Creates an object that logs to the console, if enabled and available
 	 */
-	protected ConsoleLogger(List<LogLevel> enabledLogLevelsList) {
+	protected ConsoleLogger(List<LogLevel> enabledLogLevelsList, boolean enableTestMode) {
 		
 		timeStampFormat = DateTimeFormatter.ofPattern("yyyy:MM:dd HH:mm:ss");
 		
 		console = System.console();
+		
+		// set testMode to enabled/disabled
+		// variable enableTestMode is a boolean which is a primitive data type and,
+		// has a default value of false if unassigned
+		inTestMode = enableTestMode;
 		
 		if(null == console) {
 			
@@ -110,11 +121,20 @@ public class ConsoleLogger implements ILogger {
 		LocalDateTime now = LocalDateTime.now();
 		String formatDateTime = now.format(timeStampFormat);
 
-		String logTimeStamp = "["+formatDateTime+"]";
+		String logTimeStamp = "";
 
-		String logModulePart = "["+moduleIdentifier.toString()+"]";
+		String logModulePart = "";
 		
-		String logLevelPart = "["+level.toString()+"]";
+		String logLevelPart = "";
+		
+		if(!inTestMode) {
+
+			logTimeStamp = "["+formatDateTime+"]";
+			
+			logModulePart = "["+moduleIdentifier.toString()+"]";
+			
+			logLevelPart = "["+level.toString()+"]";
+		}
 		
 		String logMessage = logTimeStamp+logModulePart+logLevelPart+message;
 
