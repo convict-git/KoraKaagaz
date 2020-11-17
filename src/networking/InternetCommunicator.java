@@ -170,7 +170,7 @@ public class InternetCommunicator implements ICommunicator {
                 clientMessageReceiverWorker.start();
             } catch (Exception e) {
                 logger.log(ModuleID.NETWORKING, LogLevel.ERROR,
-                        "socketListenerWorker is not able to start " + e.toString());
+                        "clientMessageReceiverWorker is not able to start " + e.toString());
                 return;
             }
 
@@ -227,11 +227,11 @@ public class InternetCommunicator implements ICommunicator {
         } catch (Exception e) {
             logger.log(ModuleID.NETWORKING, LogLevel.INFO, "Cannot close the socket" + e.toString());
         }
-        socketListener.stop();
-        sendQueueListener = null;
-        sendQueueListenerWorker = null;
-        socketListener = null;
-        socketListenerWorker = null;
+        clientMessageReceiver.stop();
+        internetSendQueueListener = null;
+        internetSendQueueListenerWorker = null;
+        clientMessageReceiver = null;
+        clientMessageReceiverWorker = null;
         processingReceiveQueueListener = null;
         processingReceiveQueueListenerWorker = null;
         contentReceiveQueueListener = null;
