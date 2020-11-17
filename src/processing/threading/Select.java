@@ -14,7 +14,7 @@ import infrastructure.validation.logger.*;
 
 public class Select implements Runnable {
     private final ArrayList<Position> inputPositions;
-    private ArrayList<Position> selectedObjectPositions;
+    private ArrayList<Pixel> selectedObjectPixels;
 
     /**
      * Returns all the positions of the object that got selected from
@@ -22,8 +22,8 @@ public class Select implements Runnable {
      *
      * @return positions of the object that got selected
      */
-    public ArrayList<Position> getSelectedObjectPositions() {
-        return selectedObjectPositions;
+    public ArrayList<Pixel> getSelectedObjectPixels() {
+        return selectedObjectPixels;
     }
 
     /**
@@ -43,7 +43,7 @@ public class Select implements Runnable {
 
         try {
             logger = LoggerFactory.getLoggerInstance();
-            this.selectedObjectPositions = SelectDelete.select(inputPositions);
+            this.selectedObjectPixels = SelectDelete.select(inputPositions);
 
             Helper.log(
                 logger,
@@ -52,7 +52,7 @@ public class Select implements Runnable {
             );
         }
         catch (Exception e) {
-            this.selectedObjectPositions = null;
+            this.selectedObjectPixels = null;
             Helper.log(
                 logger,
                 LogLevel.ERROR,

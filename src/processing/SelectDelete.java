@@ -5,7 +5,6 @@ import processing.utility.*;
 import processing.boardobject.*;
 import infrastructure.validation.logger.*;
 
-import static processing.ClientBoardState.communicator;
 import static processing.ClientBoardState.logger;
 
 /**
@@ -25,7 +24,7 @@ public class SelectDelete {
      * @param positions positions from the UI that the user clicked on
      * @return all positions of the object that got selected
      */
-    public static ArrayList<Position> select (ArrayList <Position> positions) {
+    public static ArrayList<Pixel> select (ArrayList <Position> positions) {
         boolean success = true;
         PriorityQueueObject noObjectSelected = new PriorityQueueObject(null, null);
 
@@ -57,7 +56,7 @@ public class SelectDelete {
             }
 
             // returning empty Position list
-            return new ArrayList<Position>();
+            return new ArrayList<Pixel>();
         }
 
         /* Lookup BoardObject from ObjectId, if ObjectId exists */
@@ -87,7 +86,7 @@ public class SelectDelete {
             }
 
             // returning empty Position list
-            return new ArrayList<Position>();
+            return new ArrayList<Pixel>();
         }
 
         /* Pass selected positions to UI for display */
@@ -137,7 +136,7 @@ public class SelectDelete {
                             + "BUT could not update the UI"
             );
         }
-        return selected.getPositions();
+        return selected.getPixels();
     }
 
     /**
