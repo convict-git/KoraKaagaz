@@ -153,8 +153,13 @@ public class FileLogger implements ILogger {
 		}
 	}
 
-	/** private helper method that returns an object that can write content into a file 
-	 *  throws IOException error upon failure which is to be handled by the parent
+	/** 
+	 * Private helper method that returns an object that can write content into a file 
+	 * Throws IOException error upon failure which is to be handled by the parent
+	 * 
+	 * @param filename name of the file which has to be opened
+	 * @return object of PrintWriter class that opens the file
+	 * @throws IOException
 	 */
 	private static PrintWriter openFile(String filename) throws IOException {
 		
@@ -163,9 +168,12 @@ public class FileLogger implements ILogger {
 		return printWriter;
 	}
 
-	/** private helper method that opens the logFile, 
+	/**
+	 *  private helper method that opens the logFile, 
 	 *  appends the message to the file and closes the file
 	 *  Handles IOException errors
+	 * 
+	 * @param logMessage message string to be written as log
 	 */
 	private static void writeToFile(String logMessage) {
 		
@@ -185,8 +193,11 @@ public class FileLogger implements ILogger {
 		}
 	}
 	
-	/** private helper method that is used to properly close a file,
-	 *  if it is open.
+	/** 
+	 * private helper method that is used to properly close a file,
+	 * if it is open.
+	 *  
+	 * @param p object of class PrintWriter that is to be opened
 	 */
 	private static void closeFile(PrintWriter p) {
 		

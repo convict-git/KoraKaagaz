@@ -141,6 +141,13 @@ public class ConsoleLogger implements ILogger {
 		printToConsole(level, logMessage);
 	}
 
+	/**
+	 *  private helper method that can print the log messages to Console,
+	 *  if the corresponding log level is enabled
+	 *  
+	 * @param level LogLevel enum that specifies the kind of log message
+	 * @param message String that holds the value to be printed to console
+	 */
 	private void printToConsole(LogLevel level, String message) {
 		
 		String ANSI_COLOR = getColorFromLevel(level);
@@ -170,6 +177,11 @@ public class ConsoleLogger implements ILogger {
 
 	}
 	
+	/**
+	 *  private helper method to match the color with the log level
+	 * @param level LogLevel enum that specifies the type of log
+	 * @return String corresponding to the ANSI color that is set for that particular color
+	 */
 	private String getColorFromLevel(LogLevel level) {
 		
 		String ANSI_COLOR;
