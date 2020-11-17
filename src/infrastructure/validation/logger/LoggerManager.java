@@ -50,6 +50,8 @@ public class LoggerManager implements ILogger {
 	 */
 	private boolean allowConsoleLogging = false;
 	
+	private boolean enableTestMode = false;
+	
 	/**
 	 * constructor for LoggerManager class
 	 */
@@ -73,11 +75,11 @@ public class LoggerManager implements ILogger {
 		}
 		
 		if(allowFileLogging) {
-			fileLogger = new FileLogger(enabledLogLevelsList);
+			fileLogger = new FileLogger(enabledLogLevelsList, enableTestMode);
 		}
 		
 		if(allowConsoleLogging) {
-			consoleLogger = new ConsoleLogger(enabledLogLevelsList);
+			consoleLogger = new ConsoleLogger(enabledLogLevelsList, enableTestMode);
 		}
 	}
 	
@@ -109,6 +111,7 @@ public class LoggerManager implements ILogger {
 						if(nextEvent.asCharacters().getData().equalsIgnoreCase("true")) {
 							Attribute filePath = startElement.getAttributeByName(new QName("filePath"));
 							fileToParse = filePath.getValue();
+							enableTestMode = true;
 						}
 					}
 				}
