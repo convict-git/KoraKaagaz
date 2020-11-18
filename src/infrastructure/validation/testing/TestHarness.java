@@ -9,16 +9,20 @@
 package infrastructure.validation.testing;
 import java.io.File;
 import java.util.*;
+import infrastructure.validation.logger.LoggerFactory;
+import infrastructure.validation.logger.ILogger;
+import infrastructure.validation.logger.LogLevel;
+import infrastructure.validation.logger.ModuleID;
 
 public class TestHarness{
   
   private String savePath;
   
-  void setSavePath(String path){
+  public void setSavePath(String path){
     this.savePath=path;
   }
   
-  String getSavePath(){
+  public String getSavePath(){
     return this.savePath;
   }
   
@@ -108,8 +112,17 @@ public class TestHarness{
   * Run all test cases of all modules one by one 
   */
   public void runAll(){
+    int totalNumberOfTests = 0;
+    int successfulNumberOfTests = 0;
+    int failedNumberOfTests = 0;
+    //ArrayList<File> failedTests;
+    
+    ILogger logger = LoggerFactory.getLoggerInstance();
+     
     //call the helper method to get list of all test cases 
     ArrayList<File> allTests = getAllTests();
+    totalNumberOfTests = allTests.size();
+    
     for (File testFile : allTests){
       String testName = testFile.getName();
       String[] arrOfStr = testName.split(".", 2); 
@@ -117,9 +130,24 @@ public class TestHarness{
       Class<?> testClass = Class.forName("testClassName");
       Object test = testClass.getDeclaredConstructor().newInstance();
       boolean result = test.run();   
+      if(result==false){
+        failedNumberOfTests++;
+        if(failedNumberOfTests==1){
+          logger.log("", "", "Failed Tests...");
+        }
+        //log the result of failed test cases
+        logger.log("", "", Integer.toString(failedNumberOfTests)+". "+testName+" :"+test.getError());
+      }
+      else{
+       successfulNumberOfTests++;
+      }
     }
     
     //result logging 
+    logger.log("", "", "\nOverall Result:");
+    logger.log("", "", "Total Number of Tests: "+Integer.toString(totalNumberOfTests));
+    logger.log("", "", "Total Number of Successful Tests: "+Integer.toString(successfulNumberOfTests));
+    logger.log("", "", "Total Number of Failed Tests: "+Integer.toString(failedNumberOfTests));
   } 
 	 
 	  
