@@ -122,6 +122,20 @@ public class FileLogger implements ILogger {
 			logModulePart = "["+moduleIdentifier.toString()+"] ";
 			
 			logLevelPart = "["+level.toString()+"] ";
+		
+		} else {
+		
+			/**
+			 *  logger is in testMode
+			 *  as per infrastructure lead and test harness requirement,
+			 *  disable logs from all other modules
+			 */			
+			switch(moduleIdentifier) {
+			case INFRASTRUCTURE:
+				break;
+			default:
+				return;
+			}
 		}
 		
 		String logMessage = logTimeStamp+logModulePart+logLevelPart+message;
