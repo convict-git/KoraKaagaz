@@ -227,7 +227,6 @@ public class InternetCommunicator implements ICommunicator {
         } catch (Exception e) {
             logger.log(ModuleID.NETWORKING, LogLevel.INFO, "Cannot close the socket" + e.toString());
         }
-        clientMessageReceiver.stop();
         internetSendQueueListener = null;
         internetSendQueueListenerWorker = null;
         clientMessageReceiver = null;

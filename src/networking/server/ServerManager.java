@@ -94,10 +94,5 @@ public class ServerManager {
 				logger.log(ModuleID.NETWORKING, LogLevel.ERROR, e.toString());
 			}
 		}
-		try {
-			ss.close();
-		} catch (Exception e) {
-			logger.log(ModuleID.NETWORKING, LogLevel.ERROR, e.toString());
-		}
 	}
 }
