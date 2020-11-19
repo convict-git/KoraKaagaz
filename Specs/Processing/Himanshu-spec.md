@@ -72,73 +72,49 @@ There will be two kinds of server, one is the **Main server** which will handle 
 ### Sever Side Interfaces
 #### Main Server
 ```java
-/* This interface will be used by the client side processing to make
-new board requests */
 public interface IRequests {
-    /*
-    When client request for a new board, client processing module will
-    call this function.
-    input - NULL
-    output - Port Number on which the requested Board Server will be 
-    running on Server's machine
-    */
-    Port requestForNewBoard();
+
+    /**
+     * This function will be called when new board request is to be made
+     * 
+     * @param ipAddress IP Address of the client requesting new Board
+     * @param portNumber Port Number of the client requesting new Board
+     * @return the port number where the new requested board's server will be running
+     */
+    public void requestForNewBoard(IpAddress ipAddress, Port portNumber);
     
-    /*
-    When client request for an existing board, client porcessing module will
-    call this function.
-    input - boardId
-    output - Port Number on which the requested Board Server will be
-    running on Server's machine
-    */
-    Port requestForExistingBoard(String boardId);
-    
-    /*
-    getPortNumber will return the Port number where the given board is running
-    input - boardId
-    output - If board is running then it's Board Server's port number
-             else it will throw BoardNotFound exception
-    */
-    Port getPortNumber(String boardId);
+    /**
+     * This function will be called when existing board request is to be made.
+     * 
+     * @param boardId BoardID of the existing board
+     * @param ipAddress IP Address of the client requesting the Board
+     * @param portNumber Port Number of the client requesting the Board
+     * @return the port number where the new requested board's server will be running
+     */
+    public void requestForExistingBoard(BoardId boardId, IpAddress ipAddress, Port portNumber);
 }
 ```
 
 #### Board Server
 ```java
-/* This interface will be used by the client after connected to the board
-for making further communication with the server */
 public interface IServerCommunication {
-    /*
-    getBoardState function will be called by the client processing module
-    once they received the port number is they requested for an existing
-    board.
-    input - NULL
-    output - BoardState object, which contains all the previous board data
-    */
-    public BoardState getBoardState();
+
+    /**
+     * As soon as the client gets the port number on which the Board
+     * server is listening it will use this function to get the BoardState.
+     */
+    public void getBoardState();
     
-    /*
-    When the client need to pass any changes, it will call this function and
-    pass the BoardObject (change) as the parameter.
-    input - BoardObject object
-    ouput - NULL
-    */
+    /** This function will be used to send the object to
+     *  the server for broadcasting it.
+     *  
+     *  @param obj BoardObject to be sent on the Board Server
+     */
     public void sendObject(BoardObject obj);
     
-    /*
-    When client wants to know their boardId, they will call this function.
-    input - NULL
-    output - BoardId
-    */
-    public BoardId getBoardId();
-    
-    /*
-    When client leave the board, client processing module will inform the
-    board server using this function.
-    input - NULL
-    output - NULL
-    */
+    /** To send the stop connection request on the server */
     public void stopConnection();
+    
 }
 ```
 
