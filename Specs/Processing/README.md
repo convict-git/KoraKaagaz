@@ -227,7 +227,15 @@ public interface IDrawShapes {
 	 * @param start start position with RGB values
 	 * @param end end position with RGB values
 	 */
-	void drawLine(Pixel start, Pixel end);        
+	void drawLine(Pixel start, Pixel end);    
+	/**
+	 * Constructs a Triangle based on the three vertices provided
+	 * 
+	 * @param vertA First vertex of the triangle
+	 * @param vertB Second vertex of the triangle
+	 * @param vertC Third vertex of the triangle
+	 */
+	void drawTriangle(Pixel vertA, Pixel vertB, Pixel vertC);     
 }
 ```
 
@@ -247,9 +255,9 @@ public interface IOperation {
 	 * select function will be called when the user will select an object on the board
 	 * 
 	 * @param positions list of all the Position when user clicked for selection
-	 * @return List of all the position of the object selected
+	 * @return List of all the Pixels of the selected object
 	 */
-	ArrayList<Position> select (ArrayList <Position> positions);
+	ArrayList<Pixel> select (ArrayList <Position> positions);
 	
 	/**
 	 * delete will delete the selected object
@@ -318,6 +326,14 @@ public interface IChanges {
 	 * @param pixels List of all the pixels where there is a change
 	 */
 	void getChanges(ArrayList<Pixel> pixels);
+	/**
+	 * giveSelectedPixels will pass the list of pixels belonging to the
+	 * selected object, if the selected object got changed in between
+	 * by any other client.
+	 * 
+	 * @param pixels list of pixels belonging to the selected object
+	 */
+	void giveSelectedPixels(ArrayList<Pixel> pixels);
 }
 ```
 
