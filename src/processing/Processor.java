@@ -377,7 +377,9 @@ public class Processor implements IDrawErase, IDrawShapes, IOperation, IUndoRedo
 	@Override
 	public String giveUserDetails(String userName, String ipAddress, String boardId) {
 		
-		GiveUserDetails runnable = new GiveUserDetails(userName, ipAddress, boardId);
+		String ipWithoutPort = ipAddress.split(":")[0];
+		
+		GiveUserDetails runnable = new GiveUserDetails(userName, ipWithoutPort, boardId);
 		Thread giveDetailsThread = new Thread(runnable);
 		giveDetailsThread.start();
 		
