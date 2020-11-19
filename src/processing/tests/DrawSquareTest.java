@@ -106,7 +106,7 @@ public class DrawSquareTest extends TestCase {
 			ChangesHandler.receivedOutput = null;
 			return true;
 		} else {
-			setError("Draw Curve Output failed. Output is different from the input.");
+			setError("Draw Square Output failed. Output is different from the input.");
 			logger.log(ModuleID.PROCESSING, LogLevel.WARNING, "DrawSquareTest: FAILED!.");
 			ChangesHandler.receivedOutput = null;
 			return false;

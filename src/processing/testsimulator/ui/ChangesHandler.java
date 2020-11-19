@@ -36,6 +36,12 @@ public class ChangesHandler implements IChanges{
 
 	@Override
 	public void giveSelectedPixels(ArrayList<Pixel> pixels) {
+		
+		logger.log(ModuleID.PROCESSING, 
+				LogLevel.INFO, 
+				"Test: UI received the selectedPixels passed by processor.");
+		/* set the receivedOutput variable */ 
+		receivedOutput = pixels;
 		return;
 	}
 

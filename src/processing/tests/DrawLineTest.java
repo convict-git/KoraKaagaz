@@ -109,7 +109,7 @@ public class DrawLineTest extends TestCase {
 			ChangesHandler.receivedOutput = null;
 			return true;
 		} else {
-			setError("Draw Curve Output failed. Output is different from the input.");
+			setError("Draw Line Output failed. Output is different from the input.");
 			logger.log(ModuleID.PROCESSING, LogLevel.WARNING, "DrawLineTest: FAILED!.");
 			ChangesHandler.receivedOutput = null;
 			return false;

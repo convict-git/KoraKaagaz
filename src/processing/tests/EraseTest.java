@@ -96,7 +96,7 @@ public class EraseTest extends TestCase {
 			ChangesHandler.receivedOutput = null;
 			return true;
 		} else {
-			setError("Draw Curve Output failed. Output is different from the input.");
+			setError("Erase Output failed. Output is different from the input.");
 			logger.log(ModuleID.PROCESSING, LogLevel.WARNING, "EraseTest: FAILED!.");
 			ChangesHandler.receivedOutput = null;
 			return false;

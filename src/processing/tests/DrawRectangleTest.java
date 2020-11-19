@@ -114,7 +114,7 @@ public class DrawRectangleTest extends TestCase {
 			ChangesHandler.receivedOutput = null;
 			return true;
 		} else {
-			setError("Draw Curve Output failed. Output is different from the input.");
+			setError("Draw Rectangle Output failed. Output is different from the input.");
 			logger.log(ModuleID.PROCESSING, LogLevel.WARNING, "DrawRectangleTest: FAILED!.");
 			ChangesHandler.receivedOutput = null;
 			return false;

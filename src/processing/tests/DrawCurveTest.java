@@ -31,13 +31,17 @@ public class DrawCurveTest extends TestCase {
 		logger.log(ModuleID.PROCESSING, LogLevel.INFO, "DrawCurveTest: Create input for test.");
 		
 		ArrayList<Pixel> arrayPixels = new ArrayList<Pixel>();
+		
 		int b;
+		Position pos;
+		Pixel pixel;
 		Intensity intensity = new Intensity(10, 12, 14);
+		
 		for (int a=40; a<60; a++)
 		{
 			b = a + 10;
-			Position pos = new Position(a, b);
-			Pixel pixel  = new Pixel(pos, intensity);
+			pos = new Position(a, b);
+			pixel  = new Pixel(pos, intensity);
 			arrayPixels.add(pixel);
 		}
 
