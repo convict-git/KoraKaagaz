@@ -2,14 +2,24 @@ package processing.testsimulator;
 
 import infrastructure.validation.logger.*;
 import processing.ClientBoardState;
+import processing.testsimulator.handlers.*;
+import processing.testsimulator.network.*;
 import processing.utility.*;
+
+/**
+ * Utility functions for processing test.
+ * 
+ * @author Sakshi Rathore
+ *
+ */
 
 public class TestUtil {
 	
 	public static void initialiseProcessorForTest() {
-		
+		/* Get logger instance */
 		ILogger logger = LoggerFactory.getLoggerInstance();
 		
+		/* Initialise the variables in ClientBoardState */
 		String username = "Tester";
 		String ipAddress = "192.168.1.2";
 		String boardId = "1";
@@ -24,13 +34,25 @@ public class TestUtil {
 		ClientBoardState.userId = new UserId(ClientBoardState.userIP, ClientBoardState.username);
 		ClientBoardState.communicator = CommunicatorFactory.getCommunicator();
 		ClientBoardState.communicator.start();
-//		ClientBoardState.start();
     	ClientBoardState.communicator.subscribeForNotifications("ObjectBroadcast", new ServerObjectHandler());
+    	
     	logger.log(
     			ModuleID.PROCESSING, 
     			LogLevel.SUCCESS, 
-    			"Started communicator and the ClientBoardState"
+    			"Test: Started communicator and the ClientBoardState"
     	);
-    	
+    	/*
+		for (int i = 0; i < arrayPixels.size(); i++)
+		{
+			Pixel p = arrayPixels.get(i);
+			System.out.println(p.position.r + " " + p.position.c);
+		}
+		System.out.println("enter");
+		for (int i = 0; i < ChangesHandler.receivedOutput.size(); i++)
+		{
+			Pixel p = ChangesHandler.receivedOutput.get(i);
+			System.out.println(p.position.r + " " + p.position.c);
+		}
+		*/
 	}
 }

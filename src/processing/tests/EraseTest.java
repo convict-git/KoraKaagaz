@@ -1,46 +1,82 @@
 package processing.tests;
 
 import java.util.*;
+
+import infrastructure.validation.logger.*;
 import infrastructure.validation.testing.TestCase;
 import processing.*;
 import processing.testsimulator.*;
+import processing.testsimulator.ui.ChangesHandler;
 import processing.utility.*;
+
+/**
+ * Test for erase API in IDrawCurve interface. 
+ * 
+ * @author Sakshi Rathore
+ *
+ */
 
 public class EraseTest extends TestCase {
 
 	@Override
 	public boolean run() {
-		// use methods in TestCase to set the variables for test
-		setDescription("Test the drawCurve function in EraseTest interface.");
+		
+		/* Use methods in TestCase to set the variables for test */
+		setDescription("Test the erase API  in IDrawCurve interface.");
 		setCategory("Processing");
 		setPriority(2);
 		
-		Position pos = new Position(1,2);
-		Intensity intensity = new Intensity(255, 255, 255);
-		Pixel pixel = new Pixel(pos, intensity);
+		/* Get an instance of logger */
+		ILogger logger = LoggerFactory.getLoggerInstance();
+		
+		/* Create input (ArrayList<Pixel>) */
+		logger.log(ModuleID.PROCESSING, LogLevel.INFO, "EraseTest: Create input for test.");
+		
+		/* stores the pixels for erase object*/
 		ArrayList<Pixel> arrayPixels = new ArrayList<Pixel>();
-		arrayPixels.add(pixel);
+		
+		/* stores the position for erase object*/
 		ArrayList<Position> arrayPositions = new ArrayList<Position>();
-		arrayPositions.add(pos);
 		
-		TestUtil.initialiseProcessorForTest();
-		
-		IDrawErase processor = ProcessingFactory.getProcessor();
-		
-		IUser user = ProcessingFactory.getProcessor();
-		
-		user.subscribeForChanges("ProcessorTest", new ChangesHandler());
-		ChangesHandler.receivedOutput = null;
-		
-		try {
-			processor.erase(arrayPositions);	
-		} catch (Exception error) {
-			this.setError(error.toString());
-			ChangesHandler.receivedOutput = null;
-			System.out.println(error);
-			return false;
+		int b;
+		Intensity intensity = new Intensity(255, 255, 255);
+		for (int a=40; a<60; a++)
+		{
+			b = a + 10;
+			Position pos = new Position(a, b);
+			Pixel pixel  = new Pixel(pos, intensity);
+			arrayPixels.add(pixel);
+			arrayPositions.add(pos);
 		}
 
+		/* Initialize the variables in Processor Module */
+		logger.log(ModuleID.PROCESSING, LogLevel.INFO, "EraseTest: Initialise processor for test.");
+		TestUtil.initialiseProcessorForTest();
+		
+		/* get an instance of IDrawErase interface */
+		IDrawErase processor = ProcessingFactory.getProcessor();
+		
+		/* Get an instance of IUser interface */
+		IUser user = ProcessingFactory.getProcessor();
+		
+		/* Subscribe for receiving changes from processor */
+		user.subscribeForChanges("ProcessorTest", new ChangesHandler());
+		
+		try {
+			/* pass the input array for erase */
+			processor.erase(arrayPositions);	
+			
+		} catch (Exception error) {
+			/* return and set error in case of unsuccessful processing */
+			this.setError(error.toString());
+			ChangesHandler.receivedOutput = null;
+			return false;
+		
+		}
+		
+		logger.log(ModuleID.PROCESSING, LogLevel.INFO, "EraseTest: Waiting for UI to receive output.");
+		
+		/* wait till UI receives the output */
 		while (ChangesHandler.receivedOutput == null) {
 			try{
 				Thread.currentThread().sleep(50);
@@ -49,15 +85,21 @@ public class EraseTest extends TestCase {
 			 }
 		}
 		
-		if (ChangesHandler.receivedOutput.equals(arrayPixels)) {
+		Set<Pixel> inputSet = new HashSet<Pixel>();
+		inputSet.addAll(arrayPixels);
+		Set<Pixel> outputSet = new HashSet<Pixel>();
+		outputSet.addAll(ChangesHandler.receivedOutput);
+		
+		/* check whether the output received is same as expected output */
+		if (inputSet.equals(outputSet)) {
+			logger.log(ModuleID.PROCESSING, LogLevel.SUCCESS, "EraseTest: Successfull!.");
 			ChangesHandler.receivedOutput = null;
-			System.out.println("reached");
 			return true;
 		} else {
-			setError("Erase Output failed. Output is different from the input.");
+			setError("Draw Curve Output failed. Output is different from the input.");
+			logger.log(ModuleID.PROCESSING, LogLevel.WARNING, "EraseTest: FAILED!.");
 			ChangesHandler.receivedOutput = null;
 			return false;
 		}
 	}
-	
 }

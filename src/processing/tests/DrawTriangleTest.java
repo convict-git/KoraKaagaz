@@ -1,30 +1,38 @@
 package processing.tests;
 
-import java.util.ArrayList;
+import java.util.*;
 
-import infrastructure.validation.testing.TestCase;
-import processing.ClientBoardState;
-import processing.IDrawShapes;
-import processing.IUser;
-import processing.ProcessingFactory;
-import processing.shape.LineDrawer;
-import processing.shape.ShapeHelper;
-import processing.shape.TriangleDrawer;
-import processing.testsimulator.ChangesHandler;
-import processing.testsimulator.TestUtil;
-import processing.utility.Intensity;
-import processing.utility.Pixel;
-import processing.utility.Position;
+import infrastructure.validation.logger.*;
+import infrastructure.validation.testing.*;
+import processing.*;
+import processing.shape.*;
+import processing.testsimulator.*;
+import processing.testsimulator.ui.*;
+import processing.utility.*;
+
+/**
+ * Test for drawTriangle API in IDrawShapes interface. 
+ *   
+ * @author Sakshi Rathore
+ */
 
 public class DrawTriangleTest extends TestCase {
 
 	@Override
 	public boolean run() {
-		// use methods in TestCase to set the variables for test
-		setDescription("Test the drawCurve function in EraseTest interface.");
+		
+		/* Use methods in TestCase to set the variables for test */
+		setDescription("Test the drawTriangle function in IDrawShapes interface.");
 		setCategory("Processing");
 		setPriority(2);
 		
+		/* Get an instance of logger */
+		ILogger logger = LoggerFactory.getLoggerInstance();
+		
+		/* Create input (ArrayList<Pixel>) */
+		logger.log(ModuleID.PROCESSING, LogLevel.INFO, "DrawTriangleTest: Create input for test.");
+		
+		/* three vertices for triangle */
 		Position posA = new Position(1,2);
 		Position posB = new Position(4,6);
 		Position posC = new Position(9,8);
@@ -33,34 +41,59 @@ public class DrawTriangleTest extends TestCase {
 		Pixel vertB = new Pixel(posB, intensity);
 		Pixel vertC = new Pixel(posC, intensity);
 		
-		ArrayList<Pixel> arrayPixels = TriangleDrawer.drawTriangle(vertA.position,
-				vertB.position, vertC.position, vertA.intensity);
-		// Perform post processing on the pixels
-		arrayPixels = ShapeHelper.postDrawProcessing(
-				arrayPixels,
-				ClientBoardState.brushSize,
-				ClientBoardState.boardDimension
-		);
-		
-		TestUtil.initialiseProcessorForTest();
-		
-		IDrawShapes processor = ProcessingFactory.getProcessor();
-		
-		IUser user = ProcessingFactory.getProcessor();
-		
-		user.subscribeForChanges("ProcessorTest", new ChangesHandler());
-		
-		ChangesHandler.receivedOutput = null;
+		/* stores all the pixels for triangle object */
+		ArrayList<Pixel> arrayPixels = new ArrayList<Pixel>();
 		
 		try {
-			processor.drawTriangle(vertA, vertB, vertC);	
+			/* arrayPixels contains all pixels for given vertices of triangle */
+			arrayPixels = TriangleDrawer.drawTriangle(vertA.position,
+					vertB.position, 
+					vertC.position, 
+					vertA.intensity);
+			/* Perform post processing on the pixels */
+			arrayPixels = ShapeHelper.postDrawProcessing(
+					arrayPixels,
+					ClientBoardState.brushSize,
+					ClientBoardState.boardDimension
+			);
 		} catch (Exception error) {
-			this.setError(error.toString());
-			ChangesHandler.receivedOutput = null;
-			System.out.println(error);
+			setError(error.toString());
+			logger.log(ModuleID.PROCESSING, 
+					LogLevel.WARNING, 
+					"DrawTriangleTest: Failed to create input arrayList for given center and radius.");
 			return false;
 		}
 		
+		/* Initialize the variables in Processor Module */
+		logger.log(ModuleID.PROCESSING, LogLevel.INFO, "DrawTriangleTest: Initialise processor for test.");
+		TestUtil.initialiseProcessorForTest();
+		
+		/* get an instance of IDrawShapes interface */
+		IDrawShapes processor = ProcessingFactory.getProcessor();
+		
+		/* Get an instance of IUser interface */
+		IUser user = ProcessingFactory.getProcessor();
+		
+		/* Subscribe for receiving changes from processor */
+		user.subscribeForChanges("ProcessorTest", new ChangesHandler());
+		
+		try {
+			/* pass the input array for drawing triangle to processor module */
+			processor.drawTriangle(vertA, vertB, vertC);	
+			
+		} catch (Exception error) {
+			/* return and set error in case of unsuccessful processing */
+			this.setError(error.toString());
+			ChangesHandler.receivedOutput = null;
+			return false;
+		
+		}
+		
+		logger.log(ModuleID.PROCESSING, 
+				LogLevel.INFO, 
+				"DrawTriangleTest: Waiting for UI to receive output.");
+		
+		/* wait till UI receives the output */
 		while (ChangesHandler.receivedOutput == null) {
 			try{
 				Thread.currentThread().sleep(50);
@@ -68,24 +101,20 @@ public class DrawTriangleTest extends TestCase {
 				 // wait until output received
 			 }
 		}
-		for (int i = 0; i < arrayPixels.size(); i++)
-		{
-			Pixel p = arrayPixels.get(i);
-			System.out.println(p.position.r + " " + p.position.c);
-		}
-		System.out.println("enter");
-		for (int i = 0; i < ChangesHandler.receivedOutput.size(); i++)
-		{
-			Pixel p = ChangesHandler.receivedOutput.get(i);
-			System.out.println(p.position.r + " " + p.position.c);
-		}
 		
-		if (ChangesHandler.receivedOutput.containsAll(arrayPixels)) {
+		Set<Pixel> inputSet = new HashSet<Pixel>();
+		inputSet.addAll(arrayPixels);
+		Set<Pixel> outputSet = new HashSet<Pixel>();
+		outputSet.addAll(ChangesHandler.receivedOutput);
+		
+		/* check whether the output received is same as expected output */
+		if (inputSet.equals(outputSet)) {
+			logger.log(ModuleID.PROCESSING, LogLevel.SUCCESS, "DrawTriangleTest: Successfull!.");
 			ChangesHandler.receivedOutput = null;
-			System.out.println("reached");
 			return true;
 		} else {
-			setError("Erase Output failed. Output is different from the input.");
+			setError("Draw Curve Output failed. Output is different from the input.");
+			logger.log(ModuleID.PROCESSING, LogLevel.WARNING, "DrawTriangleTest: FAILED!.");
 			ChangesHandler.receivedOutput = null;
 			return false;
 		}

@@ -1,37 +1,35 @@
 package processing.tests;
+/**
+ * Main file to run the processing client side test
+ * 
+ * @author Sakshi
+ *
+ */
 
 public class Main {
 
 	public static void main(String[] args) {
-//		
-//		DrawCurveTest test = new DrawCurveTest();
-//		boolean result = test.run();
-//		System.out.println(result);
 		
-//		EraseTest test = new EraseTest();
-//		boolean result = test.run();
-//		System.out.println(result);
+		DrawCurveTest draw = new DrawCurveTest();
+		System.out.println(draw.run());
 		
-//		DrawCircleTest test = new DrawCircleTest();
-//		boolean result = test.run();
-//		System.out.println(result);
-//		
-//		DrawSquareTest test = new DrawSquareTest();
-//		boolean result = test.run();
-//		System.out.println(result);
-//		
-//		DrawRectangleTest test = new DrawRectangleTest();
-//		boolean result = test.run();
-//		System.out.println(result);
+		EraseTest erase = new EraseTest();
+		System.out.println(erase.run());
 		
-//		DrawLineTest test = new DrawLineTest();
-//		boolean result = test.run();
-//		System.out.println(result);
-//		
-		// not giving true
-		DrawTriangleTest test = new DrawTriangleTest();
-		boolean result = test.run();
-		System.out.println(result);
+		DrawCircleTest circle = new DrawCircleTest();
+		System.out.println(circle.run());
+
+		DrawSquareTest square = new DrawSquareTest();
+		System.out.println(square.run());
+		
+		DrawRectangleTest rectangle = new DrawRectangleTest();
+		System.out.println(rectangle.run());
+		
+		DrawLineTest line = new DrawLineTest();
+		System.out.println(line.run());
+		
+		DrawTriangleTest triangle = new DrawTriangleTest();
+		System.out.println(triangle.run());
 		
 	}
 }

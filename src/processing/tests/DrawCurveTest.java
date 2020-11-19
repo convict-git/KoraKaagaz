@@ -1,43 +1,74 @@
 package processing.tests;
 
-import java.util.ArrayList;
-import infrastructure.validation.testing.TestCase;
-import processing.*;
-import processing.testsimulator.*;
-import processing.utility.*;
+import java.util.*;
 
+import processing.*;
+import processing.utility.*;
+import processing.testsimulator.*;
+import processing.testsimulator.ui.*;
+import infrastructure.validation.logger.*;
+import infrastructure.validation.testing.TestCase;
+
+/**
+ * Test for drawCurve API in IDrawCurve interface. 
+ * 
+ * @author Sakshi Rathore
+ *
+ */
 public class DrawCurveTest extends TestCase {
 	
 	public boolean run() {
 		
-		// use methods in TestCase to set the variables for test
+		/* Use methods in TestCase to set the variables for test */
 		setDescription("Test the drawCurve function in IDrawCurve interface.");
 		setCategory("Processing");
 		setPriority(2);
 		
-		Position pos = new Position(1,2);
-		Intensity intensity = new Intensity(1,2,3);
-		Pixel pixel  = new Pixel(pos, intensity);
-		ArrayList<Pixel> arrayPixel = new ArrayList<Pixel>();
-		arrayPixel.add(pixel);
+		/* Get an instance of logger */
+		ILogger logger = LoggerFactory.getLoggerInstance();
 		
+		/* Create input (ArrayList<Pixel>) */
+		logger.log(ModuleID.PROCESSING, LogLevel.INFO, "DrawCurveTest: Create input for test.");
+		
+		ArrayList<Pixel> arrayPixels = new ArrayList<Pixel>();
+		int b;
+		Intensity intensity = new Intensity(10, 12, 14);
+		for (int a=40; a<60; a++)
+		{
+			b = a + 10;
+			Position pos = new Position(a, b);
+			Pixel pixel  = new Pixel(pos, intensity);
+			arrayPixels.add(pixel);
+		}
+
+		/* Initialize the variables in Processor Module */
+		logger.log(ModuleID.PROCESSING, LogLevel.INFO, "DrawCurveTest: Initialise processor for test.");
 		TestUtil.initialiseProcessorForTest();
 		
+		/* get an instance of IDrawErase interface */
 		IDrawErase processor = ProcessingFactory.getProcessor();
 		
+		/* Get an instance of IUser interface */
 		IUser user = ProcessingFactory.getProcessor();
 		
+		/* Subscribe for receiving changes from processor */
 		user.subscribeForChanges("ProcessorTest", new ChangesHandler());
 		
 		try {
-			processor.drawCurve(arrayPixel);	
+			/* pass the input array for drawing curve to processor module */
+			processor.drawCurve(arrayPixels);	
+			
 		} catch (Exception error) {
+			/* return and set error in case of unsuccessful processing */
 			this.setError(error.toString());
 			ChangesHandler.receivedOutput = null;
-			System.out.println(error);
 			return false;
+		
 		}
 		
+		logger.log(ModuleID.PROCESSING, LogLevel.INFO, "DrawCurveTest: Waiting for UI to receive output.");
+		
+		/* wait till UI receives the output */
 		while (ChangesHandler.receivedOutput == null) {
 			try{
 				Thread.currentThread().sleep(50);
@@ -46,11 +77,19 @@ public class DrawCurveTest extends TestCase {
 			 }
 		}
 		
-		if (ChangesHandler.receivedOutput.equals(arrayPixel)) {
+		Set<Pixel> inputSet = new HashSet<Pixel>();
+		inputSet.addAll(arrayPixels);
+		Set<Pixel> outputSet = new HashSet<Pixel>();
+		outputSet.addAll(ChangesHandler.receivedOutput);
+		
+		/* check whether the output received is same as expected output */
+		if (inputSet.equals(outputSet)) {
+			logger.log(ModuleID.PROCESSING, LogLevel.SUCCESS, "DrawCurveTest: Successfull!.");
 			ChangesHandler.receivedOutput = null;
 			return true;
 		} else {
 			setError("Draw Curve Output failed. Output is different from the input.");
+			logger.log(ModuleID.PROCESSING, LogLevel.WARNING, "DrawCurveTest: FAILED!.");
 			ChangesHandler.receivedOutput = null;
 			return false;
 		}

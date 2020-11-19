@@ -1,28 +1,38 @@
 package processing.tests;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
-import infrastructure.validation.testing.TestCase;
-import processing.ClientBoardState;
-import processing.IDrawShapes;
-import processing.IUser;
-import processing.ProcessingFactory;
-import processing.shape.LineDrawer;
-import processing.shape.ShapeHelper;
-import processing.testsimulator.ChangesHandler;
-import processing.testsimulator.TestUtil;
-import processing.utility.Intensity;
-import processing.utility.Pixel;
-import processing.utility.Position;
+import infrastructure.validation.logger.*;
+import infrastructure.validation.testing.*;
+import processing.*;
+import processing.shape.*;
+import processing.testsimulator.*;
+import processing.testsimulator.ui.*;
+import processing.utility.*;
+
+/**
+ * Test for drawLine API in IDrawShapes interface. 
+ *   
+ * @author Sakshi Rathore
+ */
 
 public class DrawLineTest extends TestCase {
 
 	@Override
 	public boolean run() {
-		// use methods in TestCase to set the variables for test
-		setDescription("Test the drawCurve function in EraseTest interface.");
+		
+		/* Use methods in TestCase to set the variables for test */
+		setDescription("Test the drawLine function in IDrawShapes interface.");
 		setCategory("Processing");
 		setPriority(2);
+		
+		/* Get an instance of logger */
+		ILogger logger = LoggerFactory.getLoggerInstance();
+		
+		/* Create input (ArrayList<Pixel>) */
+		logger.log(ModuleID.PROCESSING, LogLevel.INFO, "DrawLineTest: Create input for test.");
 		
 		Position startPos = new Position(1,2);
 		Position endPos = new Position(4,6);
@@ -30,34 +40,56 @@ public class DrawLineTest extends TestCase {
 		Pixel start = new Pixel(startPos, intensity);
 		Pixel end = new Pixel(endPos, intensity);
 		
-		ArrayList<Pixel> arrayPixels = LineDrawer.drawSegment(start.position,
-				end.position, start.intensity);
-		// Perform post processing on the pixels
-		arrayPixels = ShapeHelper.postDrawProcessing(
-				arrayPixels,
-				ClientBoardState.brushSize,
-				ClientBoardState.boardDimension
-		);
-		
-		TestUtil.initialiseProcessorForTest();
-		
-		IDrawShapes processor = ProcessingFactory.getProcessor();
-		
-		IUser user = ProcessingFactory.getProcessor();
-		
-		user.subscribeForChanges("ProcessorTest", new ChangesHandler());
-		
-		ChangesHandler.receivedOutput = null;
+		ArrayList<Pixel> arrayPixels = new ArrayList<Pixel>();
 		
 		try {
-			processor.drawLine(start, end);	
+			/* 
+			 * arrayPixels contains all pixels for given start and end position
+			 * for line segment 
+			 */
+			arrayPixels = LineDrawer.drawSegment(start.position,
+					end.position, start.intensity);
+			/* Perform post processing on the pixels */
+			arrayPixels = ShapeHelper.postDrawProcessing(
+					arrayPixels,
+					ClientBoardState.brushSize,
+					ClientBoardState.boardDimension
+			);
 		} catch (Exception error) {
-			this.setError(error.toString());
-			ChangesHandler.receivedOutput = null;
-			System.out.println(error);
+			setError(error.toString());
+			logger.log(ModuleID.PROCESSING, 
+					LogLevel.WARNING, 
+					"DrawLineTest: Failed to create input arrayList for given center and radius.");
 			return false;
 		}
 		
+		/* Initialize the variables in Processor Module */
+		logger.log(ModuleID.PROCESSING, LogLevel.INFO, "DrawLineTest: Initialise processor for test.");
+		TestUtil.initialiseProcessorForTest();
+		
+		/* get an instance of IDrawShapes interface */
+		IDrawShapes processor = ProcessingFactory.getProcessor();
+		
+		/* Get an instance of IUser interface */
+		IUser user = ProcessingFactory.getProcessor();
+		
+		/* Subscribe for receiving changes from processor */
+		user.subscribeForChanges("ProcessorTest", new ChangesHandler());
+		
+		try {
+			/* pass the input array for drawing line to processor module */
+			processor.drawLine(start, end);	
+			
+		} catch (Exception error) {
+			/* return and set error in case of unsuccessful processing */
+			this.setError(error.toString());
+			ChangesHandler.receivedOutput = null;
+			return false;
+		
+		}
+		
+		logger.log(ModuleID.PROCESSING, LogLevel.INFO, "DrawLineTest: Waiting for UI to receive output.");
+		/* wait till UI receives the output */
 		while (ChangesHandler.receivedOutput == null) {
 			try{
 				Thread.currentThread().sleep(50);
@@ -66,15 +98,21 @@ public class DrawLineTest extends TestCase {
 			 }
 		}
 		
-		if (ChangesHandler.receivedOutput.containsAll(arrayPixels)) {
+		Set<Pixel> inputSet = new HashSet<Pixel>();
+		inputSet.addAll(arrayPixels);
+		Set<Pixel> outputSet = new HashSet<Pixel>();
+		outputSet.addAll(ChangesHandler.receivedOutput);
+		
+		/* check whether the output received is same as expected output */
+		if (inputSet.equals(outputSet)) {
+			logger.log(ModuleID.PROCESSING, LogLevel.SUCCESS, "DrawLineTest: Successfull!.");
 			ChangesHandler.receivedOutput = null;
-			System.out.println("reached");
 			return true;
 		} else {
-			setError("Erase Output failed. Output is different from the input.");
+			setError("Draw Curve Output failed. Output is different from the input.");
+			logger.log(ModuleID.PROCESSING, LogLevel.WARNING, "DrawLineTest: FAILED!.");
 			ChangesHandler.receivedOutput = null;
 			return false;
 		}
 	}
-
 }
