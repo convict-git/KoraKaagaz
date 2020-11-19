@@ -6,8 +6,8 @@
     </loggerOptions>
     <logLevels>
         <logLevel level="ERROR"  >true</logLevel>
-        <logLevel level="WARNING">false</logLevel>
-        <logLevel level="SUCCESS">false</logLevel>
-        <logLevel level="INFO"   >false</logLevel>
+        <logLevel level="WARNING">true</logLevel>
+        <logLevel level="SUCCESS">true</logLevel>
+        <logLevel level="INFO"   >true</logLevel>
     </logLevels>
 </logging>
