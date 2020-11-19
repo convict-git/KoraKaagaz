@@ -84,6 +84,7 @@ public class BoardObject implements Serializable {
 		this.boardOp = new CreateOperation();
 		this.objectId = objectId;
 		this.timestamp = timestamp;
+		this.userId = userId;
 		this.isReset = isReset;
 		this.prevPixelIntensities = null;
 	}

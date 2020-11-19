@@ -1,5 +1,7 @@
 package processing.utility;
 
+import java.io.Serializable;
+
 /**
  * Class Representing a Brush Radius
  *
@@ -7,8 +9,11 @@ package processing.utility;
  * @reviewer Rakesh Kumar, Himanshu Jain
  */
 
-public class BrushRadius {
+public class BrushRadius implements Serializable   {
 
+	/** Serial UID */
+	private static final long serialVersionUID = 3798847967650288408L;
+	
 	/** The Brush Radius */
 	public double brushRadius; 
 	
