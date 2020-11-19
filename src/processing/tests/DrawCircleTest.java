@@ -48,9 +48,9 @@ public class DrawCircleTest extends TestCase {
 			/* Perform post processing on the pixels */ 
 			arrayPixels = ShapeHelper.postDrawProcessing(
 					arrayPixels,
-	            ClientBoardState.brushSize,
-	            ClientBoardState.boardDimension
-	        );	
+			    ClientBoardState.brushSize,
+			    ClientBoardState.boardDimension
+			);	
 		} catch (Exception error) {
 			setError(error.toString());
 			logger.log(ModuleID.PROCESSING, 
