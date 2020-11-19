@@ -24,7 +24,8 @@ public class ServerObjectHandler implements INotificationHandler{
 		 */
 		ObjectHandler objectHandler = new ObjectHandler();
 		objectHandler.onMessageReceived(message);
-		logger.log(ModuleID.PROCESSING, LogLevel.INFO, 
+		logger.log(ModuleID.PROCESSING, 
+				LogLevel.INFO,
 				"Test: Passed the message to processing module ObjectHandler.");
 	}
 	

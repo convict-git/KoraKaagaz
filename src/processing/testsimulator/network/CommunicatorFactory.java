@@ -17,7 +17,11 @@ public class CommunicatorFactory {
 	
 	static ILogger logger = LoggerFactory.getLoggerInstance();
 	
-	/** @return Communicator(which implements ICommunicator interface) object. **/
+	/**
+	 * 
+	 * @return Communicator(which implements ICommunicator interface) object.
+	 * 
+	 */
 	public static Communicator getCommunicator() {
 		
 		if (network == null)
