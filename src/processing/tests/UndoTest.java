@@ -12,27 +12,29 @@ import infrastructure.validation.logger.*;
 import infrastructure.validation.testing.TestCase;
 
 /**
- * Test for delete API in IOperation interface. 
+ * Test for undo API in IUndoRedo interface. 
  * 
  * @author Sakshi Rathore
  *
  */
 
-public class DeleteTest extends TestCase {
+public class UndoTest extends TestCase {
 	
 	/**
 	 * Create two objects, objectA and objectB on Board using drawCurve API 
-	 * and position of objectA is passed for selecting objectA as first the 
-	 * object is to be selected for delete. Then delete API of processing 
-	 * module is called. Expected output is a white object with same 
-	 * ArrayList<Position> as objectA.
+	 * and undo API of processing module is called twice. The objects are
+	 * line intersecting at 90 degree.
 	 * 
-	 * @return true if the delete operation works successfully.
+	 * Expected output first time is objectB will intensity(255,255,255) at 
+	 * positions other than intersecting point and next undo result should be 
+	 * objectA positions with intensity(255,255,255)
+	 * 
+	 * @return true if the undo operation works successfully.
 	 */
 	public boolean run() {
 		
 		/* Use methods in TestCase to set the variables for test */
-		setDescription("Test the delete API in IOperation interface.");
+		setDescription("Test the undo API in IUndoRedo interface.");
 		setCategory("Processing");
 		setPriority(2);
 		
@@ -40,14 +42,11 @@ public class DeleteTest extends TestCase {
 		ILogger logger = LoggerFactory.getLoggerInstance();
 		
 		/* Create input (ArrayList<Pixel>) and expected output */
-		logger.log(ModuleID.PROCESSING, LogLevel.INFO, "DeleteTest: Create input for test.");
+		logger.log(ModuleID.PROCESSING, LogLevel.INFO, "UndoTest: Create input for test.");
 		
 		int b;
-		Pixel pixel;
+		Pixel pixelA, pixelB;
 		Position pos;
-		
-		/* stores the position to be passed to API for select */
-		ArrayList<Position> selectObjectPosition = new ArrayList<Position>();
 		
 		/* stores the ArrayList of objectA */
 		ArrayList<Pixel> objectA = new ArrayList<Pixel>();
@@ -57,37 +56,44 @@ public class DeleteTest extends TestCase {
 		/* stores the ArrayList of objectB on Board */
 		ArrayList<Pixel> objectB = new ArrayList<Pixel>();
 		/* intensity for object B */
-		Intensity intensityB = new Intensity(10, 12, 14);
+		Intensity intensityB = new Intensity(10, 12, 15);
 		
-		/* expected output*/
-		ArrayList<Pixel> expectedOutput = new ArrayList<Pixel>();		
+		/* expected output */
+		ArrayList<Pixel> expectedOutputA = new ArrayList<Pixel>();		
+		ArrayList<Pixel> expectedOutputB = new ArrayList<Pixel>();		
+		Intensity white = new Intensity(255, 255, 255);
 		
+		int j =2;
 		for (int a=2; a<7; a++)
 		{
 			b = 2;
 			pos = new Position(a, b);
-			pixel  = new Pixel(pos, intensityA);
-			objectA.add(pixel);
-
-			expectedOutput.add(new Pixel(pos, new Intensity(255,255,255)));
-
-			pos = new Position(a, b+1);
-			pixel = new Pixel(pos, intensityB);
-			objectB.add(pixel);
+			pixelA  = new Pixel(pos, intensityA);
+			objectA.add(pixelA);
+			expectedOutputA.add(new Pixel(pos, white));
+			
+			pos = new Position(a+j, b+j);
+			pixelB = new Pixel(pos, intensityB);
+			objectB.add(pixelB);
+			
+			if (pixelA.position.equals(pixelB.position)) {
+				expectedOutputB.add(new Pixel(pos, intensityA));
+			} else { 
+				expectedOutputB.add(new Pixel(pos, white));
+			}
+			j = j - 1;
 		}
 		
-		/* add positions of objectA to select */
-		selectObjectPosition.add(new Position(2,2));
-		
 		/* Initialize the variables in Processor Module */
-		logger.log(ModuleID.PROCESSING, LogLevel.INFO, "DeleteTest: Initialise processor for test.");
+		logger.log(ModuleID.PROCESSING, LogLevel.INFO, "UndoTest: Initialise processor for test.");
 		TestUtil.initialiseProcessorForTest();
 		ClientBoardState.communicator.subscribeForNotifications("ObjectBroadcast", new ClientObjectHandler());
+		
 		/* get an instance of IDrawErase interface */
 		IDrawErase draw = ProcessingFactory.getProcessor();
 		
 		/* get an instance of IOperation interface */
-		IOperation operation = ProcessingFactory.getProcessor();
+		IUndoRedo undo = ProcessingFactory.getProcessor();
 		
 		/* Get an instance of IUser interface */
 		IUser user = ProcessingFactory.getProcessor();
@@ -140,40 +146,10 @@ public class DeleteTest extends TestCase {
 		}
 		
 		ChangesHandler.receivedOutput = null;
-
+		
+		/* Call undo API of processing module */
 		try {
-			/* call processing select API to select object at passed input array */
-			operation.select(selectObjectPosition);
-			
-		} catch (Exception error) {
-			/* return and set error in case of unsuccessful processing */
-			this.setError(error.toString());
-			ChangesHandler.receivedOutput = null;
-			return false;
-		
-		}
-		
-		/* wait till UI receives the output */
-		while (ChangesHandler.receivedOutput == null) {
-			try{
-				Thread.sleep(50);
-			 } catch (Exception e) {
-				 // wait until output received
-			 }
-		}
-		
-		for (int i = 0; i < ChangesHandler.receivedOutput.size(); i++)
-		{
-			Pixel p = ChangesHandler.receivedOutput.get(i);
-			System.out.println(p.position.r + " " + p.position.c);
-			System.out.println(p.intensity.r + " " + p.intensity.g + " " + p.intensity.b);
-		}
-		
-		ChangesHandler.receivedOutput = null;
-		
-		/* Call delete API of processing module */
-		try {
-			operation.delete();
+			undo.undo();
 		} catch (Exception error) {
 			/* return and set error in case of unsuccessful processing */
 			this.setError(error.toString());
@@ -191,17 +167,19 @@ public class DeleteTest extends TestCase {
 		}
 		
 		Set<Pixel> inputSet = new HashSet<Pixel>();
-		inputSet.addAll(expectedOutput);
+		inputSet.addAll(expectedOutputB);
 		Set<Pixel> outputSet = new HashSet<Pixel>();
 		outputSet.addAll(ChangesHandler.receivedOutput);
 		
-		for (int i = 0; i < expectedOutput.size(); i++)
+		for (int i = 0; i < expectedOutputB.size(); i++)
 		{
-			Pixel p = expectedOutput.get(i);
+			Pixel p = expectedOutputB.get(i);
 			System.out.println(p.position.r + " " + p.position.c);
+			System.out.println(p.intensity.r + " " + p.intensity.g + " " + p.intensity.b);
+
 		}
 		
-		System.out.println("delete");
+		System.out.println("undo");
 		
 		for (int i = 0; i < ChangesHandler.receivedOutput.size(); i++)
 		{
@@ -212,12 +190,62 @@ public class DeleteTest extends TestCase {
 		
 		/* check whether the output received is same as expected output */
 		if (inputSet.equals(outputSet)) {
-			logger.log(ModuleID.PROCESSING, LogLevel.SUCCESS, "DeleteTest: Successful!.");
+			logger.log(ModuleID.PROCESSING, LogLevel.INFO, "UndoTest: First undo successful!.");
+			ChangesHandler.receivedOutput = null;
+		} else {
+			setError("Select Output failed. Output is different from the input.");
+			logger.log(ModuleID.PROCESSING, LogLevel.WARNING, "UndoTest: FAILED.");
+			ChangesHandler.receivedOutput = null;
+			return false;
+		}
+		
+		/* Call undo API of processing module */
+		try {
+			undo.undo();
+		} catch (Exception error) {
+			/* return and set error in case of unsuccessful processing */
+			this.setError(error.toString());
+			ChangesHandler.receivedOutput = null;
+			return false;
+		}
+		
+		/* wait till UI receives the output */
+		while (ChangesHandler.receivedOutput == null) {
+			try{
+				Thread.sleep(50);
+			 } catch (Exception e) {
+				 // wait until output received
+			 }
+		}
+		
+		inputSet = new HashSet<Pixel>();
+		inputSet.addAll(expectedOutputA);
+		outputSet = new HashSet<Pixel>();
+		outputSet.addAll(ChangesHandler.receivedOutput);
+		
+		for (int i = 0; i < expectedOutputB.size(); i++)
+		{
+			Pixel p = expectedOutputB.get(i);
+			System.out.println(p.position.r + " " + p.position.c);
+		}
+		
+		System.out.println("undo");
+		
+		for (int i = 0; i < ChangesHandler.receivedOutput.size(); i++)
+		{
+			Pixel p = ChangesHandler.receivedOutput.get(i);
+			System.out.println(p.position.r + " " + p.position.c);
+			System.out.println(p.intensity.r + " " + p.intensity.g + " " + p.intensity.b);
+		}
+		
+		/* check whether the output received is same as expected output */
+		if (inputSet.equals(outputSet)) {
+			logger.log(ModuleID.PROCESSING, LogLevel.SUCCESS, "UndoTest: Successful!.");
 			ChangesHandler.receivedOutput = null;
 			return true;
 		} else {
 			setError("Select Output failed. Output is different from the input.");
-			logger.log(ModuleID.PROCESSING, LogLevel.WARNING, "DeleteTest: FAILED.");
+			logger.log(ModuleID.PROCESSING, LogLevel.WARNING, "UndoTest: FAILED.");
 			ChangesHandler.receivedOutput = null;
 			return false;
 		}

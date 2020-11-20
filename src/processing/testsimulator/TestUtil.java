@@ -1,6 +1,7 @@
 package processing.testsimulator;
 
 import infrastructure.validation.logger.*;
+import processing.BoardState;
 import processing.ClientBoardState;
 import processing.testsimulator.handlers.*;
 import processing.testsimulator.network.*;
@@ -35,7 +36,7 @@ public class TestUtil {
 		ClientBoardState.communicator = CommunicatorFactory.getCommunicator();
 		ClientBoardState.communicator.start();
     	ClientBoardState.communicator.subscribeForNotifications("ObjectBroadcast", new ServerObjectHandler());
-    	
+    	ClientBoardState.maps = new BoardState();
     	logger.log(
     			ModuleID.PROCESSING, 
     			LogLevel.SUCCESS, 

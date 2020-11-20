@@ -9,7 +9,7 @@ package processing.tests;
 public class Main {
 
 	public static void main(String[] args) {
-		/*
+		
 		DrawCurveTest draw = new DrawCurveTest();
 		System.out.println("Draw Curve: " + draw.run());
 		
@@ -36,10 +36,25 @@ public class Main {
 		
 		ResetTest reset = new ResetTest();
 		System.out.println("Reset: " + reset.run());
-		*/
-//
-//		DeleteTest delete = new DeleteTest();
-//		System.out.println("Delete: " + delete.run());
+		
+
+		DeleteTest delete = new DeleteTest();
+		System.out.println("Delete: " + delete.run());
+		
+		ColorChangeTest color = new ColorChangeTest();
+		System.out.println("ColorChange: " + color.run());
+		
+		RotateTest rotate = new RotateTest();
+		System.out.println("rotate: " + rotate.run());
+		
+		UndoTest undo = new UndoTest();
+		System.out.println("Undo: " + undo.run());
+		
+//		RedoTest redo = new RedoTest();
+//		System.out.println("Redo: " + redo.run());
+//		
+//		GetUserTest username = new GetUserTest();
+//		System.out.println("UserName: " + username.run());
 		
 	}
 }

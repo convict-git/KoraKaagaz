@@ -129,5 +129,4 @@ public class DrawTriangleTest extends TestCase {
 			return false;
 		}
 	}
-
 }

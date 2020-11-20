@@ -12,27 +12,26 @@ import infrastructure.validation.logger.*;
 import infrastructure.validation.testing.TestCase;
 
 /**
- * Test for delete API in IOperation interface. 
+ * Test for colorChange API in IOperation interface. 
  * 
  * @author Sakshi Rathore
  *
  */
 
-public class DeleteTest extends TestCase {
+public class RotateTest extends TestCase {
 	
 	/**
 	 * Create two objects, objectA and objectB on Board using drawCurve API 
 	 * and position of objectA is passed for selecting objectA as first the 
-	 * object is to be selected for delete. Then delete API of processing 
-	 * module is called. Expected output is a white object with same 
-	 * ArrayList<Position> as objectA.
+	 * object is to be selected for delete. Then rotate API of processing 
+	 * module is called. 
 	 * 
-	 * @return true if the delete operation works successfully.
+	 * @return true if the rotate operation works successfully.
 	 */
 	public boolean run() {
 		
 		/* Use methods in TestCase to set the variables for test */
-		setDescription("Test the delete API in IOperation interface.");
+		setDescription("Test the rotate API in IOperation interface.");
 		setCategory("Processing");
 		setPriority(2);
 		
@@ -40,7 +39,7 @@ public class DeleteTest extends TestCase {
 		ILogger logger = LoggerFactory.getLoggerInstance();
 		
 		/* Create input (ArrayList<Pixel>) and expected output */
-		logger.log(ModuleID.PROCESSING, LogLevel.INFO, "DeleteTest: Create input for test.");
+		logger.log(ModuleID.PROCESSING, LogLevel.INFO, "ColorChangeTest: Create input for test.");
 		
 		int b;
 		Pixel pixel;
@@ -57,10 +56,18 @@ public class DeleteTest extends TestCase {
 		/* stores the ArrayList of objectB on Board */
 		ArrayList<Pixel> objectB = new ArrayList<Pixel>();
 		/* intensity for object B */
-		Intensity intensityB = new Intensity(10, 12, 14);
+		Intensity intensityB = new Intensity(10, 12, 15);
 		
 		/* expected output*/
 		ArrayList<Pixel> expectedOutput = new ArrayList<Pixel>();		
+		Angle rotateBy = new Angle(90);
+		
+		/* rotate by 90 */
+		expectedOutput.add(new Pixel(new Position(4,4), intensityA));
+		expectedOutput.add(new Pixel(new Position(4,3), intensityB));
+		expectedOutput.add(new Pixel(new Position(4,2), intensityA));
+		expectedOutput.add(new Pixel(new Position(4,1), intensityA));
+		expectedOutput.add(new Pixel(new Position(4,0), intensityA));
 		
 		for (int a=2; a<7; a++)
 		{
@@ -68,8 +75,6 @@ public class DeleteTest extends TestCase {
 			pos = new Position(a, b);
 			pixel  = new Pixel(pos, intensityA);
 			objectA.add(pixel);
-
-			expectedOutput.add(new Pixel(pos, new Intensity(255,255,255)));
 
 			pos = new Position(a, b+1);
 			pixel = new Pixel(pos, intensityB);
@@ -80,9 +85,10 @@ public class DeleteTest extends TestCase {
 		selectObjectPosition.add(new Position(2,2));
 		
 		/* Initialize the variables in Processor Module */
-		logger.log(ModuleID.PROCESSING, LogLevel.INFO, "DeleteTest: Initialise processor for test.");
+		logger.log(ModuleID.PROCESSING, LogLevel.INFO, "ColorChangeTest: Initialise processor for test.");
 		TestUtil.initialiseProcessorForTest();
 		ClientBoardState.communicator.subscribeForNotifications("ObjectBroadcast", new ClientObjectHandler());
+		
 		/* get an instance of IDrawErase interface */
 		IDrawErase draw = ProcessingFactory.getProcessor();
 		
@@ -162,18 +168,11 @@ public class DeleteTest extends TestCase {
 			 }
 		}
 		
-		for (int i = 0; i < ChangesHandler.receivedOutput.size(); i++)
-		{
-			Pixel p = ChangesHandler.receivedOutput.get(i);
-			System.out.println(p.position.r + " " + p.position.c);
-			System.out.println(p.intensity.r + " " + p.intensity.g + " " + p.intensity.b);
-		}
-		
 		ChangesHandler.receivedOutput = null;
 		
-		/* Call delete API of processing module */
+		/* Call colorChange API of processing module */
 		try {
-			operation.delete();
+			operation.rotate(rotateBy);
 		} catch (Exception error) {
 			/* return and set error in case of unsuccessful processing */
 			this.setError(error.toString());
@@ -201,7 +200,7 @@ public class DeleteTest extends TestCase {
 			System.out.println(p.position.r + " " + p.position.c);
 		}
 		
-		System.out.println("delete");
+		System.out.println("color");
 		
 		for (int i = 0; i < ChangesHandler.receivedOutput.size(); i++)
 		{
@@ -212,12 +211,12 @@ public class DeleteTest extends TestCase {
 		
 		/* check whether the output received is same as expected output */
 		if (inputSet.equals(outputSet)) {
-			logger.log(ModuleID.PROCESSING, LogLevel.SUCCESS, "DeleteTest: Successful!.");
+			logger.log(ModuleID.PROCESSING, LogLevel.SUCCESS, "ColorChangeTest: Successful!.");
 			ChangesHandler.receivedOutput = null;
 			return true;
 		} else {
 			setError("Select Output failed. Output is different from the input.");
-			logger.log(ModuleID.PROCESSING, LogLevel.WARNING, "DeleteTest: FAILED.");
+			logger.log(ModuleID.PROCESSING, LogLevel.WARNING, "ColorChangeTest: FAILED.");
 			ChangesHandler.receivedOutput = null;
 			return false;
 		}

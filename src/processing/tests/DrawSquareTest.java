@@ -33,8 +33,8 @@ public class DrawSquareTest extends TestCase {
 		logger.log(ModuleID.PROCESSING, LogLevel.INFO, "DrawSquareTest: Create input for test.");
 		
 		Position topLeft = new Position(2,2);
-		Position bottomRight = new Position(6,6);
-		float length = 4.0f; 
+		Position bottomRight = new Position(4,4);
+		float length = 2.0f; 
 		Intensity intensity = new Intensity(1,2,3);
 		Pixel topLeftPixel = new Pixel(topLeft, intensity);
 		
