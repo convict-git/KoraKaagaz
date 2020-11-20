@@ -71,12 +71,12 @@ public class DeleteTest extends TestCase {
 			pos = new Position(a, b);
 			pixel  = new Pixel(pos, intensityA);
 			objectA.add(pixel);
-			
+
+			expectedOutput.add(new Pixel(pos, new Intensity(255,255,255)));
+
 			pos = new Position(a, b+1);
 			pixel = new Pixel(pos, intensityB);
 			objectB.add(pixel);
-			
-			expectedOutput.add(new Pixel(pos, new Intensity(255,255,255)));
 		}
 		
 		/* add positions of objectA to select */

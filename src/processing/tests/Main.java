@@ -37,9 +37,9 @@ public class Main {
 		ResetTest reset = new ResetTest();
 		System.out.println("Reset: " + reset.run());
 		*/
-
-		DeleteTest delete = new DeleteTest();
-		System.out.println("Delete: " + delete.run());
+//
+//		DeleteTest delete = new DeleteTest();
+//		System.out.println("Delete: " + delete.run());
 		
 	}
 }
