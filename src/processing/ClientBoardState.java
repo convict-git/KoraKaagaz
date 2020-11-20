@@ -110,6 +110,9 @@ public class ClientBoardState {
 	 */
 	public static void start() {
 		
+		// set the userID of this user
+		userId = new UserId(userIP, username);
+		
 		/**
 		 * Subscribing for receiving objects made by the other clients
 		 * from the server, passing identifier as "ProcessingObject" and
@@ -216,9 +219,21 @@ public class ClientBoardState {
 				+ "Waiting to receive boardID from the server"
 		);
 		
+		// wait till we receive boardID from the server
 		while(boardId == null) {
 			
-			// wait till BoardID is set by the server
+			try {
+				Thread.sleep(50);
+			} catch(Exception e) {
+			
+				logger.log(
+						ModuleID.PROCESSING, 
+						LogLevel.ERROR, 
+						"[#" + Thread.currentThread().getId() + "] "
+						+ "Error while waiting for boardID from the server"
+				);
+				
+			}
 			
 		}
 	}

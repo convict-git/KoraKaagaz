@@ -212,7 +212,7 @@ public class SelectDelete {
          * make selectedObject null and send empty list as selected pixels to UI
          */
         PriorityQueueObject selectedObject = ClientBoardState.getSelectedObject();
-        if (selectedObject.objectId == object.getObjectId()) {
+        if ((selectedObject != null) && (selectedObject.objectId == object.getObjectId())) {
             ClientBoardState.setSelectedObject(null);
             try {
                 CommunicateChange.identifierToHandler
