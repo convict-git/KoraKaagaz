@@ -131,7 +131,7 @@ public class FileLogger implements ILogger {
 			 *  disable logs from all other modules
 			 */			
 			switch(moduleIdentifier) {
-			case INFRASTRUCTURE:
+			case TEST:
 				break;
 			default:
 				return;
