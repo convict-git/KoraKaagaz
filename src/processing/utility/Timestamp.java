@@ -47,7 +47,7 @@ public class Timestamp implements Comparable<Timestamp>, Serializable {
 	 * @return Timestamp as a String
 	 */
 	public String toString() {
-		return date.toString();
+		return Long.toString(date.getTime());
 	}
 	
 	/**
