@@ -32,10 +32,10 @@ public class DrawCircleTest extends TestCase {
 		/* Create input (ArrayList<Pixel>) */
 		logger.log(ModuleID.PROCESSING, LogLevel.INFO, "DrawCircleTest: Create input for test.");
 		
-		Position pos = new Position(1,2);
+		Position pos = new Position(1,1);
 		Intensity intensity = new Intensity(1,2,3);
 		Pixel pixel = new Pixel(pos, intensity);
-		Radius radius = new Radius(2.9f);
+		Radius radius = new Radius(1.0f);
 		
 		ArrayList<Pixel> arrayPixels = new ArrayList<Pixel>();
 		
@@ -74,7 +74,7 @@ public class DrawCircleTest extends TestCase {
 		
 		try {
 			/* pass the input array for drawing circle to processor module */
-			processor.drawCircle(pixel, 2.9f);	
+			processor.drawCircle(pixel, 1.0f);	
 			
 		} catch (Exception error) {
 			/* return and set error in case of unsuccessful processing */
@@ -98,7 +98,17 @@ public class DrawCircleTest extends TestCase {
 		inputSet.addAll(arrayPixels);
 		Set<Pixel> outputSet = new HashSet<Pixel>();
 		outputSet.addAll(ChangesHandler.receivedOutput);
-		
+		for (int i = 0; i < arrayPixels.size(); i++)
+		{
+			Pixel p = arrayPixels.get(i);
+			System.out.println(p.position.r + " " + p.position.c);
+		}
+		System.out.println("enter");
+		for (int i = 0; i < ChangesHandler.receivedOutput.size(); i++)
+		{
+			Pixel p = ChangesHandler.receivedOutput.get(i);
+			System.out.println(p.position.r + " " + p.position.c);
+		}
 		/* check whether the output received is same as expected output */
 		if (inputSet.equals(outputSet)) {
 			logger.log(ModuleID.PROCESSING, LogLevel.SUCCESS, "DrawCircleTest: Successfull!.");

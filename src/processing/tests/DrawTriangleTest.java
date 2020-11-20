@@ -33,9 +33,9 @@ public class DrawTriangleTest extends TestCase {
 		logger.log(ModuleID.PROCESSING, LogLevel.INFO, "DrawTriangleTest: Create input for test.");
 		
 		/* three vertices for triangle */
-		Position posA = new Position(1,2);
-		Position posB = new Position(4,6);
-		Position posC = new Position(9,8);
+		Position posA = new Position(2,2);
+		Position posB = new Position(4,4);
+		Position posC = new Position(6,3);
 		Intensity intensity = new Intensity(1,2,3);
 		Pixel vertA = new Pixel(posA, intensity);
 		Pixel vertB = new Pixel(posB, intensity);
@@ -96,7 +96,7 @@ public class DrawTriangleTest extends TestCase {
 		/* wait till UI receives the output */
 		while (ChangesHandler.receivedOutput == null) {
 			try{
-				Thread.currentThread().sleep(50);
+				Thread.sleep(50);
 			 } catch (Exception e) {
 				 // wait until output received
 			 }
@@ -106,7 +106,17 @@ public class DrawTriangleTest extends TestCase {
 		inputSet.addAll(arrayPixels);
 		Set<Pixel> outputSet = new HashSet<Pixel>();
 		outputSet.addAll(ChangesHandler.receivedOutput);
-		
+		for (int i = 0; i < arrayPixels.size(); i++)
+		{
+			Pixel p = arrayPixels.get(i);
+			System.out.println(p.position.r + " " + p.position.c);
+		}
+		System.out.println("enter");
+		for (int i = 0; i < ChangesHandler.receivedOutput.size(); i++)
+		{
+			Pixel p = ChangesHandler.receivedOutput.get(i);
+			System.out.println(p.position.r + " " + p.position.c);
+		}
 		/* check whether the output received is same as expected output */
 		if (inputSet.equals(outputSet)) {
 			logger.log(ModuleID.PROCESSING, LogLevel.SUCCESS, "DrawTriangleTest: Successfull!.");

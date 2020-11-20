@@ -32,9 +32,9 @@ public class DrawSquareTest extends TestCase {
 		/* Create input (ArrayList<Pixel>) */
 		logger.log(ModuleID.PROCESSING, LogLevel.INFO, "DrawSquareTest: Create input for test.");
 		
-		Position topLeft = new Position(1,2);
-		Position bottomRight = new Position(4,5);
-		float length = 3.3f; 
+		Position topLeft = new Position(2,2);
+		Position bottomRight = new Position(6,6);
+		float length = 4.0f; 
 		Intensity intensity = new Intensity(1,2,3);
 		Pixel topLeftPixel = new Pixel(topLeft, intensity);
 		
@@ -99,7 +99,17 @@ public class DrawSquareTest extends TestCase {
 		inputSet.addAll(arrayPixels);
 		Set<Pixel> outputSet = new HashSet<Pixel>();
 		outputSet.addAll(ChangesHandler.receivedOutput);
-		
+		for (int i = 0; i < arrayPixels.size(); i++)
+		{
+			Pixel p = arrayPixels.get(i);
+			System.out.println(p.position.r + " " + p.position.c);
+		}
+		System.out.println("enter");
+		for (int i = 0; i < ChangesHandler.receivedOutput.size(); i++)
+		{
+			Pixel p = ChangesHandler.receivedOutput.get(i);
+			System.out.println(p.position.r + " " + p.position.c);
+		}
 		/* check whether the output received is same as expected output */
 		if (inputSet.equals(outputSet)) {
 			logger.log(ModuleID.PROCESSING, LogLevel.SUCCESS, "DrawSquareTest: Successfull!.");

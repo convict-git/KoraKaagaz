@@ -1,28 +1,36 @@
 package processing.tests;
 
-import java.util.*;
-
 import processing.*;
 import processing.utility.*;
 import processing.testsimulator.*;
+import processing.testsimulator.handlers.ClientObjectHandler;
+import processing.testsimulator.handlers.ServerObjectHandler;
 import processing.testsimulator.ui.*;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
+
 import infrastructure.validation.logger.*;
 import infrastructure.validation.testing.TestCase;
 
 /**
- * Test for select API in IOperation interface. 
+ * Test for delete API in IOperation interface. 
  * 
  * @author Sakshi Rathore
  *
  */
 
-public class SelectTest extends TestCase {
+public class DeleteTest extends TestCase {
 	
 	/**
 	 * Create two objects, objectA and objectB on Board using drawCurve API 
-	 * and position of objectA is passed for selecting objectA. Excepted 
-	 * output is ArrayList<Pixel> corresponding to objectA
+	 * and position of objectA is passed for selecting objectA as first the 
+	 * object is to be selected for delete. Then delete API of processing 
+	 * module is called. Expected output is a white object with same 
+	 * ArrayList<Position> as objectA.
 	 * 
+	 * @return true if the delete operation works successfully.
 	 */
 	public boolean run() {
 		
@@ -35,7 +43,7 @@ public class SelectTest extends TestCase {
 		ILogger logger = LoggerFactory.getLoggerInstance();
 		
 		/* Create input (ArrayList<Pixel>) and expected output */
-		logger.log(ModuleID.PROCESSING, LogLevel.INFO, "SelectTest: Create input for test.");
+		logger.log(ModuleID.PROCESSING, LogLevel.INFO, "DeleteTest: Create input for test.");
 		
 		int b;
 		Pixel pixel;
@@ -54,6 +62,9 @@ public class SelectTest extends TestCase {
 		/* intensity for object B */
 		Intensity intensityB = new Intensity(10, 12, 14);
 		
+		/* expected output*/
+		ArrayList<Pixel> expectedOutput = new ArrayList<Pixel>();		
+		
 		for (int a=2; a<7; a++)
 		{
 			b = 2;
@@ -64,20 +75,22 @@ public class SelectTest extends TestCase {
 			pos = new Position(a, b+1);
 			pixel = new Pixel(pos, intensityB);
 			objectB.add(pixel);
+			
+			expectedOutput.add(new Pixel(pos, new Intensity(255,255,255)));
 		}
 		
 		/* add positions of objectA to select */
-		selectObjectPosition.add(new Position(2, 2));
+		selectObjectPosition.add(new Position(2,2));
 		
 		/* Initialize the variables in Processor Module */
-		logger.log(ModuleID.PROCESSING, LogLevel.INFO, "SelectTest: Initialise processor for test.");
+		logger.log(ModuleID.PROCESSING, LogLevel.INFO, "DeleteTest: Initialise processor for test.");
 		TestUtil.initialiseProcessorForTest();
-		
+		ClientBoardState.communicator.subscribeForNotifications("ObjectBroadcast", new ClientObjectHandler());
 		/* get an instance of IDrawErase interface */
 		IDrawErase draw = ProcessingFactory.getProcessor();
 		
 		/* get an instance of IOperation interface */
-		IOperation select = ProcessingFactory.getProcessor();
+		IOperation operation = ProcessingFactory.getProcessor();
 		
 		/* Get an instance of IUser interface */
 		IUser user = ProcessingFactory.getProcessor();
@@ -96,9 +109,7 @@ public class SelectTest extends TestCase {
 			return false;
 		
 		}
-		
-		logger.log(ModuleID.PROCESSING, LogLevel.INFO, "SelectTest: Waiting for UI to receive output.");
-		
+				
 		/* wait till UI receives the output */
 		while (ChangesHandler.receivedOutput == null) {
 			try{
@@ -121,9 +132,7 @@ public class SelectTest extends TestCase {
 			return false;
 		
 		}
-		
-		logger.log(ModuleID.PROCESSING, LogLevel.INFO, "SelectTest: Waiting for UI to receive output.");
-		
+				
 		/* wait till UI receives the output */
 		while (ChangesHandler.receivedOutput == null) {
 			try{
@@ -138,7 +147,7 @@ public class SelectTest extends TestCase {
 		ArrayList<Pixel> selectedObject = null;
 		try {
 			/* call processing select API to select object at passed input array */
-			selectedObject = select.select(selectObjectPosition);
+			selectedObject = operation.select(selectObjectPosition);
 			
 		} catch (Exception error) {
 			/* return and set error in case of unsuccessful processing */
@@ -148,36 +157,71 @@ public class SelectTest extends TestCase {
 		
 		}
 		
-		Set<Pixel> inputSet = new HashSet<Pixel>();
-		inputSet.addAll(objectA);
-		Set<Pixel> outputSet = new HashSet<Pixel>();
-		outputSet.addAll(selectedObject);
-		for (int i = 0; i < objectB.size(); i++)
-		{
-			Pixel p = objectB.get(i);
-			System.out.println(p.position.r + " " + p.position.c);
+		/* wait till UI receives the output */
+		while (ChangesHandler.receivedOutput == null) {
+			try{
+				Thread.sleep(50);
+			 } catch (Exception e) {
+				 // wait until output received
+			 }
 		}
-		System.out.println("objectB");
 		
-		for (int i = 0; i < objectA.size(); i++)
+		for (int i = 0; i < ChangesHandler.receivedOutput.size(); i++)
 		{
-			Pixel p = objectA.get(i);
+			Pixel p = ChangesHandler.receivedOutput.get(i);
+			System.out.println(p.position.r + " " + p.position.c);
+			System.out.println(p.intensity.r + " " + p.intensity.g + " " + p.intensity.b);
+		}
+		
+		ChangesHandler.receivedOutput = null;
+		
+		/* Call delete API of processing module */
+		try {
+			operation.delete();
+		} catch (Exception error) {
+			/* return and set error in case of unsuccessful processing */
+			this.setError(error.toString());
+			ChangesHandler.receivedOutput = null;
+			return false;
+		}
+		
+		/* wait till UI receives the output */
+		while (ChangesHandler.receivedOutput == null) {
+			try{
+				Thread.sleep(50);
+			 } catch (Exception e) {
+				 // wait until output received
+			 }
+		}
+		
+		Set<Pixel> inputSet = new HashSet<Pixel>();
+		inputSet.addAll(expectedOutput);
+		Set<Pixel> outputSet = new HashSet<Pixel>();
+		outputSet.addAll(ChangesHandler.receivedOutput);
+		
+		for (int i = 0; i < expectedOutput.size(); i++)
+		{
+			Pixel p = expectedOutput.get(i);
 			System.out.println(p.position.r + " " + p.position.c);
 		}
-		System.out.println("enter");
-		for (int i = 0; i < selectedObject.size(); i++)
+		
+		System.out.println("delete");
+		
+		for (int i = 0; i < ChangesHandler.receivedOutput.size(); i++)
 		{
-			Pixel p = selectedObject.get(i);
+			Pixel p = ChangesHandler.receivedOutput.get(i);
 			System.out.println(p.position.r + " " + p.position.c);
+			System.out.println(p.intensity.r + " " + p.intensity.g + " " + p.intensity.b);
 		}
+		
 		/* check whether the output received is same as expected output */
 		if (inputSet.equals(outputSet)) {
-			logger.log(ModuleID.PROCESSING, LogLevel.INFO, "SelectTest: Successful!.");
+			logger.log(ModuleID.PROCESSING, LogLevel.INFO, "DeleteTest: Successful!.");
 			ChangesHandler.receivedOutput = null;
 			return true;
 		} else {
 			setError("Select Output failed. Output is different from the input.");
-			logger.log(ModuleID.PROCESSING, LogLevel.WARNING, "SelectTest: FAILED.");
+			logger.log(ModuleID.PROCESSING, LogLevel.WARNING, "DeleteTest: FAILED.");
 			ChangesHandler.receivedOutput = null;
 			return false;
 		}

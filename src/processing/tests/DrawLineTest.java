@@ -34,8 +34,8 @@ public class DrawLineTest extends TestCase {
 		/* Create input (ArrayList<Pixel>) */
 		logger.log(ModuleID.PROCESSING, LogLevel.INFO, "DrawLineTest: Create input for test.");
 		
-		Position startPos = new Position(1,2);
-		Position endPos = new Position(4,6);
+		Position startPos = new Position(1,1);
+		Position endPos = new Position(4,1);
 		Intensity intensity = new Intensity(1,2,3);
 		Pixel start = new Pixel(startPos, intensity);
 		Pixel end = new Pixel(endPos, intensity);
@@ -102,7 +102,17 @@ public class DrawLineTest extends TestCase {
 		inputSet.addAll(arrayPixels);
 		Set<Pixel> outputSet = new HashSet<Pixel>();
 		outputSet.addAll(ChangesHandler.receivedOutput);
-		
+		for (int i = 0; i < arrayPixels.size(); i++)
+		{
+			Pixel p = arrayPixels.get(i);
+			System.out.println(p.position.r + " " + p.position.c);
+		}
+		System.out.println("enter");
+		for (int i = 0; i < ChangesHandler.receivedOutput.size(); i++)
+		{
+			Pixel p = ChangesHandler.receivedOutput.get(i);
+			System.out.println(p.position.r + " " + p.position.c);
+		}
 		/* check whether the output received is same as expected output */
 		if (inputSet.equals(outputSet)) {
 			logger.log(ModuleID.PROCESSING, LogLevel.SUCCESS, "DrawLineTest: Successfull!.");
