@@ -168,6 +168,10 @@ public class LineDrawer {
 	    Position pointB,
 	    Intensity intensity
 	) {
+		// Create new position objects since we may be swapping them
+		pointA = new Position(pointA);
+		pointB = new Position(pointB);
+		
 		int drAbs = Math.abs(pointB.r - pointA.r); // Difference along row axis
 		int dcAbs = Math.abs(pointB.c - pointA.c); // Difference along col axis
 		
