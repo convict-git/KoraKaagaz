@@ -3,7 +3,7 @@ package infrastructure.content;
 import networking.INotificationHandler;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.util.HashMap;
+import java.util.HashMap;
 import infrastructure.validation.logger.ILogger;
 import infrastructure.validation.logger.LogLevel;
 import infrastructure.validation.logger.LoggerFactory;
@@ -76,7 +76,7 @@ public class NetworkMessageHandler implements INotificationHandler {
 	private static IContentNotificationHandler handler;
 	 
 	/**
-	 * @param String message - JSON string message (Meta fields are newUser or message or userExit)
+	 * @param message - JSON string message (Meta fields are newUser or message or userExit)
 	 *
 	 * if meta field is newUser, then remaining field of parameter message would only be imageMap (it is a string of json array whose elements are json object having fields username and corresponding image). 
 	 *		onNewUserJoined(String message) - message fields are username and image  
@@ -88,13 +88,14 @@ public class NetworkMessageHandler implements INotificationHandler {
 	 * or if not able extract field from object, or if not able to extract handler from hashmap (handlerMap)
 	 * if message will be successfully sent to UI, then creating success log message
 	 */
-	@override
+	@Override
 	public void onMessageReceived(String message) {
 		logMessage = "onMessageReceived method of NetworkMessageHandler class is executing";
 		logger.log(ModuleID.INFRASTRUCTURE, LogLevel.INFO, logMessage);
+		JSONObject jsonObject;
 		
 		try {
-			JSONObject jsonObject = new JSONObject(message);
+			jsonObject = new JSONObject(message);
 		} 
 		catch(Exception e) {
 			logMessage = "converting JSON string to JSON object process failed";
