@@ -140,9 +140,9 @@ public class NetworkMessageHandler implements INotificationHandler {
 			}
 			
 			jsonObject.remove("imageMap");
-			for(int i = 0; i < jsonObjectArray.size(); i++) {
+			for(int i = 0; i < jsonObjectArray.length(); i++) {
 				try {
-					object = jsonObjectArray.getJSONArray(i);
+					object = jsonObjectArray.getJSONObject(i);
 				}
 				catch(Exception e) {
 					logMessage = "failed to get element of json array";
