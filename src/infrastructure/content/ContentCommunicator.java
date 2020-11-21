@@ -112,7 +112,7 @@ public class ContentCommunicator implements IContentCommunicator{
 	protected static void setImageMap(HashMap<String, String> imagemap) {
 		logMessage = "setImageMap method of ContentCommunicator class is executing";
 		logger.log(ModuleID.INFRASTRUCTURE, LogLevel.INFO, logMessage);
-		imageMap = imagemap;
+		imageMap = new HashMap<>(imagemap);
 	}
 	
 	/**
