@@ -65,14 +65,13 @@ public class LoggerManager implements ILogger {
 			
 			String fileToParse = configFileToParse(loggerConfigFilePath);
 			
-			File configFileToParse = new File(fileToParse);
+			File configFile = new File(fileToParse);
 			
-			if(configFileToParse.isFile()) {
+			if(configFile.isFile()) {
 				enabledLogLevelsList = parse(fileToParse);
 			} else {
 				enabledLogLevelsList = parse(loggerConfigFilePath);
 			}
-			
 		}
 		
 		if(allowFileLogging) {
