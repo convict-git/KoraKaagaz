@@ -65,6 +65,8 @@ public class ConsoleLogger implements ILogger {
 	
 	/**
 	 *  Creates an object that logs to the console, if enabled and available
+	 *  Protected type since it needs to be only invoked by LoggerManager class
+	 *  @see LoggerManager
 	 */
 	protected ConsoleLogger(List<LogLevel> enabledLogLevelsList, boolean enableTestMode) {
 		

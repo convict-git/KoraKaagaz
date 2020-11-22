@@ -54,7 +54,7 @@ public class FileLogger implements ILogger {
 	/**
 	 *  constructor for FileLogger.
 	 *  Protected type since it needs to be only invoked by LoggerManager class
-	 *  @see logger.LoggerManager
+	 *  @see LoggerManager
 	 */
 	protected FileLogger(List<LogLevel> enabledLogLevelsList, boolean enableTestMode) {
 		
