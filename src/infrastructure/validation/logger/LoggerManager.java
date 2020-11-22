@@ -124,6 +124,9 @@ public class LoggerManager implements ILogger {
 		} catch (FactoryConfigurationError fce) {
 			// XML parser object cannot be created. Abort and stick to default
 			// if this occurs, do nothing and skip to default values
+		} catch (SecurityException se) {
+			// in the presence of a security manager, it's checkRead method can deny read access to the file
+			// if it occurs, do nothing and skip to default values
 		}
 		
 		return fileToParse;
@@ -238,6 +241,9 @@ public class LoggerManager implements ILogger {
 		} catch (FactoryConfigurationError fce) {
 			// XML parser object cannot be created. Abort and stick to default
 			// if this occurs, do nothing and skip to default values
+		} catch (SecurityException se) {
+			// in the presence of a security manager, it's checkRead method can deny read access to the file
+			// if it occurs, do nothing and skip to default values
 		}
 		
 		return enabledLogLevelsList;
