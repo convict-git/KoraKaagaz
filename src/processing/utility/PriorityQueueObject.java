@@ -11,10 +11,10 @@ import java.io.Serializable;
 */
 
 public class PriorityQueueObject implements Serializable {
-	
+
 	/** Serial UID */
 	private static final long serialVersionUID = -2213699374085459395L;
-	
+
 	public ObjectId objectId;
 	public Timestamp timestamp;
 
@@ -29,7 +29,20 @@ public class PriorityQueueObject implements Serializable {
 		this.objectId = obj.objectId;
 		this.timestamp = obj.timestamp;
 	}
-	
+
+	/** Overriding equals method for PriorityQueueObject */
+	@Override
+	public boolean equals(Object obj) {
+		if(obj instanceof PriorityQueueObject) {
+			PriorityQueueObject p = (PriorityQueueObject)obj;
+			return
+				timestamp.equals(p.timestamp)
+				&&
+				objectId.equals(p.objectId);
+		}
+		else
+			return false;
+
 	/** HashCode Method */
 	@Override
 	public int hashCode() {

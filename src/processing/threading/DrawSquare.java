@@ -25,7 +25,7 @@ public class DrawSquare implements Runnable {
      */
     public DrawSquare (Pixel topLeft, float sideLength) {
         this.topLeft = topLeft;
-        this.sideLength = (int) sideLength;
+        this.sideLength = Math.round(sideLength);
     }
 
     /**
