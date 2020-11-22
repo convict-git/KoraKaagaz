@@ -65,13 +65,25 @@ public class LoggerManager implements ILogger {
 			
 			String fileToParse = configFileToParse(loggerConfigFilePath);
 			
-			File configFile = new File(fileToParse);
-			
-			if(configFile.isFile()) {
-				enabledLogLevelsList = parse(fileToParse);
-			} else {
+			try {
+				
+				File configFile = new File(fileToParse);
+				if(configFile.isFile()) {
+					enabledLogLevelsList = parse(fileToParse);
+				} else {
+					enabledLogLevelsList = parse(loggerConfigFilePath);
+				}
+				
+			} catch (NullPointerException npe) {
+				// occurs in the case where the pathname argument becomes null
+				// load the loggerConfigFilePath
+				enabledLogLevelsList = parse(loggerConfigFilePath);
+			} catch (SecurityException se) {
+				// a security manager, if it exists can deny read access to the file
+				// equivalent to the case if isFile method returns False and so, same can be done
 				enabledLogLevelsList = parse(loggerConfigFilePath);
 			}
+
 		}
 		
 		if(allowFileLogging) {
