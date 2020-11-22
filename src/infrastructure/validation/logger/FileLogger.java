@@ -61,8 +61,16 @@ public class FileLogger implements ILogger {
 		timeStampFormat = DateTimeFormatter.ofPattern("yyyy:MM:dd HH:mm:ss");
 		
 		// sets the path to the file
-		String home = System.getProperty("user.home");
-		String logFilePath = home+"/.config/";
+		String logFilePath = "";
+		
+		try {
+			String home = System.getProperty("user.home");
+			logFilePath = home+"/.config/";
+		} catch (SecurityException se) {
+			// in case a security manager is present, it's checkRead method can deny read access to the file
+			// if it occurs, logFilePath reverts to the current directory where it is run
+			logFilePath = "./.config/";
+		}
 		
 		// sets the logFilename as per the spec
 		DateTimeFormatter logFilenameFormat;
