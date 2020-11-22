@@ -40,8 +40,10 @@ public class PriorityQueueObject implements Serializable {
 				&&
 				objectId.equals(p.objectId);
 		}
-		else
+		else {
 			return false;
+		}
+	}
 
 	/** HashCode Method */
 	@Override
