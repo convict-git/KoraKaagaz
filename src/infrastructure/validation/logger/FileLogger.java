@@ -2,9 +2,9 @@ package infrastructure.validation.logger;
 
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.time.DateTimeException;
 import java.time.LocalDateTime;
 
-import java.io.File;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.io.IOException;
@@ -53,7 +53,7 @@ public class FileLogger implements ILogger {
 	/**
 	 *  constructor for FileLogger.
 	 *  Protected type since it needs to be only invoked by LoggerManager class
-	 *  @see logger.LoggerManager
+	 *  @see LoggerManager
 	 */
 	protected FileLogger(List<LogLevel> enabledLogLevelsList, boolean enableTestMode) {
 		
@@ -61,15 +61,30 @@ public class FileLogger implements ILogger {
 		timeStampFormat = DateTimeFormatter.ofPattern("yyyy:MM:dd HH:mm:ss");
 		
 		// sets the path to the file
-		String home = System.getProperty("user.home");
-		String logFilePath = home+"/.config/";
+		String logFilePath = "";
+		
+		try {
+			String home = System.getProperty("user.home");
+			logFilePath = home+"/.config/";
+		} catch (SecurityException se) {
+			// in case a security manager is present, it's checkRead method can deny read access to the file
+			// if it occurs, logFilePath reverts to the current directory where it is run
+			logFilePath = "./.config/";
+		}
 		
 		// sets the logFilename as per the spec
 		DateTimeFormatter logFilenameFormat;
 		logFilenameFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm-ss");
 		
-		LocalDateTime now = LocalDateTime.now();
-		String logTimeStamp = now.format(logFilenameFormat);
+		String logTimeStamp = "";
+		
+		try {
+			LocalDateTime now = LocalDateTime.now();
+			logTimeStamp = now.format(logFilenameFormat);
+		} catch (DateTimeException dte) {
+			// format method failed due to error that occurred during printing
+			// nothing can be done, stick to the default
+		}
 		
 		// set the path to the log file
 		logFile = logFilePath+logTimeStamp+"-release.log";
@@ -106,8 +121,15 @@ public class FileLogger implements ILogger {
 	@Override
 	synchronized public void log(ModuleID moduleIdentifier, LogLevel level, String message) {
 
-		LocalDateTime now = LocalDateTime.now();
-		String formatDateTime = now.format(timeStampFormat);
+		String formatDateTime = "";
+		
+		try {
+			LocalDateTime now = LocalDateTime.now();
+			formatDateTime = now.format(timeStampFormat);
+		} catch (DateTimeException dte) {
+			// format method failed due to error that occurred during printing
+			// nothing can be done, stick to the default
+		}
 		
 		String logTimeStamp = "";
 		

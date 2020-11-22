@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 import javax.xml.stream.events.XMLEvent;
+import javax.xml.stream.FactoryConfigurationError;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
@@ -64,14 +65,25 @@ public class LoggerManager implements ILogger {
 			
 			String fileToParse = configFileToParse(loggerConfigFilePath);
 			
-			File configFileToParse = new File(fileToParse);
-			
-			if(configFileToParse.isFile()) {
-				enabledLogLevelsList = parse(fileToParse);
-			} else {
+			try {
+				
+				File configFile = new File(fileToParse);
+				if(configFile.isFile()) {
+					enabledLogLevelsList = parse(fileToParse);
+				} else {
+					enabledLogLevelsList = parse(loggerConfigFilePath);
+				}
+				
+			} catch (NullPointerException npe) {
+				// occurs in the case where the pathname argument becomes null
+				// load the loggerConfigFilePath
+				enabledLogLevelsList = parse(loggerConfigFilePath);
+			} catch (SecurityException se) {
+				// a security manager, if it exists can deny read access to the file
+				// equivalent to the case if isFile method returns False and so, same can be done
 				enabledLogLevelsList = parse(loggerConfigFilePath);
 			}
-			
+
 		}
 		
 		if(allowFileLogging) {
@@ -97,10 +109,10 @@ public class LoggerManager implements ILogger {
 	private String configFileToParse(String defaultFilePath) {
 		
 		String fileToParse = defaultFilePath;
-		XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
 		
 		try {
 			
+			XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
 			XMLEventReader reader = xmlInputFactory.createXMLEventReader(new FileInputStream(defaultFilePath));
 			while(reader.hasNext()) {
 				
@@ -120,6 +132,12 @@ public class LoggerManager implements ILogger {
 			// do nothing and skip to default values
 		} catch (FileNotFoundException fnfe) {
 			// do nothing and skip to default values
+		} catch (FactoryConfigurationError fce) {
+			// XML parser object cannot be created. Abort and stick to default
+			// if this occurs, do nothing and skip to default values
+		} catch (SecurityException se) {
+			// in the presence of a security manager, it's checkRead method can deny read access to the file
+			// if it occurs, do nothing and skip to default values
 		}
 		
 		return fileToParse;
@@ -135,13 +153,13 @@ public class LoggerManager implements ILogger {
 	private List<LogLevel> parse(String filePath) {
 		
 		List<LogLevel> enabledLogLevelsList = new ArrayList<LogLevel>();
-		XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
 		
 		boolean isInLoggerOptions = false;
 		boolean isInLogLevels = false;
 		
 		try {
 			
+			XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
 			XMLEventReader reader = xmlInputFactory.createXMLEventReader(new FileInputStream(filePath));
 			while(reader.hasNext()) {
 				
@@ -231,6 +249,12 @@ public class LoggerManager implements ILogger {
 			// do nothing and skip to default values
 		} catch (FileNotFoundException fnfe) {
 			// do nothing and skip to default values
+		} catch (FactoryConfigurationError fce) {
+			// XML parser object cannot be created. Abort and stick to default
+			// if this occurs, do nothing and skip to default values
+		} catch (SecurityException se) {
+			// in the presence of a security manager, it's checkRead method can deny read access to the file
+			// if it occurs, do nothing and skip to default values
 		}
 		
 		return enabledLogLevelsList;

@@ -2,6 +2,7 @@ package infrastructure.validation.logger;
 
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.time.DateTimeException;
 import java.time.LocalDateTime;
 import java.io.Console;
 
@@ -64,6 +65,8 @@ public class ConsoleLogger implements ILogger {
 	
 	/**
 	 *  Creates an object that logs to the console, if enabled and available
+	 *  Protected type since it needs to be only invoked by LoggerManager class
+	 *  @see LoggerManager
 	 */
 	protected ConsoleLogger(List<LogLevel> enabledLogLevelsList, boolean enableTestMode) {
 		
@@ -118,9 +121,16 @@ public class ConsoleLogger implements ILogger {
 	@Override
 	synchronized public void log(ModuleID moduleIdentifier, LogLevel level, String message) {
 		
-		LocalDateTime now = LocalDateTime.now();
-		String formatDateTime = now.format(timeStampFormat);
-
+		String formatDateTime = "";
+		
+		try {
+			LocalDateTime now = LocalDateTime.now();
+			formatDateTime = now.format(timeStampFormat);
+		} catch (DateTimeException dte) {
+			// format method failed due to error that occurred during printing
+			// nothing can be done, stick to the default
+		}
+		
 		String logTimeStamp = "";
 
 		String logModulePart = "";
