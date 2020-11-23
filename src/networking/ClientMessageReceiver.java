@@ -48,7 +48,7 @@ public class ClientMessageReceiver implements Runnable {
 	 * @param dis
 	 * There won't be any return type as it is a constructor of the class
 	 */
-	public clientMessageReceiver(IQueue<IncomingPacket> contModuleQueue, IQueue<IncomingPacket> procModuleQueue, DataInputStream dis){
+	public ClientMessageReceiver(IQueue<IncomingPacket> contModuleQueue, IQueue<IncomingPacket> procModuleQueue, DataInputStream dis){
 		this.contModuleQueue = contModuleQueue;
 		this.procModuleQueue = procModuleQueue;
 		this.dis = dis;
@@ -159,6 +159,7 @@ public class ClientMessageReceiver implements Runnable {
 			catch(EOFException exp){
 				//Logs exception
 				logger.log(ModuleID.NETWORKING, LogLevel.WARNING, exp.toString());
+				return;
 			}
 
 			/**
@@ -176,6 +177,7 @@ public class ClientMessageReceiver implements Runnable {
 			catch(IOException exp){
 				//Logs exception
 				logger.log(ModuleID.NETWORKING, LogLevel.WARNING, exp.toString());
+				return;
 			}
 		}
 	}

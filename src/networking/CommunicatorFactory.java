@@ -106,7 +106,7 @@ public class CommunicatorFactory{
 			DocumentBuilder builder = factory.newDocumentBuilder();
 		 
 			/** Building Document from the file ServerInfo.xml*/
-			Document document = builder.parse(new File("ServerInfo.xml"));
+			Document document = builder.parse(new File("./src/networking/ServerInfo.xml"));
 		 
 			/** Normalizing the XML Structure */
 			document.getDocumentElement().normalize();

@@ -180,7 +180,7 @@ public class InternetSendQueueListener implements Runnable {
                 } catch (Exception e) {
                     
                     /** if any exception occurs then log the error. */
-                    logger.log(ModuleID.NETWORKING, LogLevel.ERROR, exp.toString());
+                    logger.log(ModuleID.NETWORKING, LogLevel.ERROR, e.toString());
                 }
                 
                 /** Now dequeue the message from sendqueue. */

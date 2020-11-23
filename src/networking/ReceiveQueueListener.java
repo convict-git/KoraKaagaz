@@ -54,7 +54,7 @@ public class ReceiveQueueListener implements Runnable{
     public void run() {
        
         
-        while( LanCommunicator.getStatus() ){
+        while( LanCommunicator.getStatus() || InternetCommunicator.getStatus()){
             
             if( !receivequeue.isEmpty() ){
             

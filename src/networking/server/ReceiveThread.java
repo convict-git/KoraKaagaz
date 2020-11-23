@@ -1,6 +1,9 @@
 package networking.server;
 import java.io.*; 
 import java.util.HashMap;
+
+import org.json.JSONObject;
+
 import networking.queueManagement.*;
 import infrastructure.validation.logger.*;
 
@@ -12,7 +15,7 @@ import infrastructure.validation.logger.*;
  * @author Drisya P
  * @since 2021-11-10
  */
-public class ReceiveThread implements Runnable{
+public class ReceiveThread extends Thread{
 
     /**
      * object of java DataInputStream class which allows to read data from 
@@ -64,11 +67,7 @@ public class ReceiveThread implements Runnable{
          * Id of the destination client.
          */
         String id;
-        
-        /**
-         * Temporary variable that helps to obtain id of the destination client.
-         */
-        String temp[];
+      
         
         /**
          * Queue for the destination client.
@@ -88,8 +87,8 @@ public class ReceiveThread implements Runnable{
                     /**
                      * Obtaining the destination client id from the message received
                      */
-                    temp  = message.split(":");
-                    id = temp[0];
+                    JSONObject json = new JSONObject(message);
+                    id = json.getString("destination").split(":")[1];
                     
                     /**
                      * Puts the message into the  queue associated with the destination client if the queue is allocated to it.
@@ -111,6 +110,7 @@ public class ReceiveThread implements Runnable{
             } catch(Exception e){
                 
                 logger.log(ModuleID.NETWORKING, LogLevel.ERROR, "Error in reading message from datainput message " +  e);
+                return;
             }
         }
         
