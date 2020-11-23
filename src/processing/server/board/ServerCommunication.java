@@ -1,7 +1,7 @@
 package processing.server.board;
 
 import processing.ClientBoardState;
-
+import org.json.*;
 import java.io.IOException;
 
 import infrastructure.validation.logger.LogLevel;
@@ -47,6 +47,8 @@ public class ServerCommunication implements IServerCommunication{
 	 */
 	public void getBoardState() {
 		
+		JSONObject message = new JSONObject();
+		
 		/**
 		 * While sending BoardState request to the server, as it is the starting
 		 * communication of the client with the server, we will pass the client
@@ -55,17 +57,18 @@ public class ServerCommunication implements IServerCommunication{
 		 * 
 		 * We are sending username and the client full address
 		 */
-		String message = ClientBoardState.userId.toString()
-					   + ":"
-					   + ClientBoardState.userIP.toString()
-					   + ":"
-					   + ClientBoardState.userPort.toString();
+		String fullAddress = ClientBoardState.userIP.toString()
+							+ ":"
+							+ ClientBoardState.userPort.toString();
+		
+		message.put("UserID", ClientBoardState.userId.toString());
+		message.put("ClientAddress", fullAddress);
 		
 		/**
 		 * Send the BoardState request to the server with the identifier
 		 * BoardStateRequest.
 		 */
-		ClientBoardState.send(serverAddress, message, "BoardStateRequest");
+		ClientBoardState.send(serverAddress, message.toString(), "BoardStateRequest");
 		
 		ClientBoardState.logger.log(
 				ModuleID.PROCESSING, 
@@ -125,18 +128,20 @@ public class ServerCommunication implements IServerCommunication{
 	 */
 	public void stopConnection() {
 		
+		JSONObject message = new JSONObject();
+		
 		/**
 		 * need to pass the username of the client as the message to tell 
 		 * the server which client is leaving the connection
 		 */
-		String message = ClientBoardState.username.toString();
+		message.put("UserID", ClientBoardState.userId.toString());
 		
 		/**
 		 * send the message to the server at the serverAddress as the
 		 * destination address and the username as the message and identifier
 		 * as the StopConnection
 		 */
-		ClientBoardState.send(serverAddress, message, "StopConnection");
+		ClientBoardState.send(serverAddress, message.toString(), "StopConnection");
 		
 		ClientBoardState.logger.log(
 				ModuleID.PROCESSING, 

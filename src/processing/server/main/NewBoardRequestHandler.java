@@ -6,6 +6,7 @@ import processing.utility.*;
 import infrastructure.validation.logger.LogLevel;
 import infrastructure.validation.logger.ModuleID;
 import networking.CommunicatorFactory;
+import org.json.*;
 
 /**
  * This Handler implements INotificationHandler and handles
@@ -32,11 +33,13 @@ public class NewBoardRequestHandler implements INotificationHandler{
 				+ "Existing Board Server Request on the Main Server"
 		);
 		
+		JSONObject messageInJSON = new JSONObject(message);
+		
 		/**
 		 * While making a new board request, the client will send their full
 		 * address as the message in that request.
 		 */
-		String clientAddress = message;
+		String clientAddress = messageInJSON.getString("ClientAddress");
 		
 		/**
 		 * Find the boardID using the current board number in the Server

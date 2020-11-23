@@ -1,7 +1,7 @@
 package processing.server.board;
 
 import java.io.IOException;
-
+import org.json.*;
 import infrastructure.validation.logger.LogLevel;
 import infrastructure.validation.logger.ModuleID;
 import processing.utility.*;
@@ -36,10 +36,10 @@ public class BoardStateRequestHandler implements INotificationHandler{
 				+ "BoardState request is made by the client"
 		);
 		
-		String[] arrOfArguments = message.split(":", 2);
+		JSONObject messageInJSON = new JSONObject(message);
 		
 		// extract userID from the first part of the message
-		String user = arrOfArguments[1];
+		String user = messageInJSON.getString("UserID");
 		String[] id = user.split("_", 2);
 		UserId userId = new UserId(new IpAddress(id[0]), new Username(id[1]));
 		
@@ -47,7 +47,7 @@ public class BoardStateRequestHandler implements INotificationHandler{
 		 * While requesting for BoardState the client passes it's address
 		 * with port as the argument.
 		 */
-		IpAddress clientAddress = new IpAddress(arrOfArguments[1]);
+		IpAddress clientAddress = new IpAddress(messageInJSON.getString("ClientAddress"));
 		
 		String boardState = null;
 		
