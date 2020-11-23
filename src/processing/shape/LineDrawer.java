@@ -156,7 +156,7 @@ public class LineDrawer {
 	 * 
 	 * Algorithm Link:
 	 * 
-	 * @see <a href="https://en.wikipedia.org/wiki/Bresenham%27s_line_algorithm</a>
+	 * @see <a href="https://en.wikipedia.org/wiki/Bresenham%27s_line_algorithm"</a>
 	 * 
 	 * @param pointA First end point of the line segment
 	 * @param pointB Second end point of the line segment
