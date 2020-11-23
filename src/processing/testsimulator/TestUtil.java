@@ -3,6 +3,8 @@ package processing.testsimulator;
 import infrastructure.validation.logger.*;
 import processing.BoardState;
 import processing.ClientBoardState;
+import processing.server.main.*;
+import processing.server.main.ServerState;
 import processing.testsimulator.handlers.*;
 import processing.testsimulator.network.*;
 import processing.utility.*;
@@ -35,7 +37,8 @@ public class TestUtil {
 		ClientBoardState.userId = new UserId(ClientBoardState.userIP, ClientBoardState.username);
 		ClientBoardState.communicator = CommunicatorFactory.getCommunicator();
 		ClientBoardState.communicator.start();
-    	ClientBoardState.communicator.subscribeForNotifications("ObjectBroadcast", new ServerObjectHandler());
+    	ClientBoardState.communicator.subscribeForNotifications("ObjectBroadcast", 
+    			new ServerObjectHandler());
     	ClientBoardState.maps = new BoardState();
     	logger.log(
     			ModuleID.PROCESSING, 
@@ -55,5 +58,28 @@ public class TestUtil {
 			System.out.println(p.position.r + " " + p.position.c);
 		}
 		*/
+	}
+	
+	public static void initialiseMainServerForTest() {
+		
+		/* set network communicator of test in server */
+		ServerState.communicator = CommunicatorFactory.getCommunicator();
+		
+		ServerState.communicator.start();
+		
+		ServerState.communicator.subscribeForNotifications(
+				"NewBoard",
+				new NewBoardRequestHandler()
+		);
+		
+		ServerState.communicator.subscribeForNotifications(
+				"ExistingBoard", 
+				new BoardRequestHandler()
+		);
+		
+		ServerState.communicator.subscribeForNotifications(
+				"RemoveBoard", 
+				new RemoveBoardHandler()
+		);
 	}
 }
