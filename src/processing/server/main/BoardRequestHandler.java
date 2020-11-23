@@ -5,7 +5,7 @@ import processing.ClientBoardState;
 import processing.PersistanceSupport;
 import processing.utility.*;
 import java.io.*;
-
+import org.json.*;
 import infrastructure.validation.logger.LogLevel;
 import infrastructure.validation.logger.ModuleID;
 import networking.CommunicatorFactory;
@@ -98,16 +98,17 @@ public class BoardRequestHandler implements INotificationHandler{
 				+ "New Board Request received on the Main Server"
 		);
 		
+		JSONObject messageInJSON = new JSONObject(message);
+		
 		/**
-		 * First part of the message contains the boardID, as it is requesting for an
+		 * The message contains the boardID, as it is requesting for an
 		 * existing board they will need to pass the board ID of that previously existing
 		 * board.
-		 * Second part of the message is the client's full address
+		 * Message also contains the client's full address
 		 */
-		String[] arguments = message.split(":", 2);
-		BoardId boardId = new BoardId(arguments[0]);
+		BoardId boardId = new BoardId(messageInJSON.getString("BoardID"));
 		
-		String clientAddress = arguments[1];
+		String clientAddress = messageInJSON.getString("ClientAddress");
 		
 		/**
 		 * boardServerPort will store the port number of the Board's server requested,

@@ -8,6 +8,7 @@ import infrastructure.validation.logger.ModuleID;
 import processing.utility.*;
 import networking.INotificationHandler;
 import processing.*;
+import org.json.*;
 
 /**
  * This class implements INotificationHandlerr and 
@@ -35,11 +36,14 @@ public class StopRequestHandler implements INotificationHandler {
 				+ "Received stop connection request from a client on the server"
 		);
 		
+		JSONObject messageInJSON = new JSONObject(message);
+		String userID = messageInJSON.getString("UserID");
+		
 		/**
 		 * As the client is closing it's application we need to remove it from 
 		 * the list of all the clients connected to this board.
 		 */
-		String[] id = message.split("_", 2);
+		String[] id = userID.split("_", 2);
 		IpAddress ipAddress = new IpAddress(id[0]);
 		Username username = new Username(id[1]);
 		ClientBoardState.users.remove(new UserId(ipAddress,username));

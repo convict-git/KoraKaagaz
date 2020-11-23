@@ -4,6 +4,7 @@ import infrastructure.validation.logger.LogLevel;
 import infrastructure.validation.logger.ModuleID;
 import processing.ClientBoardState;
 import processing.utility.*;
+import org.json.*;
 
 /**
  * This class implements IRequests Interface which handles requests
@@ -40,20 +41,24 @@ public class Requests implements IRequests{
 	 */
 	public void requestForNewBoard(IpAddress ipAddress, Port portNumber) {
 				
+		JSONObject message = new JSONObject();
+		
 		/**
 		 * We need to pass the client's full address as the message while making
 		 * a new board request thus calculating the full address using client's 
 		 * IP Address and the port number.
 		 */
-		String message = ipAddress.toString()
-						 + ":"
-						 + portNumber.toString();
+		String fullAddress = ipAddress.toString()
+							+ ":"
+							+ portNumber.toString();
+
+		message.put("ClientAddress", fullAddress);
 		
 		/**
 		 * Send the message with identifier "NewBoard" to the serverAddr to
 		 * notify it to start a new board server.
 		 */
-		ClientBoardState.send(serverAddr,message,"NewBoard");
+		ClientBoardState.send(serverAddr,message.toString(),"NewBoard");
 		
 		ClientBoardState.logger.log(
 				ModuleID.PROCESSING, 
@@ -75,21 +80,24 @@ public class Requests implements IRequests{
 	 */
 	public void requestForExistingBoard(BoardId boardId, IpAddress ipAddress, Port portNumber) {
 		
+		JSONObject message = new JSONObject();
+		
 		/**
 		 * While requesting for existing board we need to give boardID and the client's full
 		 * address as the message thus calculating that and combining with delimiter ":"
 		 */
-		String message = boardId.toString()
-					   + ":"
-					   + ipAddress.toString()
-					   + ":"
-					   + portNumber.toString();
+		String fullAddress = ipAddress.toString()
+							+ ":"
+							+ portNumber.toString();
+		
+		message.put("BoardID", boardId.toString());
+		message.put("ClientAddress", fullAddress);
 		
 		/**
 		 * Send the message with identifier "ExistingBoard" to the serverAddr to notify it to start
 		 * a server for this board.
 		 */
-		ClientBoardState.send(serverAddr, message, "ExistingBoard");
+		ClientBoardState.send(serverAddr, message.toString(), "ExistingBoard");
 		
 		ClientBoardState.logger.log(
 				ModuleID.PROCESSING, 
