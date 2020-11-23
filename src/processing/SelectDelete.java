@@ -15,7 +15,6 @@ import static processing.ClientBoardState.logger;
  */
 
 public class SelectDelete {
-    private static final BoardState board = ClientBoardState.maps;
 
     /**
      * Computes all the positions of the object that gets selected
@@ -29,7 +28,9 @@ public class SelectDelete {
         PriorityQueueObject noObjectSelected = new PriorityQueueObject(null, null);
 
         /* Get Most Probable ObjectId from the maps */
-        ObjectId mostProbableObjectId = board.getMostProbableObjectId(positions);
+        ObjectId mostProbableObjectId = ClientBoardState
+            .maps
+            .getMostProbableObjectId(positions);
 
         if (mostProbableObjectId == null) {
             ClientBoardState.setSelectedObject(noObjectSelected);
@@ -60,7 +61,9 @@ public class SelectDelete {
         }
 
         /* Lookup BoardObject from ObjectId, if ObjectId exists */
-        BoardObject selected = board.getBoardObjectFromId(mostProbableObjectId);
+        BoardObject selected = ClientBoardState
+            .maps
+            .getBoardObjectFromId(mostProbableObjectId);
 
         if (selected == null) {
             ClientBoardState.setSelectedObject(noObjectSelected);
@@ -158,7 +161,7 @@ public class SelectDelete {
         object.setUserId(userId);
 
         /* Delete the object from the maps */
-        board.removeObjectFromMaps(object.getObjectId());
+        ClientBoardState.maps.removeObjectFromMaps(object.getObjectId());
 
         logger.log(
                 ModuleID.PROCESSING,
