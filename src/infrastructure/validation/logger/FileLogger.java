@@ -216,7 +216,7 @@ public class FileLogger implements ILogger {
 		PrintWriter printWriter = null;
 		try {
 			printWriter = openFile(logFile);
-			printWriter.printf(logMessage);
+			printWriter.println(logMessage);
 		} catch (IOException e) {
 			// check for console to print to
 			// if unavailable, do nothing
