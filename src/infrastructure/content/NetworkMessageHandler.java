@@ -66,11 +66,6 @@ public class NetworkMessageHandler implements INotificationHandler {
 	private static HashMap<String, String> imagemap;
 	
 	/**
-	* This variable will store a string which will contains log message that to be passed to log method of logger
-	*/
-	private static String logMessage;
-	
-	/**
 	 * Getting handler of the UI module to send the data
 	 */
 	private static IContentNotificationHandler handler;
@@ -90,16 +85,22 @@ public class NetworkMessageHandler implements INotificationHandler {
 	 */
 	@Override
 	public void onMessageReceived(String message) {
-		logMessage = "onMessageReceived method of NetworkMessageHandler class is executing";
-		logger.log(ModuleID.INFRASTRUCTURE, LogLevel.INFO, logMessage);
+		logger.log(
+			ModuleID.INFRASTRUCTURE, 
+			LogLevel.INFO, 
+			"onMessageReceived method of NetworkMessageHandler class is executing"
+		);
 		JSONObject jsonObject;
 		
 		try {
 			jsonObject = new JSONObject(message);
 		} 
 		catch(Exception e) {
-			logMessage = "converting JSON string to JSON object process failed";
-			logger.log(ModuleID.INFRASTRUCTURE, LogLevel.ERROR, logMessage);
+			logger.log(
+				ModuleID.INFRASTRUCTURE, 
+				LogLevel.ERROR, 
+				"converting JSON string to JSON object process failed"
+			);
 			return;
 		}
 		
@@ -107,8 +108,11 @@ public class NetworkMessageHandler implements INotificationHandler {
 			metafield = jsonObject.getString("meta");
 		}
 		catch(Exception e) {
-			logMessage = "failed to get metafield value of argument message";
-			logger.log(ModuleID.INFRASTRUCTURE, LogLevel.ERROR, logMessage);
+			logger.log(
+				ModuleID.INFRASTRUCTURE, 
+				LogLevel.ERROR, 
+				"failed to get metafield value of argument message"
+			);
 			return;
 		}
 		
@@ -116,16 +120,22 @@ public class NetworkMessageHandler implements INotificationHandler {
 			handler = handlerMap.get("UI");
 		}
 		catch(Exception e) {
-			logMessage = "failed to get IContentNotification handler from handlerMap";
-			logger.log(ModuleID.INFRASTRUCTURE, LogLevel.ERROR, logMessage);
+			logger.log(
+				ModuleID.INFRASTRUCTURE, 
+				LogLevel.ERROR, 
+				"failed to get IContentNotification handler from handlerMap"
+			);
 			return;
 		}
 		
 		jsonObject.remove("meta");
 		
 		if(metafield.equals("newUser")) {
-			logMessage = "New User case";
-			logger.log(ModuleID.INFRASTRUCTURE, LogLevel.INFO, logMessage);
+			logger.log(
+				ModuleID.INFRASTRUCTURE, 
+				LogLevel.INFO, 
+				"New User case"
+			);
 			
 			imagemap = new HashMap<String, String>();
 			jsonObjectArray = new JSONArray();
@@ -134,8 +144,11 @@ public class NetworkMessageHandler implements INotificationHandler {
 				jsonObjectArray = jsonObject.getJSONArray("imageMap");
 			}
 			catch(Exception e) {
-				logMessage = "failed to get imageMap field value of argument message";
-				logger.log(ModuleID.INFRASTRUCTURE, LogLevel.ERROR, logMessage);
+				logger.log(
+					ModuleID.INFRASTRUCTURE, 
+					LogLevel.ERROR, 
+					"failed to get imageMap field value of argument message"
+				);
 				return;
 			}
 			
@@ -145,8 +158,11 @@ public class NetworkMessageHandler implements INotificationHandler {
 					object = jsonObjectArray.getJSONObject(i);
 				}
 				catch(Exception e) {
-					logMessage = "failed to get element of json array";
-					logger.log(ModuleID.INFRASTRUCTURE, LogLevel.ERROR, logMessage);
+					logger.log(
+						ModuleID.INFRASTRUCTURE, 
+						LogLevel.ERROR, 
+						"failed to access element of json array"
+					);
 					return;
 				}
 				
@@ -154,8 +170,11 @@ public class NetworkMessageHandler implements INotificationHandler {
 					username = object.getString("username");
 				}
 				catch(Exception e) {
-					logMessage = "failed to get username field value from object";
-					logger.log(ModuleID.INFRASTRUCTURE, LogLevel.ERROR, logMessage);
+					logger.log(
+						ModuleID.INFRASTRUCTURE, 
+						LogLevel.ERROR, 
+						"failed to get username field value from object"
+					);
 					return;
 				}
 				
@@ -163,8 +182,11 @@ public class NetworkMessageHandler implements INotificationHandler {
 					userimage = object.getString(username);
 				}
 				catch(Exception e) {
-					logMessage = "failed to get image from imageMap";
-					logger.log(ModuleID.INFRASTRUCTURE, LogLevel.ERROR, logMessage);
+					logger.log(
+						ModuleID.INFRASTRUCTURE, 
+						LogLevel.ERROR, 
+						"failed to get image from imageMap"
+					);
 					return;
 				}
 				imagemap.put(username, userimage);
@@ -175,23 +197,35 @@ public class NetworkMessageHandler implements INotificationHandler {
 			}
 			
 			ContentCommunicator.setImageMap(imagemap);
-			logMessage = "imageMap updated successfully";
-			logger.log(ModuleID.INFRASTRUCTURE, LogLevel.SUCCESS, logMessage);
+			logger.log(
+				ModuleID.INFRASTRUCTURE, 
+				LogLevel.SUCCESS, 
+				"imageMap updated successfully"
+			);
 			
 			handler.onNewUserJoined(jsonObject.toString());
-			logMessage = "onNewUserJoined called";
-			logger.log(ModuleID.INFRASTRUCTURE, LogLevel.INFO, logMessage);
+			logger.log(
+				ModuleID.INFRASTRUCTURE, 
+				LogLevel.INFO, 
+				"onNewUserJoined called"
+			);
 		}
 		else if(metafield.equals("message")) {
-			logMessage = "Message case";
-			logger.log(ModuleID.INFRASTRUCTURE, LogLevel.INFO, logMessage);
+			logger.log(
+				ModuleID.INFRASTRUCTURE, 
+				LogLevel.INFO, 
+				"Message case"
+			);
 			
 			try {
 				username = jsonObject.getString("username");
 			}
 			catch(Exception e) {
-				logMessage = "failed to get username field value of argument message";
-				logger.log(ModuleID.INFRASTRUCTURE, LogLevel.ERROR, logMessage);
+				logger.log(
+					ModuleID.INFRASTRUCTURE, 
+					LogLevel.ERROR, 
+					"failed to get username field value of argument message"
+				);
 				return;
 			}
 			
@@ -199,25 +233,37 @@ public class NetworkMessageHandler implements INotificationHandler {
 				userimage = imageMap.get(username);
 			}
 			catch(Exception e) {
-				logMessage = "failed to get image from imageMap";
-				logger.log(ModuleID.INFRASTRUCTURE, LogLevel.ERROR, logMessage);
+				logger.log(
+					ModuleID.INFRASTRUCTURE, 
+					LogLevel.ERROR, 
+					"failed to get image from imageMap"
+				);
 				return;
 			}
 			jsonObject.put("image", userimage);
 			handler.onMessageReceived(jsonObject.toString());
-			logMessage = "onMessageReceived called";
-			logger.log(ModuleID.INFRASTRUCTURE, LogLevel.INFO, logMessage);
+			logger.log(
+				ModuleID.INFRASTRUCTURE, 
+				LogLevel.INFO, 
+				"onMessageReceived called"
+			);
 		}
 		else if (metafield.equals("userExit")) {
-			logMessage = "User Exit case";
-			logger.log(ModuleID.INFRASTRUCTURE, LogLevel.INFO, logMessage);
+			logger.log(
+				ModuleID.INFRASTRUCTURE, 
+				LogLevel.INFO, 
+				"User Exit case"
+			);
 			
 			try {
 				username = jsonObject.getString("username");
 			}
 			catch(Exception e) {
-				logMessage = "failed to get username field value of argument message";
-				logger.log(ModuleID.INFRASTRUCTURE, LogLevel.ERROR, logMessage);
+				logger.log(
+					ModuleID.INFRASTRUCTURE, 
+					LogLevel.ERROR, 
+					"failed to get username field value of argument message"
+				);
 				return;
 			}
 			
@@ -225,23 +271,36 @@ public class NetworkMessageHandler implements INotificationHandler {
 				userimage = imageMap.get(username);
 			}
 			catch(Exception e) {
-				logMessage = "failed to get image from imageMap";
-				logger.log(ModuleID.INFRASTRUCTURE, LogLevel.ERROR, logMessage);
+				logger.log(
+					ModuleID.INFRASTRUCTURE, 
+					LogLevel.ERROR, 
+					"failed to get image from imageMap"
+				);
 				return;
 			}
 			jsonObject.put("image", userimage);
 			imageMap.remove(username);
+			
 			ContentCommunicator.setImageMap(imageMap);
-			logMessage = "imageMap updated successfully";
-			logger.log(ModuleID.INFRASTRUCTURE, LogLevel.SUCCESS, logMessage);
+			logger.log(
+				ModuleID.INFRASTRUCTURE, 
+				LogLevel.SUCCESS, 
+				"imageMap updated successfully"
+			);
 			
 			handler.onUserExit(jsonObject.toString());
-			logMessage = "onUserExit called";
-			logger.log(ModuleID.INFRASTRUCTURE, LogLevel.INFO, logMessage);
+			logger.log(
+				ModuleID.INFRASTRUCTURE, 
+				LogLevel.INFO, 
+				"onUserExit called"
+			);
 		}
 		else {
-			logMessage = "no method with this name exists";
-			logger.log(ModuleID.INFRASTRUCTURE, LogLevel.ERROR, logMessage);
+			logger.log(
+				ModuleID.INFRASTRUCTURE, 
+				LogLevel.ERROR, 
+				"no method with this name exists"
+			);
 			return;
 		}
 	}
