@@ -39,6 +39,7 @@ import processing.utility.Dimension;
 import processing.utility.Intensity;
 import processing.utility.Pixel;
 import processing.utility.Position;
+import processing.utility.Angle;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.Cursor;
@@ -106,14 +107,14 @@ public class CanvasController implements Initializable {
 	private Button line,rect,square,triangle,circle,oval;
 
 	@FXML
-	private static Canvas canvasF;
+	private Canvas canvasF;
 
 	@FXML
 	private Canvas canvasB;
-
+/*
 	@FXML
 	private ColorPicker colorpicker;
-
+*/
 	private static GraphicsContext gc;
 
 	private double x1,y1,x2,y2,x3,y3;
@@ -180,7 +181,7 @@ public class CanvasController implements Initializable {
 				"[#" + Thread.currentThread().getId() + "] "
 				+ "Undo call succesful!"
 			);
-		} catch (Exception e) {
+		} catch (Exception exp) {
 
 			logger.log(
 				ModuleID.UI,
@@ -210,7 +211,7 @@ public class CanvasController implements Initializable {
 				"[#" + Thread.currentThread().getId() + "] "
 				+ "Redo call succesful!"
 			);
-		} catch (Exception e) {
+		} catch (Exception exp) {
 
 			logger.log(
 				ModuleID.UI,
@@ -251,7 +252,7 @@ public class CanvasController implements Initializable {
 				"[#" + Thread.currentThread().getId() + "] "
 				+ "Reset call succesful!"
 			);
-		} catch (Exception e) {
+		} catch (Exception exp) {
 
 			logger.log(
 				ModuleID.UI,
@@ -299,25 +300,12 @@ public class CanvasController implements Initializable {
 
 	/***
 	 * Function to get the send button of the chatbox
-	 ***/
-	public Button getSendButton() {
-		Button button;
-
-		synchronized(this) {
-			button = this.sendButton;
-		}
-
-		return button;
-	}
-
-	/***
-	 * Function to get the send button of the chatbox
 	 * @param : none
 	 * @return : sendButton - button clicked by user to send message
 	 ***/
 	public Button getSendButton() {
 		synchronized(this) {
-		return this.sendButton;
+			return this.sendButton;
 		}
 	}
 	/***
@@ -472,7 +460,7 @@ public class CanvasController implements Initializable {
 		synchronized(this) {
 			gc = canvasF.getGraphicsContext2D();
 			setEndPoint(ev.getX(), ev.getY());
-			color = colorpicker.getValue();
+			color = colorPicker.getValue();
 
 			if(Shapes.rectselected) {
 				Shapes.drawPerfectRect(color,gc,x1, y1, x2, y2);
@@ -507,11 +495,11 @@ public class CanvasController implements Initializable {
 	@FXML
 	void mouseDragged(MouseEvent ev) {
 		synchronized(this) {
-
-			gc = canvasB.getGraphicsContext2D();
+			gc = canvasB.getGraphicsContext2D();	
 			double x3=ev.getX();
 			double y3=ev.getY();
-			color = colorpicker.getValue();
+			color = colorPicker.getValue();		
+
 
 			if(Shapes.rectselected) {
 				Shapes.drawPerfectRectEffect(canvasB,color,gc,x1, y1, x3, y3);
@@ -687,6 +675,7 @@ public class CanvasController implements Initializable {
      * @param canvasMouseClickEvent Mouse Click Event which lead to this
      * function being called
      */
+    
     @FXML
     void clickCanvas(MouseEvent canvasMouseClickEvent) {
 
@@ -736,10 +725,12 @@ public class CanvasController implements Initializable {
 			);
 
 	    	// Get Selected Object Pixels from the Processor
-	    	ArrayList<Pixel> objectPixels =
-	    		ProcessingFactory
+	    	
+	    	ArrayList<Pixel> objectPixels = null;
+	    	
+	    	/*	ProcessingFactory
 					.getProcessor()
-					.select(selPosition);
+					.select(selPosition); */
 
 	    	logger.log(
 				ModuleID.UI,
@@ -751,7 +742,7 @@ public class CanvasController implements Initializable {
 	    	updateSelectedPixels(objectPixels);
     	}
     }
-
+    
     /**
      * When the delete button is clicked, this method is called. If the
      * UI is in Cursor Mode, then the selected object is deleted (if any
@@ -974,10 +965,7 @@ public class CanvasController implements Initializable {
      * if the root object was not localized.
      */
 	@Override
-	public void initialize(
-		URL url,
-		ResourceBundle resourceBundle
-	) {
+	public void initialize( URL url,ResourceBundle resourceBundle) {
 
 		// Get the logger
 		ILogger logger = LoggerFactory.getLoggerInstance();
