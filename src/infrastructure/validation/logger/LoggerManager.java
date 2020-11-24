@@ -12,6 +12,7 @@ import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.Attribute;
+import javax.xml.stream.events.Characters;
 import javax.xml.stream.events.EndElement;
 import javax.xml.stream.events.StartElement;
 import javax.xml.namespace.QName;
@@ -120,7 +121,8 @@ public class LoggerManager implements ILogger {
 				if(nextEvent.isStartElement()) {
 					StartElement startElement = nextEvent.asStartElement();
 					if(startElement.getName().getLocalPart().equalsIgnoreCase("testMode")) {
-						if(nextEvent.asCharacters().getData().equalsIgnoreCase("true")) {
+						Characters eventAsCharacter = nextEvent.asCharacters();
+						if(eventAsCharacter.getData().equalsIgnoreCase("true")) {
 							Attribute filePath = startElement.getAttributeByName(new QName("filePath"));
 							fileToParse = filePath.getValue();
 							enableTestMode = true;
@@ -178,14 +180,16 @@ public class LoggerManager implements ILogger {
 						
 						Attribute loggerTypeFile = startElement.getAttributeByName(new QName("FileLogger"));
 						if(loggerTypeFile != null) {
-							if(nextEvent.asCharacters().getData().equalsIgnoreCase("true")) {
+							Characters eventAsCharacter = nextEvent.asCharacters();
+							if(eventAsCharacter.getData().equalsIgnoreCase("true")) {
 								allowFileLogging = true;
 							}
 						}
 						
 						Attribute consoleTypeFile = startElement.getAttributeByName(new QName("ConsoleLogger"));
 						if(consoleTypeFile != null) {
-							if(nextEvent.asCharacters().getData().equalsIgnoreCase("true")) {
+							Characters eventAsCharacter = nextEvent.asCharacters();
+							if(eventAsCharacter.getData().equalsIgnoreCase("true")) {
 								allowConsoleLogging = true;
 							}
 						}
@@ -201,28 +205,32 @@ public class LoggerManager implements ILogger {
 						
 						Attribute logTypeError = startElement.getAttributeByName(new QName("ERROR"));
 						if(logTypeError != null) {
-							if(nextEvent.asCharacters().getData().equalsIgnoreCase("true")) {
+							Characters eventAsCharacter = nextEvent.asCharacters();
+							if(eventAsCharacter.getData().equalsIgnoreCase("true")) {
 								enabledLogLevelsList.add(LogLevel.ERROR);
 							}
 						}
 
 						Attribute logTypeWarning = startElement.getAttributeByName(new QName("WARNING"));
 						if(logTypeWarning != null) {
-							if(nextEvent.asCharacters().getData().equalsIgnoreCase("true")) {
+							Characters eventAsCharacter = nextEvent.asCharacters();
+							if(eventAsCharacter.getData().equalsIgnoreCase("true")) {
 								enabledLogLevelsList.add(LogLevel.WARNING);
 							}
 						}
 						
 						Attribute logTypeSuccess = startElement.getAttributeByName(new QName("SUCCESS"));
 						if(logTypeSuccess != null) {
-							if(nextEvent.asCharacters().getData().equalsIgnoreCase("true")) {
+							Characters eventAsCharacter = nextEvent.asCharacters();
+							if(eventAsCharacter.getData().equalsIgnoreCase("true")) {
 								enabledLogLevelsList.add(LogLevel.SUCCESS);
 							}
 						}
 						
 						Attribute logTypeInfo = startElement.getAttributeByName(new QName("INFO"));
 						if(logTypeInfo != null) {
-							if(nextEvent.asCharacters().getData().equalsIgnoreCase("true")) {
+							Characters eventAsCharacter = nextEvent.asCharacters();
+							if(eventAsCharacter.getData().equalsIgnoreCase("true")) {
 								enabledLogLevelsList.add(LogLevel.INFO);
 							}
 						}
