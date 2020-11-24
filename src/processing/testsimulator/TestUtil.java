@@ -38,15 +38,15 @@ public class TestUtil {
 		ClientBoardState.userId = new UserId(ClientBoardState.userIP, ClientBoardState.username);
 		ClientBoardState.communicator = CommunicatorFactory.getCommunicator();
 		ClientBoardState.communicator.start();
-    	ClientBoardState.communicator.subscribeForNotifications("ObjectBroadcast", 
-    			handler);
-    	ClientBoardState.maps = new BoardState();
-    	logger.log(
-    			ModuleID.PROCESSING, 
-    			LogLevel.SUCCESS, 
-    			"Test: Started communicator and the ClientBoardState"
-    	);
-    	/*
+		ClientBoardState.communicator.subscribeForNotifications("ObjectBroadcast", 
+				handler);
+		ClientBoardState.maps = new BoardState();
+		logger.log(
+				ModuleID.PROCESSING, 
+				LogLevel.SUCCESS, 
+				"Test: Started communicator and the ClientBoardState"
+		);
+		/*
 		for (int i = 0; i < arrayPixels.size(); i++)
 		{
 			Pixel p = arrayPixels.get(i);
