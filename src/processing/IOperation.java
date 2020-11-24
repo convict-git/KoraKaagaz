@@ -18,7 +18,7 @@ public interface IOperation {
 	 * @param positions list of all the Position when user clicked for selection
 	 * @return List of all the position of the object selected
 	 */
-	ArrayList<Position> select (ArrayList <Position> positions);
+	ArrayList<Pixel> select (ArrayList <Position> positions);
 	
 	/**
 	 * delete will delete the selected object

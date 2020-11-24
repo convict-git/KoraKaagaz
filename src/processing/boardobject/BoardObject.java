@@ -1,8 +1,12 @@
 package processing.boardobject;
 
-import processing.utility.*;
 import java.io.Serializable;
 import java.util.ArrayList;
+
+import processing.utility.*;
+import infrastructure.validation.logger.LoggerFactory;
+import infrastructure.validation.logger.LogLevel;
+import infrastructure.validation.logger.ModuleID;
 
 /**
  * The Board Object Class
@@ -26,7 +30,7 @@ public class BoardObject implements Serializable {
 	 * docs/api/java.base/java/io/Serializable.html">Serializable</a>
 	 */
 	private static final long serialVersionUID = 1388864177359509930L;
-
+	
 	/** List of Pixels Representing the object */
 	private ArrayList <Pixel> pixels;
 	
@@ -69,16 +73,30 @@ public class BoardObject implements Serializable {
 	    UserId userId,
 	    boolean isReset
 	) {
+		LoggerFactory.getLoggerInstance().log(
+			ModuleID.PROCESSING, 
+			LogLevel.INFO,
+			"[#" + Thread.currentThread().getId() + "] "
+			+ "Constructing Board Object"
+		);
+		
 		this.pixels = pixels;
 		this.boardOp = new CreateOperation();
 		this.objectId = objectId;
 		this.timestamp = timestamp;
+		this.userId = userId;
 		this.isReset = isReset;
 		this.prevPixelIntensities = null;
 	}
 	
 	/** Gets the operation corresponding to this shape */
 	public IBoardObjectOperation getOperation() {
+		LoggerFactory.getLoggerInstance().log(
+			ModuleID.PROCESSING, 
+			LogLevel.INFO, 
+			"[#" + Thread.currentThread().getId() + "] "
+			+ "Get Operation from the Board Object"
+		);
 		return boardOp;
 	}
 	
@@ -88,16 +106,35 @@ public class BoardObject implements Serializable {
 	 * @param boardOp The operation to be performed on this board object
 	 */
 	public void setOperation (IBoardObjectOperation boardOp) {
+		LoggerFactory.getLoggerInstance().log(
+			ModuleID.PROCESSING, 
+			LogLevel.INFO, 
+			"[#" + Thread.currentThread().getId() + "] "
+			+ "Set Operation of the Board Object"
+		);
 		this.boardOp = boardOp;    		
 	}
 	
 	/** Gets the board object's list of pixels */
 	public ArrayList <Pixel> getPixels () {
+		LoggerFactory.getLoggerInstance().log(
+			ModuleID.PROCESSING, 
+			LogLevel.INFO, 
+			"[#" + Thread.currentThread().getId() + "] "
+			+ "Get Pixels from the Board Object"
+		);
 		return pixels;
 	}
 	
 	/** Gets the board object's list of positions */
 	public ArrayList <Position> getPositions () {
+		LoggerFactory.getLoggerInstance().log(
+			ModuleID.PROCESSING, 
+			LogLevel.INFO, 
+			"[#" + Thread.currentThread().getId() + "] "
+			+ "Get Positions from the Board Object"
+		);
+		
 		// Construct position arraylist
 		ArrayList <Position> positions = new ArrayList<Position> ();
 		
@@ -111,31 +148,67 @@ public class BoardObject implements Serializable {
 	
 	/** Sets the pixels using the given array-list of pixels */
 	public void setPixels (ArrayList <Pixel> pixels) {
+		LoggerFactory.getLoggerInstance().log(
+			ModuleID.PROCESSING, 
+			LogLevel.INFO,
+			"[#" + Thread.currentThread().getId() + "] "
+			+ "Set Pixels of the Board Object"
+		);
 		this.pixels = pixels;
 	}
 	
 	/** Gets the user's User ID who owns this board object */
 	public UserId getUserId() {
+		LoggerFactory.getLoggerInstance().log(
+			ModuleID.PROCESSING, 
+			LogLevel.INFO,
+			"[#" + Thread.currentThread().getId() + "] "
+			+ "Get User ID from the Board Object"
+		);
 		return userId;
 	}
 	
 	/** Sets user ID of this board object */
 	public void setUserId(UserId userId) {
+		LoggerFactory.getLoggerInstance().log(
+			ModuleID.PROCESSING, 
+			LogLevel.INFO, 
+			"[#" + Thread.currentThread().getId() + "] "
+			+ "Set User ID of the Board Object"
+		);
 		this.userId = userId;
 	}
 	
 	/** Gets object ID */
 	public ObjectId getObjectId() {
+		LoggerFactory.getLoggerInstance().log(
+			ModuleID.PROCESSING, 
+			LogLevel.INFO, 
+			"[#" + Thread.currentThread().getId() + "] "
+			+ "Get Object ID from the Board Object"
+		);
 		return objectId;
 	}
 	
 	/** Gets timestamp of creation of object */
 	public Timestamp getTimestamp() {
+		LoggerFactory.getLoggerInstance().log(
+			ModuleID.PROCESSING, 
+			LogLevel.INFO,
+			"[#" + Thread.currentThread().getId() + "] "
+			+ "Get Timestamp from the Board Object"
+		);
 		return timestamp;
 	}
 	
 	/** Returns true if this a reset object, else false */
 	public boolean isResetObject() {
+		LoggerFactory.getLoggerInstance().log(
+			ModuleID.PROCESSING, 
+			LogLevel.INFO,
+			"[#" + Thread.currentThread().getId() + "] "
+			+ "Get Reset Info from the Board Object"
+		);
 		return isReset;
 	}
 	
@@ -143,11 +216,23 @@ public class BoardObject implements Serializable {
 	public void setPrevIntensity(
 		ArrayList <Pixel> prevPixelIntensities
 	) {
+		LoggerFactory.getLoggerInstance().log(
+			ModuleID.PROCESSING, 
+			LogLevel.INFO, 
+			"[#" + Thread.currentThread().getId() + "] "
+			+ "Set Previous Pixels of the Board Object"
+		);
 		this.prevPixelIntensities = prevPixelIntensities;
 	}
 	
 	/** Gets previous intensities of pixels */
 	public ArrayList <Pixel> getPrevIntensity() {
+		LoggerFactory.getLoggerInstance().log(
+			ModuleID.PROCESSING, 
+			LogLevel.INFO, 
+			"[#" + Thread.currentThread().getId() + "] "
+			+ "Get Previous Pixels from the Board Object"
+		);
 		return prevPixelIntensities;
 	}
 }

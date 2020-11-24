@@ -1,5 +1,7 @@
 package processing.utility;
 
+import java.io.Serializable;
+
 /**
  * Class Representing a Position on the Board
  *
@@ -7,7 +9,11 @@ package processing.utility;
  * @reviewer Himanshu Jain
  */
 
-public class Position {
+public class Position implements Serializable {
+	
+	/** Serial UID */
+	private static final long serialVersionUID = 5234421594126682741L;
+	
 	/**
 	 * r Row number
 	 * c Column number
@@ -43,5 +49,11 @@ public class Position {
 		}
 		else
 			return false;
+	}
+	
+	/** HashCode Method */
+	@Override
+	public int hashCode() {
+		return 31 * r + c;
 	}
 }

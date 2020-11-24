@@ -1,5 +1,7 @@
 package processing.utility;
 
+import java.io.Serializable;
+
 /**
  * Class Representing a user's User ID
  *
@@ -7,7 +9,11 @@ package processing.utility;
  * @reviewer Himanshu Jain
  */
 
-public class UserId {
+public class UserId implements Serializable {
+	
+	/** Serial UID */
+	private static final long serialVersionUID = 5435383521733211617L;
+	
 	/** User ID is stored as a String */
 	private String userId;
 	
@@ -20,8 +26,8 @@ public class UserId {
 	 * @param ipAddress 
 	 * @param timestamp Time at which this object was built
 	 */
-	public UserId(String ipAddress, Username username) {
-		userId = ipAddress + "_" + username.toString();
+	public UserId(IpAddress ipAddress, Username username) {
+		userId = ipAddress.toString() + "_" + username.toString();
 	}
 	
 	/** Copy Constructor */
@@ -54,5 +60,11 @@ public class UserId {
 			return userId.equals(((UserId)obj).userId);
 		else
 			return false;
+	}
+	
+	/** HashCode Method */
+	@Override
+	public int hashCode() {
+		return userId.hashCode();
 	}
 }

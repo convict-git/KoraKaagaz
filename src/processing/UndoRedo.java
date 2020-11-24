@@ -69,15 +69,13 @@ public class UndoRedo {
 	}
 	
 	/**
-	 * This helper method creates the object
-	 * It is called during undo-redo operations
+	 * Creates a duplicate object (shallow copy) with the given operation
 	 * 
-	 * @param obj
-	 * @return newly created object
+	 * @param obj board object
+	 * @param newOp operation to be set
+	 * @return duplicate object with the operation
 	 */
-	private static BoardObject createOperation(BoardObject obj) {
-		// BoardObject CREATE operation
-		IBoardObjectOperation newOp = new CreateOperation();
+	private static BoardObject duplicateObject(BoardObject obj, IBoardObjectOperation newOp) {
 		// gets the newly created object
 		BoardObject newObj = new BoardObject(
 				obj.getPixels(),
@@ -86,9 +84,24 @@ public class UndoRedo {
 				obj.getUserId(),
 				obj.isResetObject()
 		);
-				
-		//sets the CREATE operation in the created object
+		
+		//sets the operation in the created object
 		newObj.setOperation(newOp);
+		return newObj;
+	}
+	
+	/**
+	 * This helper method creates the object
+	 * It is called during undo-redo operations
+	 * 
+	 * @param obj
+	 * @return newly created object (shallow copy) with create operation
+	 */
+	private static BoardObject createOperation(BoardObject obj) {
+		// BoardObject CREATE operation
+		IBoardObjectOperation newOp = new CreateOperation();
+		// gets the duplicate created object with CREATE operation
+		BoardObject newObj = duplicateObject(obj, newOp);
 		
 		//Insert the object into the Map
 		ClientBoardState.maps.insertObjectIntoMaps(newObj);
@@ -96,7 +109,34 @@ public class UndoRedo {
 		logger.log(
 			   	ModuleID.PROCESSING, 
 			   	LogLevel.SUCCESS, 
-			   	"Undo / Redo : object " + obj.getObjectId() + " created"
+			   	"[#" + Thread.currentThread().getId() + "] "
+			   	+ "Undo / Redo : object " + obj.getObjectId() + " created"
+		);
+		
+		return newObj;
+	}
+	
+	/**
+	 * This helper method deletes the object
+	 * It is called during undo-redo operations
+	 * 
+	 * @param obj
+	 * @return newly created object (shallow copy) with delete operation
+	 */
+	private static BoardObject deleteOperation(BoardObject obj) {
+		// BoardObject DELETE operation
+		IBoardObjectOperation newOp = new DeleteOperation();
+		// gets the duplicate created object with the delete operation
+		BoardObject newObj = duplicateObject(obj, newOp);
+		
+		// removes from the maps
+		ClientBoardState.maps.removeObjectFromMaps(obj.getObjectId());
+
+		logger.log(
+			   	ModuleID.PROCESSING, 
+			   	LogLevel.SUCCESS, 
+			   	"[#" + Thread.currentThread().getId() + "] "
+			   	+ "Undo / Redo : object " + obj.getObjectId() + " deleted"
 		);
 
 		return newObj;
@@ -117,7 +157,8 @@ public class UndoRedo {
 		logger.log(
 			   	ModuleID.PROCESSING, 
 			   	LogLevel.SUCCESS, 
-			   	"Undo / Redo : object " + obj.getObjectId() + " color changed"
+			   	"[#" + Thread.currentThread().getId() + "] "
+			   	+ "Undo / Redo : object " + obj.getObjectId() + " color changed"
 		);
 		return newObj;
 	}
@@ -137,7 +178,8 @@ public class UndoRedo {
 		logger.log(
 			   	ModuleID.PROCESSING, 
 			   	LogLevel.SUCCESS, 
-			   	"Undo / Redo : object " + obj.getObjectId() + " rotated"
+			   	"[#" + Thread.currentThread().getId() + "] "
+			   	+ "Undo / Redo : object " + obj.getObjectId() + " rotated"
 		);
 		return newObj;
 	}
@@ -149,53 +191,62 @@ public class UndoRedo {
 	 * @param curStack could be undo or redo stack depending upon operation
 	 * @param otherStack other stack than curStack
 	 * @param operation undo or redo operation
+	 * @return @return object with operation to be performed among other clients
 	 */
-	private static void undoRedoUtil(
+	private static BoardObject undoRedoUtil(
 			ArrayList <BoardObject> curStack,
 			ArrayList <BoardObject> otherStack,
 			Operation operation
 	) {
 		
 		// No undo or redo operation possible
-    	if (curStack.size() <= 0)
-    		return;
+    	if (curStack.size() <= 0) {
+    		logger.log(
+    				ModuleID.PROCESSING, 
+    				LogLevel.INFO, 
+    				"[#" + Thread.currentThread().getId() + "] "
+    				+ "Undo / Redo couldn't be performed due to empty stack"
+    	    );
+    		return null;
+    	}
     	
     	// Gets the top object from the stack
     	BoardObject topObj =  curStack.get(curStack.size() - 1);
     	
     	// Gets the operation performed on that object
     	BoardObjectOperationType operationType = topObj.getOperation().getOperationType();
+    	// Object to be returned for sending over the network
+    	BoardObject retObj = null;
+    	// newly modified object
     	BoardObject newObj = null;
+    	IBoardObjectOperation newOp = null;
     	
     	switch (operationType) {
 		case CREATE :	
 				if (operation == Operation.REDO) {
-					newObj = createOperation(topObj);
+					retObj = createOperation(topObj);
 				}
 				else {
 					// performs simple delete operation
-					ClientBoardState.maps.removeObjectFromMaps(topObj.getObjectId());
-					logger.log(
-							ModuleID.PROCESSING, 
-							LogLevel.SUCCESS, 
-							"Undo : object " + topObj.getObjectId() + " deleted"
-					);
+					retObj = deleteOperation(topObj);
 				}
+				newObj = retObj;
 				break;
 			
 		case DELETE :	
 				if (operation == Operation.UNDO) {
-					newObj = createOperation(topObj);
+					retObj = createOperation(topObj);
 				}
 				else {
-					// performs simple delete operation
-					ClientBoardState.maps.removeObjectFromMaps(topObj.getObjectId());
-					logger.log(
-							ModuleID.PROCESSING, 
-							LogLevel.SUCCESS, 
-							"Redo : object " + topObj.getObjectId() + " deleted"
-					);
+					/**
+					 * Performs simple delete operation
+					 * 
+					 * retObj = topObject but for uniformity and low cost shallow copy
+					 * deleteOperation is called
+					 */
+					retObj = deleteOperation(topObj);
 				}
+				newObj = retObj;
 				break;
     					  
 		case ROTATE :	
@@ -211,11 +262,14 @@ public class UndoRedo {
 				else {
 					newAngle = new Angle(angleCCW.angle);
 				}
+				newOp = new RotateOperation(newAngle);
+				// return object has the operation to be performed by other clients
+				retObj = duplicateObject(topObj, newOp);
 				newObj = rotateOperation(topObj, newAngle);
 				break;
     					   
 		case COLOR_CHANGE :	
-    				ArrayList <Pixel> newPixels;
+				ArrayList <Pixel> newPixels;
 				/** 
 				 *  For undo, the object's should be changed to previous color
 				 *  For redo, the object's should be changed to current color
@@ -227,6 +281,9 @@ public class UndoRedo {
 					newPixels = topObj.getPixels();
 				}
 				Intensity newIntensity = newPixels.get(0).intensity;
+				newOp = new ColorChangeOperation(newIntensity);
+				// return object has the operation to be performed by other clients
+				retObj = duplicateObject(topObj, newOp);
 				newObj = colorChangeOperation(topObj, newIntensity);
 				break;
     							
@@ -234,9 +291,10 @@ public class UndoRedo {
     				logger.log(
 					ModuleID.PROCESSING, 
 					LogLevel.ERROR, 
-					"Undefined Operation type : " + operationType
+					"[#" + Thread.currentThread().getId() + "] "
+					+ "Undo / Redo : Undefined Operation type : " + operationType
     				); 
-    				return;
+    				return null;
     	}
     	
     	// Transfers the object from one stack to other
@@ -255,9 +313,10 @@ public class UndoRedo {
     	logger.log(
 			ModuleID.PROCESSING, 
 			LogLevel.SUCCESS, 
-			"Undo / Redo successfully performed"
+			"[#" + Thread.currentThread().getId() + "] "
+			+ "Undo / Redo successfully performed"
     	); 
-    	
+    	return retObj;
 	}
 	
 	/**
@@ -268,87 +327,96 @@ public class UndoRedo {
 	 */
 	private static void deleteFromStack(ArrayList <BoardObject> stack, ObjectId objectId) {
 		   
-		   // Deletes from the stack
-		   ListIterator <BoardObject> iterStack = stack.listIterator();
-		   while (iterStack.hasNext()) {
-			   BoardObject obj = iterStack.next();
-			   if (obj.getObjectId().equals(objectId)) {
-				   iterStack.remove();
-			   }
-		   }
-		   return;
+		// Deletes from the stack
+		ListIterator <BoardObject> iterStack = stack.listIterator();
+		while (iterStack.hasNext()) {
+			BoardObject obj = iterStack.next();
+			if (obj.getObjectId().equals(objectId)) {
+				iterStack.remove();
+			}
+		}
+		return;
 	}
 	
-   /**
-    * Performs the undo operation.
-    * Looks at top object of the undoStack, performs the 
-    * object's inverse operation, pops from the undoStack 
-    * and pushes into the redoStack.
-    */
-    public static void undo() {
-    	ArrayList <BoardObject> undoStack = ClientBoardState.undoStack;
-    	ArrayList <BoardObject> redoStack = ClientBoardState.redoStack;
-    	undoRedoUtil(undoStack, redoStack, Operation.UNDO);
-    }
+	/**
+	 * Performs the undo operation.
+	 * Looks at top object of the undoStack, performs the 
+	 * object's inverse operation, pops from the undoStack 
+	 * and pushes into the redoStack.
+	 * 
+	 * @return object with operation to be performed among other clients
+	 */
+	public static BoardObject undo() {
+		ArrayList <BoardObject> undoStack = ClientBoardState.undoStack;
+    		ArrayList <BoardObject> redoStack = ClientBoardState.redoStack;
+    		return undoRedoUtil(undoStack, redoStack, Operation.UNDO);
+    	}
    
-   /**
-    * Performs the redo operation.
-    * Looks at top object of the redoStack, performs back the 
-    * object's operation, pops from the redoStack and pushes 
-    * into the undoStack.
-    */
-   public static void redo() {
-	   ArrayList <BoardObject> undoStack = ClientBoardState.undoStack;
-	   ArrayList <BoardObject> redoStack = ClientBoardState.redoStack;
-	   undoRedoUtil(redoStack, undoStack, Operation.REDO);
-   }
+	/**
+	 * Performs the redo operation.
+	 * Looks at top object of the redoStack, performs back the 
+	 * object's operation, pops from the redoStack and pushes 
+	 * into the undoStack.
+	 * 
+	 * @return object with operation to be performed among other clients
+	 */
+	public static BoardObject redo() {
+		ArrayList <BoardObject> undoStack = ClientBoardState.undoStack;
+		ArrayList <BoardObject> redoStack = ClientBoardState.redoStack;
+		return undoRedoUtil(redoStack, undoStack, Operation.REDO);
+	}
    
-   /**
-    * Any operation performed on object by other classes 
-    * needs to be pushed into the undoStack
-    * 
-    * @param object object to be pushed
-    */
-   public static void pushIntoStack(BoardObject object) {
-	   
-	   //If the object is created by other user then do not push it into the stack
-	   if (object.getUserId().equals(ClientBoardState.userId) == false) {
-		   return;
-	   }
-	   
-	   // pushes into undo stack
-	   addIntoStack(ClientBoardState.undoStack, object);
-	   
-	   logger.log(
+	/**
+	 * Any operation performed on object by other classes 
+	 * needs to be pushed into the undoStack
+	 * 
+	 * @param object object to be pushed
+	 */
+	public static void pushIntoStack(BoardObject object) {
+		
+		//If the object is created by other user then do not push it into the stack
+		if (object.getUserId().equals(ClientBoardState.userId) == false) {
+			return;
+		}
+		
+		// pushes into undo stack
+		addIntoStack(ClientBoardState.undoStack, object);
+		
+		// clear the redo stack to maintain consistency
+		ClientBoardState.redoStack.clear();
+		
+		logger.log(
 			ModuleID.PROCESSING, 
 			LogLevel.SUCCESS, 
-			"Object pushed into the Undo stack"
+			"[#" + Thread.currentThread().getId() + "] "
+			+ "Object pushed into the Undo stack"
 		);
 	   
-	   /** 
-	    * No iterator map for now
-	    * Will be added later 
-	    */
-   }
+		/** 
+		 * No iterator map for now
+		 * Will be added later 
+		 */
+	}
    
-   /**
-    * Deletes an object by the ObjectId from the undo and redo
-    * Needed for the transfer of the ownership of an object in case
-    * the object was deleted by other user 
-    * 
-    * @param objectId id of the object to be deleted
-    */
-   public static void deleteFromStack(ObjectId objectId) {
+	/**
+	 * Deletes an object by the ObjectId from the undo and redo
+	 * Needed for the transfer of the ownership of an object in case
+	 * the object was deleted by other user 
+	 * 
+	 * @param objectId id of the object to be deleted
+	 */
+	public static void deleteFromStack(ObjectId objectId) {
 	   
-	   // Deletes from undo stack 
-	   deleteFromStack(ClientBoardState.undoStack, objectId);
-	   // Deletes from redo stack
-	   deleteFromStack(ClientBoardState.redoStack, objectId);
+		// Deletes from undo stack 
+		deleteFromStack(ClientBoardState.undoStack, objectId);
+		// Deletes from redo stack
+		deleteFromStack(ClientBoardState.redoStack, objectId);
 	   
-	   logger.log(
+		logger.log(
 			ModuleID.PROCESSING, 
 			LogLevel.SUCCESS, 
-			"Object deleted from the stacks"
+			"[#" + Thread.currentThread().getId() + "] "
+			+ "Object deleted from the stacks"
 		);
-   }
+	}
 }
