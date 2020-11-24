@@ -13,11 +13,9 @@ import infrastructure.validation.logger.ModuleID;
  */
 
 public class ServerPort implements IServerPort {
-	/**
-	 * This variable will store the String which will be passed to log method of logger
-	 */
-	private String logMessage;
+	
 	private int port = 0;
+	
 	/**
 	 * logger is the instance of the class which implements ILogger interface.
 	 */
@@ -29,6 +27,11 @@ public class ServerPort implements IServerPort {
 	@Override
 	public void setPort(int port) {
 		this.port = port;
+		logger.log(
+			ModuleID.INFRASTRUCTURE,
+			LogLevel.SUCCESS,
+			"Port of Board Server successfully set"
+		);
 	}
 	
 	/**
@@ -37,9 +40,17 @@ public class ServerPort implements IServerPort {
 	@Override
 	public int getPort() {
 		if (port == 0) {
-			logMessage = "content: Port Value not yet sent by processing module";
-			logger.log(ModuleID.INFRASTRUCTURE, LogLevel.WARNING, logMessage);
+			logger.log(
+				ModuleID.INFRASTRUCTURE,
+				LogLevel.WARNING,
+				"Port Value not yet sent by processing module"
+			);
 		}
+		logger.log(
+			ModuleID.INFRASTRUCTURE,
+			LogLevel.SUCCESS,
+			"Port of Board Server successfully sent"
+		);
 		return port;
 	}
 }
