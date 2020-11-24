@@ -12,14 +12,14 @@ import infrastructure.validation.logger.*;
 /**
  * This file contains implementation of sendQueueListener class which is
  * part of networking module and the class in this file is responsible for
- * sending the data over the network.
+ * sending the data over the Internet.
  * This class is implemenation of runnable interface so it has the capability
  * of running in a thread.
  * 
  *  @author Sirpa Sahul
  */
 
-public class SendQueueListener implements Runnable {
+public class InternetSendQueueListener implements Runnable {
     
     /**
      * It is the sendqueue which will contain the outgoing packets which needs to be 
@@ -27,22 +27,24 @@ public class SendQueueListener implements Runnable {
      */
     private IQueue<OutgoingPacket> SendQueue;
 
+    /** The dataOutputStream of the socket */
+    private DataOutputStream dout;
 
- /** 
-	 * logger object from the LoggerFactory to log messages
-	 */
+    /** logger object from the LoggerFactory to log messages */
 	ILogger logger = LoggerFactory.getLoggerInstance();
 
     /**
      * Constructor for this sendQueueListener class.
-     * @param SendQueue, which require the sendqeue as parameter.
+     * @param SendQueue, requires the sendqeue as parameter.
+     * @param dout, requires dataOutputStream as parameter.
      */
-    public SendQueueListener(IQueue<OutgoingPacket> SendQueue){
+    public InternetSendQueueListener(IQueue<OutgoingPacket> SendQueue, DataOutputStream dout){
 
         /** logging when the instance of the class is created */
         logger.log(ModuleID.NETWORKING, LogLevel.INFO, "Send Queue Listener object created");
 
         this.SendQueue = SendQueue;
+        this.dout = dout;
     }
 
 
@@ -91,7 +93,7 @@ public class SendQueueListener implements Runnable {
         String intPattern = "[0-9]+";
         if(Pattern.matches(intPattern, port)){
             int value = Integer.parseInt(port);
-            //it will return true if port is valid else false.
+            /** it will return true if port is valid else false. */
             return (value > 0) && (value <= 65535);
         }
         return false;
@@ -116,12 +118,11 @@ public class SendQueueListener implements Runnable {
      */
     public void run(){
         
-        
         /** when the the thread is started running we logged the instance of it. */
         logger.log(ModuleID.NETWORKING, LogLevel.INFO, "Send Queue Listener thread started running");
 
         /** run the while loop as long as the application is running. */
-        while(LanCommunicator.getStatus()){
+        while(InternetCommunicator.getStatus()){
             
             /**
              * Check whether queue is empty or not, if it's not empty, 
@@ -140,75 +141,53 @@ public class SendQueueListener implements Runnable {
                  * simply discard it by contiuing to the next message.
                  */
                 if(! isValidAddress(destination)){
+                    
                     /** as the message is invalid simply dequeue and continue for next one. */
                     SendQueue.dequeue();
                     continue;
                 }
-
-                /** Divide the destination address into ip and port from destination. */
-                String[] dest = this.splitAddress(destination);
-
-                /** Take ip address from the dest array */
-                String ip = dest[0];
-
-                /** take port number from the dest array and parse it into integer. */
-                int port = Integer.parseInt(dest[1]);
-                
+               
                 /** store the message into the message variable */
                 String message = out.getMessage();
             
                 /** store the identifier variable into the identifier. */
                 String identifier = out.getIdentifier();
 
-                /** Encoding the data into json object */
+
+                /** Encoding the data into json */
                 JSONObject jsonData = new JSONObject();
                 jsonData.put("message", message);
                 jsonData.put("identifier", identifier);
-
-                /** converting the json object into string */
+                jsonData.put("destination", destination);
+                
+                /** Converting json object into string */
                 String encodedMessage = jsonData.toString();
                 
                 /** The following code in try block will try to send the message over the network. */
                 try{
 
-                    /** create socket using ip address and port number. */
-                    Socket sock = new Socket(ip, port);
-
-                    /** create data output stream as we are using tcp. */
-                    DataOutputStream dout = new DataOutputStream(sock.getOutputStream());
-
+                    
                     /** encode the data into UTF format and write it to output stream */
                     dout.writeUTF(encodedMessage);
 
                     /** flush the byte stream into the network. */
                     dout.flush();
 
-                    /** close the outgoing stream. */
-                    dout.close();
-
-                    /** now close the socket */
-                    sock.close();
-
                     /** For every outgoing packet delivered the log the message with destination address. */
                     String logMessage = "Message delivered to destination " + destination;
                     logger.log(ModuleID.NETWORKING, LogLevel.SUCCESS, logMessage);
 
                 } catch (Exception e) {
-                  
-                    /**
-                     * if any exception occurs then log the error.
-                     */
+                    
+                    /** if any exception occurs then log the error. */
                     logger.log(ModuleID.NETWORKING, LogLevel.ERROR, e.toString());
                 }
                 
                 /** Now dequeue the message from sendqueue. */
                 SendQueue.dequeue();
             }
-
-       
         }
         /** Logging the infromation that when the thread is going to stop. */
         logger.log(ModuleID.NETWORKING, LogLevel.INFO, "Send Queue Listener thread is going to stop running");
-
     }
 }
