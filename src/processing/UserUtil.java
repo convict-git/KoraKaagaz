@@ -3,6 +3,7 @@ package processing;
 import java.util.ArrayList;
 import processing.utility.*;
 import processing.server.board.*;
+import processing.boardobject.*;
 import networking.utility.*;
 import networking.*;
 import infrastructure.validation.logger.*;
@@ -37,8 +38,14 @@ public class UserUtil {
     		// stores the information
 		ClientBoardState.username  = new Username(username);
 		ClientBoardState.serverIp  = new IpAddress(ipAddress);
-		ClientBoardState.boardId   = new BoardId(boardId);
-    	
+
+		if (boardId == null) {
+		    ClientBoardState.boardId = null;
+		}
+		else {
+		    ClientBoardState.boardId = new BoardId(boardId);
+		}
+		
 		// gets the client information (ip address + free port)
 		ClientInfo clientInfo = CommunicatorFactory.getClientInfo();
 		logger.log(
@@ -52,6 +59,15 @@ public class UserUtil {
 		ClientBoardState.userIP  = new IpAddress(clientInfo.getIp());
 		Port userPort  = new Port(clientInfo.getPort());
 		ClientBoardState.userPort = userPort;
+
+		// Initialize the data members of the ClientBoardState
+		ClientBoardState.maps = new BoardState();
+		ClientBoardState.undoStack = new ArrayList <BoardObject>();
+		ClientBoardState.redoStack = new ArrayList <BoardObject>();
+		ClientBoardState.userId = new UserId(
+						     ClientBoardState.userIP,
+						     ClientBoardState.username
+						     );
     	
 		// gets a communicator and starts it
 		ClientBoardState.communicator = CommunicatorFactory.getCommunicator(userPort.port);

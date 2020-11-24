@@ -22,7 +22,7 @@ public class PortHandler implements INotificationHandler{
 			ClientBoardState.portNumber = portNumber;
 			
 			// sending the server port to the content module on the client side
-			ContentFactory.getServerPort().sendPort(portNumber.port);
+			ContentFactory.getServerPort().setPort(portNumber.port);
 			
 			IServerCommunication communicator = new ServerCommunication();
 			communicator.getBoardState();

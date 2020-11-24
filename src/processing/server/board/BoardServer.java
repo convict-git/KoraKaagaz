@@ -1,10 +1,14 @@
 package processing.server.board;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import processing.boardobject.*;
 import infrastructure.validation.logger.LogLevel;
 import infrastructure.validation.logger.ModuleID;
 import networking.CommunicatorFactory;
 import processing.*;
+import infrastructure.content.ContentFactory;
 import processing.utility.*;
 
 /**
@@ -28,6 +32,12 @@ public class BoardServer {
 				"[#" + Thread.currentThread().getId() + "] "
 				+ "Starting a new Board Server"
 		);
+		
+		// initialising all the variables connected to this board server
+		ClientBoardState.users = new HashMap<UserId, IpAddress>();
+		ClientBoardState.maps = new BoardState();
+		ClientBoardState.redoStack = new ArrayList<BoardObject>();
+		ClientBoardState.undoStack = new ArrayList<BoardObject>();
 		
 		/**
 		 * While starting a new Board Server the port on which it should start 
@@ -173,6 +183,9 @@ public class BoardServer {
 				"StopConnection", 
 				new StopRequestHandler()
 		);
+		
+		// start the content module server
+		ContentFactory.startContentServer();
 		
 		ClientBoardState.logger.log(
 				ModuleID.PROCESSING, 
