@@ -26,6 +26,7 @@ public class SelectTest extends TestCase {
 	 * 
 	 * @return true if the select operation works successfully.
 	 */
+	@Override
 	public boolean run() {
 		
 		/* Use methods in TestCase to set the variables for test */

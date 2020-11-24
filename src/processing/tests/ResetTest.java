@@ -68,6 +68,7 @@ public class ResetTest extends TestCase {
 	 * 
 	 * @return true if reset works successfully
 	 */
+	@Override
 	public boolean run() {
 		
 		/* Use methods in TestCase to set the variables for test */
