@@ -33,7 +33,9 @@ public class DrawLineTest extends TestCase {
 		ILogger logger = LoggerFactory.getLoggerInstance();
 		
 		/* Create input (ArrayList<Pixel>) */
-		logger.log(ModuleID.PROCESSING, LogLevel.INFO, "DrawLineTest: Create input for test.");
+		logger.log(ModuleID.PROCESSING,
+				LogLevel.INFO,
+				"DrawLineTest: Create input for test.");
 		
 		Position startPos = new Position(1,1);
 		Position endPos = new Position(4,1);
@@ -48,8 +50,12 @@ public class DrawLineTest extends TestCase {
 			 * arrayPixels contains all pixels for given start and end position
 			 * for line segment 
 			 */
-			arrayPixels = LineDrawer.drawSegment(start.position,
-					end.position, start.intensity);
+			arrayPixels = LineDrawer.drawSegment(
+					start.position,
+					end.position, 
+					start.intensity
+					);
+			
 			/* Perform post processing on the pixels */
 			arrayPixels = ShapeHelper.postDrawProcessing(
 					arrayPixels,
@@ -57,6 +63,7 @@ public class DrawLineTest extends TestCase {
 					ClientBoardState.boardDimension
 			);
 		} catch (Exception error) {
+			
 			setError(error.toString());
 			logger.log(ModuleID.PROCESSING, 
 					LogLevel.WARNING, 
@@ -65,7 +72,9 @@ public class DrawLineTest extends TestCase {
 		}
 		
 		/* Initialize the variables in Processor Module */
-		logger.log(ModuleID.PROCESSING, LogLevel.INFO, "DrawLineTest: Initialise processor for test.");
+		logger.log(ModuleID.PROCESSING,
+				LogLevel.INFO,
+				"DrawLineTest: Initialise processor for test.");
 		
 		TestUtil.initialiseProcessorForTest(new ServerObjectHandler());
 		
@@ -108,7 +117,11 @@ public class DrawLineTest extends TestCase {
 		
 		/* check whether the output received is same as expected output */
 		if (inputSet.equals(outputSet)) {
-			logger.log(ModuleID.PROCESSING, LogLevel.SUCCESS, "DrawLineTest: Successfull!.");
+			logger.log(
+					ModuleID.PROCESSING,
+					LogLevel.SUCCESS,
+					"DrawLineTest: Successfull!."
+			);
 			ChangesHandler.receivedOutput = null;
 			return true;
 		} else {

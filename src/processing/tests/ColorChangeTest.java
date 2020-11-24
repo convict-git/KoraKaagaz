@@ -29,6 +29,7 @@ public class ColorChangeTest  extends TestCase {
 	 * 
 	 * @return true if the colorChange operation works successfully.
 	 */
+	@Override
 	public boolean run() {
 		
 		/* Use methods in TestCase to set the variables for test */
@@ -40,7 +41,11 @@ public class ColorChangeTest  extends TestCase {
 		ILogger logger = LoggerFactory.getLoggerInstance();
 		
 		/* Create input (ArrayList<Pixel>) and expected output */
-		logger.log(ModuleID.PROCESSING, LogLevel.INFO, "ColorChangeTest: Create input for test.");
+		logger.log(
+				ModuleID.PROCESSING,
+				LogLevel.INFO,
+				"ColorChangeTest: Create input for test."
+		);
 		
 		int b;
 		Pixel pixel;
@@ -81,9 +86,16 @@ public class ColorChangeTest  extends TestCase {
 		selectObjectPosition.add(new Position(2,2));
 		
 		/* Initialize the variables in Processor Module */
-		logger.log(ModuleID.PROCESSING, LogLevel.INFO, "ColorChangeTest: Initialise processor for test.");
+		logger.log(
+				ModuleID.PROCESSING,
+				LogLevel.INFO,
+				"ColorChangeTest: Initialise processor for test."
+		);
 		
-		/* ClientObjectHandler is the handler to be used while subscribing network by processor */
+		/* 
+		 * ClientObjectHandler is the handler to be used while 
+		 * subscribing network by processor 
+		 */
 		TestUtil.initialiseProcessorForTest(new ClientObjectHandler());
 				
 		/* get an instance of IDrawErase interface */
@@ -145,7 +157,7 @@ public class ColorChangeTest  extends TestCase {
 		ChangesHandler.receivedOutput = null;
 
 		try {
-			/* call processing select API to select object at passed input array */
+			/* call processing select to select object at passed input array */
 			operation.select(selectObjectPosition);
 			
 		} catch (Exception error) {
@@ -193,12 +205,22 @@ public class ColorChangeTest  extends TestCase {
 		
 		/* check whether the output received is same as expected output */
 		if (inputSet.equals(outputSet)) {
-			logger.log(ModuleID.PROCESSING, LogLevel.SUCCESS, "ColorChangeTest: Successful!.");
+			logger.log(
+					ModuleID.PROCESSING,
+					LogLevel.SUCCESS,
+					"ColorChangeTest: Successful!."
+			);
+			
 			ChangesHandler.receivedOutput = null;
 			return true;
 		} else {
 			setError("ColorChange failed. Result does not match expected output.");
-			logger.log(ModuleID.PROCESSING, LogLevel.WARNING, "ColorChangeTest: FAILED.");
+			logger.log(
+					ModuleID.PROCESSING,
+					LogLevel.WARNING,
+					"ColorChangeTest: FAILED."
+			);
+			
 			ChangesHandler.receivedOutput = null;
 			return false;
 		}

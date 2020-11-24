@@ -1,12 +1,13 @@
 package processing.testsimulator;
 
+import java.util.ArrayList;
+
 import infrastructure.validation.logger.*;
 import networking.INotificationHandler;
-import processing.BoardState;
-import processing.ClientBoardState;
+import processing.*;
+import processing.boardobject.BoardObject;
 import processing.server.main.*;
 import processing.server.main.ServerState;
-import processing.testsimulator.handlers.*;
 import processing.testsimulator.network.*;
 import processing.utility.*;
 
@@ -41,24 +42,14 @@ public class TestUtil {
 		ClientBoardState.communicator.subscribeForNotifications("ObjectBroadcast", 
 				handler);
 		ClientBoardState.maps = new BoardState();
+		ClientBoardState.redoStack = new ArrayList<BoardObject>();
+		ClientBoardState.undoStack = new ArrayList<BoardObject>();
+		
 		logger.log(
 				ModuleID.PROCESSING, 
 				LogLevel.SUCCESS, 
 				"Test: Started communicator and the ClientBoardState"
 		);
-		/*
-		for (int i = 0; i < arrayPixels.size(); i++)
-		{
-			Pixel p = arrayPixels.get(i);
-			System.out.println(p.position.r + " " + p.position.c);
-		}
-		System.out.println("enter");
-		for (int i = 0; i < ChangesHandler.receivedOutput.size(); i++)
-		{
-			Pixel p = ChangesHandler.receivedOutput.get(i);
-			System.out.println(p.position.r + " " + p.position.c);
-		}
-		*/
 	}
 	
 	public static void initialiseMainServerForTest() {

@@ -104,28 +104,21 @@ public class MainServerTest extends TestCase {
 					"MainServerTest: Existing board request failed.");
 			return false;
 		}
-
-		/* wait till UI receives the output */
-		while (ClientBoardState.boardId == null) {
-			try{
-				Thread.sleep(50);
-			 } catch (Exception e) {
-				 // wait until output received
-			 }
+		try {
+			Thread.sleep(2000);
+		} catch (Exception e) {
+			// wait for 2 sec to receive the output
 		}
-		/* wait till UI receives the output */
-		while (ClientBoardState.portNumber == null) {
-			try{
-				Thread.sleep(50);
-			 } catch (Exception e) {
-				 // wait until output received
-			 }
-		}
-		System.out.println("BoardId : " + ClientBoardState.boardId);
-		System.out.println("port : " + ClientBoardState.portNumber);
 		
-		System.out.println("bno: " + ServerState.boardNumber);
-		return true;
+		if (ClientBoardState.boardId == null || ClientBoardState.portNumber == null) {
+			logger.log(ModuleID.PROCESSING, 
+					LogLevel.ERROR, 
+					"MainServerTest: Failed!.");
+			setError("Failed to receive boardId and portNumber.");
+			return false;
+		} else {
+			logger.log(ModuleID.PROCESSING, LogLevel.SUCCESS, "MainServerTest: Successfull.");
+			return true;
+		}
 	}
-	
 }

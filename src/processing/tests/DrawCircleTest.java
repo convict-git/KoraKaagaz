@@ -31,7 +31,11 @@ public class DrawCircleTest extends TestCase {
 		ILogger logger = LoggerFactory.getLoggerInstance();
 		
 		/* Create input (ArrayList<Pixel>) */
-		logger.log(ModuleID.PROCESSING, LogLevel.INFO, "DrawCircleTest: Create input for test.");
+		logger.log(
+				ModuleID.PROCESSING,
+				LogLevel.INFO,
+				"DrawCircleTest: Create input for test."
+		);
 		
 		Position pos = new Position(1,1);
 		Intensity intensity = new Intensity(1,2,3);
@@ -42,27 +46,37 @@ public class DrawCircleTest extends TestCase {
 		ArrayList<Pixel> arrayPixels = new ArrayList<Pixel>();
 		
 		try {
-			/* arrayPixels contains all pixels for given circle radius and center */
-			arrayPixels = CircleDrawer.drawCircle(pos,
+			/* arrayPixels contains all pixels for given circle */
+			arrayPixels = CircleDrawer.drawCircle(
+					pos,
 					radius,
-					intensity);
+					intensity
+			);
 			
 			/* Perform post processing on the pixels */ 
 			arrayPixels = ShapeHelper.postDrawProcessing(
 					arrayPixels,
-			    ClientBoardState.brushSize,
-			    ClientBoardState.boardDimension
+					ClientBoardState.brushSize,
+					ClientBoardState.boardDimension
 			);	
+			
 		} catch (Exception error) {
 			setError(error.toString());
-			logger.log(ModuleID.PROCESSING, 
+			logger.log(
+					ModuleID.PROCESSING, 
 					LogLevel.WARNING, 
-					"DrawCircleTest: Failed to create input arrayList for given center and radius.");
+					"DrawCircleTest: Failed to create input arrayList."
+			);
+			
 			return false;
 		}
 		
 		/* Initialize the variables in Processor Module */
-		logger.log(ModuleID.PROCESSING, LogLevel.INFO, "DrawCircleTest: Initialise processor for test.");
+		logger.log(
+				ModuleID.PROCESSING,
+				LogLevel.INFO,
+				"DrawCircleTest: Initialise processor for test."
+		);
 		
 		TestUtil.initialiseProcessorForTest(new ServerObjectHandler());
 		
@@ -87,7 +101,11 @@ public class DrawCircleTest extends TestCase {
 		
 		}
 		
-		logger.log(ModuleID.PROCESSING, LogLevel.INFO, "DrawCircleTest: Waiting for UI to receive output.");
+		logger.log(
+				ModuleID.PROCESSING,
+				LogLevel.INFO,
+				"DrawCircleTest: Waiting for UI to receive output."
+		);
 		
 		/* wait till UI receives the output */
 		while (ChangesHandler.receivedOutput == null) {
@@ -105,12 +123,22 @@ public class DrawCircleTest extends TestCase {
 		
 		/* check whether the output received is same as expected output */
 		if (inputSet.equals(outputSet)) {
-			logger.log(ModuleID.PROCESSING, LogLevel.SUCCESS, "DrawCircleTest: Successfull!.");
+			logger.log(
+					ModuleID.PROCESSING,
+					LogLevel.SUCCESS,
+					"DrawCircleTest: Successfull!."
+			);
+			
 			ChangesHandler.receivedOutput = null;
 			return true;
 		} else {
 			setError("DrawCircle failed. Result does not match expected output.");
-			logger.log(ModuleID.PROCESSING, LogLevel.WARNING, "DrawCircleTest: FAILED!.");
+			logger.log(
+					ModuleID.PROCESSING,
+					LogLevel.WARNING,
+					"DrawCircleTest: FAILED!."
+			);
+			
 			ChangesHandler.receivedOutput = null;
 			return false;
 		}

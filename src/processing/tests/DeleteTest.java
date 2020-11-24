@@ -29,6 +29,7 @@ public class DeleteTest extends TestCase {
 	 * 
 	 * @return true if the delete operation works successfully.
 	 */
+	@Override
 	public boolean run() {
 		
 		/* Use methods in TestCase to set the variables for test */
@@ -40,7 +41,11 @@ public class DeleteTest extends TestCase {
 		ILogger logger = LoggerFactory.getLoggerInstance();
 		
 		/* Create input (ArrayList<Pixel>) and expected output */
-		logger.log(ModuleID.PROCESSING, LogLevel.INFO, "DeleteTest: Create input for test.");
+		logger.log(
+				ModuleID.PROCESSING,
+				LogLevel.INFO,
+				"DeleteTest: Create input for test."
+		);
 		
 		int b;
 		Pixel pixel;
@@ -80,11 +85,19 @@ public class DeleteTest extends TestCase {
 		selectObjectPosition.add(new Position(2,2));
 		
 		/* Initialize the variables in Processor Module */
-		logger.log(ModuleID.PROCESSING, LogLevel.INFO, "DeleteTest: Initialise processor for test.");
+		logger.log(
+				ModuleID.PROCESSING,
+				LogLevel.INFO,
+				"DeleteTest: Initialise processor for test."
+		);
 		
 		TestUtil.initialiseProcessorForTest(new ClientObjectHandler());
 		
-		ClientBoardState.communicator.subscribeForNotifications("ObjectBroadcast", new ClientObjectHandler());
+		ClientBoardState.communicator.subscribeForNotifications(
+				"ObjectBroadcast",
+				new ClientObjectHandler()
+		);
+		
 		/* get an instance of IDrawErase interface */
 		IDrawErase draw = ProcessingFactory.getProcessor();
 		
@@ -192,12 +205,22 @@ public class DeleteTest extends TestCase {
 
 		/* check whether the output received is same as expected output */
 		if (inputSet.equals(outputSet)) {
-			logger.log(ModuleID.PROCESSING, LogLevel.SUCCESS, "DeleteTest: Successful!.");
+			logger.log(
+					ModuleID.PROCESSING,
+					LogLevel.SUCCESS,
+					"DeleteTest: Successful!."
+			);
+			
 			ChangesHandler.receivedOutput = null;
 			return true;
 		} else {
 			setError("Delete failed. Result does not match expected output.");
-			logger.log(ModuleID.PROCESSING, LogLevel.WARNING, "DeleteTest: FAILED.");
+			logger.log(
+					ModuleID.PROCESSING,
+					LogLevel.WARNING,
+					"DeleteTest: FAILED."
+			);
+			
 			ChangesHandler.receivedOutput = null;
 			return false;
 		}
