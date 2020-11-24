@@ -5,6 +5,7 @@ import java.util.*;
 import processing.*;
 import processing.utility.*;
 import processing.testsimulator.*;
+import processing.testsimulator.handlers.ClientObjectHandler;
 import processing.testsimulator.ui.*;
 import infrastructure.validation.logger.*;
 import infrastructure.validation.testing.TestCase;
@@ -64,6 +65,8 @@ public class ResetTest extends TestCase {
 	/**
 	 * Creates two board object objectA, objectB and then call reset API of
 	 * processor. Expected output is a white object of same dimension as Board.
+	 * 
+	 * @return true if reset works successfully
 	 */
 	public boolean run() {
 		
@@ -106,7 +109,8 @@ public class ResetTest extends TestCase {
 		
 		/* Initialize the variables in Processor Module */
 		logger.log(ModuleID.PROCESSING, LogLevel.INFO, "ResetTest: Initialise processor for test.");
-		TestUtil.initialiseProcessorForTest();
+		
+		TestUtil.initialiseProcessorForTest(new ClientObjectHandler());
 		
 		/* get an instance of IDrawErase interface */
 		IDrawErase draw = ProcessingFactory.getProcessor();
@@ -136,7 +140,7 @@ public class ResetTest extends TestCase {
 		/* wait till UI receives the output */
 		while (ChangesHandler.receivedOutput == null) {
 			try{
-				Thread.currentThread().sleep(50);
+				Thread.sleep(50);
 			 } catch (Exception e) {
 				 // wait until output received
 			 }
@@ -161,7 +165,7 @@ public class ResetTest extends TestCase {
 		/* wait till UI receives the output */
 		while (ChangesHandler.receivedOutput == null) {
 			try{
-				Thread.currentThread().sleep(50);
+				Thread.sleep(50);
 			 } catch (Exception e) {
 				 // wait until output received
 			 }
@@ -186,7 +190,7 @@ public class ResetTest extends TestCase {
 		/* wait till UI receives the output */
 		while (ChangesHandler.receivedOutput == null) {
 			try{
-				Thread.currentThread().sleep(50);
+				Thread.sleep(50);
 			 } catch (Exception e) {
 				 // wait until output received
 			 }
@@ -204,7 +208,7 @@ public class ResetTest extends TestCase {
 			ChangesHandler.receivedOutput = null;
 			return true;
 		} else {
-			setError("Reset Output failed. Output is different from the input.");
+			setError("Reset failed. Result does not match expected output.");
 			logger.log(ModuleID.PROCESSING, LogLevel.WARNING, "ResetTest: FAILED.");
 			ChangesHandler.receivedOutput = null;
 			return false;

@@ -9,7 +9,7 @@ import networking.*;
  * Communicator implements ICommunicator interface and is used by Processor
  * module to start, stop, send message and subscribe for messages. This can 
  * only be used for testing purpose as it does not start the network connection
- * rather the data is send back to the same client. 
+ * rather the data is send back to the same client using appropriate handler. 
  *  
  * @author Sakshi Rathore
  */
@@ -45,7 +45,8 @@ public class Communicator implements ICommunicator{
 
 	@Override
 	public void send(String destination, String message, String identifier) {
-		System.out.println("send through network " + identifier);
+		
+		// System.out.println("send through network " + identifier);
 		INotificationHandler handler = handlerMap.get(identifier);
 		handler.onMessageReceived(message);
 		logger.log(ModuleID.PROCESSING, 

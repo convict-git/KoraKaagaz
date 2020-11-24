@@ -32,7 +32,7 @@ public class GetUserTest extends TestCase {
 		/* Use methods in TestCase to set the variables for test */
 		setDescription("Test the getUser API in IUser interface.");
 		setCategory("Processing");
-		setPriority(2);
+		setPriority(1);
 		
 		/* Get an instance of logger */
 		ILogger logger = LoggerFactory.getLoggerInstance();
@@ -67,7 +67,9 @@ public class GetUserTest extends TestCase {
 		
 		/* Initialize the variables in Processor Module */
 		logger.log(ModuleID.PROCESSING, LogLevel.INFO, "GetUserTest: Initialise processor for test.");
-		TestUtil.initialiseProcessorForTest();
+		
+		TestUtil.initialiseProcessorForTest(new ClientObjectHandler());
+		
 		ClientBoardState.communicator.subscribeForNotifications("ObjectBroadcast", new ClientObjectHandler());
 		
 		/* get an instance of IDrawErase interface */
@@ -118,7 +120,7 @@ public class GetUserTest extends TestCase {
 			ChangesHandler.receivedOutput = null;
 			return true;
 		} else {
-			setError("Select Output failed. Output is different from the input.");
+			setError("GetUser failed. Result does not match expected output.");
 			logger.log(ModuleID.PROCESSING, LogLevel.WARNING, "GetUserTest: FAILED.");
 			ChangesHandler.receivedOutput = null;
 			return false;

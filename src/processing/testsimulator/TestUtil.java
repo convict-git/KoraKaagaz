@@ -1,6 +1,7 @@
 package processing.testsimulator;
 
 import infrastructure.validation.logger.*;
+import networking.INotificationHandler;
 import processing.BoardState;
 import processing.ClientBoardState;
 import processing.server.main.*;
@@ -18,7 +19,7 @@ import processing.utility.*;
 
 public class TestUtil {
 	
-	public static void initialiseProcessorForTest() {
+	public static void initialiseProcessorForTest(INotificationHandler handler) {
 		/* Get logger instance */
 		ILogger logger = LoggerFactory.getLoggerInstance();
 		
@@ -38,7 +39,7 @@ public class TestUtil {
 		ClientBoardState.communicator = CommunicatorFactory.getCommunicator();
 		ClientBoardState.communicator.start();
     	ClientBoardState.communicator.subscribeForNotifications("ObjectBroadcast", 
-    			new ServerObjectHandler());
+    			handler);
     	ClientBoardState.maps = new BoardState();
     	logger.log(
     			ModuleID.PROCESSING, 

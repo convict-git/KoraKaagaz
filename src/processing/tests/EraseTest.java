@@ -6,6 +6,7 @@ import infrastructure.validation.logger.*;
 import infrastructure.validation.testing.TestCase;
 import processing.*;
 import processing.testsimulator.*;
+import processing.testsimulator.handlers.ServerObjectHandler;
 import processing.testsimulator.ui.ChangesHandler;
 import processing.utility.*;
 
@@ -51,7 +52,8 @@ public class EraseTest extends TestCase {
 
 		/* Initialize the variables in Processor Module */
 		logger.log(ModuleID.PROCESSING, LogLevel.INFO, "EraseTest: Initialise processor for test.");
-		TestUtil.initialiseProcessorForTest();
+		
+		TestUtil.initialiseProcessorForTest(new ServerObjectHandler());
 		
 		/* get an instance of IDrawErase interface */
 		IDrawErase processor = ProcessingFactory.getProcessor();
@@ -79,7 +81,7 @@ public class EraseTest extends TestCase {
 		/* wait till UI receives the output */
 		while (ChangesHandler.receivedOutput == null) {
 			try{
-				Thread.currentThread().sleep(50);
+				Thread.sleep(50);
 			 } catch (Exception e) {
 				 // wait until output received
 			 }
@@ -96,7 +98,7 @@ public class EraseTest extends TestCase {
 			ChangesHandler.receivedOutput = null;
 			return true;
 		} else {
-			setError("Erase Output failed. Output is different from the input.");
+			setError("Erase failed. Result does not match expected output.");
 			logger.log(ModuleID.PROCESSING, LogLevel.WARNING, "EraseTest: FAILED!.");
 			ChangesHandler.receivedOutput = null;
 			return false;

@@ -7,6 +7,7 @@ import infrastructure.validation.testing.*;
 import processing.*;
 import processing.shape.*;
 import processing.testsimulator.*;
+import processing.testsimulator.handlers.ServerObjectHandler;
 import processing.testsimulator.ui.*;
 import processing.utility.*;
 
@@ -24,7 +25,7 @@ public class DrawCircleTest extends TestCase {
 		/* Use methods in TestCase to set the variables for test */
 		setDescription("Test the drawCircle function in IDrawShapes interface.");
 		setCategory("Processing");
-		setPriority(2);
+		setPriority(0);
 		
 		/* Get an instance of logger */
 		ILogger logger = LoggerFactory.getLoggerInstance();
@@ -61,7 +62,8 @@ public class DrawCircleTest extends TestCase {
 		
 		/* Initialize the variables in Processor Module */
 		logger.log(ModuleID.PROCESSING, LogLevel.INFO, "DrawCircleTest: Initialise processor for test.");
-		TestUtil.initialiseProcessorForTest();
+		
+		TestUtil.initialiseProcessorForTest(new ServerObjectHandler());
 		
 		/* get an instance of IDrawShapes interface */
 		IDrawShapes processor = ProcessingFactory.getProcessor();
@@ -85,10 +87,11 @@ public class DrawCircleTest extends TestCase {
 		}
 		
 		logger.log(ModuleID.PROCESSING, LogLevel.INFO, "DrawCircleTest: Waiting for UI to receive output.");
+		
 		/* wait till UI receives the output */
 		while (ChangesHandler.receivedOutput == null) {
 			try{
-				Thread.currentThread().sleep(50);
+				Thread.sleep(50);
 			 } catch (Exception e) {
 				 // wait until output received
 			 }
@@ -98,24 +101,14 @@ public class DrawCircleTest extends TestCase {
 		inputSet.addAll(arrayPixels);
 		Set<Pixel> outputSet = new HashSet<Pixel>();
 		outputSet.addAll(ChangesHandler.receivedOutput);
-		for (int i = 0; i < arrayPixels.size(); i++)
-		{
-			Pixel p = arrayPixels.get(i);
-			System.out.println(p.position.r + " " + p.position.c);
-		}
-		System.out.println("enter");
-		for (int i = 0; i < ChangesHandler.receivedOutput.size(); i++)
-		{
-			Pixel p = ChangesHandler.receivedOutput.get(i);
-			System.out.println(p.position.r + " " + p.position.c);
-		}
+		
 		/* check whether the output received is same as expected output */
 		if (inputSet.equals(outputSet)) {
 			logger.log(ModuleID.PROCESSING, LogLevel.SUCCESS, "DrawCircleTest: Successfull!.");
 			ChangesHandler.receivedOutput = null;
 			return true;
 		} else {
-			setError("Draw Circle Output failed. Output is different from the input.");
+			setError("DrawCircle failed. Result does not match expected output.");
 			logger.log(ModuleID.PROCESSING, LogLevel.WARNING, "DrawCircleTest: FAILED!.");
 			ChangesHandler.receivedOutput = null;
 			return false;

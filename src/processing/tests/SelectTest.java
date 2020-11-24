@@ -5,6 +5,7 @@ import java.util.*;
 import processing.*;
 import processing.utility.*;
 import processing.testsimulator.*;
+import processing.testsimulator.handlers.ClientObjectHandler;
 import processing.testsimulator.ui.*;
 import infrastructure.validation.logger.*;
 import infrastructure.validation.testing.TestCase;
@@ -20,9 +21,10 @@ public class SelectTest extends TestCase {
 	
 	/**
 	 * Create two objects, objectA and objectB on Board using drawCurve API 
-	 * and position of objectA is passed for selecting objectA. Excepted 
+	 * and position of objectA is passed for selection. Excepted 
 	 * output is ArrayList<Pixel> corresponding to objectA
 	 * 
+	 * @return true if the select operation works successfully.
 	 */
 	public boolean run() {
 		
@@ -71,7 +73,8 @@ public class SelectTest extends TestCase {
 		
 		/* Initialize the variables in Processor Module */
 		logger.log(ModuleID.PROCESSING, LogLevel.INFO, "SelectTest: Initialise processor for test.");
-		TestUtil.initialiseProcessorForTest();
+		
+		TestUtil.initialiseProcessorForTest(new ClientObjectHandler());
 		
 		/* get an instance of IDrawErase interface */
 		IDrawErase draw = ProcessingFactory.getProcessor();
@@ -152,31 +155,14 @@ public class SelectTest extends TestCase {
 		inputSet.addAll(objectA);
 		Set<Pixel> outputSet = new HashSet<Pixel>();
 		outputSet.addAll(selectedObject);
-		for (int i = 0; i < objectB.size(); i++)
-		{
-			Pixel p = objectB.get(i);
-			System.out.println(p.position.r + " " + p.position.c);
-		}
-		System.out.println("objectB");
 		
-		for (int i = 0; i < objectA.size(); i++)
-		{
-			Pixel p = objectA.get(i);
-			System.out.println(p.position.r + " " + p.position.c);
-		}
-		System.out.println("enter");
-		for (int i = 0; i < selectedObject.size(); i++)
-		{
-			Pixel p = selectedObject.get(i);
-			System.out.println(p.position.r + " " + p.position.c);
-		}
 		/* check whether the output received is same as expected output */
 		if (inputSet.equals(outputSet)) {
 			logger.log(ModuleID.PROCESSING, LogLevel.INFO, "SelectTest: Successful!.");
 			ChangesHandler.receivedOutput = null;
 			return true;
 		} else {
-			setError("Select Output failed. Output is different from the input.");
+			setError("Select failed. Result does not match expected output.");
 			logger.log(ModuleID.PROCESSING, LogLevel.WARNING, "SelectTest: FAILED.");
 			ChangesHandler.receivedOutput = null;
 			return false;

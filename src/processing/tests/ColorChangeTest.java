@@ -22,7 +22,7 @@ public class ColorChangeTest  extends TestCase {
 	
 	/**
 	 * Create two objects, objectA and objectB on Board using drawCurve API 
-	 * and position of objectA is passed for selecting objectA as first the 
+	 * and position of objectA is passed for selecting objectA, as first an 
 	 * object is to be selected for delete. Then colorChange API of processing 
 	 * module is called. Expected output is a ArrayList<Position> same as 
 	 * objectA and new color.
@@ -34,7 +34,7 @@ public class ColorChangeTest  extends TestCase {
 		/* Use methods in TestCase to set the variables for test */
 		setDescription("Test the colorChnage API in IOperation interface.");
 		setCategory("Processing");
-		setPriority(2);
+		setPriority(1);
 		
 		/* Get an instance of logger */
 		ILogger logger = LoggerFactory.getLoggerInstance();
@@ -49,17 +49,17 @@ public class ColorChangeTest  extends TestCase {
 		/* stores the position to be passed to API for select */
 		ArrayList<Position> selectObjectPosition = new ArrayList<Position>();
 		
-		/* stores the ArrayList of objectA */
+		/* stores the ArrayList<Pixel> of objectA */
 		ArrayList<Pixel> objectA = new ArrayList<Pixel>();
 		/* intensity for object A */
 		Intensity intensityA = new Intensity(10, 12, 14);
 		
-		/* stores the ArrayList of objectB on Board */
+		/* stores the ArrayList<Pixel> of objectB */
 		ArrayList<Pixel> objectB = new ArrayList<Pixel>();
 		/* intensity for object B */
 		Intensity intensityB = new Intensity(10, 12, 14);
 		
-		/* expected output*/
+		/* stores expected output*/
 		ArrayList<Pixel> expectedOutput = new ArrayList<Pixel>();		
 		Intensity newColor = new Intensity(0, 0, 255);
 		
@@ -82,9 +82,10 @@ public class ColorChangeTest  extends TestCase {
 		
 		/* Initialize the variables in Processor Module */
 		logger.log(ModuleID.PROCESSING, LogLevel.INFO, "ColorChangeTest: Initialise processor for test.");
-		TestUtil.initialiseProcessorForTest();
-		ClientBoardState.communicator.subscribeForNotifications("ObjectBroadcast", new ClientObjectHandler());
 		
+		/* ClientObjectHandler is the handler to be used while subscribing network by processor */
+		TestUtil.initialiseProcessorForTest(new ClientObjectHandler());
+				
 		/* get an instance of IDrawErase interface */
 		IDrawErase draw = ProcessingFactory.getProcessor();
 		
@@ -190,28 +191,13 @@ public class ColorChangeTest  extends TestCase {
 		Set<Pixel> outputSet = new HashSet<Pixel>();
 		outputSet.addAll(ChangesHandler.receivedOutput);
 		
-		for (int i = 0; i < expectedOutput.size(); i++)
-		{
-			Pixel p = expectedOutput.get(i);
-			System.out.println(p.position.r + " " + p.position.c);
-		}
-		
-		System.out.println("color");
-		
-		for (int i = 0; i < ChangesHandler.receivedOutput.size(); i++)
-		{
-			Pixel p = ChangesHandler.receivedOutput.get(i);
-			System.out.println(p.position.r + " " + p.position.c);
-			System.out.println(p.intensity.r + " " + p.intensity.g + " " + p.intensity.b);
-		}
-		
 		/* check whether the output received is same as expected output */
 		if (inputSet.equals(outputSet)) {
-			logger.log(ModuleID.PROCESSING, LogLevel.INFO, "ColorChangeTest: Successful!.");
+			logger.log(ModuleID.PROCESSING, LogLevel.SUCCESS, "ColorChangeTest: Successful!.");
 			ChangesHandler.receivedOutput = null;
 			return true;
 		} else {
-			setError("Select Output failed. Output is different from the input.");
+			setError("ColorChange failed. Result does not match expected output.");
 			logger.log(ModuleID.PROCESSING, LogLevel.WARNING, "ColorChangeTest: FAILED.");
 			ChangesHandler.receivedOutput = null;
 			return false;

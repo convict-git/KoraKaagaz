@@ -27,7 +27,7 @@ public class RedoTest  extends TestCase {
 	 * 
 	 * Expected output is ArrayList<Pixel> of objectB pixels.
 	 * 
-	 * @return true if the undo operation works successfully.
+	 * @return true if the redo operation works successfully.
 	 */
 	public boolean run() {
 		
@@ -82,7 +82,9 @@ public class RedoTest  extends TestCase {
 		
 		/* Initialize the variables in Processor Module */
 		logger.log(ModuleID.PROCESSING, LogLevel.INFO, "RedoTest: Initialise processor for test.");
-		TestUtil.initialiseProcessorForTest();
+		
+		TestUtil.initialiseProcessorForTest(new ServerObjectHandler());
+		
 		ClientBoardState.communicator.subscribeForNotifications("ObjectBroadcast", new ClientObjectHandler());
 		
 		/* get an instance of IDrawErase interface */
@@ -90,9 +92,6 @@ public class RedoTest  extends TestCase {
 		
 		/* get an instance of IUndoRedo interface */
 		IUndoRedo undoRedo = ProcessingFactory.getProcessor();
-		
-		/* get an instance of IOperation interface */
-		IOperation operation = ProcessingFactory.getProcessor();
 		
 		/* Get an instance of IUser interface */
 		IUser user = ProcessingFactory.getProcessor();
@@ -191,28 +190,13 @@ public class RedoTest  extends TestCase {
 		Set<Pixel> outputSet = new HashSet<Pixel>();
 		outputSet.addAll(ChangesHandler.receivedOutput);
 		
-		for (int i = 0; i < expectedOutput.size(); i++)
-		{
-			Pixel p = expectedOutput.get(i);
-			System.out.println(p.position.r + " " + p.position.c);
-		}
-		
-		System.out.println("undo");
-		
-		for (int i = 0; i < ChangesHandler.receivedOutput.size(); i++)
-		{
-			Pixel p = ChangesHandler.receivedOutput.get(i);
-			System.out.println(p.position.r + " " + p.position.c);
-			System.out.println(p.intensity.r + " " + p.intensity.g + " " + p.intensity.b);
-		}
-		
 		/* check whether the output received is same as expected output */
 		if (inputSet.equals(outputSet)) {
 			logger.log(ModuleID.PROCESSING, LogLevel.SUCCESS, "RedoTest: Successful!.");
 			ChangesHandler.receivedOutput = null;
 			return true;
 		} else {
-			setError("Select Output failed. Output is different from the input.");
+			setError("Redo failed. Result does not match expected output.");
 			logger.log(ModuleID.PROCESSING, LogLevel.WARNING, "RedoTest: FAILED.");
 			ChangesHandler.receivedOutput = null;
 			return false;

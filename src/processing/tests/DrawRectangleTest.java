@@ -7,6 +7,7 @@ import infrastructure.validation.testing.*;
 import processing.*;
 import processing.shape.*;
 import processing.testsimulator.*;
+import processing.testsimulator.handlers.ServerObjectHandler;
 import processing.testsimulator.ui.*;
 import processing.utility.*;
 
@@ -15,6 +16,7 @@ import processing.utility.*;
  *   
  * @author Sakshi Rathore
  */
+
 public class DrawRectangleTest extends TestCase {
 
 	@Override
@@ -40,7 +42,7 @@ public class DrawRectangleTest extends TestCase {
 		ArrayList<Pixel> arrayPixels = new ArrayList<Pixel>();
 		
 		try {
-			/* arrayPixels contains all pixels for rect given top left and bottom right */
+			/* arrayPixels contains all pixels for rectangle given top left and bottom right */
 			arrayPixels = RectangleDrawer.drawRectangle(topLeft,
 					bottomRight,
 					intensity);
@@ -64,7 +66,7 @@ public class DrawRectangleTest extends TestCase {
 				LogLevel.INFO, 
 				"DrawRectangleTest: Initialise processor for test.");
 		
-		TestUtil.initialiseProcessorForTest();
+		TestUtil.initialiseProcessorForTest(new ServerObjectHandler());
 		
 		/* get an instance of IDrawShapes interface */
 		IDrawShapes processor = ProcessingFactory.getProcessor();
@@ -97,7 +99,7 @@ public class DrawRectangleTest extends TestCase {
 		/* wait till UI receives the output */
 		while (ChangesHandler.receivedOutput == null) {
 			try{
-				Thread.currentThread().sleep(50);
+				Thread.sleep(50);
 			 } catch (Exception e) {
 				 // wait until output received
 			 }
@@ -107,24 +109,14 @@ public class DrawRectangleTest extends TestCase {
 		inputSet.addAll(arrayPixels);
 		Set<Pixel> outputSet = new HashSet<Pixel>();
 		outputSet.addAll(ChangesHandler.receivedOutput);
-		for (int i = 0; i < arrayPixels.size(); i++)
-		{
-			Pixel p = arrayPixels.get(i);
-			System.out.println(p.position.r + " " + p.position.c);
-		}
-		System.out.println("enter");
-		for (int i = 0; i < ChangesHandler.receivedOutput.size(); i++)
-		{
-			Pixel p = ChangesHandler.receivedOutput.get(i);
-			System.out.println(p.position.r + " " + p.position.c);
-		}
+		
 		/* check whether the output received is same as expected output */
 		if (inputSet.equals(outputSet)) {
 			logger.log(ModuleID.PROCESSING, LogLevel.SUCCESS, "DrawRectangleTest: Successfull!.");
 			ChangesHandler.receivedOutput = null;
 			return true;
 		} else {
-			setError("Draw Rectangle Output failed. Output is different from the input.");
+			setError("Draw Rectangle failed. Result does not match expected output.");
 			logger.log(ModuleID.PROCESSING, LogLevel.WARNING, "DrawRectangleTest: FAILED!.");
 			ChangesHandler.receivedOutput = null;
 			return false;

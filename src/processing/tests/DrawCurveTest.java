@@ -5,6 +5,7 @@ import java.util.*;
 import processing.*;
 import processing.utility.*;
 import processing.testsimulator.*;
+import processing.testsimulator.handlers.*;
 import processing.testsimulator.ui.*;
 import infrastructure.validation.logger.*;
 import infrastructure.validation.testing.TestCase;
@@ -15,6 +16,7 @@ import infrastructure.validation.testing.TestCase;
  * @author Sakshi Rathore
  *
  */
+
 public class DrawCurveTest extends TestCase {
 	
 	public boolean run() {
@@ -47,7 +49,8 @@ public class DrawCurveTest extends TestCase {
 
 		/* Initialize the variables in Processor Module */
 		logger.log(ModuleID.PROCESSING, LogLevel.INFO, "DrawCurveTest: Initialise processor for test.");
-		TestUtil.initialiseProcessorForTest();
+		
+		TestUtil.initialiseProcessorForTest(new ServerObjectHandler());
 		
 		/* get an instance of IDrawErase interface */
 		IDrawErase processor = ProcessingFactory.getProcessor();
@@ -74,8 +77,8 @@ public class DrawCurveTest extends TestCase {
 		
 		/* wait till UI receives the output */
 		while (ChangesHandler.receivedOutput == null) {
-			try{
-				Thread.currentThread().sleep(50);
+			try {
+				Thread.sleep(50);
 			 } catch (Exception e) {
 				 // wait until output received
 			 }
@@ -92,7 +95,7 @@ public class DrawCurveTest extends TestCase {
 			ChangesHandler.receivedOutput = null;
 			return true;
 		} else {
-			setError("Draw Curve Output failed. Output is different from the input.");
+			setError("Draw Curve failed. Result does not match expected output.");
 			logger.log(ModuleID.PROCESSING, LogLevel.WARNING, "DrawCurveTest: FAILED!.");
 			ChangesHandler.receivedOutput = null;
 			return false;
