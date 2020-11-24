@@ -23,7 +23,7 @@ public class DrawTriangleTest extends TestCase {
 	public boolean run() {
 		
 		/* Use methods in TestCase to set the variables for test */
-		setDescription("Test the drawTriangle function in IDrawShapes interface.");
+		setDescription("Test drawTriangle function in IDrawShapes interface.");
 		setCategory("Processing");
 		setPriority(0);
 		
@@ -31,7 +31,11 @@ public class DrawTriangleTest extends TestCase {
 		ILogger logger = LoggerFactory.getLoggerInstance();
 		
 		/* Create input (ArrayList<Pixel>) */
-		logger.log(ModuleID.PROCESSING, LogLevel.INFO, "DrawTriangleTest: Create input for test.");
+		logger.log(
+				ModuleID.PROCESSING,
+				LogLevel.INFO,
+				"DrawTriangleTest: Create input for test."
+		);
 		
 		/* three vertices for triangle */
 		Position posA = new Position(2,2);
@@ -47,26 +51,37 @@ public class DrawTriangleTest extends TestCase {
 		
 		try {
 			/* arrayPixels contains all pixels for given vertices of triangle */
-			arrayPixels = TriangleDrawer.drawTriangle(vertA.position,
+			arrayPixels = TriangleDrawer.drawTriangle(
+					vertA.position,
 					vertB.position, 
 					vertC.position, 
-					vertA.intensity);
+					vertA.intensity
+			);
+			
 			/* Perform post processing on the pixels */
 			arrayPixels = ShapeHelper.postDrawProcessing(
 					arrayPixels,
 					ClientBoardState.brushSize,
 					ClientBoardState.boardDimension
 			);
+			
 		} catch (Exception error) {
 			setError(error.toString());
-			logger.log(ModuleID.PROCESSING, 
+			logger.log(
+					ModuleID.PROCESSING, 
 					LogLevel.WARNING, 
-					"DrawTriangleTest: Failed to create input arrayList for given center and radius.");
+					"DrawTriangleTest: Failed to create input arrayList."
+			);
+			
 			return false;
 		}
 		
 		/* Initialize the variables in Processor Module */
-		logger.log(ModuleID.PROCESSING, LogLevel.INFO, "DrawTriangleTest: Initialise processor for test.");
+		logger.log(
+				ModuleID.PROCESSING,
+				LogLevel.INFO,
+				"DrawTriangleTest: Initialise processor for test."
+		);
 		
 		TestUtil.initialiseProcessorForTest(new ServerObjectHandler());
 		
@@ -91,9 +106,11 @@ public class DrawTriangleTest extends TestCase {
 		
 		}
 		
-		logger.log(ModuleID.PROCESSING, 
+		logger.log(
+				ModuleID.PROCESSING, 
 				LogLevel.INFO, 
-				"DrawTriangleTest: Waiting for UI to receive output.");
+				"DrawTriangleTest: Waiting for UI to receive output."
+		);
 		
 		/* wait till UI receives the output */
 		while (ChangesHandler.receivedOutput == null) {
@@ -111,12 +128,22 @@ public class DrawTriangleTest extends TestCase {
 		
 		/* check whether the output received is same as expected output */
 		if (inputSet.equals(outputSet)) {
-			logger.log(ModuleID.PROCESSING, LogLevel.SUCCESS, "DrawTriangleTest: Successfull!.");
+			logger.log(
+					ModuleID.PROCESSING,
+					LogLevel.SUCCESS,
+					"DrawTriangleTest: Successfull!."
+			);
+			
 			ChangesHandler.receivedOutput = null;
 			return true;
 		} else {
-			setError("draw triangle failed. Result does not match expected output.");
-			logger.log(ModuleID.PROCESSING, LogLevel.WARNING, "DrawTriangleTest: FAILED!.");
+			setError("DrawTriangle failed. Result does not match expected output.");
+			logger.log(
+					ModuleID.PROCESSING,
+					LogLevel.ERROR,
+					"DrawTriangleTest: FAILED!."
+			);
+			
 			ChangesHandler.receivedOutput = null;
 			return false;
 		}

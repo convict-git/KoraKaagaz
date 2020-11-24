@@ -217,7 +217,7 @@ public class ColorChangeTest  extends TestCase {
 			setError("ColorChange failed. Result does not match expected output.");
 			logger.log(
 					ModuleID.PROCESSING,
-					LogLevel.WARNING,
+					LogLevel.ERROR,
 					"ColorChangeTest: FAILED."
 			);
 			

@@ -28,6 +28,7 @@ public class RotateTest extends TestCase {
 	 * 
 	 * @return true if the rotate operation works successfully.
 	 */
+	@Override
 	public boolean run() {
 		
 		/* Use methods in TestCase to set the variables for test */
@@ -39,7 +40,11 @@ public class RotateTest extends TestCase {
 		ILogger logger = LoggerFactory.getLoggerInstance();
 		
 		/* Create input (ArrayList<Pixel>) and expected output */
-		logger.log(ModuleID.PROCESSING, LogLevel.INFO, "RotateTest: Create input for test.");
+		logger.log(
+				ModuleID.PROCESSING,
+				LogLevel.INFO,
+				"RotateTest: Create input for test."
+		);
 		
 		int b;
 		Pixel pixel;
@@ -85,10 +90,17 @@ public class RotateTest extends TestCase {
 		selectObjectPosition.add(new Position(2,2));
 		
 		/* Initialize the variables in Processor Module */
-		logger.log(ModuleID.PROCESSING, LogLevel.INFO, "RotateTest: Initialise processor for test.");
+		logger.log(
+				ModuleID.PROCESSING,
+				LogLevel.INFO,
+				"RotateTest: Initialise processor for test."
+		);
 		
 		TestUtil.initialiseProcessorForTest(new ClientObjectHandler());
-		ClientBoardState.communicator.subscribeForNotifications("ObjectBroadcast", new ClientObjectHandler());
+		ClientBoardState.communicator.subscribeForNotifications(
+				"ObjectBroadcast",
+				new ClientObjectHandler()
+		);
 		
 		/* get an instance of IDrawErase interface */
 		IDrawErase draw = ProcessingFactory.getProcessor();
@@ -149,7 +161,7 @@ public class RotateTest extends TestCase {
 		ChangesHandler.receivedOutput = null;
 
 		try {
-			/* call processing select API to select object at passed input array */
+			/* call processing select */
 			operation.select(selectObjectPosition);
 			
 		} catch (Exception error) {
@@ -197,12 +209,22 @@ public class RotateTest extends TestCase {
 		
 		/* check whether the output received is same as expected output */
 		if (inputSet.equals(outputSet)) {
-			logger.log(ModuleID.PROCESSING, LogLevel.SUCCESS, "RotateTest: Successful!.");
+			logger.log(
+					ModuleID.PROCESSING,
+					LogLevel.SUCCESS,
+					"RotateTest: Successful!."
+			);
+			
 			ChangesHandler.receivedOutput = null;
 			return true;
 		} else {
 			setError("Rotate failed. Result does not match expected output.");
-			logger.log(ModuleID.PROCESSING, LogLevel.WARNING, "RotateTest: FAILED.");
+			logger.log(
+					ModuleID.PROCESSING, 
+					LogLevel.ERROR,
+					"RotateTest: FAILED."
+			);
+			
 			ChangesHandler.receivedOutput = null;
 			return false;
 		}

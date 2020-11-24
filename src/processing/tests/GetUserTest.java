@@ -27,6 +27,7 @@ public class GetUserTest extends TestCase {
 	 * 
 	 * @return true if the getUser operation works successfully.
 	 */
+	@Override
 	public boolean run() {
 		
 		/* Use methods in TestCase to set the variables for test */
@@ -38,7 +39,11 @@ public class GetUserTest extends TestCase {
 		ILogger logger = LoggerFactory.getLoggerInstance();
 		
 		/* Create input (ArrayList<Pixel>) and expected output */
-		logger.log(ModuleID.PROCESSING, LogLevel.INFO, "GetUserTest: Create input for test.");
+		logger.log(
+				ModuleID.PROCESSING,
+				LogLevel.INFO,
+				"GetUserTest: Create input for test."
+		);
 
 		int b;
 		Pixel pixelA;
@@ -66,11 +71,18 @@ public class GetUserTest extends TestCase {
 		inputPositions.add(new Position(2,2));
 		
 		/* Initialize the variables in Processor Module */
-		logger.log(ModuleID.PROCESSING, LogLevel.INFO, "GetUserTest: Initialise processor for test.");
+		logger.log(
+				ModuleID.PROCESSING,
+				LogLevel.INFO,
+				"GetUserTest: Initialise processor for test."
+		);
 		
 		TestUtil.initialiseProcessorForTest(new ClientObjectHandler());
 		
-		ClientBoardState.communicator.subscribeForNotifications("ObjectBroadcast", new ClientObjectHandler());
+		ClientBoardState.communicator.subscribeForNotifications(
+				"ObjectBroadcast",
+				new ClientObjectHandler()
+		);
 		
 		/* get an instance of IDrawErase interface */
 		IDrawErase draw = ProcessingFactory.getProcessor();
@@ -116,12 +128,22 @@ public class GetUserTest extends TestCase {
 		
 		/* check whether the output received is same as expected output */
 		if (userName.equals("Tester")) {
-			logger.log(ModuleID.PROCESSING, LogLevel.SUCCESS, "GetUserTest: Successful!.");
+			logger.log(
+					ModuleID.PROCESSING,
+					LogLevel.SUCCESS,
+					"GetUserTest: Successful!."
+			);
+			
 			ChangesHandler.receivedOutput = null;
 			return true;
 		} else {
 			setError("GetUser failed. Result does not match expected output.");
-			logger.log(ModuleID.PROCESSING, LogLevel.WARNING, "GetUserTest: FAILED.");
+			logger.log(
+					ModuleID.PROCESSING,
+					LogLevel.ERROR,
+					"GetUserTest: FAILED."
+			);
+			
 			ChangesHandler.receivedOutput = null;
 			return false;
 		}

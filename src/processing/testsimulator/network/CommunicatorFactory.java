@@ -27,9 +27,11 @@ public class CommunicatorFactory {
 		if (network == null)
 			network = new Communicator();
 		
-		logger.log(ModuleID.PROCESSING, 
+		logger.log(
+				ModuleID.PROCESSING, 
 				LogLevel.SUCCESS, 
-				"Test: Successfully get the Communicator of the network.");
+				"Test: Successfully get the Communicator of the network."
+		);
 		
 		return network;
 	}

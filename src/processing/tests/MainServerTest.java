@@ -23,7 +23,8 @@ import processing.testsimulator.ui.*;
  * first the request for new board and then for existing 
  * board. As the folder does not contain the jar file needed
  * to start a new board, server will just not be able to 
- * start a new board process but send the boardId for new board. 
+ * start a new board process. It will send new boardId and 
+ * Port number of board server.
  * This should suffice test purpose. 
  * 
  * @author Sakshi Rathore
@@ -47,16 +48,23 @@ public class MainServerTest extends TestCase {
 			/* run the server */
 			MainServer.main(null);
 		} catch (Exception e) {
-			/* return and set error in case of unsuccessful processing */
+			
 			this.setError(e.toString());
-			logger.log(ModuleID.PROCESSING, 
+			logger.log(
+					ModuleID.PROCESSING, 
 					LogLevel.WARNING, 
-					"MainServerTest: Failed to start main server.");
+					"MainServerTest: Failed to start main server."
+			);
+			
 			return false;
 		}
 		
 		/* Initialize the variables in Processor Module */
-		logger.log(ModuleID.PROCESSING, LogLevel.INFO, "MainServerTest: Initialise processor for test.");
+		logger.log(
+				ModuleID.PROCESSING,
+				LogLevel.INFO,
+				"MainServerTest: Initialise processor for test."
+		);
 		
 		TestUtil.initialiseMainServerForTest();
 		TestUtil.initialiseProcessorForTest(new ClientObjectHandler());
@@ -66,44 +74,15 @@ public class MainServerTest extends TestCase {
 			ClientBoardState.start();
 		} catch (Exception error) {
 			this.setError(error.toString());
-			logger.log(ModuleID.PROCESSING, 
+			logger.log(
+					ModuleID.PROCESSING, 
 					LogLevel.WARNING, 
-					"MainServerTest: New board request failed.");
+					"MainServerTest: New board request failed."
+			);
+			
 			return false;
 		}
 		
-		/* wait till UI receives the output */
-		while (ClientBoardState.boardId == null) {
-			try{
-				Thread.sleep(50);
-			 } catch (Exception e) {
-				 // wait until output received
-			 }
-		}
-		BoardId boardId = ClientBoardState.boardId;
-		/* wait till UI receives the output */
-		while (ClientBoardState.portNumber == null) {
-			try{
-				Thread.sleep(100);
-			 } catch (Exception e) {
-				 // wait until output received
-			 }
-		}
-		Port boardServerPort = ClientBoardState.portNumber;
-		
-		System.out.println(boardId);
-		System.out.println(boardServerPort);
-		
-		// send request for an existing board to server 
-		try {
-			ClientBoardState.start();
-		} catch (Exception error) {
-			this.setError(error.toString());
-			logger.log(ModuleID.PROCESSING, 
-					LogLevel.WARNING, 
-					"MainServerTest: Existing board request failed.");
-			return false;
-		}
 		try {
 			Thread.sleep(2000);
 		} catch (Exception e) {
@@ -111,13 +90,51 @@ public class MainServerTest extends TestCase {
 		}
 		
 		if (ClientBoardState.boardId == null || ClientBoardState.portNumber == null) {
-			logger.log(ModuleID.PROCESSING, 
+			logger.log(
+					ModuleID.PROCESSING, 
 					LogLevel.ERROR, 
-					"MainServerTest: Failed!.");
-			setError("Failed to receive boardId and portNumber.");
+					"MainServerTest: Failed to receive boardId and portNumber!."
+			);
+			
+			setError("New Board: Failed to receive boardId and portNumber.");
+			return false;
+		}
+
+		// send request for an existing board to server 
+		try {
+			ClientBoardState.start();
+		} catch (Exception error) {
+			this.setError(error.toString());
+			logger.log(
+					ModuleID.PROCESSING, 
+					LogLevel.WARNING, 
+					"MainServerTest: Existing board request failed."
+			);
+			
+			return false;
+		}
+		
+		try {
+			Thread.sleep(2000);
+		} catch (Exception e) {
+			// wait for 2 sec to receive the output
+		}
+		
+		if (ClientBoardState.boardId == null || ClientBoardState.portNumber == null) {
+			logger.log(
+					ModuleID.PROCESSING, 
+					LogLevel.ERROR, 
+					"MainServerTest: Failed!."
+			);
+			
+			setError("Existing Board: Failed to receive boardId and portNumber.");
 			return false;
 		} else {
-			logger.log(ModuleID.PROCESSING, LogLevel.SUCCESS, "MainServerTest: Successfull.");
+			logger.log(
+					ModuleID.PROCESSING,
+					LogLevel.SUCCESS,
+					"MainServerTest: Successfull."
+			);
 			return true;
 		}
 	}

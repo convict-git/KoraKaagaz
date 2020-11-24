@@ -31,7 +31,11 @@ public class EraseTest extends TestCase {
 		ILogger logger = LoggerFactory.getLoggerInstance();
 		
 		/* Create input (ArrayList<Pixel>) */
-		logger.log(ModuleID.PROCESSING, LogLevel.INFO, "EraseTest: Create input for test.");
+		logger.log(
+				ModuleID.PROCESSING,
+				LogLevel.INFO,
+				"EraseTest: Create input for test."
+		);
 		
 		/* stores the pixels for erase object*/
 		ArrayList<Pixel> arrayPixels = new ArrayList<Pixel>();
@@ -51,7 +55,11 @@ public class EraseTest extends TestCase {
 		}
 
 		/* Initialize the variables in Processor Module */
-		logger.log(ModuleID.PROCESSING, LogLevel.INFO, "EraseTest: Initialise processor for test.");
+		logger.log(
+				ModuleID.PROCESSING,
+				LogLevel.INFO,
+				"EraseTest: Initialise processor for test."
+		);
 		
 		TestUtil.initialiseProcessorForTest(new ServerObjectHandler());
 		
@@ -76,7 +84,11 @@ public class EraseTest extends TestCase {
 		
 		}
 		
-		logger.log(ModuleID.PROCESSING, LogLevel.INFO, "EraseTest: Waiting for UI to receive output.");
+		logger.log(
+				ModuleID.PROCESSING,
+				LogLevel.INFO,
+				"EraseTest: Waiting for UI to receive output."
+		);
 		
 		/* wait till UI receives the output */
 		while (ChangesHandler.receivedOutput == null) {
@@ -94,12 +106,22 @@ public class EraseTest extends TestCase {
 		
 		/* check whether the output received is same as expected output */
 		if (inputSet.equals(outputSet)) {
-			logger.log(ModuleID.PROCESSING, LogLevel.SUCCESS, "EraseTest: Successfull!.");
+			logger.log(
+					ModuleID.PROCESSING,
+					LogLevel.SUCCESS,
+					"EraseTest: Successfull!."
+			);
+			
 			ChangesHandler.receivedOutput = null;
 			return true;
 		} else {
 			setError("Erase failed. Result does not match expected output.");
-			logger.log(ModuleID.PROCESSING, LogLevel.WARNING, "EraseTest: FAILED!.");
+			logger.log(
+					ModuleID.PROCESSING,
+					LogLevel.ERROR,
+					"EraseTest: FAILED!."
+			);
+			
 			ChangesHandler.receivedOutput = null;
 			return false;
 		}

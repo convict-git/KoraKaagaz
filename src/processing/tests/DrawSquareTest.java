@@ -23,7 +23,7 @@ public class DrawSquareTest extends TestCase {
 	public boolean run() {
 		
 		/* Use methods in TestCase to set the variables for test */
-		setDescription("Test the drawSquare function in IDrawShapes interface.");
+		setDescription("Test drawSquare function in IDrawShapes interface.");
 		setCategory("Processing");
 		setPriority(0);
 		
@@ -31,7 +31,11 @@ public class DrawSquareTest extends TestCase {
 		ILogger logger = LoggerFactory.getLoggerInstance();
 		
 		/* Create input (ArrayList<Pixel>) */
-		logger.log(ModuleID.PROCESSING, LogLevel.INFO, "DrawSquareTest: Create input for test.");
+		logger.log(
+				ModuleID.PROCESSING,
+				LogLevel.INFO,
+				"DrawSquareTest: Create input for test."
+		);
 		
 		Position topLeft = new Position(2,2);
 		Position bottomRight = new Position(18,18);
@@ -42,9 +46,11 @@ public class DrawSquareTest extends TestCase {
 		ArrayList<Pixel> arrayPixels = new ArrayList<Pixel>();
 		
 		try {
-			arrayPixels = RectangleDrawer.drawRectangle(topLeft,
+			arrayPixels = RectangleDrawer.drawRectangle(
+					topLeft,
 					bottomRight,
-					intensity);
+					intensity
+			);
 			
 			/* Perform post processing on the pixels */
 			arrayPixels = ShapeHelper.postDrawProcessing(
@@ -52,16 +58,23 @@ public class DrawSquareTest extends TestCase {
 					ClientBoardState.brushSize,
 					ClientBoardState.boardDimension
 			);
+			
 		} catch (Exception error) {
 			setError(error.toString());
-			logger.log(ModuleID.PROCESSING, 
+			logger.log(
+					ModuleID.PROCESSING, 
 					LogLevel.WARNING, 
-					"DrawSquareTest: Failed to create input arrayList for input positions.");
+					"DrawSquareTest: Failed to create input arrayList."
+			);
 			return false;
 		}
 		
 		/* Initialize the variables in Processor Module */
-		logger.log(ModuleID.PROCESSING, LogLevel.INFO, "DrawSquareTest: Initialise processor for test.");
+		logger.log(
+				ModuleID.PROCESSING,
+				LogLevel.INFO,
+				"DrawSquareTest: Initialise processor for test."
+		);
 		
 		TestUtil.initialiseProcessorForTest(new ServerObjectHandler());
 		
@@ -86,7 +99,11 @@ public class DrawSquareTest extends TestCase {
 		
 		}
 		
-		logger.log(ModuleID.PROCESSING, LogLevel.INFO, "DrawSquareTest: Waiting for UI to receive output.");
+		logger.log(
+				ModuleID.PROCESSING,
+				LogLevel.INFO,
+				"DrawSquareTest: Waiting for UI to receive output."
+		);
 		
 		/* wait till UI receives the output */
 		while (ChangesHandler.receivedOutput == null) {
@@ -104,12 +121,22 @@ public class DrawSquareTest extends TestCase {
 		
 		/* check whether the output received is same as expected output */
 		if (inputSet.equals(outputSet)) {
-			logger.log(ModuleID.PROCESSING, LogLevel.SUCCESS, "DrawSquareTest: Successfull!.");
+			logger.log(
+					ModuleID.PROCESSING,
+					LogLevel.SUCCESS,
+					"DrawSquareTest: Successfull!."
+			);
+			
 			ChangesHandler.receivedOutput = null;
 			return true;
 		} else {
 			setError("Draw square failed. Result does not match expected output.");
-			logger.log(ModuleID.PROCESSING, LogLevel.WARNING, "DrawSquareTest: FAILED!.");
+			logger.log(
+					ModuleID.PROCESSING,
+					LogLevel.ERROR,
+					"DrawSquareTest: FAILED!."
+			);
+			
 			ChangesHandler.receivedOutput = null;
 			return false;
 		}

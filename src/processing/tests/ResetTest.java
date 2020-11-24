@@ -79,7 +79,11 @@ public class ResetTest extends TestCase {
 		ILogger logger = LoggerFactory.getLoggerInstance();
 		
 		/* Create input (ArrayList<Pixel>) and expected output */
-		logger.log(ModuleID.PROCESSING, LogLevel.INFO, "ResetTest: Create input for test.");
+		logger.log(
+				ModuleID.PROCESSING,
+				LogLevel.INFO,
+				"ResetTest: Create input for test."
+		);
 		
 		int b;
 		Pixel pixel;
@@ -108,7 +112,11 @@ public class ResetTest extends TestCase {
 		}
 		
 		/* Initialize the variables in Processor Module */
-		logger.log(ModuleID.PROCESSING, LogLevel.INFO, "ResetTest: Initialise processor for test.");
+		logger.log(
+				ModuleID.PROCESSING,
+				LogLevel.INFO,
+				"ResetTest: Initialise processor for test."
+		);
 		
 		TestUtil.initialiseProcessorForTest(new ClientObjectHandler());
 		
@@ -135,7 +143,11 @@ public class ResetTest extends TestCase {
 			return false;
 		}
 		
-		logger.log(ModuleID.PROCESSING, LogLevel.INFO, "ResetTest: Waiting for UI to receive output.");
+		logger.log(
+				ModuleID.PROCESSING,
+				LogLevel.INFO,
+				"ResetTest: Waiting for UI to receive output."
+		);
 		
 		/* wait till UI receives the output */
 		while (ChangesHandler.receivedOutput == null) {
@@ -160,7 +172,11 @@ public class ResetTest extends TestCase {
 		
 		}
 		
-		logger.log(ModuleID.PROCESSING, LogLevel.INFO, "ResetTest: Waiting for UI to receive output.");
+		logger.log(
+				ModuleID.PROCESSING,
+				LogLevel.INFO,
+				"ResetTest: Waiting for UI to receive output."
+		);
 		
 		/* wait till UI receives the output */
 		while (ChangesHandler.receivedOutput == null) {
@@ -185,7 +201,11 @@ public class ResetTest extends TestCase {
 		
 		}
 		
-		logger.log(ModuleID.PROCESSING, LogLevel.INFO, "ResetTest: Waiting for UI to receive output.");
+		logger.log(
+				ModuleID.PROCESSING,
+				LogLevel.INFO,
+				"ResetTest: Waiting for UI to receive output."
+		);
 		
 		/* wait till UI receives the output */
 		while (ChangesHandler.receivedOutput == null) {
@@ -204,12 +224,22 @@ public class ResetTest extends TestCase {
 		
 		/* check whether the output received is same as expected output */
 		if (inputSet.equals(outputSet)) {
-			logger.log(ModuleID.PROCESSING, LogLevel.INFO, "ResetTest: Successful!.");
+			logger.log(
+					ModuleID.PROCESSING,
+					LogLevel.SUCCESS,
+					"ResetTest: Successful!."
+			);
+			
 			ChangesHandler.receivedOutput = null;
 			return true;
 		} else {
 			setError("Reset failed. Result does not match expected output.");
-			logger.log(ModuleID.PROCESSING, LogLevel.WARNING, "ResetTest: FAILED.");
+			logger.log(
+					ModuleID.PROCESSING,
+					LogLevel.ERROR,
+					"ResetTest: FAILED."
+			);
+			
 			ChangesHandler.receivedOutput = null;
 			return false;
 		}	

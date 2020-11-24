@@ -23,7 +23,7 @@ public class DrawCircleTest extends TestCase {
 	public boolean run() {
 		
 		/* Use methods in TestCase to set the variables for test */
-		setDescription("Test the drawCircle function in IDrawShapes interface.");
+		setDescription("Test drawCircle function in IDrawShapes interface.");
 		setCategory("Processing");
 		setPriority(0);
 		
@@ -135,7 +135,7 @@ public class DrawCircleTest extends TestCase {
 			setError("DrawCircle failed. Result does not match expected output.");
 			logger.log(
 					ModuleID.PROCESSING,
-					LogLevel.WARNING,
+					LogLevel.ERROR,
 					"DrawCircleTest: FAILED!."
 			);
 			

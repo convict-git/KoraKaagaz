@@ -26,9 +26,11 @@ public class ChangesHandler implements IChanges{
 	@Override
 	public void getChanges(ArrayList<Pixel> pixels) {
 		
-		logger.log(ModuleID.PROCESSING, 
+		logger.log(
+				ModuleID.PROCESSING, 
 				LogLevel.SUCCESS, 
-				"Test: UI Successfully received the changes passed by processor.");
+				"Test: UI Successfully received the changes passed by processor."
+		);
 		/* set the receivedOutput variable */ 
 		receivedOutput = pixels;
 		return;

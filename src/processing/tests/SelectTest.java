@@ -37,7 +37,11 @@ public class SelectTest extends TestCase {
 		ILogger logger = LoggerFactory.getLoggerInstance();
 		
 		/* Create input (ArrayList<Pixel>) and expected output */
-		logger.log(ModuleID.PROCESSING, LogLevel.INFO, "SelectTest: Create input for test.");
+		logger.log(
+				ModuleID.PROCESSING,
+				LogLevel.INFO,
+				"SelectTest: Create input for test."
+		);
 		
 		int b;
 		Pixel pixel;
@@ -72,7 +76,11 @@ public class SelectTest extends TestCase {
 		selectObjectPosition.add(new Position(2, 2));
 		
 		/* Initialize the variables in Processor Module */
-		logger.log(ModuleID.PROCESSING, LogLevel.INFO, "SelectTest: Initialise processor for test.");
+		logger.log(
+				ModuleID.PROCESSING,
+				LogLevel.INFO,
+				"SelectTest: Initialise processor for test."
+		);
 		
 		TestUtil.initialiseProcessorForTest(new ClientObjectHandler());
 		
@@ -100,7 +108,11 @@ public class SelectTest extends TestCase {
 		
 		}
 		
-		logger.log(ModuleID.PROCESSING, LogLevel.INFO, "SelectTest: Waiting for UI to receive output.");
+		logger.log(
+				ModuleID.PROCESSING,
+				LogLevel.INFO,
+				"SelectTest: Waiting for UI to receive output."
+		);
 		
 		/* wait till UI receives the output */
 		while (ChangesHandler.receivedOutput == null) {
@@ -125,7 +137,11 @@ public class SelectTest extends TestCase {
 		
 		}
 		
-		logger.log(ModuleID.PROCESSING, LogLevel.INFO, "SelectTest: Waiting for UI to receive output.");
+		logger.log(
+				ModuleID.PROCESSING,
+				LogLevel.INFO,
+				"SelectTest: Waiting for UI to receive output."
+		);
 		
 		/* wait till UI receives the output */
 		while (ChangesHandler.receivedOutput == null) {
@@ -140,7 +156,7 @@ public class SelectTest extends TestCase {
 
 		ArrayList<Pixel> selectedObject = null;
 		try {
-			/* call processing select API to select object at passed input array */
+			/* call processing select */
 			selectedObject = select.select(selectObjectPosition);
 			
 		} catch (Exception error) {
@@ -158,12 +174,22 @@ public class SelectTest extends TestCase {
 		
 		/* check whether the output received is same as expected output */
 		if (inputSet.equals(outputSet)) {
-			logger.log(ModuleID.PROCESSING, LogLevel.INFO, "SelectTest: Successful!.");
+			logger.log(
+					ModuleID.PROCESSING,
+					LogLevel.SUCCESS,
+					"SelectTest: Successful!."
+			);
+			
 			ChangesHandler.receivedOutput = null;
 			return true;
 		} else {
 			setError("Select failed. Result does not match expected output.");
-			logger.log(ModuleID.PROCESSING, LogLevel.WARNING, "SelectTest: FAILED.");
+			logger.log(
+					ModuleID.PROCESSING,
+					LogLevel.WARNING,
+					"SelectTest: FAILED."
+			);
+			
 			ChangesHandler.receivedOutput = null;
 			return false;
 		}

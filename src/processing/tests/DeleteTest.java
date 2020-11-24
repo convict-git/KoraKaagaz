@@ -157,7 +157,7 @@ public class DeleteTest extends TestCase {
 		ChangesHandler.receivedOutput = null;
 
 		try {
-			/* call processing select API to select object at passed input array */
+			/* call processing select */
 			operation.select(selectObjectPosition);
 			
 		} catch (Exception error) {
@@ -217,7 +217,7 @@ public class DeleteTest extends TestCase {
 			setError("Delete failed. Result does not match expected output.");
 			logger.log(
 					ModuleID.PROCESSING,
-					LogLevel.WARNING,
+					LogLevel.ERROR,
 					"DeleteTest: FAILED."
 			);
 			

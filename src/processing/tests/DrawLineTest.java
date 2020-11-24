@@ -25,7 +25,7 @@ public class DrawLineTest extends TestCase {
 	public boolean run() {
 		
 		/* Use methods in TestCase to set the variables for test */
-		setDescription("Test the drawLine function in IDrawShapes interface.");
+		setDescription("Test drawLine function in IDrawShapes interface.");
 		setCategory("Processing");
 		setPriority(0);
 		
@@ -33,9 +33,11 @@ public class DrawLineTest extends TestCase {
 		ILogger logger = LoggerFactory.getLoggerInstance();
 		
 		/* Create input (ArrayList<Pixel>) */
-		logger.log(ModuleID.PROCESSING,
+		logger.log(
+				ModuleID.PROCESSING,
 				LogLevel.INFO,
-				"DrawLineTest: Create input for test.");
+				"DrawLineTest: Create input for test."
+		);
 		
 		Position startPos = new Position(1,1);
 		Position endPos = new Position(4,1);
@@ -62,12 +64,13 @@ public class DrawLineTest extends TestCase {
 					ClientBoardState.brushSize,
 					ClientBoardState.boardDimension
 			);
+			
 		} catch (Exception error) {
 			
 			setError(error.toString());
 			logger.log(ModuleID.PROCESSING, 
 					LogLevel.WARNING, 
-					"DrawLineTest: Failed to create input arrayList for given center and radius.");
+					"DrawLineTest: Failed to create input arrayList.");
 			return false;
 		}
 		
@@ -99,7 +102,11 @@ public class DrawLineTest extends TestCase {
 		
 		}
 		
-		logger.log(ModuleID.PROCESSING, LogLevel.INFO, "DrawLineTest: Waiting for UI to receive output.");
+		logger.log(
+				ModuleID.PROCESSING,
+				LogLevel.INFO,
+				"DrawLineTest: Waiting for UI to receive output."
+		);
 		
 		/* wait till UI receives the output */
 		while (ChangesHandler.receivedOutput == null) {
@@ -122,11 +129,17 @@ public class DrawLineTest extends TestCase {
 					LogLevel.SUCCESS,
 					"DrawLineTest: Successfull!."
 			);
+			
 			ChangesHandler.receivedOutput = null;
 			return true;
 		} else {
 			setError("Draw Line failed. Result does not match expected output.");
-			logger.log(ModuleID.PROCESSING, LogLevel.WARNING, "DrawLineTest: FAILED!.");
+			logger.log(
+					ModuleID.PROCESSING,
+					LogLevel.ERROR,
+					"DrawLineTest: FAILED!."
+			);
+			
 			ChangesHandler.receivedOutput = null;
 			return false;
 		}

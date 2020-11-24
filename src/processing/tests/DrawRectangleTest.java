@@ -23,7 +23,7 @@ public class DrawRectangleTest extends TestCase {
 	public boolean run() {
 		
 		/* Use methods in TestCase to set the variables for test */
-		setDescription("Test the drawRectangle function in IDrawShapes interface.");
+		setDescription("Test drawRectangle function in IDrawShapes interface.");
 		setCategory("Processing");
 		setPriority(2);
 		
@@ -31,7 +31,11 @@ public class DrawRectangleTest extends TestCase {
 		ILogger logger = LoggerFactory.getLoggerInstance();
 		
 		/* Create input (ArrayList<Pixel>) */
-		logger.log(ModuleID.PROCESSING, LogLevel.INFO, "DrawRectangleTest: Create input for test.");
+		logger.log(
+				ModuleID.PROCESSING,
+				LogLevel.INFO,
+				"DrawRectangleTest: Create input for test."
+		);
 		
 		Position topLeft = new Position(2,2);
 		Position bottomRight = new Position(6,6);
@@ -42,10 +46,15 @@ public class DrawRectangleTest extends TestCase {
 		ArrayList<Pixel> arrayPixels = new ArrayList<Pixel>();
 		
 		try {
-			/* arrayPixels contains all pixels for rectangle given top left and bottom right */
-			arrayPixels = RectangleDrawer.drawRectangle(topLeft,
+			/* 
+			 * arrayPixels contains all pixels for rectangle
+			 * given top left and bottom right
+			 */
+			arrayPixels = RectangleDrawer.drawRectangle(
+					topLeft,
 					bottomRight,
-					intensity);
+					intensity
+			);
 			
 			/* Perform post processing on the pixels */
 			arrayPixels = ShapeHelper.postDrawProcessing(
@@ -53,18 +62,23 @@ public class DrawRectangleTest extends TestCase {
 					ClientBoardState.brushSize,
 					ClientBoardState.boardDimension
 			);
+			
 		} catch (Exception error) {
 			setError(error.toString());
-			logger.log(ModuleID.PROCESSING, 
+			logger.log(
+					ModuleID.PROCESSING, 
 					LogLevel.WARNING, 
-					"DrawRectangleTest: Failed to create input arrayList for given positions");
+					"DrawRectangleTest: Failed to create input arrayList"
+			);
 			return false;
 		}
 		
 		/* Initialize the variables in Processor Module */
-		logger.log(ModuleID.PROCESSING, 
+		logger.log(
+				ModuleID.PROCESSING, 
 				LogLevel.INFO, 
-				"DrawRectangleTest: Initialise processor for test.");
+				"DrawRectangleTest: Initialise processor for test."
+		);
 		
 		TestUtil.initialiseProcessorForTest(new ServerObjectHandler());
 		
@@ -92,9 +106,11 @@ public class DrawRectangleTest extends TestCase {
 		
 		}
 		
-		logger.log(ModuleID.PROCESSING, 
+		logger.log(
+				ModuleID.PROCESSING, 
 				LogLevel.INFO, 
-				"DrawRectangleTest: Waiting for UI to receive output.");
+				"DrawRectangleTest: Waiting for UI to receive output."
+		);
 		
 		/* wait till UI receives the output */
 		while (ChangesHandler.receivedOutput == null) {
@@ -112,12 +128,22 @@ public class DrawRectangleTest extends TestCase {
 		
 		/* check whether the output received is same as expected output */
 		if (inputSet.equals(outputSet)) {
-			logger.log(ModuleID.PROCESSING, LogLevel.SUCCESS, "DrawRectangleTest: Successfull!.");
+			logger.log(
+					ModuleID.PROCESSING,
+					LogLevel.SUCCESS,
+					"DrawRectangleTest: Successfull!."
+			);
+			
 			ChangesHandler.receivedOutput = null;
 			return true;
 		} else {
 			setError("Draw Rectangle failed. Result does not match expected output.");
-			logger.log(ModuleID.PROCESSING, LogLevel.WARNING, "DrawRectangleTest: FAILED!.");
+			logger.log(
+					ModuleID.PROCESSING,
+					LogLevel.ERROR,
+					"DrawRectangleTest: FAILED!."
+			);
+			
 			ChangesHandler.receivedOutput = null;
 			return false;
 		}

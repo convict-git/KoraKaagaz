@@ -36,11 +36,18 @@ public class TestUtil {
 		ClientBoardState.boardId   = new BoardId(boardId);
 		ClientBoardState.userIP  = new IpAddress(userIP);
 		ClientBoardState.userPort = new Port(userPort);
-		ClientBoardState.userId = new UserId(ClientBoardState.userIP, ClientBoardState.username);
+		ClientBoardState.userId = new UserId(
+				ClientBoardState.userIP,
+				ClientBoardState.username
+				);
+		
 		ClientBoardState.communicator = CommunicatorFactory.getCommunicator();
 		ClientBoardState.communicator.start();
-		ClientBoardState.communicator.subscribeForNotifications("ObjectBroadcast", 
-				handler);
+		ClientBoardState.communicator.subscribeForNotifications(
+				"ObjectBroadcast", 
+				handler
+				);
+		
 		ClientBoardState.maps = new BoardState();
 		ClientBoardState.redoStack = new ArrayList<BoardObject>();
 		ClientBoardState.undoStack = new ArrayList<BoardObject>();
@@ -48,7 +55,7 @@ public class TestUtil {
 		logger.log(
 				ModuleID.PROCESSING, 
 				LogLevel.SUCCESS, 
-				"Test: Started communicator and the ClientBoardState"
+				"Test: Started communicator and intialised ClientBoardState"
 		);
 	}
 	

@@ -31,16 +31,20 @@ public class Communicator implements ICommunicator{
 	
 	@Override
 	public void start() {
-		logger.log(ModuleID.PROCESSING, 
+		logger.log(
+				ModuleID.PROCESSING, 
 				LogLevel.SUCCESS, 
-				"Test: Successfully call start API of the network.");
+				"Test: Successfully call start API of the network."
+		);
 	}
 
 	@Override
 	public void stop() {
-		logger.log(ModuleID.PROCESSING, 
+		logger.log(
+				ModuleID.PROCESSING, 
 				LogLevel.SUCCESS, 
-				"Test: Successfully call stop API of network.");
+				"Test: Successfully call stop API of network."
+		);
 	}
 
 	@Override
@@ -49,9 +53,11 @@ public class Communicator implements ICommunicator{
 		// System.out.println("send through network " + identifier);
 		INotificationHandler handler = handlerMap.get(identifier);
 		handler.onMessageReceived(message);
-		logger.log(ModuleID.PROCESSING, 
+		logger.log(
+				ModuleID.PROCESSING, 
 				LogLevel.INFO, 
-				"Test: Received the sent message");
+				"Test: Received the sent message"
+		);
 	}
 
 	@Override
@@ -59,27 +65,35 @@ public class Communicator implements ICommunicator{
 			INotificationHandler handler) {
 		/* Validate the handler */
 		if (handler == null ) {
-			logger.log(ModuleID.PROCESSING,
+			logger.log(
+					ModuleID.PROCESSING,
 					LogLevel.WARNING, 
-					"Test: Handler is invalid.");
+					"Test: Handler is invalid."
+			);
 		}
 		/* Validate the identifier */
 		else if (identifier=="" || identifier==null) {
-			logger.log(ModuleID.PROCESSING, 
+			logger.log(
+					ModuleID.PROCESSING, 
 					LogLevel.WARNING,
-					"Test: Provide a valid identifier");
+					"Test: Provide a valid identifier"
+			);
 		}
 		else {
-			/* Logging the info as the handler might be overridden if the specified identifier exists */
+			
 			if (handlerMap.containsKey(identifier)) {
-				logger.log(ModuleID.PROCESSING, 
+				logger.log(
+						ModuleID.PROCESSING, 
 						LogLevel.INFO, 
-						"Test: Already have the specified identifier");
+						"Test: Already have the specified identifier"
+				);
 			}
 			else {
-				logger.log(ModuleID.PROCESSING, 
+				logger.log(
+						ModuleID.PROCESSING, 
 						LogLevel.SUCCESS, 
-						"Test: Subscribed network for any notifications.");
+						"Test: Subscribed network for any notifications."
+				);
 			}
 			/* Inserting the specified identifier into the hashmap */
 			handlerMap.put(identifier,handler);

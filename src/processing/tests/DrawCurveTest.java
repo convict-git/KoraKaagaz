@@ -19,10 +19,11 @@ import infrastructure.validation.testing.TestCase;
 
 public class DrawCurveTest extends TestCase {
 	
+	@Override
 	public boolean run() {
 		
 		/* Use methods in TestCase to set the variables for test */
-		setDescription("Test the drawCurve function in IDrawCurve interface.");
+		setDescription("Test drawCurve function in IDrawCurve interface.");
 		setCategory("Processing");
 		setPriority(2);
 		
@@ -30,7 +31,11 @@ public class DrawCurveTest extends TestCase {
 		ILogger logger = LoggerFactory.getLoggerInstance();
 		
 		/* Create input (ArrayList<Pixel>) */
-		logger.log(ModuleID.PROCESSING, LogLevel.INFO, "DrawCurveTest: Create input for test.");
+		logger.log(
+				ModuleID.PROCESSING,
+				LogLevel.INFO,
+				"DrawCurveTest: Create input for test."
+		);
 		
 		ArrayList<Pixel> arrayPixels = new ArrayList<Pixel>();
 		
@@ -48,7 +53,11 @@ public class DrawCurveTest extends TestCase {
 		}
 
 		/* Initialize the variables in Processor Module */
-		logger.log(ModuleID.PROCESSING, LogLevel.INFO, "DrawCurveTest: Initialise processor for test.");
+		logger.log(
+				ModuleID.PROCESSING,
+				LogLevel.INFO,
+				"DrawCurveTest: Initialise processor for test."
+		);
 		
 		TestUtil.initialiseProcessorForTest(new ServerObjectHandler());
 		
@@ -73,7 +82,11 @@ public class DrawCurveTest extends TestCase {
 		
 		}
 		
-		logger.log(ModuleID.PROCESSING, LogLevel.INFO, "DrawCurveTest: Waiting for UI to receive output.");
+		logger.log(
+				ModuleID.PROCESSING,
+				LogLevel.INFO,
+				"DrawCurveTest: Waiting for UI to receive output."
+		);
 		
 		/* wait till UI receives the output */
 		while (ChangesHandler.receivedOutput == null) {
@@ -91,12 +104,22 @@ public class DrawCurveTest extends TestCase {
 		
 		/* check whether the output received is same as expected output */
 		if (inputSet.equals(outputSet)) {
-			logger.log(ModuleID.PROCESSING, LogLevel.SUCCESS, "DrawCurveTest: Successfull!.");
+			logger.log(
+					ModuleID.PROCESSING,
+					LogLevel.SUCCESS,
+					"DrawCurveTest: Successfull!."
+			);
+			
 			ChangesHandler.receivedOutput = null;
 			return true;
 		} else {
 			setError("Draw Curve failed. Result does not match expected output.");
-			logger.log(ModuleID.PROCESSING, LogLevel.WARNING, "DrawCurveTest: FAILED!.");
+			logger.log(
+					ModuleID.PROCESSING,
+					LogLevel.ERROR,
+					"DrawCurveTest: FAILED!."
+					);
+			
 			ChangesHandler.receivedOutput = null;
 			return false;
 		}

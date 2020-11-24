@@ -29,6 +29,7 @@ public class RedoTest  extends TestCase {
 	 * 
 	 * @return true if the redo operation works successfully.
 	 */
+	@Override
 	public boolean run() {
 		
 		/* Use methods in TestCase to set the variables for test */
@@ -40,7 +41,11 @@ public class RedoTest  extends TestCase {
 		ILogger logger = LoggerFactory.getLoggerInstance();
 		
 		/* Create input (ArrayList<Pixel>) and expected output */
-		logger.log(ModuleID.PROCESSING, LogLevel.INFO, "RedoTest: Create input for test.");
+		logger.log(
+				ModuleID.PROCESSING,
+				LogLevel.INFO,
+				"RedoTest: Create input for test."
+		);
 		
 		int b;
 		Pixel pixelA, pixelB;
@@ -61,7 +66,6 @@ public class RedoTest  extends TestCase {
 		
 		/* expected output */
 		ArrayList<Pixel> expectedOutput = new ArrayList<Pixel>();		
-		Intensity white = new Intensity(255, 255, 255);
 		
 		int j =2;
 		for (int a=2; a<7; a++)
@@ -81,11 +85,18 @@ public class RedoTest  extends TestCase {
 		selectObjectPosition.add(new Position(2,2));
 		
 		/* Initialize the variables in Processor Module */
-		logger.log(ModuleID.PROCESSING, LogLevel.INFO, "RedoTest: Initialise processor for test.");
+		logger.log(
+				ModuleID.PROCESSING,
+				LogLevel.INFO,
+				"RedoTest: Initialise processor for test."
+		);
 		
 		TestUtil.initialiseProcessorForTest(new ServerObjectHandler());
 		
-		ClientBoardState.communicator.subscribeForNotifications("ObjectBroadcast", new ClientObjectHandler());
+		ClientBoardState.communicator.subscribeForNotifications(
+				"ObjectBroadcast",
+				new ClientObjectHandler()
+		);
 		
 		/* get an instance of IDrawErase interface */
 		IDrawErase draw = ProcessingFactory.getProcessor();
@@ -149,6 +160,7 @@ public class RedoTest  extends TestCase {
 		try {
 			undoRedo.undo();
 		} catch (Exception error) {
+			
 			/* return and set error in case of unsuccessful processing */
 			this.setError(error.toString());
 			ChangesHandler.receivedOutput = null;
@@ -170,6 +182,7 @@ public class RedoTest  extends TestCase {
 		try {
 			undoRedo.redo();
 		} catch (Exception error) {
+			
 			/* return and set error in case of unsuccessful processing */
 			this.setError(error.toString());
 			ChangesHandler.receivedOutput = null;
@@ -192,12 +205,22 @@ public class RedoTest  extends TestCase {
 		
 		/* check whether the output received is same as expected output */
 		if (inputSet.equals(outputSet)) {
-			logger.log(ModuleID.PROCESSING, LogLevel.SUCCESS, "RedoTest: Successful!.");
+			logger.log(
+					ModuleID.PROCESSING,
+					LogLevel.SUCCESS,
+					"RedoTest: Successful!."
+			);
+			
 			ChangesHandler.receivedOutput = null;
 			return true;
 		} else {
 			setError("Redo failed. Result does not match expected output.");
-			logger.log(ModuleID.PROCESSING, LogLevel.WARNING, "RedoTest: FAILED.");
+			logger.log(
+					ModuleID.PROCESSING,
+					LogLevel.ERROR, 
+					"RedoTest: FAILED."
+			);
+			
 			ChangesHandler.receivedOutput = null;
 			return false;
 		}
