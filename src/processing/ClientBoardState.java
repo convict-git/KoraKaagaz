@@ -22,7 +22,7 @@ public class ClientBoardState {
 	 * maps is an object of BoardState which stores both the maps which
 	 * we need for persistence on the server.
 	 */
-	public static BoardState maps = new BoardState();
+	public static BoardState maps;
 	
 	/**
 	 * portNumber stores the port number of the Board Server to make 
@@ -39,8 +39,8 @@ public class ClientBoardState {
 	 * undo and redo stacks. We need to remove objects from between on the stacks
 	 * so instead of stack we used ArrayList for efficient computation.
 	 */
-	public static ArrayList <BoardObject> undoStack = new ArrayList <BoardObject>();
-	public static ArrayList <BoardObject> redoStack = new ArrayList <BoardObject>();
+	public static ArrayList <BoardObject> undoStack;
+	public static ArrayList <BoardObject> redoStack;
 	
 	/**
 	 * Will remain empty on the client side, as there is no need to know 
@@ -48,7 +48,7 @@ public class ClientBoardState {
 	 * Server will use this users List to maintain the list of all the users 
 	 * connected to this Board.
 	 */
-	public static Map <UserId, IpAddress> users = new HashMap <UserId,IpAddress>();
+	public static Map <UserId, IpAddress> users;
 	
 	/**
 	 * selectedObject will store the object that is currently selected by this client.
@@ -77,7 +77,7 @@ public class ClientBoardState {
 	 * brushSize will store the radius of the brush which will be used while drawing
 	 * different shapes, it is given by the UI for default.
 	 */
-	public static BrushRadius brushSize = new BrushRadius(4);
+	public static final BrushRadius brushSize = new BrushRadius(4);
 	
 	/**
 	 * This is the communicator that we will get from the networking module.
@@ -90,7 +90,7 @@ public class ClientBoardState {
 	 * boardDimension will store the dimensions of the canvas board defined
 	 * by the UI. This will be used while drawing shapes.
 	 */
-	public static Dimension boardDimension = new Dimension(720,1100);
+	public static final Dimension boardDimension = new Dimension(720,1100);
 	
 	/**
 	 * serverPort will store the port number of the Main Server which is kept
@@ -109,9 +109,6 @@ public class ClientBoardState {
 	 * of the process.
 	 */
 	public static void start() {
-		
-		// set the userID of this user
-		userId = new UserId(userIP, username);
 		
 		/**
 		 * Subscribing for receiving objects made by the other clients

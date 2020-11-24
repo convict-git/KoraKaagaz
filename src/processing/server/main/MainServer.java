@@ -1,9 +1,13 @@
 package processing.server.main;
 
+import java.util.HashMap;
+
 import infrastructure.validation.logger.LogLevel;
 import infrastructure.validation.logger.ModuleID;
 import networking.CommunicatorFactory;
 import processing.ClientBoardState;
+import processing.utility.BoardId;
+import processing.utility.Port;
 
 /**
  * Main class of main server.
@@ -24,6 +28,9 @@ public class MainServer {
 				"[#" + Thread.currentThread().getId() + "] "
 				+ "Starting the Main Server"
 		);
+		
+		// initialise the boarToPort map 
+		ServerState.boardToPort = new HashMap <BoardId, Port>();
 		
 		/**
 		 * The port number of the Main Server is fixed and saved in ServerState

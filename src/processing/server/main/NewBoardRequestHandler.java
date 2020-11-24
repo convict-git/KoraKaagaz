@@ -110,7 +110,7 @@ public class NewBoardRequestHandler implements INotificationHandler{
 		 */
 		ServerState.send(
 				clientAddress, 
-				boardServerPort.toString(), 
+				Integer.toString(boardServerPort.port), 
 				"ProcessingServerPort"
 		);
 		

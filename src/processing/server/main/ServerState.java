@@ -18,7 +18,7 @@ public class ServerState {
 	 * boardToPort is map containing boardID of all the board servers currently running
 	 * in a map from boardID to their respective port number on which they are listening.
 	 */
-	public static Map <BoardId, Port> boardToPort = new HashMap <BoardId, Port>();
+	public static Map <BoardId, Port> boardToPort;
 	
 	/**
 	 * boardNumber will store the board number to be given as the boardID to the new board
