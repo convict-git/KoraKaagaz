@@ -127,11 +127,10 @@ public class ParameterizedOperationsUtil {
 		// set (COLOR_CHANGE) as the operation which is applied on object.
 		IBoardObjectOperation newBoardOp = new ColorChangeOperation(newIntensity);
 
-		BoardObject dummyObj = null;
 		try {
 
 			// remove previous object from maps.
-			dummyObj = ClientBoardState.maps.removeObjectFromMaps(obj.getObjectId());
+			ClientBoardState.maps.removeObjectFromMaps(obj.getObjectId());
 
 			paraOpLogger.log(
 				ModuleID.PROCESSING, 
@@ -269,11 +268,10 @@ public class ParameterizedOperationsUtil {
 		// set (ROTATE) as the operation which is applied on object.
 		IBoardObjectOperation newBoardOp = new RotateOperation(angleOfRotation);
 
-		BoardObject dummyObj = null;
 		try {
 
 			// remove previous object from maps.
-			dummyObj = ClientBoardState.maps.removeObjectFromMaps(obj.getObjectId());
+			ClientBoardState.maps.removeObjectFromMaps(obj.getObjectId());
 
 			paraOpLogger.log(
 				ModuleID.PROCESSING, 

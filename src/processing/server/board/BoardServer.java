@@ -185,7 +185,18 @@ public class BoardServer {
 		);
 		
 		// start the content module server
-		ContentFactory.startContentServer();
+		try {
+			ContentFactory.startContentServer();
+		} catch (Exception e) {
+			
+			ClientBoardState.logger.log(
+					ModuleID.PROCESSING, 
+					LogLevel.ERROR, 
+					"[#" + Thread.currentThread().getId() + "] "
+					+ "Error while starting the Content Server"
+			);
+			
+		}
 		
 		ClientBoardState.logger.log(
 				ModuleID.PROCESSING, 
