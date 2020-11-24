@@ -46,11 +46,13 @@ public class ServerPort implements IServerPort {
 				"Port Value not yet sent by processing module"
 			);
 		}
-		logger.log(
-			ModuleID.INFRASTRUCTURE,
-			LogLevel.SUCCESS,
-			"Port of Board Server successfully sent"
-		);
+		else {
+			logger.log(
+				ModuleID.INFRASTRUCTURE,
+				LogLevel.SUCCESS,
+				"Port of Board Server successfully sent"
+			);
+		}
 		return port;
 	}
 }
