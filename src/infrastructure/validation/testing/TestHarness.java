@@ -89,7 +89,8 @@ public class TestHarness{
         String fullQualifiedClassName = relPath.replace("/",".");
 
         Class<?> testClass = Class.forName(fullQualifiedClassName);
-        Object test = testClass.getDeclaredConstructor().newInstance();
+        Object obj = testClass.getDeclaredConstructor().newInstance();
+        ITest test = (ITest) obj;
 
         if(category.equals(test.getCategory())){
           boolean result = test.run();
@@ -172,7 +173,8 @@ public class TestHarness{
         String fullQualifiedClassName = relPath.replace("/",".");
 
         Class<?> testClass = Class.forName(fullQualifiedClassName);
-        Object test = testClass.getDeclaredConstructor().newInstance();
+        Object obj = testClass.getDeclaredConstructor().newInstance();
+        ITest test = (ITest) obj;
         
         if(priority == (test.getPriority())){
           boolean result = test.run(); 
@@ -253,7 +255,9 @@ public class TestHarness{
         String fullQualifiedClassName = relPath.replace("/",".");
 
         Class<?> testClass = Class.forName(fullQualifiedClassName);
-        Object test = testClass.getDeclaredConstructor().newInstance();
+        Object obj = testClass.getDeclaredConstructor().newInstance();
+        ITest test = (ITest) obj;
+
         boolean result = test.run();  
          
         if(result == false){
@@ -331,9 +335,10 @@ public class TestHarness{
       String fullQualifiedClassName = relPath.replace("/",".");
 
       Class<?> testClass = Class.forName(fullQualifiedClassName);
-      Object test = testClass.getDeclaredConstructor().newInstance();
-      boolean result = test.run();
+      Object obj = testClass.getDeclaredConstructor().newInstance();
+      ITest test = (ITest) obj;
 
+      boolean result = test.run();
       if(result == false){
         failedNumberOfTests++;
         if(failedNumberOfTests == 1){
