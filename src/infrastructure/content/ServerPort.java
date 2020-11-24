@@ -13,22 +13,25 @@ import infrastructure.validation.logger.ModuleID;
  */
 
 public class ServerPort implements IServerPort {
-	/**
-	 * This variable will store the String which will be passed to log method of logger
-	 */
-	private String logMessage;
+	
 	private int port = 0;
+	
 	/**
 	 * logger is the instance of the class which implements ILogger interface.
 	 */
 	private ILogger logger = LoggerFactory.getLoggerInstance();
 	
 	/**
-	 * This method will save the port of the board server locally to send message over networking
+	 * This method will save the port of the board server locally to generate full address of board server.
 	 */
 	@Override
-	public void sendPort(int port) {
+	public void setPort(int port) {
 		this.port = port;
+		logger.log(
+			ModuleID.INFRASTRUCTURE,
+			LogLevel.SUCCESS,
+			"Port of Board Server successfully set"
+		);
 	}
 	
 	/**
@@ -37,8 +40,18 @@ public class ServerPort implements IServerPort {
 	@Override
 	public int getPort() {
 		if (port == 0) {
-			logMessage = "content: Port Value not yet sent by processing module";
-			logger.log(ModuleID.INFRASTRUCTURE, LogLevel.WARNING, logMessage);
+			logger.log(
+				ModuleID.INFRASTRUCTURE,
+				LogLevel.WARNING,
+				"Port Value not yet sent by processing module"
+			);
+		}
+		else {
+			logger.log(
+				ModuleID.INFRASTRUCTURE,
+				LogLevel.SUCCESS,
+				"Port of Board Server successfully sent"
+			);
 		}
 		return port;
 	}

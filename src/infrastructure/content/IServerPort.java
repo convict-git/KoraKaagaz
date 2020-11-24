@@ -7,10 +7,11 @@ package infrastructure.content;
  */
 public interface IServerPort {
 	/**
-	 * the processing module calls this method to send port of board server to each new client
+	 * The processing module calls this method to set port of board server on every client.
+	 * After the port is set, client can generate the full address of board server.
 	 * @param port - This is the port of board server in int datatype
 	 */
-	void sendPort(int port);
+	void setPort(int port);
 	
 	/**
 	 * This method will be used by content module itself to fetch the port value of server.
