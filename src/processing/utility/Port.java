@@ -1,5 +1,7 @@
 package processing.utility;
 
+import java.io.Serializable;
+
 /**
  * Class Representing a Port
  * 
@@ -7,7 +9,11 @@ package processing.utility;
  * @reviewer Himanshu Jain
  */
 
-public class Port {
+public class Port implements Serializable {
+	
+	/** Serial UID */
+	private static final long serialVersionUID = 9155983265223929975L;
+
 	/** Port Number as an integer value */
 	public int port;
 	
@@ -32,5 +38,11 @@ public class Port {
 			return port == ((Port)obj).port;
 		else
 			return false;
+	}
+	
+	/** HashCode Method */
+	@Override
+	public int hashCode() {
+		return port;
 	}
 }

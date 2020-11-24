@@ -1,5 +1,7 @@
 package processing.utility;
 
+import java.io.Serializable;
+
 /**
  * Class Representing a Radius value
  *
@@ -7,7 +9,11 @@ package processing.utility;
  * @reviewer Himanshu Jain
  */
 
-public class Radius {
+public class Radius implements Serializable {
+	
+	/** Serial UID */
+	private static final long serialVersionUID = 1523394784076853538L;
+	
 	/** The radius as a double value */
 	public double radius;
 	
@@ -31,5 +37,11 @@ public class Radius {
 			return radius == ((Radius)obj).radius;
 		else
 			return false;
+	}
+	
+	/** HashCode Method */
+	@Override
+	public int hashCode() {
+		return (int)radius;
 	}
 }
