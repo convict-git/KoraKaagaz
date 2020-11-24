@@ -1,3 +1,4 @@
 module korakaagaz {
-	requires java.xml;
+   requires org.json;
+   requires java.xml;
 }
