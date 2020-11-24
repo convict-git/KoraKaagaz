@@ -34,8 +34,8 @@ public class DrawSquareTest extends TestCase {
 		logger.log(ModuleID.PROCESSING, LogLevel.INFO, "DrawSquareTest: Create input for test.");
 		
 		Position topLeft = new Position(2,2);
-		Position bottomRight = new Position(4,4);
-		float length = 2.0f; 
+		Position bottomRight = new Position(18,18);
+		float length = 16.0f; 
 		Intensity intensity = new Intensity(1,2,3);
 		Pixel topLeftPixel = new Pixel(topLeft, intensity);
 		
@@ -76,7 +76,7 @@ public class DrawSquareTest extends TestCase {
 		
 		try {
 			/* pass the input array for drawing square to processor module */
-			processor.drawSquare(topLeftPixel,length);	
+			processor.drawSquare(topLeftPixel, length);	
 			
 		} catch (Exception error) {
 			/* return and set error in case of unsuccessful processing */

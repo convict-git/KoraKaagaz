@@ -36,7 +36,8 @@ public class DrawCircleTest extends TestCase {
 		Position pos = new Position(1,1);
 		Intensity intensity = new Intensity(1,2,3);
 		Pixel pixel = new Pixel(pos, intensity);
-		Radius radius = new Radius(1.0f);
+		Radius radius = new Radius(10.0f);
+		float r = 10.0f;
 		
 		ArrayList<Pixel> arrayPixels = new ArrayList<Pixel>();
 		
@@ -76,7 +77,7 @@ public class DrawCircleTest extends TestCase {
 		
 		try {
 			/* pass the input array for drawing circle to processor module */
-			processor.drawCircle(pixel, 1.0f);	
+			processor.drawCircle(pixel, r);	
 			
 		} catch (Exception error) {
 			/* return and set error in case of unsuccessful processing */
