@@ -38,6 +38,7 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.TextAlignment;
+import javafx.scene.layout.Region;
 
 /*
  * ContentNotificationHandler class
@@ -138,7 +139,8 @@ public class ContentNotificationHandler implements IContentNotificationHandler {
         	//Setting styling for the username label
         	userNameDisplay.setStyle(" -fx-font: 10pt 'Corbel';-fx-font-weight: bold; -fx-text-fill: black; -fx-background-color: orange;-fx-border-color: black;-fx-background-radius: 10 10 0 0; -fx-border-radius: 10 10 0 0");
     		//Creating a label to display the message received
-        	Label msgLabel=new Label(message);
+			Label msgLabel=new Label(message);
+			msgLabel.setMinHeight(Region.USE_PREF_SIZE);
     		//Setting the styling for the image
     		msgLabel.setStyle(" -fx-font: 14pt 'Corbel'; -fx-text-fill: black; -fx-background-color: orange;-fx-border-color: black;-fx-background-radius: 0 10 10 10; -fx-border-radius: 0 10 10 10");  		    		
     		msgLabel.setWrapText(true);
