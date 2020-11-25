@@ -474,32 +474,32 @@ public class CanvasController implements Initializable {
 			setEndPoint(ev.getX(), ev.getY());
 			color = colorPicker.getValue();
 
-			if(Shapes.rectselected) {
+			if (Shapes.rectselected) {
 				Shapes.drawPerfectRect(color,gc,x1, y1, x2, y2);
 			}
 
-			if(Shapes.circleselected) {
+			if (Shapes.circleselected) {
 				Shapes.drawPerfectCircle(color,gc,x1, y1, x2, y2);
 			}
 
-			if(Shapes.lineselected) {
+			if (Shapes.lineselected) {
 				Shapes.drawPerfectLine(color,gc,x1, y1, x2, y2);
 			}
 
-			if(Shapes.triangleselected) {
+			if (Shapes.triangleselected) {
 				Shapes.drawPerfectTriangle(color,gc,x1, y1, x2, y2);
 			}
 
-			if(Shapes.squareselected) {
+			if (Shapes.squareselected) {
 				Shapes.drawPerfectSquare(color,gc,x1, y1, x2, y2);
 			}
 
-			if(Brush.brushSelected) {
+			if (Brush.brushSelected) {
 				Shapes.defaultSelected();
 				Brush.drawBrush(color,gc,x1, y1, x2, y2);
 			}
 
-			if(Brush.erasorSelected) {
+			if (Brush.erasorSelected) {
 				Shapes.defaultSelected();
 				Brush.drawEraser(color,gc,x1, y1, x2, y2);
 			}
@@ -519,30 +519,30 @@ public class CanvasController implements Initializable {
 			color = colorPicker.getValue();
 
 
-			if(Shapes.rectselected) {
+			if (Shapes.rectselected) {
 				Shapes.drawPerfectRectEffect(canvasB,color,gc,x1, y1, x3, y3);
 			}
 
-			if(Shapes.circleselected) {
+			if (Shapes.circleselected) {
 				Shapes.drawPerfectCircleEffect(canvasB,color,gc,x1, y1, x3, y3);
 			}
 
-			if(Shapes.lineselected) {
+			if (Shapes.lineselected) {
 				Shapes.drawPerfectLineEffect(canvasB,color,gc,x1, y1, x3, y3);
 			}
 
-			if(Shapes.triangleselected) {
+			if (Shapes.triangleselected) {
 				Shapes.drawPerfectTriangleEffect(canvasB,color,gc,x1, y1, x3, y3);
 			}
 
-			if(Shapes.squareselected) {
+			if (Shapes.squareselected) {
 				Shapes.drawPerfectSquareEffect(canvasB,color,gc,x1, y1, x3, y3);
 			}
 
-			if(Brush.brushSelected) {
+			if (Brush.brushSelected) {
 				ILogger logger = LoggerFactory.getLoggerInstance();
 
-				if(Brush.sizeSelected==true) {
+				if (Brush.sizeSelected==true) {
 					logger.log(ModuleID.UI,LogLevel.SUCCESS,"Brush is selected");
 				}
 				else {
@@ -553,10 +553,10 @@ public class CanvasController implements Initializable {
 				Brush.drawBrushEffect(canvasB,color, gc, x1, y1, x3, y3,size);
 			}
 
-			if(Brush.erasorSelected) {
+			if (Brush.erasorSelected) {
 				ILogger logger = LoggerFactory.getLoggerInstance();
 
-				if(Brush.sizeSelected==true) {
+				if (Brush.sizeSelected==true) {
 					logger.log(ModuleID.UI,LogLevel.SUCCESS,"Eraser is selected");
 				}
 				else {
@@ -622,7 +622,7 @@ public class CanvasController implements Initializable {
 
 	    	// If in Cursor Mode, then perform the color
 	    	// change operation
-	    	if(
+	    	if (
 				currentMode == CurrentMode.CURSOR_MODE
 				&&
 				isObjectSelected
@@ -710,7 +710,7 @@ public class CanvasController implements Initializable {
 	    	ILogger logger = LoggerFactory.getLoggerInstance();
 
 	    	// If current mode is not the Cursor Mode, return
-	    	if(currentMode != CurrentMode.CURSOR_MODE) {
+	    	if (currentMode != CurrentMode.CURSOR_MODE) {
 	    		logger.log(
 					ModuleID.UI,
 					LogLevel.INFO,
@@ -729,12 +729,12 @@ public class CanvasController implements Initializable {
 
 	    	// Construct selPosition by building a small square as the
 	    	// selected region
-	    	for(int r : selRange) {
-	    		for(int c : selRange) {
+	    	for (int r : selRange) {
+	    		for (int c : selRange) {
 	    			int row = rowCoord + r;
 	    			int col = colCoord + c;
 
-	    			if(
+	    			if (
 						0 <= row && row < dimension.numRows
 						&&
 						0 <= col && col < dimension.numCols
@@ -790,7 +790,7 @@ public class CanvasController implements Initializable {
 	    	}
 
 	    	// If no object is selected, return
-	    	if(!isObjectSelected) {
+	    	if (!isObjectSelected) {
 	    		logger.log(
 	    			ModuleID.UI,
 	    			LogLevel.INFO,
@@ -838,7 +838,7 @@ public class CanvasController implements Initializable {
 	    	ILogger logger = LoggerFactory.getLoggerInstance();
 
 	    	// If Current Mode is not Cursor Mode, then return
-	    	if(currentMode != CurrentMode.CURSOR_MODE) {
+	    	if (currentMode != CurrentMode.CURSOR_MODE) {
 	    		logger.log(
 	    			ModuleID.UI,
 	    			LogLevel.INFO,
@@ -848,7 +848,7 @@ public class CanvasController implements Initializable {
 	    	}
 
 	    	// If no object is selected, return
-	    	if(!isObjectSelected) {
+	    	if (!isObjectSelected) {
 	    		logger.log(
 	    			ModuleID.UI,
 	    			LogLevel.INFO,
@@ -864,10 +864,10 @@ public class CanvasController implements Initializable {
 	    	double angleCCW;
 
 	    	// Get angle from String
-	    	if(chosenAngleString == "90")
+	    	if (chosenAngleString == "90")
 	    		angleCCW = 90;
 
-	    	else if(chosenAngleString == "180")
+	    	else if (chosenAngleString == "180")
 	    		angleCCW = 180;
 
 	    	else
@@ -912,7 +912,7 @@ public class CanvasController implements Initializable {
 
 	    	// If no pixels are selected currently, then set the
 	    	// members accordingly
-	    	if(selectedPixels == null || selectedPixels.size() == 0) {
+	    	if (selectedPixels == null || selectedPixels.size() == 0) {
 	    		isObjectSelected = false;
 	    		selPrevPixels = null;
 	    	}
@@ -946,11 +946,11 @@ public class CanvasController implements Initializable {
     	synchronized(this) {
 
 	    	// If no object was selected, return
-	    	if(!isObjectSelected)
+	    	if (!isObjectSelected)
 	    		return;
 
 	    	// Set previous selected pixels to their original value
-	    	for(Pixel pixel : selPrevPixels) {
+	    	for (Pixel pixel : selPrevPixels) {
 
 	    		// Convert to double value between 0.0 and 1.0
 	    		Color color = Color.color(
