@@ -852,7 +852,7 @@ public class CanvasController implements Initializable {
 	    		logger.log(
 	    			ModuleID.UI,
 	    			LogLevel.INFO,
-	    			"Deletion cannot be performed: No object Selected"
+	    			"Rotation cannot be performed: No object Selected"
 	    		);
 	    		return;
 	    	}
