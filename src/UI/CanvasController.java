@@ -289,7 +289,7 @@ public class CanvasController implements Initializable {
 			//Notifying content module.
 			communicator.notifyUserExit();
 			logger.log(ModuleID.UI, LogLevel.SUCCESS, "Notified content module about exiting of user");
-			//Notifying to Stop board session 
+			//Notifying to Stop board session
 			Processor processor = ProcessingFactory.getProcessor() ;
 			IUser user = processor;
 			user.stopBoardSession();
@@ -495,10 +495,10 @@ public class CanvasController implements Initializable {
 	@FXML
 	void mouseDragged(MouseEvent ev) {
 		synchronized(this) {
-			gc = canvasB.getGraphicsContext2D();	
+			gc = canvasB.getGraphicsContext2D();
 			double x3=ev.getX();
 			double y3=ev.getY();
-			color = colorPicker.getValue();		
+			color = colorPicker.getValue();
 
 
 			if(Shapes.rectselected) {
@@ -675,7 +675,7 @@ public class CanvasController implements Initializable {
      * @param canvasMouseClickEvent Mouse Click Event which lead to this
      * function being called
      */
-    
+
     @FXML
     void clickCanvas(MouseEvent canvasMouseClickEvent) {
 
@@ -725,12 +725,8 @@ public class CanvasController implements Initializable {
 			);
 
 	    	// Get Selected Object Pixels from the Processor
-	    	
-	    	ArrayList<Pixel> objectPixels = null;
-	    	
-	    	/*	ProcessingFactory
-					.getProcessor()
-					.select(selPosition); */
+
+	    	ArrayList<Pixel> objectPixels = ProcessingFactory.getProcessor().select(selPosition);
 
 	    	logger.log(
 				ModuleID.UI,
@@ -742,7 +738,7 @@ public class CanvasController implements Initializable {
 	    	updateSelectedPixels(objectPixels);
     	}
     }
-    
+
     /**
      * When the delete button is clicked, this method is called. If the
      * UI is in Cursor Mode, then the selected object is deleted (if any
@@ -980,16 +976,16 @@ public class CanvasController implements Initializable {
 		rotateButton
 			.getItems()
 			.addAll("90", "180", "270");
-		
+
 		// Subscribing for notifications from processing and content module.
 		IContentNotificationHandler contentSubscribe = new ContentNotificationHandler();
 		IChanges processingSubscribe = new PixelListener();
 		Processor processor = ProcessingFactory.getProcessor() ;
-		IUser user = processor; 
+		IUser user = processor;
 		user.subscribeForChanges("UI", processingSubscribe);
 		IContentCommunicator communicator = new ContentCommunicator();
 		communicator.subscribeForNotifications("UI",contentSubscribe );
-		
+
 		// The following code initializes the dropdown of brushSize.
 		brushSize.setItems(list);
 	}
