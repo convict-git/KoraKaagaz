@@ -35,7 +35,7 @@ public class TestHarness{
     ILogger logger = LoggerFactory.getLoggerInstance();
     ArrayList<File> allTests = new ArrayList<File>();
     try{
-      File[] modules = new File("../../../").listFiles(File::isDirectory); 
+      File[] modules = new File("src/").listFiles(File::isDirectory); 
       for(File module : modules){
         if(module.isDirectory()){
           String strModule = module.getName();
@@ -72,7 +72,7 @@ public class TestHarness{
     
     ILogger logger = LoggerFactory.getLoggerInstance();
     try{
-      String path = "../../../" + category + "/tests";
+      String path = "src/" + category + "/tests";
 
       File directoryPath = new File(path);
       //get all the test cases in tests directory of respective category
@@ -162,7 +162,6 @@ public class TestHarness{
     try{
       //get list of all the tests using helper static method getAllTests()
       ArrayList<File> allTests = getAllTests();
-      totalNumberOfTests = allTests.size();
 
       for (File testFile : allTests){
         //Get full qualified class name from absolute path of testcase
@@ -177,6 +176,7 @@ public class TestHarness{
         ITest test = (ITest) obj;
         
         if(priority == (test.getPriority())){
+          totalNumberOfTests++;
           boolean result = test.run(); 
           if(result == false){
             failedNumberOfTests++;
