@@ -76,7 +76,7 @@ public class TestHarness{
 
       File directoryPath = new File(path);
       //get all the test cases in tests directory of respective category
-      File[] tests  = directoryPath.listFiles(File::isFile);
+      File[] tests  = directoryPath.listFiles((d, name) -> name.endsWith("Test.java"));
       totalNumberOfTests = tests.length;
       
       //create object of each test case class to run and get the result of each test
@@ -324,39 +324,41 @@ public class TestHarness{
     
     ILogger logger = LoggerFactory.getLoggerInstance();
     try{
-      totalNumberOfTests = 1;
+      if(testNamePath.endsWith("Test.java")){
+        totalNumberOfTests = 1;
 
-      String[] arrOfStr = testNamePath.split("src/", 2);
-      //extracting test name
-      String testName = arrOfStr[1].split("tests/",2)[1];
-      //Extract full qualified class name from absolute path of testcase
-      arrOfStr = arrOfStr[1].split(".java", 2);
-      String relPath = arrOfStr[0];
-      String fullQualifiedClassName = relPath.replace("/",".");
+        String[] arrOfStr = testNamePath.split("src/", 2);
+        //extracting test name
+        String testName = arrOfStr[1].split("tests/",2)[1];
+        //Extract full qualified class name from absolute path of testcase
+        arrOfStr = arrOfStr[1].split(".java", 2);
+        String relPath = arrOfStr[0];
+        String fullQualifiedClassName = relPath.replace("/",".");
 
-      Class<?> testClass = Class.forName(fullQualifiedClassName);
-      Object obj = testClass.getDeclaredConstructor().newInstance();
-      ITest test = (ITest) obj;
+        Class<?> testClass = Class.forName(fullQualifiedClassName);
+        Object obj = testClass.getDeclaredConstructor().newInstance();
+        ITest test = (ITest) obj;
 
-      boolean result = test.run();
-      if(result == false){
-        failedNumberOfTests++;
-        if(failedNumberOfTests == 1){
+        boolean result = test.run();
+        if(result == false){
+          failedNumberOfTests++;
+          if(failedNumberOfTests == 1){
+            logger.log(
+              ModuleID.TEST, 
+              LogLevel.INFO, 
+              "\nFailed Test..."
+            );
+          }
+          //log the result of failed test cases
           logger.log(
             ModuleID.TEST, 
             LogLevel.INFO, 
-            "\nFailed Test..."
+            Integer.toString(failedNumberOfTests)+". "+testName+" :"+test.getError()
           );
         }
-        //log the result of failed test cases
-        logger.log(
-          ModuleID.TEST, 
-          LogLevel.INFO, 
-          Integer.toString(failedNumberOfTests)+". "+testName+" :"+test.getError()
-        );
-      }
-      else{
-        successfulNumberOfTests++;
+        else{
+          successfulNumberOfTests++;
+        }
       }
     }
     catch (Exception e){
