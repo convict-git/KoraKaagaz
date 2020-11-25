@@ -1,5 +1,7 @@
 package processing.utility;
 
+import java.io.Serializable;
+
 /**
  * Class Representing a Filepath
  *
@@ -7,10 +9,12 @@ package processing.utility;
  * @reviewer Himanshu Jain
  */
 
-public class Filepath {
-	/**
-	 * Filepath String 
-	 */
+public class Filepath implements Serializable {
+	
+	/** Serial UID */
+	private static final long serialVersionUID = 1394822813812979917L;
+	
+	/** Filepath String */
 	private String filepath;
 	
 	/**
@@ -40,8 +44,14 @@ public class Filepath {
 	@Override
 	public boolean equals(Object obj) {
 		if(obj instanceof Filepath)
-			return filepath == ((Filepath)obj).filepath;
+			return filepath.equals(((Filepath)obj).filepath);
 		else
 			return false;
+	}
+	
+	/** HashCode Method */
+	@Override
+	public int hashCode() {
+		return filepath.hashCode();
 	}
 }

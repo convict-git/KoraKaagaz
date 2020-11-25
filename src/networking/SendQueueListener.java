@@ -205,9 +205,10 @@ public class SendQueueListener implements Runnable {
                 SendQueue.dequeue();
             }
 
-            /** Logging the infromation that when the thread is going to stop. */
-            logger.log(ModuleID.NETWORKING, LogLevel.INFO, "Send Queue Listener thread is going to stop running");
-
+       
         }
+        /** Logging the infromation that when the thread is going to stop. */
+        logger.log(ModuleID.NETWORKING, LogLevel.INFO, "Send Queue Listener thread is going to stop running");
+
     }
 }

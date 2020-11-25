@@ -1,7 +1,6 @@
 /bin/
 .metadata
 *.pydevproject
-.project
 .metadata
 bin/**
 tmp/**
@@ -11,7 +10,6 @@ tmp/**/*
 *.swp
 *~.nib
 
-*.jar
 *.war
 *.ear
 *.class

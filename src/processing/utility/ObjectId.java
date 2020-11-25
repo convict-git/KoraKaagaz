@@ -1,5 +1,7 @@
 package processing.utility;
 
+import java.io.Serializable;
+
 /**
  * Class Representing the Board Object ID
  *
@@ -7,7 +9,11 @@ package processing.utility;
  * @reviewer Himanshu Jain
  */
 
-public class ObjectId {
+public class ObjectId implements Serializable {
+	
+	/** Serial UID */
+	private static final long serialVersionUID = 8011943658745490272L;
+	
 	/**
 	 * Object ID as a String
 	 */
@@ -44,8 +50,14 @@ public class ObjectId {
 	public boolean equals(Object obj) {
 		if(obj instanceof ObjectId)
 			return 
-				objectId == ((ObjectId)obj).objectId;
+				objectId.equals(((ObjectId)obj).objectId);
 		else
 			return false;
+	}
+	
+	/** HashCode Method */
+	@Override
+	public int hashCode() {
+		return objectId.hashCode();
 	}
 }

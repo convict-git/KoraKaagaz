@@ -1,5 +1,7 @@
 package processing.utility;
 
+import java.io.Serializable;
+
 /**
  * Class Representing an Angle
  * 
@@ -7,7 +9,11 @@ package processing.utility;
  * @reviewer Himanshu Jain
  */
 
-public class Angle {
+public class Angle implements Serializable {
+	
+	/** Serial UID */
+	private static final long serialVersionUID = 1831016067017799061L;
+	
 	/** Angle as a double value */
 	public double angle;
 	
@@ -32,5 +38,11 @@ public class Angle {
 			return angle == ((Angle)otherAngle).angle;
 		else
 			return false;
+	}
+	
+	/** HashCode Method */
+	@Override
+	public int hashCode() {
+		return (int)angle;
 	}
 }
