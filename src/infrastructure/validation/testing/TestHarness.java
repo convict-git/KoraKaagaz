@@ -39,7 +39,7 @@ public class TestHarness{
       for(File module : modules){
         if(module.isDirectory()){
           String strModule = module.getName();
-          File f = new File("src/"+strModule+"/tests/");
+          File f = new File(module.getPath()+"/tests/");
           File[] tests  = f.listFiles(File::isFile);
           for (File test : tests){
             if(test.getName().endsWith("Test.java")){
@@ -82,7 +82,7 @@ public class TestHarness{
       //create object of each test case class to run and get the result of each test
       for(int i=0; i<tests.length; i++){
         //Get full qualified class name from absolute path of testcase
-        String absPath = tests[i].getAbsolutePath();
+        String absPath = tests[i].getCanonicalPath();
         String[] arrOfStr = absPath.split("src/", 2); 
         arrOfStr = arrOfStr[1].split(".java", 2);
         String relPath = arrOfStr[0];
@@ -166,7 +166,7 @@ public class TestHarness{
 
       for (File testFile : allTests){
         //Get full qualified class name from absolute path of testcase
-        String absPath =  testFile.getAbsolutePath();
+        String absPath =  testFile.getCanonicalPath();
         String[] arrOfStr = absPath.split("src/", 2); 
         arrOfStr = arrOfStr[1].split(".java", 2);
         String relPath = arrOfStr[0];
@@ -248,7 +248,7 @@ public class TestHarness{
       totalNumberOfTests = allTests.size(); 
       for (File testFile : allTests){
         //Get full qualified class name from absolute path of testcase
-        String absPath =  testFile.getAbsolutePath();
+        String absPath =  testFile.getCanonicalPath();
         String[] arrOfStr = absPath.split("src/", 2); 
         arrOfStr = arrOfStr[1].split(".java", 2);
         String relPath = arrOfStr[0];
