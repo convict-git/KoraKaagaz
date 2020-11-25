@@ -121,7 +121,7 @@ public class LoggerManager implements ILogger {
 				if(nextEvent.isStartElement()) {
 					StartElement startElement = nextEvent.asStartElement();
 					if(startElement.getName().getLocalPart().equalsIgnoreCase("testMode")) {
-						Characters eventAsCharacter = nextEvent.asCharacters();
+						Characters eventAsCharacter = (Characters) nextEvent.asCharacters();
 						if(eventAsCharacter.getData().equalsIgnoreCase("true")) {
 							Attribute filePath = startElement.getAttributeByName(new QName("filePath"));
 							fileToParse = filePath.getValue();
@@ -139,6 +139,9 @@ public class LoggerManager implements ILogger {
 			// if this occurs, do nothing and skip to default values
 		} catch (SecurityException se) {
 			// in the presence of a security manager, it's checkRead method can deny read access to the file
+			// if it occurs, do nothing and skip to default values
+		} catch (ClassCastException cce) {
+			// thrown by startEvent.asCharacters() method if it fails 
 			// if it occurs, do nothing and skip to default values
 		}
 		
@@ -193,6 +196,7 @@ public class LoggerManager implements ILogger {
 								allowConsoleLogging = true;
 							}
 						}
+						
 						break;
 					case "logLevels":
 						isInLogLevels = true;
@@ -262,6 +266,9 @@ public class LoggerManager implements ILogger {
 			// if this occurs, do nothing and skip to default values
 		} catch (SecurityException se) {
 			// in the presence of a security manager, it's checkRead method can deny read access to the file
+			// if it occurs, do nothing and skip to default values
+		} catch (ClassCastException cce) {
+			// thrown by startEvent.asCharacters() method if it fails 
 			// if it occurs, do nothing and skip to default values
 		}
 		
