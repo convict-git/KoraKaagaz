@@ -111,10 +111,12 @@ public class CanvasController implements Initializable {
 
 	@FXML
 	private Canvas canvasB;
+
 /*
 	@FXML
 	private ColorPicker colorpicker;
 */
+
 	private static GraphicsContext gc;
 
 	private double x1,y1,x2,y2,x3,y3;
@@ -122,7 +124,9 @@ public class CanvasController implements Initializable {
 	private Color color;
 
 
-    /** Delete Button, allows one to delete the selected object */
+    /**
+	 * Delete Button, allows one to delete the selected object
+	 */
     @FXML
     private Button deleteButton;
 
@@ -137,10 +141,14 @@ public class CanvasController implements Initializable {
     private ColorPicker colorPicker;
 
 
-    /** Current Mode of the UI */
+    /**
+	 * Current Mode of the UI
+	 */
     private CurrentMode currentMode = CurrentMode.NO_MODE;
 
-    /** Is an Object Selected ? */
+    /**
+	 * Is an Object Selected ?
+	 */
     private boolean isObjectSelected = false;
 
     /**
@@ -149,12 +157,14 @@ public class CanvasController implements Initializable {
      */
     private ArrayList<Pixel> selPrevPixels = null;
 
-    /** Dimension of the UI Canvas */
+    /**
+	 * Dimension of the UI Canvas
+	 */
     private final Dimension dimension = new Dimension(720, 1200);
 
-    /***
+    /**
 	 * Function called when eraser is clicked.
-	 ***/
+	 */
 	@FXML
 	public void eraserClicked(ActionEvent e ) {
 	    	synchronized(this) {
@@ -224,9 +234,9 @@ public class CanvasController implements Initializable {
 		return;
 	}
 
-	/***
+	/**
 	 * Function called when brush is clicked.
-	 ***/
+	 */
 	@FXML
    	public void brushClicked(ActionEvent e) {
 	    	synchronized(this) {
@@ -265,9 +275,9 @@ public class CanvasController implements Initializable {
 		return;
    	}
 
-	/***
+	/**
 	 * Function called when brush size is changed.
-	 ***/
+	 */
 	@FXML
    	public void brushSizeChanged(ActionEvent e ) {
 	    	synchronized(this) {
@@ -277,10 +287,10 @@ public class CanvasController implements Initializable {
 	}
 
 	/**
-	 *This function is called when leave session button is clicked.
-	 *It notifies processing,content module about exit and closes the window.
-	 *@param e This event is clicking Leave session button.
-	 *@returns nothing
+	 * This function is called when leave session button is clicked.
+	 * It notifies processing,content module about exit and closes the window.
+	 * @param e This event is clicking Leave session button.
+	 * @returns nothing
 	 */
 	@FXML
 	public void leaveSession(ActionEvent e ) {
@@ -298,52 +308,52 @@ public class CanvasController implements Initializable {
 		}
 	}
 
-	/***
+	/**
 	 * Function to get the send button of the chatbox
 	 * @param : none
 	 * @return : sendButton - button clicked by user to send message
-	 ***/
+	 */
 	public Button getSendButton() {
 		synchronized(this) {
 			return this.sendButton;
 		}
 	}
-	/***
+	/**
 	 * Function to get the text area field of the chatbox
 	 * @param : none
 	 * @return : sendMessage - message entered by user in text box
-	 ***/
+	 */
 	public TextArea getSendMessage() {
 		synchronized(this) {
 		return this.sendMessage;
 		}
 	}
-	/***
+	/**
 	 * Function to get the chat display box of the chatbox
 	 * @param : none
 	 * @return : chatDisplayBox - chat display box to display message
-	 ***/
+	 */
 	public VBox getChatDisplayBox() {
 		synchronized(this) {
 		return this.chatDisplayBox;
 		}
 	}
-	/***
+	/**
 	 * Function to get the scroll pane of the chatbox
 	 * @param : none
 	 * @return : chatScroll - chat scroll pane to display message
-	 ***/
+	 */
 	public ScrollPane getChatScroll() {
 		synchronized(this) {
 		return this.chatScroll;
 		}
 	}
 
-	/***
+	/**
 	 * Javafx event handling the changes after clicking the 'SEND' button in the ChatBox.
 	 * @param : e - ActionEvent e which is button click event
 	 * @return : none
-	 ***/
+	 */
 	@FXML
 	public void sendButtonClicked(ActionEvent e ) {
 		String message = sendMessage.getText();
@@ -351,7 +361,7 @@ public class CanvasController implements Initializable {
 		sendMessage.setText(null);
 	}
 
-	/***
+	/**
 	 * This method will store the start position of mouse drag
 	 * @param d
 	 * @param e
@@ -363,7 +373,7 @@ public class CanvasController implements Initializable {
 		}
 	}
 
-	/***
+	/**
 	 * This method will store the end position of mouse drag
 	 * @param d
 	 * @param e
@@ -375,7 +385,7 @@ public class CanvasController implements Initializable {
 		}
 	}
 
-	/***
+	/**
 	 * This method will be called when circle is selected
 	 * @param event
 	 */
@@ -388,7 +398,7 @@ public class CanvasController implements Initializable {
 		}
 	}
 
-	/***
+	/**
 	 * This method will be called when line is selected
 	 * @param event
 	 */
@@ -401,7 +411,7 @@ public class CanvasController implements Initializable {
 		}
 	}
 
-	/***
+	/**
 	 * This method will be called when rectangle is selected
 	 * @param event
 	 */
@@ -414,7 +424,7 @@ public class CanvasController implements Initializable {
 		}
 	}
 
-	/***
+	/**
 	 * This method will be called when square is selected
 	 * @param event
 	 */
@@ -427,7 +437,7 @@ public class CanvasController implements Initializable {
 		}
 	}
 
-	/***
+	/**
 	 * This method will be called when triangle is selected
 	 * @param event
 	 */
@@ -440,10 +450,10 @@ public class CanvasController implements Initializable {
 		}
 	}
 
-	/***
+	/**
 	 * This method is called when the mouse is pressed on canvas.
 	 * It records the position on canvas when the mouse is pressed
-	 ***/
+	 */
 	@FXML
 	void mousePressed(MouseEvent ev) {
 		synchronized(this) {
