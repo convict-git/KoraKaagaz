@@ -296,9 +296,11 @@ public class CanvasController implements Initializable {
 	public void leaveSession(ActionEvent e ) {
 		synchronized(this) {
 			infrastructure.content.IContentCommunicator communicator = ContentFactory.getContentCommunicator();
+
 			//Notifying content module.
 			communicator.notifyUserExit();
 			logger.log(ModuleID.UI, LogLevel.SUCCESS, "Notified content module about exiting of user");
+
 			//Notifying to Stop board session
 			Processor processor = ProcessingFactory.getProcessor() ;
 			IUser user = processor;
@@ -461,10 +463,10 @@ public class CanvasController implements Initializable {
 		}
 	}
 
-	/***
+	/**
 	 * This method is called when the mouse is released on canvas.
 	 * This method draws the shapes on front canvas when mouse is released after selecting a shape
-	 ***/
+	 */
 	@FXML
 	void mouseReleased(MouseEvent ev) {
 		synchronized(this) {
@@ -475,22 +477,28 @@ public class CanvasController implements Initializable {
 			if(Shapes.rectselected) {
 				Shapes.drawPerfectRect(color,gc,x1, y1, x2, y2);
 			}
+
 			if(Shapes.circleselected) {
 				Shapes.drawPerfectCircle(color,gc,x1, y1, x2, y2);
 			}
+
 			if(Shapes.lineselected) {
 				Shapes.drawPerfectLine(color,gc,x1, y1, x2, y2);
 			}
+
 			if(Shapes.triangleselected) {
 				Shapes.drawPerfectTriangle(color,gc,x1, y1, x2, y2);
 			}
+
 			if(Shapes.squareselected) {
 				Shapes.drawPerfectSquare(color,gc,x1, y1, x2, y2);
 			}
+
 			if(Brush.brushSelected) {
 				Shapes.defaultSelected();
 				Brush.drawBrush(color,gc,x1, y1, x2, y2);
 			}
+
 			if(Brush.erasorSelected) {
 				Shapes.defaultSelected();
 				Brush.drawEraser(color,gc,x1, y1, x2, y2);
@@ -498,10 +506,10 @@ public class CanvasController implements Initializable {
 		}
 	}
 
-	/***
+	/**
 	 * This method is called when the mouse is being dragged on canvas.
 	 * This method creates the scaling effect on rear canvas for shapes when mouse is dragged
-	 ***/
+	 */
 	@FXML
 	void mouseDragged(MouseEvent ev) {
 		synchronized(this) {
@@ -514,15 +522,19 @@ public class CanvasController implements Initializable {
 			if(Shapes.rectselected) {
 				Shapes.drawPerfectRectEffect(canvasB,color,gc,x1, y1, x3, y3);
 			}
+
 			if(Shapes.circleselected) {
 				Shapes.drawPerfectCircleEffect(canvasB,color,gc,x1, y1, x3, y3);
 			}
+
 			if(Shapes.lineselected) {
 				Shapes.drawPerfectLineEffect(canvasB,color,gc,x1, y1, x3, y3);
 			}
+
 			if(Shapes.triangleselected) {
 				Shapes.drawPerfectTriangleEffect(canvasB,color,gc,x1, y1, x3, y3);
 			}
+
 			if(Shapes.squareselected) {
 				Shapes.drawPerfectSquareEffect(canvasB,color,gc,x1, y1, x3, y3);
 			}
@@ -540,6 +552,7 @@ public class CanvasController implements Initializable {
 				Shapes.defaultSelected();
 				Brush.drawBrushEffect(canvasB,color, gc, x1, y1, x3, y3,size);
 			}
+
 			if(Brush.erasorSelected) {
 				ILogger logger = LoggerFactory.getLoggerInstance();
 
@@ -557,10 +570,10 @@ public class CanvasController implements Initializable {
 		}
 	}
 
-	/***
+	/**
 	 * updateChanges method updates the canvas with given pixels
 	 * @param pixels
-	 ***/
+	 */
 	public void updateChanges(ArrayList<Pixel> pixels) {
 		synchronized(this) {
 			gc = canvasF.getGraphicsContext2D();
@@ -658,12 +671,14 @@ public class CanvasController implements Initializable {
 	    		// Unselect currently selected object
 	        	updateSelectedPixels(null);
 	    	}
-	    	else // Not in cursor Mode or object not selected
+	    	else {
+				// Not in cursor Mode or object not selected
 	    		logger.log(
 					ModuleID.UI,
 					LogLevel.INFO,
 					"Not in Cursor Mode or Object not selected"
 				);
+			}
     	}
     }
 
@@ -735,7 +750,6 @@ public class CanvasController implements Initializable {
 			);
 
 	    	// Get Selected Object Pixels from the Processor
-
 	    	ArrayList<Pixel> objectPixels = ProcessingFactory.getProcessor().select(selPosition);
 
 	    	logger.log(
@@ -902,9 +916,9 @@ public class CanvasController implements Initializable {
 	    		isObjectSelected = false;
 	    		selPrevPixels = null;
 	    	}
-	    	else { // Else update selected prev pixel values to current
-	    		   // and write highlighted object pixels to canvas
-
+	    	else {
+				// Else update selected prev pixel values to current
+	    		// and write highlighted object pixels to canvas
 	    		isObjectSelected = true;
 	    		selPrevPixels = new ArrayList<Pixel>(selectedPixels);
 
@@ -924,7 +938,9 @@ public class CanvasController implements Initializable {
     	}
     }
 
-    /** Replaces Previous Selected Pixels with their original values */
+    /**
+	 * Replaces Previous Selected Pixels with their original values
+	 */
     public void updatePrevSelectedPixels() {
 
     	synchronized(this) {
