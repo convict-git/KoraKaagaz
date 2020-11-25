@@ -1009,7 +1009,7 @@ public class CanvasController implements Initializable {
 		Processor processor = ProcessingFactory.getProcessor() ;
 		IUser user = processor;
 		user.subscribeForChanges("UI", processingSubscribe);
-		IContentCommunicator communicator = new ContentCommunicator();
+		IContentCommunicator communicator =  ContentFactory.getContentCommunicator();
 		communicator.subscribeForNotifications("UI",contentSubscribe );
 
 		// The following code initializes the dropdown of brushSize.

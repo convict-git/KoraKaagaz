@@ -14,7 +14,7 @@ import processing.*;
  * It sends user details to processing module and content module.
  ***/
 
-import org.json.simple.JSONObject;
+import org.json.*;
 import infrastructure.content.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -93,7 +93,7 @@ public class WhiteBoardController {
     		obj.put("username",userName.getText());
     		obj.put("image",encodedImage);
     		String userDetails = obj.toString();
-    		IContentCommunicator communicator = new ContentCommunicator();
+    		IContentCommunicator communicator = ContentFactory.getContentCommunicator();
     		communicator.initialiseUser(userDetails);
     		logger.log(ModuleID.UI, LogLevel.SUCCESS, "Userdetails and image have been sent to content module to initialise user");
 

@@ -12,7 +12,7 @@ import javafx.stage.Stage;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
-import org.json.simple.JSONObject;
+import org.json.*;
 
 import infrastructure.content.*;
 
