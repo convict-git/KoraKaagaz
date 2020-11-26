@@ -38,7 +38,6 @@ public class TestHarness{
       File[] modules = new File("src/").listFiles(File::isDirectory); 
       for(File module : modules){
         if(module.isDirectory()){
-          String strModule = module.getName();
           File f = new File(module.getPath()+"/tests/");
           File[] tests  = f.listFiles(File::isFile);
           for (File test : tests){
@@ -49,7 +48,7 @@ public class TestHarness{
         }     
       }
     }
-    //If any module does not content test directory or test directory is empty
+    //If any module does not contain test directory or test directory is empty
     catch (Exception e){
     	logger.log(
     	  ModuleID.TEST, 
