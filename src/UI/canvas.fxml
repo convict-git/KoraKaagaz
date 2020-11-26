@@ -6,6 +6,15 @@
 <!-- Contributors working on the Menu Bar, working using the Scene Builder is advisable -->
 <!-- Do not change the other part of the code -->
 
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.canvas.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.canvas.Canvas?>
@@ -29,11 +38,11 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.TextFlow?>
 
-<ScrollPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="1502.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="UI.CanvasController">
+<ScrollPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="1502.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="UI.CanvasController">
    <content>
-      <AnchorPane>
+      <AnchorPane style="-fx-background-color: white;">
          <children>
-            <AnchorPane layoutX="13.0" layoutY="70.0" style="-fx-border-width: 5; -fx-border-color: black;" AnchorPane.bottomAnchor="18.0" AnchorPane.leftAnchor="13.0" AnchorPane.rightAnchor="386.0" AnchorPane.topAnchor="70.0">
+            <AnchorPane layoutX="13.0" layoutY="70.0" style="-fx-border-width: 5; -fx-border-color: black; -fx-background-color: white;" AnchorPane.bottomAnchor="18.0" AnchorPane.leftAnchor="13.0" AnchorPane.rightAnchor="386.0" AnchorPane.topAnchor="70.0">
                <children>
                   <Canvas fx:id="canvasB" height="723.0" width="1102.0" />
                   <Canvas fx:id="canvasF" focusTraversable="true" height="723.0" onMouseClicked="#clickCanvas" onMouseDragged="#mouseDragged" onMousePressed="#mousePressed" onMouseReleased="#mouseReleased" width="1102.0">

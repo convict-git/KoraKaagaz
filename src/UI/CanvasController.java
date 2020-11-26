@@ -111,10 +111,7 @@ public class CanvasController implements Initializable {
 
 	@FXML
 	private Canvas canvasB;
-/*
-	@FXML
-	private ColorPicker colorpicker;
-*/
+
 	private static GraphicsContext gc;
 
 	private double x1,y1,x2,y2,x3,y3;
@@ -152,15 +149,17 @@ public class CanvasController implements Initializable {
     /** Dimension of the UI Canvas */
     private final Dimension dimension = new Dimension(720, 1200);
 
-    /***
+    /**
 	 * Function called when eraser is clicked.
-	 ***/
+	 */
 	@FXML
 	public void eraserClicked(ActionEvent e ) {
 	    	synchronized(this) {
 			Shapes.defaultSelected();
 	    		Brush.defaultSelected();
 	    		Brush.erasorSelected =true;
+	    		currentMode = CurrentMode.ERASE_MODE;
+				canvasF.setCursor(Cursor.DEFAULT);
 	    	}
 	}
 
@@ -224,15 +223,17 @@ public class CanvasController implements Initializable {
 		return;
 	}
 
-	/***
+	/**
 	 * Function called when brush is clicked.
-	 ***/
+	*/
 	@FXML
    	public void brushClicked(ActionEvent e) {
 	    	synchronized(this) {
 	    		Shapes.defaultSelected();
 	    		Brush.defaultSelected();
 	    		Brush.brushSelected =true;
+	    		currentMode = CurrentMode.BRUSH_MODE;
+				canvasF.setCursor(Cursor.DEFAULT);
 	    	}
    	}
 
@@ -273,6 +274,8 @@ public class CanvasController implements Initializable {
 	    	synchronized(this) {
 	    		size = (int)brushSize.getValue();
 	    		Brush.sizeSelected =true;
+	    		currentMode = CurrentMode.BRUSH_MODE;
+				canvasF.setCursor(Cursor.DEFAULT);
 	    	}
 	}
 
@@ -385,6 +388,8 @@ public class CanvasController implements Initializable {
 			Brush.defaultSelected();
 			Shapes.defaultSelected();
 			Shapes.circleselected = true;
+			currentMode = CurrentMode.DRAWING_SHAPE_MODE;
+			canvasF.setCursor(Cursor.DEFAULT);
 		}
 	}
 
@@ -398,6 +403,8 @@ public class CanvasController implements Initializable {
 			Brush.defaultSelected();
 			Shapes.defaultSelected();
 			Shapes.lineselected = true;
+			currentMode = CurrentMode.DRAWING_SHAPE_MODE;
+			canvasF.setCursor(Cursor.DEFAULT);
 		}
 	}
 
@@ -411,6 +418,8 @@ public class CanvasController implements Initializable {
 			Brush.defaultSelected();
 			Shapes.defaultSelected();
 			Shapes.rectselected = true;
+			currentMode = CurrentMode.DRAWING_SHAPE_MODE;
+			canvasF.setCursor(Cursor.DEFAULT);
 		}
 	}
 
@@ -424,6 +433,8 @@ public class CanvasController implements Initializable {
 			Brush.defaultSelected();
 			Shapes.defaultSelected();
 			Shapes.squareselected = true;
+			currentMode = CurrentMode.DRAWING_SHAPE_MODE;
+			canvasF.setCursor(Cursor.DEFAULT);
 		}
 	}
 
@@ -437,6 +448,8 @@ public class CanvasController implements Initializable {
 			Brush.defaultSelected();
 			Shapes.defaultSelected();
 			Shapes.triangleselected = true;
+			currentMode = CurrentMode.DRAWING_SHAPE_MODE;
+			canvasF.setCursor(Cursor.DEFAULT);
 		}
 	}
 
@@ -495,7 +508,8 @@ public class CanvasController implements Initializable {
 	@FXML
 	void mouseDragged(MouseEvent ev) {
 		synchronized(this) {
-			gc = canvasB.getGraphicsContext2D();	
+			gc = canvasB.getGraphicsContext2D();
+			gc.setLineWidth(2);
 			double x3=ev.getX();
 			double y3=ev.getY();
 			color = colorPicker.getValue();		
@@ -526,9 +540,14 @@ public class CanvasController implements Initializable {
 				else {
 					logger.log(ModuleID.UI,LogLevel.INFO,"Select size of the brush");
 				}
-
-				Shapes.defaultSelected();
-				Brush.drawBrushEffect(canvasB,color, gc, x1, y1, x3, y3,size);
+				if(Brush.sizeSelected==true) {
+					gc = canvasF.getGraphicsContext2D();
+					Shapes.defaultSelected();
+					Brush.drawBrushEffect(canvasB,color, gc, x1, y1, x3, y3,size);
+					gc.setLineWidth(2);
+				}
+				x1=x3;
+				y1=y3;
 			}
 			if(Brush.erasorSelected) {
 				ILogger logger = LoggerFactory.getLoggerInstance();
@@ -539,9 +558,12 @@ public class CanvasController implements Initializable {
 				else {
 					logger.log(ModuleID.UI,LogLevel.INFO,"Select size of the eraser");
 				}
-
+				gc = canvasF.getGraphicsContext2D();
 				Shapes.defaultSelected();
 				Brush.drawEraserEffect(canvasB,color, gc, x1, y1, x3, y3,size);
+				gc.setLineWidth(2);
+				x1=x3;
+				y1=y3;
 			}
 
 		}
@@ -575,6 +597,8 @@ public class CanvasController implements Initializable {
     @FXML
 	public void cursorClicked(ActionEvent cursorButtonClick) {
 		synchronized(this) {
+			Brush.defaultSelected();
+			Shapes.defaultSelected();
 			currentMode = CurrentMode.CURSOR_MODE;
 			canvasF.setCursor(Cursor.CROSSHAIR);
 		}
