@@ -314,7 +314,7 @@ public class TestHarness{
 	  
  /**
   * Void method to give result of the Test Case Class
-  * @param testNamePath The absolute path to file name of test case class including .java extension as a string
+  * @param testNamePath The relative path to file name of test case class starting from /src including .java extension as a string
   */
   public void runByName(String testNamePath){
     int totalNumberOfTests = 0;
@@ -389,6 +389,60 @@ public class TestHarness{
       LogLevel.INFO, 
       "Total Number of Failed Tests: "+Integer.toString(failedNumberOfTests)
     );
+  }
+  
+  
+ /**
+  * Void main method to drive the test harness
+  * The args in main method must follow the below pattern-
+  * To run tests by category>> runByCategory categoryName
+  * To run tests by priority>> runByPriority priorityLevel
+  * To run all tests>> runAll
+  * To run a single test by its name>> runByName pathToTheTestStartingFrom-/src
+  */
+  public static void main(String args[]){
+    
+    ILogger logger = LoggerFactory.getLoggerInstance();
+    try{
+      if(args[0].equals("runByCategory")){
+        TestHarness myTestHarness = new TestHarness();  
+        myTestHarness.runByCategory(args[1]);
+      } 
+      else if(args[0].equals("runByPriority")){
+        int priority = Integer.parseInt(args[1]);
+        if(priority<0||priority>2) {
+          throw new IllegalArgumentException("Illegal priority level!");
+	      }
+        testHarness = new TestHarness();  
+        myTestHarness.runByPriority(priority);
+      } 
+      else if(args[0].equals("runAll")){
+        testHarness = new TestHarness();  
+        myTestHarness.runAll();
+      } 
+      else if(args[0].equals("runByName")){
+        testHarness = new TestHarness();  
+        testHarness(args[1]);
+      }
+      else{
+        throw new IllegalArgumentException(
+          "No such method to call!!\n"
+          + "Please pass the argument in below manner:\n"
+          + "for runByCategory()>> runByCategory categoryName \n"
+          + "for runByPriority()>> runByPriority priorityLevel \n"
+          + "for runAll()>> runAll \n"
+          + "for runByName()>> runByName pathOfTestFileStartingFrom-/src"
+        );
+	    }
+    }
+    catch (Exception e){
+      logger.log(
+        ModuleID.TEST, 
+        LogLevel.WARNING, 
+        "Exception >> "+e
+      );      	
+    }
+    
   }
 	
 }
