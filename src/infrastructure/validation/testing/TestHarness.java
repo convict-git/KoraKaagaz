@@ -314,7 +314,7 @@ public class TestHarness{
 	  
  /**
   * Void method to give result of the Test Case Class
-  * @param testNamePath The relative path to file name of test case class starting from /src including .java extension as a string
+  * @param testNamePath The relative path to file name of test case class starting from src/ including .java extension as a string
   */
   public void runByName(String testNamePath){
     int totalNumberOfTests = 0;
@@ -323,42 +323,40 @@ public class TestHarness{
     
     ILogger logger = LoggerFactory.getLoggerInstance();
     try{
-      if(testNamePath.endsWith("Test.java")){
-        totalNumberOfTests = 1;
+      totalNumberOfTests = 1;
 
-        String[] arrOfStr = testNamePath.split("src/", 2);
-        //extracting test name
-        String testName = arrOfStr[1].split("tests/",2)[1];
-        //Extract full qualified class name from absolute path of testcase
-        arrOfStr = arrOfStr[1].split(".java", 2);
-        String relPath = arrOfStr[0];
-        String fullQualifiedClassName = relPath.replace("/",".");
+      String[] arrOfStr = testNamePath.split("src/", 2);
+      //extracting test name
+      String testName = arrOfStr[1].split("tests/",2)[1];
+      //Extract full qualified class name from absolute path of testcase
+      arrOfStr = arrOfStr[1].split(".java", 2);
+      String relPath = arrOfStr[0];
+      String fullQualifiedClassName = relPath.replace("/",".");
 
-        Class<?> testClass = Class.forName(fullQualifiedClassName);
-        Object obj = testClass.getDeclaredConstructor().newInstance();
-        ITest test = (ITest) obj;
+      Class<?> testClass = Class.forName(fullQualifiedClassName);
+      Object obj = testClass.getDeclaredConstructor().newInstance();
+      ITest test = (ITest) obj;
 
-        boolean result = test.run();
-        if(result == false){
-          failedNumberOfTests++;
-          if(failedNumberOfTests == 1){
-            logger.log(
-              ModuleID.TEST, 
-              LogLevel.INFO, 
-              "\nFailed Test..."
-            );
-          }
-          //log the result of failed test cases
+      boolean result = test.run();
+      if(result == false){
+        failedNumberOfTests++;
+        if(failedNumberOfTests == 1){
           logger.log(
             ModuleID.TEST, 
             LogLevel.INFO, 
-            Integer.toString(failedNumberOfTests)+". "+testName+" :"+test.getError()
+            "\nFailed Test..."
           );
         }
-        else{
-          successfulNumberOfTests++;
-        }
+        //log the result of failed test cases
+        logger.log(
+          ModuleID.TEST, 
+          LogLevel.INFO, 
+          Integer.toString(failedNumberOfTests)+". "+testName+" :"+test.getError()
+        );
       }
+      else{
+        successfulNumberOfTests++;
+      }  
     }
     catch (Exception e){
       logger.log(
@@ -403,27 +401,58 @@ public class TestHarness{
   public static void main(String args[]){
     
     ILogger logger = LoggerFactory.getLoggerInstance();
+    TestHarness testHarness = new TestHarness(); 
     try{
+    
       if(args[0].equals("runByCategory")){
-        TestHarness myTestHarness = new TestHarness();  
-        myTestHarness.runByCategory(args[1]);
-      } 
+        boolean validCategoryName = false;
+        for(ModuleID category : ModuleID.values()){
+          if(category.name().toLowerCase().equals(args[1].toLowerCase()) && !(args[1].toLowerCase().equals("test"))){
+            validCategoryName = true;
+            break;
+          }
+        }         
+        if(validCategoryName){
+          testHarness.runByCategory(args[1]);
+        }
+        else{
+          throw new IllegalArgumentException("Invalid category name!");
+        }
+      }
+       
       else if(args[0].equals("runByPriority")){
         int priority = Integer.parseInt(args[1]);
-        if(priority<0||priority>2) {
-          throw new IllegalArgumentException("Illegal priority level!");
-	      }
-        testHarness = new TestHarness();  
-        myTestHarness.runByPriority(priority);
-      } 
-      else if(args[0].equals("runAll")){
-        testHarness = new TestHarness();  
-        myTestHarness.runAll();
-      } 
-      else if(args[0].equals("runByName")){
-        testHarness = new TestHarness();  
-        testHarness(args[1]);
+        if(priority < 0 || priority > 2) {
+          throw new IllegalArgumentException("Invalid priority level!");
+        }
+        testHarness.runByPriority(priority);
       }
+       
+      else if(args[0].equals("runAll")){
+        if(args.length > 1){
+          throw new IllegalArgumentException("More arguments provided than placeholders specified!");          
+        }
+        else{
+          testHarness.runAll();
+        }
+      }
+       
+      else if(args[0].equals("runByName")){
+        File testFile = new File(args[1]); 
+        if(!args[1].startsWith("src/")){
+          throw new IllegalArgumentException("Test file path doesn't start from src/");
+        }
+        else if(!args[1].endsWith("Test.java")){
+          throw new IllegalArgumentException("Test file path doesn't end with Test.java!");
+        }
+        else if(!testFile.exists() || !testFile.isFile()){
+          throw new IllegalArgumentException("Test file doesn't exist!");
+        }
+        else{
+          testHarness.runByName(args[1]);
+        }
+      }
+      
       else{
         throw new IllegalArgumentException(
           "No such method to call!!\n"
