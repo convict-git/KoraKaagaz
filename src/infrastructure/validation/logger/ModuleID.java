@@ -19,5 +19,15 @@ public enum ModuleID {
 	UI,
 	
 	/** Infrastructure refers to the Infrastructure module */
-	INFRASTRUCTURE
+	INFRASTRUCTURE,
+	
+	/** Content Module */
+	CONTENT,
+	
+	/** 
+	 * Test Harness Module
+	 * To be ensured that it is being used during testMode only
+	 */
+	TEST
+	
 }

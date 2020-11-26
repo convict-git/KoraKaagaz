@@ -119,7 +119,9 @@ public class CanvasController implements Initializable {
 	private Color color;
 
 
-    /** Delete Button, allows one to delete the selected object */
+    /**
+	 * Delete Button, allows one to delete the selected object
+	 */
     @FXML
     private Button deleteButton;
 
@@ -134,10 +136,14 @@ public class CanvasController implements Initializable {
     private ColorPicker colorPicker;
 
 
-    /** Current Mode of the UI */
+    /**
+	 * Current Mode of the UI
+	 */
     private CurrentMode currentMode = CurrentMode.NO_MODE;
 
-    /** Is an Object Selected ? */
+    /**
+	 * Is an Object Selected ?
+	 */
     private boolean isObjectSelected = false;
 
     /**
@@ -146,7 +152,9 @@ public class CanvasController implements Initializable {
      */
     private ArrayList<Pixel> selPrevPixels = null;
 
-    /** Dimension of the UI Canvas */
+    /**
+	 * Dimension of the UI Canvas
+	 */
     private final Dimension dimension = new Dimension(720, 1200);
 
     /**
@@ -225,7 +233,7 @@ public class CanvasController implements Initializable {
 
 	/**
 	 * Function called when brush is clicked.
-	*/
+	 */
 	@FXML
    	public void brushClicked(ActionEvent e) {
 	    	synchronized(this) {
@@ -266,9 +274,9 @@ public class CanvasController implements Initializable {
 		return;
    	}
 
-	/***
+	/**
 	 * Function called when brush size is changed.
-	 ***/
+	 */
 	@FXML
    	public void brushSizeChanged(ActionEvent e ) {
 	    	synchronized(this) {
@@ -280,19 +288,21 @@ public class CanvasController implements Initializable {
 	}
 
 	/**
-	 *This function is called when leave session button is clicked.
-	 *It notifies processing,content module about exit and closes the window.
-	 *@param e This event is clicking Leave session button.
-	 *@returns nothing
+	 * This function is called when leave session button is clicked.
+	 * It notifies processing,content module about exit and closes the window.
+	 * @param e This event is clicking Leave session button.
+	 * @returns nothing
 	 */
 	@FXML
 	public void leaveSession(ActionEvent e ) {
 		synchronized(this) {
 			infrastructure.content.IContentCommunicator communicator = ContentFactory.getContentCommunicator();
+
 			//Notifying content module.
 			communicator.notifyUserExit();
 			logger.log(ModuleID.UI, LogLevel.SUCCESS, "Notified content module about exiting of user");
-			//Notifying to Stop board session 
+
+			//Notifying to Stop board session
 			Processor processor = ProcessingFactory.getProcessor() ;
 			IUser user = processor;
 			user.stopBoardSession();
@@ -301,52 +311,52 @@ public class CanvasController implements Initializable {
 		}
 	}
 
-	/***
+	/**
 	 * Function to get the send button of the chatbox
 	 * @param : none
 	 * @return : sendButton - button clicked by user to send message
-	 ***/
+	 */
 	public Button getSendButton() {
 		synchronized(this) {
 			return this.sendButton;
 		}
 	}
-	/***
+	/**
 	 * Function to get the text area field of the chatbox
 	 * @param : none
 	 * @return : sendMessage - message entered by user in text box
-	 ***/
+	 */
 	public TextArea getSendMessage() {
 		synchronized(this) {
 		return this.sendMessage;
 		}
 	}
-	/***
+	/**
 	 * Function to get the chat display box of the chatbox
 	 * @param : none
 	 * @return : chatDisplayBox - chat display box to display message
-	 ***/
+	 */
 	public VBox getChatDisplayBox() {
 		synchronized(this) {
 		return this.chatDisplayBox;
 		}
 	}
-	/***
+	/**
 	 * Function to get the scroll pane of the chatbox
 	 * @param : none
 	 * @return : chatScroll - chat scroll pane to display message
-	 ***/
+	 */
 	public ScrollPane getChatScroll() {
 		synchronized(this) {
 		return this.chatScroll;
 		}
 	}
 
-	/***
+	/**
 	 * Javafx event handling the changes after clicking the 'SEND' button in the ChatBox.
 	 * @param : e - ActionEvent e which is button click event
 	 * @return : none
-	 ***/
+	 */
 	@FXML
 	public void sendButtonClicked(ActionEvent e ) {
 		String message = sendMessage.getText();
@@ -354,7 +364,7 @@ public class CanvasController implements Initializable {
 		sendMessage.setText(null);
 	}
 
-	/***
+	/**
 	 * This method will store the start position of mouse drag
 	 * @param d
 	 * @param e
@@ -366,7 +376,7 @@ public class CanvasController implements Initializable {
 		}
 	}
 
-	/***
+	/**
 	 * This method will store the end position of mouse drag
 	 * @param d
 	 * @param e
@@ -378,7 +388,7 @@ public class CanvasController implements Initializable {
 		}
 	}
 
-	/***
+	/**
 	 * This method will be called when circle is selected
 	 * @param event
 	 */
@@ -393,7 +403,7 @@ public class CanvasController implements Initializable {
 		}
 	}
 
-	/***
+	/**
 	 * This method will be called when line is selected
 	 * @param event
 	 */
@@ -408,7 +418,7 @@ public class CanvasController implements Initializable {
 		}
 	}
 
-	/***
+	/**
 	 * This method will be called when rectangle is selected
 	 * @param event
 	 */
@@ -423,7 +433,7 @@ public class CanvasController implements Initializable {
 		}
 	}
 
-	/***
+	/**
 	 * This method will be called when square is selected
 	 * @param event
 	 */
@@ -438,7 +448,7 @@ public class CanvasController implements Initializable {
 		}
 	}
 
-	/***
+	/**
 	 * This method will be called when triangle is selected
 	 * @param event
 	 */
@@ -453,10 +463,10 @@ public class CanvasController implements Initializable {
 		}
 	}
 
-	/***
+	/**
 	 * This method is called when the mouse is pressed on canvas.
 	 * It records the position on canvas when the mouse is pressed
-	 ***/
+	 */
 	@FXML
 	void mousePressed(MouseEvent ev) {
 		synchronized(this) {
@@ -464,10 +474,10 @@ public class CanvasController implements Initializable {
 		}
 	}
 
-	/***
+	/**
 	 * This method is called when the mouse is released on canvas.
 	 * This method draws the shapes on front canvas when mouse is released after selecting a shape
-	 ***/
+	 */
 	@FXML
 	void mouseReleased(MouseEvent ev) {
 		synchronized(this) {
@@ -475,66 +485,77 @@ public class CanvasController implements Initializable {
 			setEndPoint(ev.getX(), ev.getY());
 			color = colorPicker.getValue();
 
-			if(Shapes.rectselected) {
+			if (Shapes.rectselected) {
 				Shapes.drawPerfectRect(color,gc,x1, y1, x2, y2);
 			}
-			if(Shapes.circleselected) {
+
+			if (Shapes.circleselected) {
 				Shapes.drawPerfectCircle(color,gc,x1, y1, x2, y2);
 			}
-			if(Shapes.lineselected) {
+
+			if (Shapes.lineselected) {
 				Shapes.drawPerfectLine(color,gc,x1, y1, x2, y2);
 			}
-			if(Shapes.triangleselected) {
+
+			if (Shapes.triangleselected) {
 				Shapes.drawPerfectTriangle(color,gc,x1, y1, x2, y2);
 			}
-			if(Shapes.squareselected) {
+
+			if (Shapes.squareselected) {
 				Shapes.drawPerfectSquare(color,gc,x1, y1, x2, y2);
 			}
-			if(Brush.brushSelected) {
+
+			if (Brush.brushSelected) {
 				Shapes.defaultSelected();
 				Brush.drawBrush(color,gc,x1, y1, x2, y2);
 			}
-			if(Brush.erasorSelected) {
+
+			if (Brush.erasorSelected) {
 				Shapes.defaultSelected();
 				Brush.drawEraser(color,gc,x1, y1, x2, y2);
 			}
 		}
 	}
 
-	/***
+	/**
 	 * This method is called when the mouse is being dragged on canvas.
 	 * This method creates the scaling effect on rear canvas for shapes when mouse is dragged
-	 ***/
+	 */
 	@FXML
 	void mouseDragged(MouseEvent ev) {
 		synchronized(this) {
 			gc = canvasB.getGraphicsContext2D();
 			gc.setLineWidth(2);
+
 			double x3=ev.getX();
 			double y3=ev.getY();
-			color = colorPicker.getValue();		
+			color = colorPicker.getValue();
 
 
-			if(Shapes.rectselected) {
+			if (Shapes.rectselected) {
 				Shapes.drawPerfectRectEffect(canvasB,color,gc,x1, y1, x3, y3);
 			}
-			if(Shapes.circleselected) {
+
+			if (Shapes.circleselected) {
 				Shapes.drawPerfectCircleEffect(canvasB,color,gc,x1, y1, x3, y3);
 			}
-			if(Shapes.lineselected) {
+
+			if (Shapes.lineselected) {
 				Shapes.drawPerfectLineEffect(canvasB,color,gc,x1, y1, x3, y3);
 			}
-			if(Shapes.triangleselected) {
+
+			if (Shapes.triangleselected) {
 				Shapes.drawPerfectTriangleEffect(canvasB,color,gc,x1, y1, x3, y3);
 			}
-			if(Shapes.squareselected) {
+
+			if (Shapes.squareselected) {
 				Shapes.drawPerfectSquareEffect(canvasB,color,gc,x1, y1, x3, y3);
 			}
 
-			if(Brush.brushSelected) {
+			if (Brush.brushSelected) {
 				ILogger logger = LoggerFactory.getLoggerInstance();
 
-				if(Brush.sizeSelected==true) {
+				if (Brush.sizeSelected==true) {
 					logger.log(ModuleID.UI,LogLevel.SUCCESS,"Brush is selected");
 				}
 				else {
@@ -549,10 +570,11 @@ public class CanvasController implements Initializable {
 				x1=x3;
 				y1=y3;
 			}
-			if(Brush.erasorSelected) {
+
+			if (Brush.erasorSelected) {
 				ILogger logger = LoggerFactory.getLoggerInstance();
 
-				if(Brush.sizeSelected==true) {
+				if (Brush.sizeSelected==true) {
 					logger.log(ModuleID.UI,LogLevel.SUCCESS,"Eraser is selected");
 				}
 				else {
@@ -569,10 +591,10 @@ public class CanvasController implements Initializable {
 		}
 	}
 
-	/***
+	/**
 	 * updateChanges method updates the canvas with given pixels
 	 * @param pixels
-	 ***/
+	 */
 	public void updateChanges(ArrayList<Pixel> pixels) {
 		synchronized(this) {
 			gc = canvasF.getGraphicsContext2D();
@@ -623,7 +645,7 @@ public class CanvasController implements Initializable {
 
 	    	// If in Cursor Mode, then perform the color
 	    	// change operation
-	    	if(
+	    	if (
 				currentMode == CurrentMode.CURSOR_MODE
 				&&
 				isObjectSelected
@@ -672,12 +694,14 @@ public class CanvasController implements Initializable {
 	    		// Unselect currently selected object
 	        	updateSelectedPixels(null);
 	    	}
-	    	else // Not in cursor Mode or object not selected
+	    	else {
+				// Not in cursor Mode or object not selected
 	    		logger.log(
 					ModuleID.UI,
 					LogLevel.INFO,
 					"Not in Cursor Mode or Object not selected"
 				);
+			}
     	}
     }
 
@@ -699,7 +723,7 @@ public class CanvasController implements Initializable {
      * @param canvasMouseClickEvent Mouse Click Event which lead to this
      * function being called
      */
-    
+
     @FXML
     void clickCanvas(MouseEvent canvasMouseClickEvent) {
 
@@ -709,7 +733,7 @@ public class CanvasController implements Initializable {
 	    	ILogger logger = LoggerFactory.getLoggerInstance();
 
 	    	// If current mode is not the Cursor Mode, return
-	    	if(currentMode != CurrentMode.CURSOR_MODE) {
+	    	if (currentMode != CurrentMode.CURSOR_MODE) {
 	    		logger.log(
 					ModuleID.UI,
 					LogLevel.INFO,
@@ -728,12 +752,12 @@ public class CanvasController implements Initializable {
 
 	    	// Construct selPosition by building a small square as the
 	    	// selected region
-	    	for(int r : selRange) {
-	    		for(int c : selRange) {
+	    	for (int r : selRange) {
+	    		for (int c : selRange) {
 	    			int row = rowCoord + r;
 	    			int col = colCoord + c;
 
-	    			if(
+	    			if (
 						0 <= row && row < dimension.numRows
 						&&
 						0 <= col && col < dimension.numCols
@@ -749,12 +773,7 @@ public class CanvasController implements Initializable {
 			);
 
 	    	// Get Selected Object Pixels from the Processor
-	    	
-	    	ArrayList<Pixel> objectPixels = null;
-	    	
-	    	/*	ProcessingFactory
-					.getProcessor()
-					.select(selPosition); */
+	    	ArrayList<Pixel> objectPixels = ProcessingFactory.getProcessor().select(selPosition);
 
 	    	logger.log(
 				ModuleID.UI,
@@ -766,7 +785,7 @@ public class CanvasController implements Initializable {
 	    	updateSelectedPixels(objectPixels);
     	}
     }
-    
+
     /**
      * When the delete button is clicked, this method is called. If the
      * UI is in Cursor Mode, then the selected object is deleted (if any
@@ -794,7 +813,7 @@ public class CanvasController implements Initializable {
 	    	}
 
 	    	// If no object is selected, return
-	    	if(!isObjectSelected) {
+	    	if (!isObjectSelected) {
 	    		logger.log(
 	    			ModuleID.UI,
 	    			LogLevel.INFO,
@@ -842,7 +861,7 @@ public class CanvasController implements Initializable {
 	    	ILogger logger = LoggerFactory.getLoggerInstance();
 
 	    	// If Current Mode is not Cursor Mode, then return
-	    	if(currentMode != CurrentMode.CURSOR_MODE) {
+	    	if (currentMode != CurrentMode.CURSOR_MODE) {
 	    		logger.log(
 	    			ModuleID.UI,
 	    			LogLevel.INFO,
@@ -852,11 +871,11 @@ public class CanvasController implements Initializable {
 	    	}
 
 	    	// If no object is selected, return
-	    	if(!isObjectSelected) {
+	    	if (!isObjectSelected) {
 	    		logger.log(
 	    			ModuleID.UI,
 	    			LogLevel.INFO,
-	    			"Deletion cannot be performed: No object Selected"
+	    			"Rotation cannot be performed: No object Selected"
 	    		);
 	    		return;
 	    	}
@@ -868,10 +887,10 @@ public class CanvasController implements Initializable {
 	    	double angleCCW;
 
 	    	// Get angle from String
-	    	if(chosenAngleString == "90")
+	    	if (chosenAngleString == "90")
 	    		angleCCW = 90;
 
-	    	else if(chosenAngleString == "180")
+	    	else if (chosenAngleString == "180")
 	    		angleCCW = 180;
 
 	    	else
@@ -916,13 +935,13 @@ public class CanvasController implements Initializable {
 
 	    	// If no pixels are selected currently, then set the
 	    	// members accordingly
-	    	if(selectedPixels == null || selectedPixels.size() == 0) {
+	    	if (selectedPixels == null || selectedPixels.size() == 0) {
 	    		isObjectSelected = false;
 	    		selPrevPixels = null;
 	    	}
-	    	else { // Else update selected prev pixel values to current
-	    		   // and write highlighted object pixels to canvas
-
+	    	else {
+				// Else update selected prev pixel values to current
+	    		// and write highlighted object pixels to canvas
 	    		isObjectSelected = true;
 	    		selPrevPixels = new ArrayList<Pixel>(selectedPixels);
 
@@ -942,17 +961,19 @@ public class CanvasController implements Initializable {
     	}
     }
 
-    /** Replaces Previous Selected Pixels with their original values */
+    /**
+	 * Replaces Previous Selected Pixels with their original values
+	 */
     public void updatePrevSelectedPixels() {
 
     	synchronized(this) {
 
 	    	// If no object was selected, return
-	    	if(!isObjectSelected)
+	    	if (!isObjectSelected)
 	    		return;
 
 	    	// Set previous selected pixels to their original value
-	    	for(Pixel pixel : selPrevPixels) {
+	    	for (Pixel pixel : selPrevPixels) {
 
 	    		// Convert to double value between 0.0 and 1.0
 	    		Color color = Color.color(
@@ -1004,16 +1025,16 @@ public class CanvasController implements Initializable {
 		rotateButton
 			.getItems()
 			.addAll("90", "180", "270");
-		
+
 		// Subscribing for notifications from processing and content module.
 		IContentNotificationHandler contentSubscribe = new ContentNotificationHandler();
 		IChanges processingSubscribe = new PixelListener();
 		Processor processor = ProcessingFactory.getProcessor() ;
-		IUser user = processor; 
+		IUser user = processor;
 		user.subscribeForChanges("UI", processingSubscribe);
-		IContentCommunicator communicator = new ContentCommunicator();
+		IContentCommunicator communicator =  ContentFactory.getContentCommunicator();
 		communicator.subscribeForNotifications("UI",contentSubscribe );
-		
+
 		// The following code initializes the dropdown of brushSize.
 		brushSize.setItems(list);
 	}

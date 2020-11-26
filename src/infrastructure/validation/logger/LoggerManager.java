@@ -1,22 +1,276 @@
 package infrastructure.validation.logger;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.File;
+import java.util.List;
+import java.util.ArrayList;
+
+import javax.xml.stream.events.XMLEvent;
+import javax.xml.stream.FactoryConfigurationError;
+import javax.xml.stream.XMLEventReader;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.events.Attribute;
+import javax.xml.stream.events.EndElement;
+import javax.xml.stream.events.StartElement;
+import javax.xml.namespace.QName;
+
+
 /**
  * LoggerManager class that will be referenced by other modules,
  * for logging via the LoggerFactory
- * Implements ILogger interface and composes File and Console Loggers
+ * Implements ILogger interface and composes File and Console Loggers. 
+ * 
+ * Instantiation of FileLogger and ConsoleLogger indicated by,
+ * allowFileLogging and allowConsoleLogging,
+ * with defaults false, false.
  * 
  * @author Navaneeth M Nambiar
  */
 public class LoggerManager implements ILogger {
 
+	/** path to config file */
+	private String loggerConfigFilePath = "resources/infrastructure_logger.xml";
+	
+	/** object that holds an instance of FileLogger */
+	private ILogger fileLogger;
+
+	/** object that holds an instance of ConsoleLogger */
+	private ILogger consoleLogger;
+	
+	/** 
+	 * boolean value indicating whether File Logger is created or not
+	 * defaults to false 
+	 */
+	private boolean allowFileLogging = false;
+	
+	/** 
+	 * boolean value indicating whether Console Logger is to be created or not
+	 * defaults to False 
+	 */
+	private boolean allowConsoleLogging = false;
+	
+	private boolean enableTestMode = false;
+	
+	/**
+	 * constructor for LoggerManager class
+	 */
 	protected LoggerManager() {
-		// TODO Auto-generated constructor stub
+		
+		File logConfigFile = new File(loggerConfigFilePath);
+		List<LogLevel> enabledLogLevelsList = null;
+				
+		if(logConfigFile.isFile()) {
+			
+			String fileToParse = configFileToParse(loggerConfigFilePath);
+			
+			try {
+				
+				File configFile = new File(fileToParse);
+				if(configFile.isFile()) {
+					enabledLogLevelsList = parse(fileToParse);
+				} else {
+					enabledLogLevelsList = parse(loggerConfigFilePath);
+				}
+				
+			} catch (NullPointerException npe) {
+				// occurs in the case where the pathname argument becomes null
+				// load the loggerConfigFilePath
+				enabledLogLevelsList = parse(loggerConfigFilePath);
+			} catch (SecurityException se) {
+				// a security manager, if it exists can deny read access to the file
+				// equivalent to the case if isFile method returns False and so, same can be done
+				enabledLogLevelsList = parse(loggerConfigFilePath);
+			}
+
+		}
+		
+		if(allowFileLogging) {
+			fileLogger = new FileLogger(enabledLogLevelsList, enableTestMode);
+		}
+		
+		if(allowConsoleLogging) {
+			consoleLogger = new ConsoleLogger(enabledLogLevelsList, enableTestMode);
+		}
+	}
+	
+	/** 
+	 *  helper method that checks whether the logger is to be initialized in test mode,
+	 *  works by the testMode tag in the default XML file
+	 *  If the tag exists and is set to true, then the test mode is considered enabled and,
+	 *  a different XML file is to be used.
+	 *  Otherwise, the file is considered to be not in test mode and so,
+	 *  the default configuration XML file itself is used.
+	 * 
+	 * @param defaultFilePath location of the default XML file configuration
+	 * @return a string that will be the location of the XML configuration file to be parsed further
+	 */
+	private String configFileToParse(String defaultFilePath) {
+		
+		String fileToParse = defaultFilePath;
+		
+		try {
+			
+			XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
+			XMLEventReader reader = xmlInputFactory.createXMLEventReader(new FileInputStream(defaultFilePath));
+			while(reader.hasNext()) {
+				
+				XMLEvent nextEvent = reader.nextEvent();
+				if(nextEvent.isStartElement()) {
+					StartElement startElement = nextEvent.asStartElement();
+					if(startElement.getName().getLocalPart().equalsIgnoreCase("testMode")) {
+						if(nextEvent.asCharacters().getData().equalsIgnoreCase("true")) {
+							Attribute filePath = startElement.getAttributeByName(new QName("filePath"));
+							fileToParse = filePath.getValue();
+							enableTestMode = true;
+						}
+					}
+				}
+			}
+		} catch (XMLStreamException xse) {
+			// do nothing and skip to default values
+		} catch (FileNotFoundException fnfe) {
+			// do nothing and skip to default values
+		} catch (FactoryConfigurationError fce) {
+			// XML parser object cannot be created. Abort and stick to default
+			// if this occurs, do nothing and skip to default values
+		} catch (SecurityException se) {
+			// in the presence of a security manager, it's checkRead method can deny read access to the file
+			// if it occurs, do nothing and skip to default values
+		}
+		
+		return fileToParse;
+	}
+
+	/**
+	 *  helper method to parse an XML file to set the various settings in the logging framework
+	 *  settings include enabling/disabling file or console logger, enabling/disabling log levels globally
+	 *  
+	 * @param filePath String pointing to path of the XML file.
+	 * @return list of LogLevel enums. Members of this List correspond to LogLevels to be enabled. 
+	 */
+	private List<LogLevel> parse(String filePath) {
+		
+		List<LogLevel> enabledLogLevelsList = new ArrayList<LogLevel>();
+		
+		boolean isInLoggerOptions = false;
+		boolean isInLogLevels = false;
+		
+		try {
+			
+			XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
+			XMLEventReader reader = xmlInputFactory.createXMLEventReader(new FileInputStream(filePath));
+			while(reader.hasNext()) {
+				
+				XMLEvent nextEvent = reader.nextEvent();
+				if(nextEvent.isStartElement()) {
+					StartElement startElement = nextEvent.asStartElement();
+					switch(startElement.getName().getLocalPart()) {
+					case "loggerOptions":
+						isInLoggerOptions = true;
+						break;
+					case "loggerOption":
+						
+						if(!isInLoggerOptions) {
+							break;
+						}
+						
+						Attribute loggerTypeFile = startElement.getAttributeByName(new QName("FileLogger"));
+						if(loggerTypeFile != null) {
+							if(nextEvent.asCharacters().getData().equalsIgnoreCase("true")) {
+								allowFileLogging = true;
+							}
+						}
+						
+						Attribute consoleTypeFile = startElement.getAttributeByName(new QName("ConsoleLogger"));
+						if(consoleTypeFile != null) {
+							if(nextEvent.asCharacters().getData().equalsIgnoreCase("true")) {
+								allowConsoleLogging = true;
+							}
+						}
+						break;
+					case "logLevels":
+						isInLogLevels = true;
+						break;
+					case "logLevel":
+						
+						if(!isInLogLevels) {
+							break;
+						}
+						
+						Attribute logTypeError = startElement.getAttributeByName(new QName("ERROR"));
+						if(logTypeError != null) {
+							if(nextEvent.asCharacters().getData().equalsIgnoreCase("true")) {
+								enabledLogLevelsList.add(LogLevel.ERROR);
+							}
+						}
+
+						Attribute logTypeWarning = startElement.getAttributeByName(new QName("WARNING"));
+						if(logTypeWarning != null) {
+							if(nextEvent.asCharacters().getData().equalsIgnoreCase("true")) {
+								enabledLogLevelsList.add(LogLevel.WARNING);
+							}
+						}
+						
+						Attribute logTypeSuccess = startElement.getAttributeByName(new QName("SUCCESS"));
+						if(logTypeSuccess != null) {
+							if(nextEvent.asCharacters().getData().equalsIgnoreCase("true")) {
+								enabledLogLevelsList.add(LogLevel.SUCCESS);
+							}
+						}
+						
+						Attribute logTypeInfo = startElement.getAttributeByName(new QName("INFO"));
+						if(logTypeInfo != null) {
+							if(nextEvent.asCharacters().getData().equalsIgnoreCase("true")) {
+								enabledLogLevelsList.add(LogLevel.INFO);
+							}
+						}
+						break;
+					default:
+						break;
+					}
+				}
+				if(nextEvent.isEndElement()) {
+					EndElement endElement = nextEvent.asEndElement();
+					switch(endElement.getName().getLocalPart()) {
+					case "loggerOptions":
+						isInLoggerOptions = false;
+						break;
+					case "logLevels":
+						isInLogLevels = false;
+						break;
+					default:
+						break;
+					}
+				}
+			}
+		} catch (XMLStreamException xse) {
+			// do nothing and skip to default values
+		} catch (FileNotFoundException fnfe) {
+			// do nothing and skip to default values
+		} catch (FactoryConfigurationError fce) {
+			// XML parser object cannot be created. Abort and stick to default
+			// if this occurs, do nothing and skip to default values
+		} catch (SecurityException se) {
+			// in the presence of a security manager, it's checkRead method can deny read access to the file
+			// if it occurs, do nothing and skip to default values
+		}
+		
+		return enabledLogLevelsList;
 	}
 
 	@Override
-	public void log(ModuleID moduleIdentifier, LogLevel level, String message) {
-		// TODO Auto-generated method stub
-
+	synchronized public void log(ModuleID moduleIdentifier, LogLevel level, String message) {
+		
+		if(allowFileLogging) {
+			fileLogger.log(moduleIdentifier, level, message);			
+		}
+		
+		if(allowConsoleLogging) {
+			consoleLogger.log(moduleIdentifier, level, message);
+		}
+		
 	}
 
 }

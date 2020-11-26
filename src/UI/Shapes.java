@@ -1,9 +1,9 @@
 package UI;
 
-/***
- *@author: Sajith Kumar Erasani
- *This controller handles all the action and mouse events of canvas for drawing and selecting Shapes
- ***/
+/**
+ * @author: Sajith Kumar Erasani
+ * This controller handles all the action and mouse events of canvas for drawing and selecting Shapes
+ */
 
 import processing.utility.*;
 import processing.*;
@@ -12,8 +12,8 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
-public class Shapes{
-	
+public class Shapes {
+
 	static boolean rectselected = false;
 	static boolean circleselected = false;
 	static boolean lineselected = false;
@@ -22,10 +22,10 @@ public class Shapes{
 	static boolean eraserselected = false;
 	static IDrawShapes drawshape = ProcessingFactory.getProcessor();
 	static ILogger logger = LoggerFactory.getLoggerInstance();
-    
-	/***
+
+	/**
 	 * This method will update the shape selection to be default
-	 **/
+	 */
 	public static void defaultSelected() {
 		rectselected = false;
 		circleselected = false;
@@ -34,12 +34,12 @@ public class Shapes{
 		squareselected = false;
 		eraserselected = false;
 	}
-	
-    /***
+
+    /**
      * This method will draw rectangle and sends the data to processing module
      * @param color: Color selected from color picker
-     * @param g: object of graphicscontext 
-     ***/
+     * @param g: object of graphicscontext
+     */
     public static void drawPerfectRect(Color color,GraphicsContext g, double x12, double y12, double d, double e) {
         double px = Math.min(x12,d);
         double py = Math.min(y12,e);
@@ -55,12 +55,12 @@ public class Shapes{
         drawshape.drawRectangle(p1,p2);
         logger.log(ModuleID.UI, LogLevel.INFO, "Rectangle drawn");
     }
-    
-    /***
+
+    /**
      * This method will draw circle and sends the data to processing module
      * @param color: Color selected from color picker
-     * @param g: object of graphicscontext 
-     ***/
+     * @param g: object of graphicscontext
+     */
     public static void drawPerfectCircle(Color color,GraphicsContext g, double x12, double y12, double d, double e) {
     	double px = Math.min(x12,d);
         double py = Math.min(y12,e);
@@ -75,12 +75,12 @@ public class Shapes{
         drawshape.drawCircle(p1,(float) r/2);
         logger.log(ModuleID.UI, LogLevel.INFO, "Circle drawn");
 	}
-    
-    /***
+
+    /**
      * This method will draw line and sends the data to processing module
      * @param color: Color selected from color picker
-     * @param g: object of graphicscontext 
-     ***/
+     * @param g: object of graphicscontext
+     */
     public static void drawPerfectLine(Color color,GraphicsContext g, double x12, double y12, double x22, double y22) {
     	g.setStroke(color);
         g.strokeLine(x12, y12, x22, y22);
@@ -92,12 +92,12 @@ public class Shapes{
         drawshape.drawLine(p1, p2);
         logger.log(ModuleID.UI, LogLevel.INFO, "Line drawn");
 	}
-	
-    /***
+
+    /**
      * This method will draw square and sends the data to processing module
      * @param color: Color selected from color picker
-     * @param g: object of graphicscontext 
-     ***/
+     * @param g: object of graphicscontext
+     */
     public static void drawPerfectSquare(Color color,GraphicsContext g, double x12, double y12, double d, double e) {
     	double px = Math.min(x12,d);
         double py = Math.min(y12,e);
@@ -112,12 +112,12 @@ public class Shapes{
         drawshape.drawCircle(p1,(float) r);
         logger.log(ModuleID.UI, LogLevel.INFO, "Square drawn");
 	}
-	
-    /***
+
+    /**
      * This method will draw triangle and sends the data to processing module
      * @param color: Color selected from color picker
-     * @param g: object of graphicscontext 
-     ***/
+     * @param g: object of graphicscontext
+     */
     public static void drawPerfectTriangle(Color color,GraphicsContext g, double x12, double y12, double d, double e) {
 		g.setStroke(color);
         double px = Math.min(x12,d);
@@ -158,15 +158,15 @@ public class Shapes{
             //drawTriangle method is not included in IDrawShapes interface
             //drawshape.drawTriangle(p1, p2, p3);
         }
-        logger.log(ModuleID.UI, LogLevel.INFO, "Triangle drawn");
+        logger.log(ModuleID.UI, LogLevel.SUCCESS, "Triangle drawn");
 	}
-	
-    /***
+
+    /**
      * This method will create the scaling effect for rectangle on back canvas while dragging the mouse
      * @param canvasB: Rear canvas
      * @param color: Color selected from color picker
-     * @param g: object of graphicscontext 
-     ***/
+     * @param g: object of graphicscontext
+     */
 	public static void drawPerfectRectEffect(Canvas canvasB,Color color,GraphicsContext g, double x12, double y12, double d, double e) {
         double px = Math.min(x12,d);
         double py = Math.min(y12,e);
@@ -174,15 +174,15 @@ public class Shapes{
         double ph=Math.abs(y12-e);
         g.setStroke(color);
         g.clearRect(0, 0, canvasB.getWidth(), canvasB.getHeight());
-        g.strokeRect(px, py, pw, ph);       
+        g.strokeRect(px, py, pw, ph);
     }
-    
-	/***
+
+	/**
      * This method will create the scaling effect for circle on back canvas while dragging the mouse
      * @param canvasB: Rear canvas
      * @param color: Color selected from color picker
-     * @param g: object of graphicscontext 
-     ***/
+     * @param g: object of graphicscontext
+     */
 	public static void drawPerfectCircleEffect(Canvas canvasB,Color color,GraphicsContext g, double x12, double y12, double d, double e) {
     	double px = Math.min(x12,d);
         double py = Math.min(y12,e);
@@ -193,25 +193,25 @@ public class Shapes{
         g.clearRect(0, 0, canvasB.getWidth(), canvasB.getHeight());
         g.strokeOval(px, py, r, r);
 	}
-    
-	/***
+
+	/**
      * This method will create the scaling effect for line on back canvas while dragging the mouse
      * @param canvasB: Rear canvas
      * @param color: Color selected from color picker
-     * @param g: object of graphicscontext 
-     ***/
+     * @param g: object of graphicscontext
+     */
     public static void drawPerfectLineEffect(Canvas canvasB,Color color,GraphicsContext g, double x12, double y12, double x22, double y22) {
     	g.setStroke(color);
     	g.clearRect(0, 0, canvasB.getWidth(), canvasB.getHeight());
         g.strokeLine(x12, y12, x22, y22);
 	}
-	
-    /***
+
+    /**
      * This method will create the scaling effect for square on back canvas while dragging the mouse
      * @param canvasB: Rear canvas
      * @param color: Color selected from color picker
-     * @param g: object of graphicscontext 
-     ***/
+     * @param g: object of graphicscontext
+     */
     public static void drawPerfectSquareEffect(Canvas canvasB,Color color,GraphicsContext g, double x12, double y12, double d, double e) {
     	double px = Math.min(x12,d);
         double py = Math.min(y12,e);
@@ -222,13 +222,13 @@ public class Shapes{
         g.clearRect(0, 0, canvasB.getWidth(), canvasB.getHeight());
         g.strokeRect(px, py, r, r);
 	}
-	
-    /***
+
+    /**
      * This method will create the scaling effect for triangle on back canvas while dragging the mouse
      * @param canvasB: Rear canvas
      * @param color: Color selected from color picker
-     * @param g: object of graphicscontext 
-     ***/
+     * @param g: object of graphicscontext
+     */
     public static void drawPerfectTriangleEffect(Canvas canvasB,Color color,GraphicsContext g, double x12, double y12, double d, double e) {
 		g.setStroke(color);
         double px = Math.min(x12,d);

@@ -1,6 +1,6 @@
 /**
- *Author: Anish Jain
- *This handles the brush and eraser mouse events for canavs.fxml
+ * Author: Anish Jain
+ * This handles the brush and eraser mouse events for canavs.fxml
  */
 
 package UI;
@@ -15,33 +15,34 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.StrokeLineCap;
+
 /**
- *This deals with the brush class that has both brush and eraser.
- *It has functions that are called by the canvas controller.
- *These functions draw and erase in mouse drag and release conditions
+ * This deals with the brush class that has both brush and eraser.
+ * It has functions that are called by the canvas controller.
+ * These functions draw and erase in mouse drag and release conditions
  */
 public class Brush{
 
 	static boolean brushSelected = false;
-	
+
 	static boolean erasorSelected = false;
-	
+
 	static boolean sizeSelected =false;
-	
+
 	private static IDrawErase drawerase = ProcessingFactory.getProcessor();
-	
+
 	private static ArrayList<Pixel> pixels=new ArrayList<Pixel>();
-	
+
 	private static ArrayList<Position> position =new ArrayList<Position>();
-	
+
 	/**
-	 *To set them to default boolean value as false
+	 * To set them to default boolean value as false
 	 */
 	public static void defaultSelected() {
 		brushSelected = false;
 		erasorSelected = false;
 	}
-	
+
 	/**
 	 *This is called on mouse release for brush to send all the pixels as an arraylist to the processing module
 	 *@param color   any color selected
@@ -53,15 +54,14 @@ public class Brush{
 	 *@returns nothing
 	 */
 	public static void drawBrush(Color color,GraphicsContext g, double startx, double starty, double endx, double endy) {
-	    	g.setStroke(color);
-	    	
-	    	g.stroke();
+		g.setStroke(color);
+		g.stroke();
 		g.closePath();
-		
+
 		drawerase.drawCurve(pixels);
 		pixels=new ArrayList<Pixel>();
     	}
-	
+
 	/**
 	 *This is called on mouse release for eraser to send all positions as an arraylist to the processing module
 	 *@param color   any color selected
@@ -73,13 +73,12 @@ public class Brush{
 	 *@returns nothing
 	 */
 	public static void drawEraser(Color color,GraphicsContext g, double startx, double starty, double endx, double endy) {
-	    	//g.stroke();
 		g.closePath();
-		
-		drawerase.erase(position); 
+
+		drawerase.erase(position);
 		position=new ArrayList<Position>();
     	}
-	
+
 	/**
 	 *It is to show the brush effect while mouse drag and collect data to send to processing team
 	 *@param canvas  canvas to do on
@@ -159,7 +158,7 @@ public class Brush{
 		    }
 		}
 	}
-	
+
 	/**
 	 *It is to show the erase effect while mouse drag and collect data to send to processing team
 	 *@param canvas  canvas to do on
@@ -177,9 +176,7 @@ public class Brush{
 		Color color,
 		GraphicsContext g, 
 		double startx, double starty, double endx, double endy,double size
-	) {
-		g.setFill(color);
-		
+	) {	
 		g.stroke();
 		g.setLineCap(StrokeLineCap.ROUND);
 		g.setLineWidth(size);
@@ -235,5 +232,5 @@ public class Brush{
 		}
 	
 	}
-	
+
 }

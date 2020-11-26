@@ -1,5 +1,7 @@
 package processing.utility;
 
+import java.io.Serializable;
+
 /**
  * Class Representing Pixel Intensity
  *
@@ -7,7 +9,11 @@ package processing.utility;
  * @reviewer Himanshu Jain
  */
 
-public class Intensity {
+public class Intensity implements Serializable  {
+	
+	/** Serial UID */
+	private static final long serialVersionUID = 141641490242284119L;
+	
 	/**
 	 * r Red intensity
 	 * g Green intensity
@@ -49,5 +55,11 @@ public class Intensity {
 		}
 		else
 			return false;
+	}
+	
+	/** HashCode Method */
+	@Override
+	public int hashCode() {
+		return 31 * 31 * r + 31 * g + b;
 	}
 }
