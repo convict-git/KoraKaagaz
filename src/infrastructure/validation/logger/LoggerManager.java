@@ -189,6 +189,12 @@ public class LoggerManager implements ILogger {
 		return enabledLogLevelsList;
 	}
 
+	/**
+	 * helper method that parses XML file,
+	 * looks for loggerOptions tags that enable/disables file and console loggers
+	 * 
+	 * @param filePath path to the XML config file
+	 */
 	private void parseLoggerOptions(String filePath) {
 		
 		try {
@@ -247,6 +253,14 @@ public class LoggerManager implements ILogger {
 
 	}
 
+	/**
+	 * helper method that parses XML file,
+	 * looks for logLevels tags that enable/disables logLevels.
+	 * logLevels that are checked are: ERROR, WARNING, SUCCESS, INFO
+	 * 
+	 * @param filePath path to the XML config file
+	 * @return list of LogLevel enums. Members of this List correspond to LogLevels to be enabled.
+	 */
 	private List<LogLevel> parseLogLevels(String filePath) {
 
 		List<LogLevel> enabledLogLevelsList = new ArrayList<LogLevel>();
