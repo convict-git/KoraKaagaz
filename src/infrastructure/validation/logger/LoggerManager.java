@@ -181,117 +181,124 @@ public class LoggerManager implements ILogger {
 	private List<LogLevel> parse(String filePath) {
 		
 		List<LogLevel> enabledLogLevelsList = new ArrayList<LogLevel>();
-		
-		boolean isInLoggerOptions = false;
-		boolean isInLogLevels = false;
-		
+					
 		try {
 			
-			XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
-			XMLEventReader reader = xmlInputFactory.createXMLEventReader(new FileInputStream(filePath));
-			while(reader.hasNext()) {
+			File inputFile = new File(filePath);
+			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+			
+			Document doc = dBuilder.parse(inputFile);
+			doc.getDocumentElement().normalize();
+			
+			NodeList nList = doc.getElementsByTagName("loggerOption");
+			
+			// System.out.println(nList.getLength());
+			for(int temp=0; temp < nList.getLength(); temp++) {
+				Node nNode = nList.item(temp);
 				
-				XMLEvent nextEvent = reader.nextEvent();
-				if(nextEvent.isStartElement()) {
-					StartElement startElement = nextEvent.asStartElement();
-					switch(startElement.getName().getLocalPart()) {
-					case "loggerOptions":
-						isInLoggerOptions = true;
-						break;
-					case "loggerOption":
-						
-						if(!isInLoggerOptions) {
-							break;
+				if(nNode.getNodeType() == Node.ELEMENT_NODE) {
+					
+					Element eElement = (Element) nNode;
+					
+					if(eElement.getTextContent().equalsIgnoreCase("true")) {
+						// System.out.println("there's a new dawn");
+						// eElement.getAttribute("LoggerName");
+						if(eElement.getAttribute("LoggerName").equalsIgnoreCase("FileLogger")) {
+							// System.out.println("there's another new dawn file");
+							allowFileLogging = true;
 						}
 						
-						Attribute loggerTypeFile = startElement.getAttributeByName(new QName("FileLogger"));
-						if(loggerTypeFile != null) {
-							Characters eventAsCharacter = nextEvent.asCharacters();
-							if(eventAsCharacter.getData().equalsIgnoreCase("true")) {
-								allowFileLogging = true;
-							}
+						if(eElement.getAttribute("LoggerName").equalsIgnoreCase("ConsoleLogger")) {
+							// System.out.println("there's another new dawn console");
+							allowConsoleLogging = true;
 						}
-						
-						Attribute consoleTypeFile = startElement.getAttributeByName(new QName("ConsoleLogger"));
-						if(consoleTypeFile != null) {
-							Characters eventAsCharacter = nextEvent.asCharacters();
-							if(eventAsCharacter.getData().equalsIgnoreCase("true")) {
-								allowConsoleLogging = true;
-							}
-						}
-						
-						break;
-					case "logLevels":
-						isInLogLevels = true;
-						break;
-					case "logLevel":
-						
-						if(!isInLogLevels) {
-							break;
-						}
-						
-						Attribute logTypeError = startElement.getAttributeByName(new QName("ERROR"));
-						if(logTypeError != null) {
-							Characters eventAsCharacter = nextEvent.asCharacters();
-							if(eventAsCharacter.getData().equalsIgnoreCase("true")) {
-								enabledLogLevelsList.add(LogLevel.ERROR);
-							}
-						}
-
-						Attribute logTypeWarning = startElement.getAttributeByName(new QName("WARNING"));
-						if(logTypeWarning != null) {
-							Characters eventAsCharacter = nextEvent.asCharacters();
-							if(eventAsCharacter.getData().equalsIgnoreCase("true")) {
-								enabledLogLevelsList.add(LogLevel.WARNING);
-							}
-						}
-						
-						Attribute logTypeSuccess = startElement.getAttributeByName(new QName("SUCCESS"));
-						if(logTypeSuccess != null) {
-							Characters eventAsCharacter = nextEvent.asCharacters();
-							if(eventAsCharacter.getData().equalsIgnoreCase("true")) {
-								enabledLogLevelsList.add(LogLevel.SUCCESS);
-							}
-						}
-						
-						Attribute logTypeInfo = startElement.getAttributeByName(new QName("INFO"));
-						if(logTypeInfo != null) {
-							Characters eventAsCharacter = nextEvent.asCharacters();
-							if(eventAsCharacter.getData().equalsIgnoreCase("true")) {
-								enabledLogLevelsList.add(LogLevel.INFO);
-							}
-						}
-						break;
-					default:
-						break;
-					}
-				}
-				if(nextEvent.isEndElement()) {
-					EndElement endElement = nextEvent.asEndElement();
-					switch(endElement.getName().getLocalPart()) {
-					case "loggerOptions":
-						isInLoggerOptions = false;
-						break;
-					case "logLevels":
-						isInLogLevels = false;
-						break;
-					default:
-						break;
 					}
 				}
 			}
-		} catch (XMLStreamException xse) {
-			// do nothing and skip to default values
+
 		} catch (FileNotFoundException fnfe) {
 			// do nothing and skip to default values
-		} catch (FactoryConfigurationError fce) {
-			// XML parser object cannot be created. Abort and stick to default
-			// if this occurs, do nothing and skip to default values
 		} catch (SecurityException se) {
 			// in the presence of a security manager, it's checkRead method can deny read access to the file
 			// if it occurs, do nothing and skip to default values
 		} catch (ClassCastException cce) {
 			// thrown by startEvent.asCharacters() method if it fails 
+			// if it occurs, do nothing and skip to default values
+		} catch (ParserConfigurationException pce) {
+			// thrown when parser cannot be configured
+			// if it occurs, do nothing and skip to default values
+		} catch (SAXException saxe) {
+			// thrown when parser fails to parse the input file
+			// if it occurs, do nothing and skip to default values
+		} catch (IOException ioe) {
+			// thrown when parser method cannot open the input file
+			// if it occurs, do nothing and skip to default values
+		}
+		
+		try {
+			
+			File inputFile = new File(filePath);
+			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+			
+			Document doc = dBuilder.parse(inputFile);
+			doc.getDocumentElement().normalize();
+			
+			NodeList nList = doc.getElementsByTagName("logLevel");
+			
+			// System.out.println(nList.getLength());
+			for(int temp=0; temp < nList.getLength(); temp++) {
+				Node nNode = nList.item(temp);
+				
+				if(nNode.getNodeType() == Node.ELEMENT_NODE) {
+					
+					Element eElement = (Element) nNode;
+					
+					if(eElement.getTextContent().equalsIgnoreCase("true")) {
+						// System.out.println("there's a new dawn");
+						// eElement.getAttribute("level");
+						if(eElement.getAttribute("level").equalsIgnoreCase(LogLevel.ERROR.toString())) {
+							// System.out.println("there's another new dawn error");
+							enabledLogLevelsList.add(LogLevel.ERROR);
+						}
+						
+						if(eElement.getAttribute("level").equalsIgnoreCase(LogLevel.WARNING.toString())) {
+							// System.out.println("there's another new dawn warning");
+							enabledLogLevelsList.add(LogLevel.WARNING);
+						}
+						
+						if(eElement.getAttribute("level").equalsIgnoreCase(LogLevel.SUCCESS.toString())) {
+							// System.out.println("there's another new dawn success");
+							enabledLogLevelsList.add(LogLevel.SUCCESS);
+						}
+						
+						if(eElement.getAttribute("level").equalsIgnoreCase(LogLevel.INFO.toString())) {
+							// System.out.println("there's another new dawn info");
+							enabledLogLevelsList.add(LogLevel.INFO);
+						}
+
+
+					}
+				}
+			}
+
+		} catch (FileNotFoundException fnfe) {
+			// do nothing and skip to default values
+		} catch (SecurityException se) {
+			// in the presence of a security manager, it's checkRead method can deny read access to the file
+			// if it occurs, do nothing and skip to default values
+		} catch (ClassCastException cce) {
+			// thrown by startEvent.asCharacters() method if it fails 
+			// if it occurs, do nothing and skip to default values
+		} catch (ParserConfigurationException pce) {
+			// thrown when parser cannot be configured
+			// if it occurs, do nothing and skip to default values
+		} catch (SAXException saxe) {
+			// thrown when parser fails to parse the input file
+			// if it occurs, do nothing and skip to default values
+		} catch (IOException ioe) {
+			// thrown when parser method cannot open the input file
 			// if it occurs, do nothing and skip to default values
 		}
 		
