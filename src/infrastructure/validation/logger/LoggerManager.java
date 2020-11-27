@@ -181,7 +181,11 @@ public class LoggerManager implements ILogger {
 	private List<LogLevel> parse(String filePath) {
 		
 		List<LogLevel> enabledLogLevelsList = new ArrayList<LogLevel>();
-					
+		
+		parseLoggerOptions(filePath);
+
+		enabledLogLevelsList = parseLogLevels(filePath);
+		
 		try {
 			
 			File inputFile = new File(filePath);
@@ -303,6 +307,16 @@ public class LoggerManager implements ILogger {
 		}
 		
 		return enabledLogLevelsList;
+	}
+
+	private void parseLoggerOptions(String filePath) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private List<LogLevel> parseLogLevels(String filePath) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
