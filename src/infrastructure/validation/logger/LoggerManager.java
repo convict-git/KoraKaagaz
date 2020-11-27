@@ -2,6 +2,7 @@ package infrastructure.validation.logger;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.File;
 import java.util.List;
 import java.util.ArrayList;
@@ -17,6 +18,14 @@ import javax.xml.stream.events.EndElement;
 import javax.xml.stream.events.StartElement;
 import javax.xml.namespace.QName;
 
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.DocumentBuilder;
+import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
+import org.w3c.dom.Node;
+import org.w3c.dom.Element;
 
 /**
  * LoggerManager class that will be referenced by other modules,
@@ -113,38 +122,52 @@ public class LoggerManager implements ILogger {
 		
 		try {
 			
-			XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
-			XMLEventReader reader = xmlInputFactory.createXMLEventReader(new FileInputStream(defaultFilePath));
-			while(reader.hasNext()) {
+			File inputFile = new File(defaultFilePath);
+			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+			
+			Document doc = dBuilder.parse(inputFile);
+			doc.getDocumentElement().normalize();
+			
+			// System.out.println("Root Element :"+doc.getDocumentElement().getNodeName());
+			NodeList nList = doc.getElementsByTagName("testMode");
+			
+			for(int temp=0; temp < nList.getLength(); temp++) {
+				Node nNode = nList.item(temp);
+				// System.out.println("Current Element :" + nNode.getNodeName());
 				
-				XMLEvent nextEvent = reader.nextEvent();
-				if(nextEvent.isStartElement()) {
-					StartElement startElement = nextEvent.asStartElement();
-					if(startElement.getName().getLocalPart().equalsIgnoreCase("testMode")) {
-						Characters eventAsCharacter = (Characters) nextEvent.asCharacters();
-						if(eventAsCharacter.getData().equalsIgnoreCase("true")) {
-							Attribute filePath = startElement.getAttributeByName(new QName("filePath"));
-							fileToParse = filePath.getValue();
-							enableTestMode = true;
-						}
+				if(nNode.getNodeType() == Node.ELEMENT_NODE) {
+					
+					Element eElement = (Element) nNode;
+					
+					// System.out.println("testMode attribute :"+eElement.getAttribute("filePath"));
+					// System.out.println("testMode value :"+eElement.getTextContent());
+					if(eElement.getTextContent().equalsIgnoreCase("true")) {
+						// System.out.println("there's a new dawn");
+						fileToParse = eElement.getAttribute("filePath");
 					}
 				}
 			}
-		} catch (XMLStreamException xse) {
-			// do nothing and skip to default values
+
 		} catch (FileNotFoundException fnfe) {
 			// do nothing and skip to default values
-		} catch (FactoryConfigurationError fce) {
-			// XML parser object cannot be created. Abort and stick to default
-			// if this occurs, do nothing and skip to default values
 		} catch (SecurityException se) {
 			// in the presence of a security manager, it's checkRead method can deny read access to the file
 			// if it occurs, do nothing and skip to default values
 		} catch (ClassCastException cce) {
 			// thrown by startEvent.asCharacters() method if it fails 
 			// if it occurs, do nothing and skip to default values
+		} catch (ParserConfigurationException pce) {
+			// thrown when parser cannot be configured
+			// if it occurs, do nothing and skip to default values
+		} catch (SAXException e) {
+			// thrown when parser fails to parse the input file
+			// if it occurs, do nothing and skip to default values
+		} catch (IOException e) {
+			// thrown when parser method cannot open the input file
+			// if it occurs, do nothing and skip to default values
 		}
-		
+				
 		return fileToParse;
 	}
 
