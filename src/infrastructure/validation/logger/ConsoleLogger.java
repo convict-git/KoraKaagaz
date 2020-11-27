@@ -17,12 +17,7 @@ public class ConsoleLogger implements ILogger {
 
 	/** stores the format specified for the time-stamp */
 	private DateTimeFormatter timeStampFormat;
-	
-	/** stores a reference to the console object 
-	 *  If null, then no logs should be enabled 
-	 */
-	private static Console console;
-	
+		
 	/** ANSI escape codes for using color in output */
 	
 	// reset to return to using console default
@@ -72,14 +67,12 @@ public class ConsoleLogger implements ILogger {
 		
 		timeStampFormat = DateTimeFormatter.ofPattern("yyyy:MM:dd HH:mm:ss");
 		
-		console = System.console();
-		
 		// set testMode to enabled/disabled
 		// variable enableTestMode is a boolean which is a primitive data type and,
 		// has a default value of false if unassigned
 		inTestMode = enableTestMode;
 		
-		if(null == console) {
+		if(null == System.out) {
 			
 			// no console to print found
 			// disable all the log levels i.e. have no messages logged
