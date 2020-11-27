@@ -65,11 +65,11 @@ public class FileLogger implements ILogger {
 		
 		try {
 			String home = System.getProperty("user.home");
-			logFilePath = home+"/.config/";
+			logFilePath = home+"/.config/KoraKaagaz";
 		} catch (SecurityException se) {
 			// in case a security manager is present, it's checkRead method can deny read access to the file
 			// if it occurs, logFilePath reverts to the current directory where it is run
-			logFilePath = "./.config/";
+			logFilePath = "./.config/KoraKaagaz";
 		}
 		
 		// sets the logFilename as per the spec
