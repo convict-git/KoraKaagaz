@@ -95,7 +95,7 @@ public class FileLogger implements ILogger {
 		inTestMode = enableTestMode;
 		
 		// set booleans that enable/disable Log Level
-		if (null == enabledLogLevelsList) {
+		if (null == enabledLogLevelsList || enabledLogLevelsList.isEmpty() ) {
 			// nothing to be done
 			// default values will be used
 		} else {
