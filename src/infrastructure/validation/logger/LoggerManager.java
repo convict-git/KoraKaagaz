@@ -1,22 +1,10 @@
 package infrastructure.validation.logger;
 
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.File;
 import java.util.List;
 import java.util.ArrayList;
-
-import javax.xml.stream.events.XMLEvent;
-import javax.xml.stream.FactoryConfigurationError;
-import javax.xml.stream.XMLEventReader;
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.events.Attribute;
-import javax.xml.stream.events.Characters;
-import javax.xml.stream.events.EndElement;
-import javax.xml.stream.events.StartElement;
-import javax.xml.namespace.QName;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -208,7 +196,6 @@ public class LoggerManager implements ILogger {
 			
 			NodeList nList = doc.getElementsByTagName("loggerOption");
 			
-			// System.out.println(nList.getLength());
 			for(int temp=0; temp < nList.getLength(); temp++) {
 				Node nNode = nList.item(temp);
 				
@@ -217,15 +204,12 @@ public class LoggerManager implements ILogger {
 					Element eElement = (Element) nNode;
 					
 					if(eElement.getTextContent().equalsIgnoreCase("true")) {
-						// System.out.println("there's a new dawn");
-						// eElement.getAttribute("LoggerName");
+
 						if(eElement.getAttribute("LoggerName").equalsIgnoreCase("FileLogger")) {
-							// System.out.println("there's another new dawn file");
 							allowFileLogging = true;
 						}
 						
 						if(eElement.getAttribute("LoggerName").equalsIgnoreCase("ConsoleLogger")) {
-							// System.out.println("there's another new dawn console");
 							allowConsoleLogging = true;
 						}
 					}
@@ -276,7 +260,6 @@ public class LoggerManager implements ILogger {
 			
 			NodeList nList = doc.getElementsByTagName("logLevel");
 			
-			// System.out.println(nList.getLength());
 			for(int temp=0; temp < nList.getLength(); temp++) {
 				Node nNode = nList.item(temp);
 				
@@ -285,33 +268,25 @@ public class LoggerManager implements ILogger {
 					Element eElement = (Element) nNode;
 					
 					if(eElement.getTextContent().equalsIgnoreCase("true")) {
-						// System.out.println("there's a new dawn");
-						// eElement.getAttribute("level");
+
 						if(eElement.getAttribute("level").equalsIgnoreCase(LogLevel.ERROR.toString())) {
-							// System.out.println("there's another new dawn error");
 							enabledLogLevelsList.add(LogLevel.ERROR);
 						}
 						
 						if(eElement.getAttribute("level").equalsIgnoreCase(LogLevel.WARNING.toString())) {
-							// System.out.println("there's another new dawn warning");
 							enabledLogLevelsList.add(LogLevel.WARNING);
 						}
 						
 						if(eElement.getAttribute("level").equalsIgnoreCase(LogLevel.SUCCESS.toString())) {
-							// System.out.println("there's another new dawn success");
 							enabledLogLevelsList.add(LogLevel.SUCCESS);
 						}
 						
 						if(eElement.getAttribute("level").equalsIgnoreCase(LogLevel.INFO.toString())) {
-							// System.out.println("there's another new dawn info");
 							enabledLogLevelsList.add(LogLevel.INFO);
 						}
-
-
 					}
 				}
 			}
-
 		} catch (FileNotFoundException fnfe) {
 			// do nothing and skip to default values
 		} catch (SecurityException se) {
