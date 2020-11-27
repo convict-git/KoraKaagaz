@@ -132,6 +132,7 @@ public class LoggerManager implements ILogger {
 					// System.out.println("testMode value :"+eElement.getTextContent());
 					if(eElement.getTextContent().equalsIgnoreCase("true")) {
 						// System.out.println("there's a new dawn");
+						enableTestMode = true;
 						fileToParse = eElement.getAttribute("filePath");
 					}
 				}
