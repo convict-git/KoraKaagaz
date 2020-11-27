@@ -81,15 +81,11 @@ public class ConsoleLogger implements ILogger {
 			enableSuccessLog = false;
 			enableInfoLog = false;
 		
-		} else if (null == enabledLogLevelsList) {
+		} else if (null == enabledLogLevelsList || enabledLogLevelsList.isEmpty() ) {
 		
 			// no info specified
-			// use default value
-			enableErrorLog = false;
-			enableWarningLog = false;
-			enableSuccessLog = false;
-			enableInfoLog = false;
-		
+			// use default value		
+	
 		} else {
 			
 			// check the List to see which LogLevel enum are sent
