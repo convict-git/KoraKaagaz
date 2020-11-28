@@ -222,8 +222,8 @@ public class FileLogger implements ILogger {
 		} catch (IOException e) {
 			// check for console to print to
 			// if unavailable, do nothing
-			if(System.console() != null) {
-				System.err.println(" Caught IOException: " + e.getMessage());
+			if(System.out != null) {
+				System.out.println(" Caught IOException: " + e.getMessage());
 			}
 		}
 		finally {
@@ -245,7 +245,7 @@ public class FileLogger implements ILogger {
 		else {
 			// check for console to print to
 			// if unavailable, do nothing
-			if(System.console() != null) {
+			if(System.out != null) {
 				System.out.println(" PrintWriter not open ");
 			}
 		}
