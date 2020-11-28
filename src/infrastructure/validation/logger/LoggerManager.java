@@ -117,21 +117,16 @@ public class LoggerManager implements ILogger {
 			Document doc = dBuilder.parse(inputFile);
 			doc.getDocumentElement().normalize();
 			
-			// System.out.println("Root Element :"+doc.getDocumentElement().getNodeName());
 			NodeList nList = doc.getElementsByTagName("testMode");
 			
 			for(int temp=0; temp < nList.getLength(); temp++) {
 				Node nNode = nList.item(temp);
-				// System.out.println("Current Element :" + nNode.getNodeName());
 				
 				if(nNode.getNodeType() == Node.ELEMENT_NODE) {
 					
 					Element eElement = (Element) nNode;
 					
-					// System.out.println("testMode attribute :"+eElement.getAttribute("filePath"));
-					// System.out.println("testMode value :"+eElement.getTextContent());
 					if(eElement.getTextContent().equalsIgnoreCase("true")) {
-						// System.out.println("there's a new dawn");
 						enableTestMode = true;
 						fileToParse = eElement.getAttribute("filePath");
 					}
