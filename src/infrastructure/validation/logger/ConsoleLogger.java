@@ -4,7 +4,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.time.DateTimeException;
 import java.time.LocalDateTime;
-import java.io.Console;
 
 /**
  * ConsoleLogger class that is part of loggerManager,
