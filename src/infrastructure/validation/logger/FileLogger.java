@@ -4,7 +4,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.time.DateTimeException;
 import java.time.LocalDateTime;
-
+import java.io.File;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.io.IOException;
@@ -199,7 +199,9 @@ public class FileLogger implements ILogger {
 	 */
 	private static PrintWriter openFile(String filename) throws IOException {
 		
-		FileWriter fileWriter = new FileWriter(filename, true);
+		File file = new File(filename);
+		file.getParentFile().mkdirs();
+		FileWriter fileWriter = new FileWriter(file, true);
 		PrintWriter printWriter = new PrintWriter(fileWriter);
 		return printWriter;
 	}
