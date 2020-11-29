@@ -65,8 +65,12 @@ public class WhiteBoardController {
     			encodedImage = Base64.getEncoder().encodeToString(imagebyte);
     			baos.close();
     		}
-    	} catch (Exception e) {
-    		logger.log(ModuleID.UI, LogLevel.ERROR, "Error in encoding image");
+    	} 
+    	catch (Exception e) {
+    		logger.log(
+    				ModuleID.UI, 
+    				LogLevel.ERROR, 
+    				"Error in encoding image");
     	}
 	}
 
@@ -83,7 +87,10 @@ public class WhiteBoardController {
     		Processor processor = ProcessingFactory.getProcessor() ;
     		IUser user = processor;
     		String returnval= user.giveUserDetails(userName.getText(),ipAddress.getText(),boardId.getText());
-    		logger.log(ModuleID.UI, LogLevel.SUCCESS, "Userdetails to processing module have been sent successfully");
+    		logger.log(
+    				ModuleID.UI, 
+    				LogLevel.SUCCESS, 
+    				"Userdetails to processing module have been sent successfully");
 
     		/**
              * Keeping the userdetails information into json object and sending it to content module.
@@ -95,7 +102,10 @@ public class WhiteBoardController {
     		String userDetails = obj.toString();
     		IContentCommunicator communicator = ContentFactory.getContentCommunicator();
     		communicator.initialiseUser(userDetails);
-    		logger.log(ModuleID.UI, LogLevel.SUCCESS, "Userdetails and image have been sent to content module to initialise user");
+    		logger.log(
+    				ModuleID.UI, 
+    				LogLevel.SUCCESS, 
+    				"Userdetails and image have been sent to content module to initialise user");
 
     		/**
              * Closing the Start session window and opening the canvas.fxml page.
@@ -106,9 +116,16 @@ public class WhiteBoardController {
     		Scene scene = new Scene(root,600,800);
     		primaryStage.setScene(scene);
     		primaryStage.show();
-    		logger.log(ModuleID.UI, LogLevel.SUCCESS, "Opening the canvas fxml page.");
-    	} catch (Exception e) {
-    		logger.log(ModuleID.UI, LogLevel.ERROR, "Error in opening canvas fxml page");
+    		logger.log(
+    				ModuleID.UI, 
+    				LogLevel.SUCCESS, 
+    				"Opening the canvas fxml page.");
+    	} 
+    	catch (Exception e) {
+    		logger.log(
+    				ModuleID.UI, 
+    				LogLevel.ERROR, 
+    				"Error in opening canvas fxml page");
     	}
 	} 
 }

@@ -33,10 +33,17 @@ public class Main extends Application {
 			Scene scene = new Scene(root,600,800);
 			primaryStage.setScene(scene);
 			primaryStage.show();
-	    	logger.log(ModuleID.UI, LogLevel.SUCCESS, "Startsession page has been opened.");
+	    	logger.log(
+	    			ModuleID.UI, 
+	    			LogLevel.SUCCESS, 
+	    			"Startsession page has been opened.");
 
-		} catch(Exception e) {
-			logger.log(ModuleID.UI, LogLevel.ERROR, "Opening Start session page has failed.");
+		} 
+		catch(Exception e) {
+			logger.log(
+					ModuleID.UI, 
+					LogLevel.ERROR, 
+					"Opening Start session page has failed.");
 		}
 	}
 	public static void main(String[] args) {

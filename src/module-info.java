@@ -8,4 +8,5 @@ module korakaagaz {
    requires javafx.media;
    requires javafx.swing;
    requires javafx.web;
+   exports UI;
    }
