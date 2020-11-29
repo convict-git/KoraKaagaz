@@ -1,21 +1,19 @@
 package infrastructure.validation.logger;
 
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.File;
 import java.util.List;
 import java.util.ArrayList;
 
-import javax.xml.stream.events.XMLEvent;
-import javax.xml.stream.FactoryConfigurationError;
-import javax.xml.stream.XMLEventReader;
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.events.Attribute;
-import javax.xml.stream.events.EndElement;
-import javax.xml.stream.events.StartElement;
-import javax.xml.namespace.QName;
-
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.DocumentBuilder;
+import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
+import org.w3c.dom.Node;
+import org.w3c.dom.Element;
 
 /**
  * LoggerManager class that will be referenced by other modules,
@@ -112,34 +110,48 @@ public class LoggerManager implements ILogger {
 		
 		try {
 			
-			XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
-			XMLEventReader reader = xmlInputFactory.createXMLEventReader(new FileInputStream(defaultFilePath));
-			while(reader.hasNext()) {
+			File inputFile = new File(defaultFilePath);
+			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+			
+			Document doc = dBuilder.parse(inputFile);
+			doc.getDocumentElement().normalize();
+			
+			NodeList nList = doc.getElementsByTagName("testMode");
+			
+			for(int temp=0; temp < nList.getLength(); temp++) {
+				Node nNode = nList.item(temp);
 				
-				XMLEvent nextEvent = reader.nextEvent();
-				if(nextEvent.isStartElement()) {
-					StartElement startElement = nextEvent.asStartElement();
-					if(startElement.getName().getLocalPart().equalsIgnoreCase("testMode")) {
-						if(nextEvent.asCharacters().getData().equalsIgnoreCase("true")) {
-							Attribute filePath = startElement.getAttributeByName(new QName("filePath"));
-							fileToParse = filePath.getValue();
-							enableTestMode = true;
-						}
+				if(nNode.getNodeType() == Node.ELEMENT_NODE) {
+					
+					Element eElement = (Element) nNode;
+					
+					if(eElement.getTextContent().equalsIgnoreCase("true")) {
+						enableTestMode = true;
+						fileToParse = eElement.getAttribute("filePath");
 					}
 				}
 			}
-		} catch (XMLStreamException xse) {
-			// do nothing and skip to default values
+
 		} catch (FileNotFoundException fnfe) {
 			// do nothing and skip to default values
-		} catch (FactoryConfigurationError fce) {
-			// XML parser object cannot be created. Abort and stick to default
-			// if this occurs, do nothing and skip to default values
 		} catch (SecurityException se) {
 			// in the presence of a security manager, it's checkRead method can deny read access to the file
 			// if it occurs, do nothing and skip to default values
+		} catch (ClassCastException cce) {
+			// thrown by startEvent.asCharacters() method if it fails 
+			// if it occurs, do nothing and skip to default values
+		} catch (ParserConfigurationException pce) {
+			// thrown when parser cannot be configured
+			// if it occurs, do nothing and skip to default values
+		} catch (SAXException e) {
+			// thrown when parser fails to parse the input file
+			// if it occurs, do nothing and skip to default values
+		} catch (IOException e) {
+			// thrown when parser method cannot open the input file
+			// if it occurs, do nothing and skip to default values
 		}
-		
+				
 		return fileToParse;
 	}
 
@@ -154,106 +166,139 @@ public class LoggerManager implements ILogger {
 		
 		List<LogLevel> enabledLogLevelsList = new ArrayList<LogLevel>();
 		
-		boolean isInLoggerOptions = false;
-		boolean isInLogLevels = false;
+		parseLoggerOptions(filePath);
+
+		enabledLogLevelsList = parseLogLevels(filePath);
+		
+		return enabledLogLevelsList;
+	}
+
+	/**
+	 * helper method that parses XML file,
+	 * looks for loggerOptions tags that enable/disables file and console loggers
+	 * 
+	 * @param filePath path to the XML config file
+	 */
+	private void parseLoggerOptions(String filePath) {
 		
 		try {
 			
-			XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
-			XMLEventReader reader = xmlInputFactory.createXMLEventReader(new FileInputStream(filePath));
-			while(reader.hasNext()) {
+			File inputFile = new File(filePath);
+			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+			
+			Document doc = dBuilder.parse(inputFile);
+			doc.getDocumentElement().normalize();
+			
+			NodeList nList = doc.getElementsByTagName("loggerOption");
+			
+			for(int temp=0; temp < nList.getLength(); temp++) {
+				Node nNode = nList.item(temp);
 				
-				XMLEvent nextEvent = reader.nextEvent();
-				if(nextEvent.isStartElement()) {
-					StartElement startElement = nextEvent.asStartElement();
-					switch(startElement.getName().getLocalPart()) {
-					case "loggerOptions":
-						isInLoggerOptions = true;
-						break;
-					case "loggerOption":
-						
-						if(!isInLoggerOptions) {
-							break;
-						}
-						
-						Attribute loggerTypeFile = startElement.getAttributeByName(new QName("FileLogger"));
-						if(loggerTypeFile != null) {
-							if(nextEvent.asCharacters().getData().equalsIgnoreCase("true")) {
-								allowFileLogging = true;
-							}
-						}
-						
-						Attribute consoleTypeFile = startElement.getAttributeByName(new QName("ConsoleLogger"));
-						if(consoleTypeFile != null) {
-							if(nextEvent.asCharacters().getData().equalsIgnoreCase("true")) {
-								allowConsoleLogging = true;
-							}
-						}
-						break;
-					case "logLevels":
-						isInLogLevels = true;
-						break;
-					case "logLevel":
-						
-						if(!isInLogLevels) {
-							break;
-						}
-						
-						Attribute logTypeError = startElement.getAttributeByName(new QName("ERROR"));
-						if(logTypeError != null) {
-							if(nextEvent.asCharacters().getData().equalsIgnoreCase("true")) {
-								enabledLogLevelsList.add(LogLevel.ERROR);
-							}
-						}
+				if(nNode.getNodeType() == Node.ELEMENT_NODE) {
+					
+					Element eElement = (Element) nNode;
+					
+					if(eElement.getTextContent().equalsIgnoreCase("true")) {
 
-						Attribute logTypeWarning = startElement.getAttributeByName(new QName("WARNING"));
-						if(logTypeWarning != null) {
-							if(nextEvent.asCharacters().getData().equalsIgnoreCase("true")) {
-								enabledLogLevelsList.add(LogLevel.WARNING);
-							}
+						if(eElement.getAttribute("LoggerName").equalsIgnoreCase("FileLogger")) {
+							allowFileLogging = true;
 						}
 						
-						Attribute logTypeSuccess = startElement.getAttributeByName(new QName("SUCCESS"));
-						if(logTypeSuccess != null) {
-							if(nextEvent.asCharacters().getData().equalsIgnoreCase("true")) {
-								enabledLogLevelsList.add(LogLevel.SUCCESS);
-							}
+						if(eElement.getAttribute("LoggerName").equalsIgnoreCase("ConsoleLogger")) {
+							allowConsoleLogging = true;
 						}
-						
-						Attribute logTypeInfo = startElement.getAttributeByName(new QName("INFO"));
-						if(logTypeInfo != null) {
-							if(nextEvent.asCharacters().getData().equalsIgnoreCase("true")) {
-								enabledLogLevelsList.add(LogLevel.INFO);
-							}
-						}
-						break;
-					default:
-						break;
-					}
-				}
-				if(nextEvent.isEndElement()) {
-					EndElement endElement = nextEvent.asEndElement();
-					switch(endElement.getName().getLocalPart()) {
-					case "loggerOptions":
-						isInLoggerOptions = false;
-						break;
-					case "logLevels":
-						isInLogLevels = false;
-						break;
-					default:
-						break;
 					}
 				}
 			}
-		} catch (XMLStreamException xse) {
-			// do nothing and skip to default values
+
 		} catch (FileNotFoundException fnfe) {
 			// do nothing and skip to default values
-		} catch (FactoryConfigurationError fce) {
-			// XML parser object cannot be created. Abort and stick to default
-			// if this occurs, do nothing and skip to default values
 		} catch (SecurityException se) {
 			// in the presence of a security manager, it's checkRead method can deny read access to the file
+			// if it occurs, do nothing and skip to default values
+		} catch (ClassCastException cce) {
+			// thrown by startEvent.asCharacters() method if it fails 
+			// if it occurs, do nothing and skip to default values
+		} catch (ParserConfigurationException pce) {
+			// thrown when parser cannot be configured
+			// if it occurs, do nothing and skip to default values
+		} catch (SAXException saxe) {
+			// thrown when parser fails to parse the input file
+			// if it occurs, do nothing and skip to default values
+		} catch (IOException ioe) {
+			// thrown when parser method cannot open the input file
+			// if it occurs, do nothing and skip to default values
+		}
+
+	}
+
+	/**
+	 * helper method that parses XML file,
+	 * looks for logLevels tags that enable/disables logLevels.
+	 * logLevels that are checked are: ERROR, WARNING, SUCCESS, INFO
+	 * 
+	 * @param filePath path to the XML config file
+	 * @return list of LogLevel enums. Members of this List correspond to LogLevels to be enabled.
+	 */
+	private List<LogLevel> parseLogLevels(String filePath) {
+
+		List<LogLevel> enabledLogLevelsList = new ArrayList<LogLevel>();
+		
+		try {
+			
+			File inputFile = new File(filePath);
+			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+			
+			Document doc = dBuilder.parse(inputFile);
+			doc.getDocumentElement().normalize();
+			
+			NodeList nList = doc.getElementsByTagName("logLevel");
+			
+			for(int temp=0; temp < nList.getLength(); temp++) {
+				Node nNode = nList.item(temp);
+				
+				if(nNode.getNodeType() == Node.ELEMENT_NODE) {
+					
+					Element eElement = (Element) nNode;
+					
+					if(eElement.getTextContent().equalsIgnoreCase("true")) {
+
+						if(eElement.getAttribute("level").equalsIgnoreCase(LogLevel.ERROR.toString())) {
+							enabledLogLevelsList.add(LogLevel.ERROR);
+						}
+						
+						if(eElement.getAttribute("level").equalsIgnoreCase(LogLevel.WARNING.toString())) {
+							enabledLogLevelsList.add(LogLevel.WARNING);
+						}
+						
+						if(eElement.getAttribute("level").equalsIgnoreCase(LogLevel.SUCCESS.toString())) {
+							enabledLogLevelsList.add(LogLevel.SUCCESS);
+						}
+						
+						if(eElement.getAttribute("level").equalsIgnoreCase(LogLevel.INFO.toString())) {
+							enabledLogLevelsList.add(LogLevel.INFO);
+						}
+					}
+				}
+			}
+		} catch (FileNotFoundException fnfe) {
+			// do nothing and skip to default values
+		} catch (SecurityException se) {
+			// in the presence of a security manager, it's checkRead method can deny read access to the file
+			// if it occurs, do nothing and skip to default values
+		} catch (ClassCastException cce) {
+			// thrown by startEvent.asCharacters() method if it fails 
+			// if it occurs, do nothing and skip to default values
+		} catch (ParserConfigurationException pce) {
+			// thrown when parser cannot be configured
+			// if it occurs, do nothing and skip to default values
+		} catch (SAXException saxe) {
+			// thrown when parser fails to parse the input file
+			// if it occurs, do nothing and skip to default values
+		} catch (IOException ioe) {
+			// thrown when parser method cannot open the input file
 			// if it occurs, do nothing and skip to default values
 		}
 		
