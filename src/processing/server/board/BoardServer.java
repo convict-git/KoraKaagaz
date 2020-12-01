@@ -46,6 +46,9 @@ public class BoardServer {
 		 */
 		Port serverPort = new Port(Integer.parseInt(args[0]));
 		
+		// just to initialise the type of communicator, no use here
+		CommunicatorFactory.getClientInfo().getIp();
+		
 		/**
 		 * Get a new communicator from the networking module giving the same port
 		 * number received as the argument.
