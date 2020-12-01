@@ -84,7 +84,21 @@ public class NewBoardRequestHandler implements INotificationHandler{
 		 * server with the given port number and the boardId. Here the persistent data
 		 * is null as it's a new board so no earlier data existed.
 		 */
-		BoardRequestHandler.startBoardServer(boardServerPort, boardId, null);
+		BoardRequestHandler.startBoardServer(boardServerPort, boardId, "NoPersistence");
+		
+		// waiting for the Board Server to start
+		try {
+			Thread.sleep(5000);
+		} catch(Exception e) {
+			
+			ClientBoardState.logger.log(
+					ModuleID.PROCESSING, 
+					LogLevel.ERROR, 
+					"[#" + Thread.currentThread().getId() + "] "
+					+ "Error while sleep in the current thread"
+			);
+			
+		}
 		
 		/**
 		 * Send the boardID back to the client using the identifier ProcessingBoardID with

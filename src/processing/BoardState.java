@@ -46,12 +46,6 @@ public class BoardState implements Serializable {
 	public synchronized BoardObject getBoardObjectFromId(ObjectId objId) {
 		try {
 			BoardObject object = objIdToBoardObject.get(objId);
-			logger.log(
-				ModuleID.PROCESSING,
-				LogLevel.SUCCESS,
-					"[#" + Thread.currentThread().getId() + "] getBoardObjectFromId: "
-					+ "returning board object"
-			);
 			return object;
 		}
 		catch (Exception e) {
