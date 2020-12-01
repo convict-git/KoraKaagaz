@@ -32,6 +32,9 @@ public class MainServer {
 		// initialise the boarToPort map 
 		ServerState.boardToPort = new HashMap <BoardId, Port>();
 		
+		// just to initialise the type of communicator, no use here
+		CommunicatorFactory.getClientInfo().getIp();
+		
 		/**
 		 * The port number of the Main Server is fixed and saved in ServerState
 		 * get the communicator from the networking module using the same port 
