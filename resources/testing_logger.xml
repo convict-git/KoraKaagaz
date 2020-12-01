@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <logging>
     <loggerOptions>
-        <loggerOption LoggerName="FileLogger"   >true</loggerOption>
+        <loggerOption LoggerName="FileLogger"   >false</loggerOption>
         <loggerOption LoggerName="ConsoleLogger">false</loggerOption>
     </loggerOptions>
     <logLevels>
-        <logLevel level="ERROR"  >true</logLevel>
-        <logLevel level="WARNING">true</logLevel>
-        <logLevel level="SUCCESS">true</logLevel>
-        <logLevel level="INFO"   >true</logLevel>
+        <logLevel level="ERROR"  >false</logLevel>
+        <logLevel level="WARNING">false</logLevel>
+        <logLevel level="SUCCESS">false</logLevel>
+        <logLevel level="INFO"   >false</logLevel>
     </logLevels>
 </logging>
