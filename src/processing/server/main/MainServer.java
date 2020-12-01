@@ -22,6 +22,10 @@ public class MainServer {
 	// main function
 	public static void main(String[] args) {
 		
+		// If we remove this line then call getClientInfo in a separate line 
+		System.out.println("Starting Main Server with IP Address: "
+							+ CommunicatorFactory.getClientInfo().getIp());
+		
 		ClientBoardState.logger.log(
 				ModuleID.PROCESSING, 
 				LogLevel.INFO, 
