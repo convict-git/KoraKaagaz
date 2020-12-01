@@ -103,7 +103,7 @@ public class BoardServer {
 		 * If the board never existed before i.e the board is a new board then the persistence 
 		 * will be null, so we need not to do anything.
 		 */
-		if(persistence != null) {
+		if(!persistence.equals("NoPersistence")) {
 			
 			try {
 				/**
