@@ -12,7 +12,6 @@
  ***/
 package UI;
 
-import infrastructure.validation.logger.*;
 import infrastructure.content.*;
 import java.io.IOException;
 import java.net.URL;
@@ -50,6 +49,7 @@ import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
+import javafx.scene.image.PixelWriter;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
@@ -112,9 +112,9 @@ public class CanvasController implements Initializable {
 	@FXML
 	private Canvas canvasB;
 
-	private static GraphicsContext gc;
+	private static GraphicsContext gc,gcForUpdate;
 
-	private double x1,y1,x2,y2,x3,y3;
+	private double x1,y1,x2,y2;
 
 	private Color color;
 
@@ -590,25 +590,7 @@ public class CanvasController implements Initializable {
 
 		}
 	}
-
-	/**
-	 * updateChanges method updates the canvas with given pixels
-	 * @param pixels
-	 */
-	public void updateChanges(ArrayList<Pixel> pixels) {
-		synchronized(this) {
-			gc = canvasF.getGraphicsContext2D();
-			for (Pixel pix:pixels) {
-				Intensity i= pix.intensity;
-				Position p = pix.position;
-				gc.setStroke(Color.rgb(i.r, i.g, i.b));
-				gc.strokeRect(p.r,p.c,2,2);
-			}
-			logger.log(ModuleID.UI, LogLevel.SUCCESS, "Canvas Updated Successfuly");
-		}
-
-
-	}
+	
 
     /**
      * When the cursor button is clicked, we enter the Cursor Mode
@@ -948,8 +930,7 @@ public class CanvasController implements Initializable {
 	    		// Highlight currently selected pixels
 	    		for(Pixel pixel : selectedPixels) {
 	    			Position position = pixel.position;
-	    			canvasF
-	    				.getGraphicsContext2D()
+	    			gcForUpdate
 	    				.getPixelWriter()
 	    				.setColor(
 	    					position.c,
@@ -986,8 +967,7 @@ public class CanvasController implements Initializable {
 	    		Position position = pixel.position;
 
 	    		// Update the canvas
-				canvasF
-					.getGraphicsContext2D()
+	    		gcForUpdate
 					.getPixelWriter()
 					.setColor(
 						position.c,
@@ -997,6 +977,25 @@ public class CanvasController implements Initializable {
 	    	}
     	}
     }
+    
+	/**
+	 * updateChanges method updates the canvas with given pixels
+	 * @param pixels:ArrayList of pixels that has to be updated on canvas
+	 */
+     void updateChanges(ArrayList<Pixel> pixels) {
+		synchronized(this) {
+				for(Pixel pix:pixels) {
+				Position pos = pix.position;
+				Color color = Color.color(
+		    			(double) pix.intensity.r / 255.0,
+		    			(double) pix.intensity.g / 255.0,
+		    			(double) pix.intensity.b / 255.0
+		    		);
+				gcForUpdate.getPixelWriter().setColor((int) pos.c/100,(int) pos.r/100,color);
+			}
+			logger.log(ModuleID.UI, LogLevel.SUCCESS, "Canvas Updated Successfuly");
+		}
+	}
 
     /**
      * Initialize the Canvas Controller
@@ -1034,7 +1033,8 @@ public class CanvasController implements Initializable {
 		user.subscribeForChanges("UI", processingSubscribe);
 		IContentCommunicator communicator =  ContentFactory.getContentCommunicator();
 		communicator.subscribeForNotifications("UI",contentSubscribe );
-
+		//Grapics context object for updating pixels
+		gcForUpdate = canvasF.getGraphicsContext2D();
 		// The following code initializes the dropdown of brushSize.
 		brushSize.setItems(list);
 	}
