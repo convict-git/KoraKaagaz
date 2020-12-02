@@ -5,13 +5,13 @@
 <logging>
     <testMode filePath="resources/testing_logger.xml">false</testMode>
     <loggerOptions>
-        <loggerOption LoggerName="FileLogger"   >false</loggerOption>
-        <loggerOption LoggerName="ConsoleLogger">false</loggerOption>
+        <loggerOption LoggerName="FileLogger"   >true</loggerOption>
+        <loggerOption LoggerName="ConsoleLogger">true</loggerOption>
     </loggerOptions>
     <logLevels>
-        <logLevel level="ERROR"  >false</logLevel>
-        <logLevel level="WARNING">false</logLevel>
-        <logLevel level="SUCCESS">false</logLevel>
-        <logLevel level="INFO"   >false</logLevel>
+        <logLevel level="ERROR"  >true</logLevel>
+        <logLevel level="WARNING">true</logLevel>
+        <logLevel level="SUCCESS">true</logLevel>
+        <logLevel level="INFO"   >true</logLevel>
     </logLevels>
 </logging>
