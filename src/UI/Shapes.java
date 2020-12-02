@@ -7,6 +7,7 @@ package UI;
 
 import processing.utility.*;
 import processing.*;
+
 import infrastructure.validation.logger.*;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -56,7 +57,7 @@ public class Shapes {
 		g.strokeRect(topx, topy, length, width);
 		Position start = new Position((int) (topx*100),(int) (topy*100));
 		Position end = new Position((int) (topx+length)*100,(int) (topy+width)*100);
-		Intensity i = new Intensity((int) color.getRed(),(int) color.getGreen(),(int) color.getBlue());
+		Intensity i = new Intensity((int) color.getRed()*255,(int) color.getGreen()*255,(int) color.getBlue()*255);
 		Pixel p1 = new Pixel(start,i);
 		Pixel p2 = new Pixel(end,i);
 		drawshape.drawRectangle(p1,p2);
@@ -88,7 +89,7 @@ public class Shapes {
 		g.setStroke(color);
 		g.strokeOval(topx, topy, diameter, diameter);
 		Position start = new Position((int) (topx+(diameter/2))*100,(int) (topy+(diameter/2))*100);
-		Intensity i = new Intensity((int) color.getRed(),(int) color.getGreen(),(int) color.getBlue());
+		Intensity i = new Intensity((int) color.getRed()*255,(int) color.getGreen()*255,(int) color.getBlue()*255);
 		Pixel p1 = new Pixel(start,i);
 		drawshape.drawCircle(p1,(float) diameter/2);
 		logger.log(
@@ -113,7 +114,7 @@ public class Shapes {
 		g.strokeLine(startx, starty, endx, endy);
 		Position start = new Position((int) startx*100,(int) starty*100);
 		Position end = new Position((int) endx*100,(int) endy*100);
-		Intensity i = new Intensity((int) color.getRed(),(int) color.getGreen(),(int) color.getBlue());
+		Intensity i = new Intensity((int) color.getRed()*255,(int) color.getGreen()*255,(int) color.getBlue()*255);
 		Pixel p1 = new Pixel(start,i);
 		Pixel p2 = new Pixel(end,i);
 		drawshape.drawLine(p1, p2);
@@ -124,7 +125,7 @@ public class Shapes {
 		);
 	}
 
-    /**
+	/**
      * This method will draw square and sends the data to processing module
      * @param color: Color selected from color picker
      * @param g: object of graphicscontext
@@ -144,7 +145,7 @@ public class Shapes {
 		g.setStroke(color);
 		g.strokeRect(topx, topy, len, len);
 		Position  start = new Position((int) (topx*100),(int) (topy*100));
-		Intensity i = new Intensity((int) color.getRed(),(int) color.getGreen(),(int) color.getBlue());
+		Intensity i = new Intensity((int) color.getRed()*255,(int) color.getGreen()*255,(int) color.getBlue()*255);
 		Pixel p1 = new Pixel(start,i);
 		drawshape.drawCircle(p1,(float) len);
 		logger.log(
@@ -187,7 +188,7 @@ public class Shapes {
 			Position a = new Position((int) xs[0]*100,(int) ys[0]*100);
 			Position b = new Position((int) xs[1]*100,(int) ys[1]*100);
 			Position c = new Position((int) xs[2]*100,(int) ys[2]*100);
-			Intensity i = new Intensity((int) color.getRed(),(int) color.getGreen(),(int) color.getBlue());
+			Intensity i = new Intensity((int) color.getRed()*255,(int) color.getGreen()*255,(int) color.getBlue()*255);
 			Pixel p1 = new Pixel(a,i);
 			Pixel p2 = new Pixel(b,i);
 			Pixel p3 = new Pixel(c,i);
@@ -213,7 +214,7 @@ public class Shapes {
 			Position a = new Position((int) xs[0]*100,(int) ys[0]*100);
 			Position b = new Position((int) xs[1]*100,(int) ys[1]*100);
 			Position c = new Position((int) xs[2]*100,(int) ys[2]*100);
-			Intensity i = new Intensity((int) color.getRed(),(int) color.getGreen(),(int) color.getBlue());
+			Intensity i = new Intensity((int) color.getRed()*255,(int) color.getGreen()*255,(int) color.getBlue()*255);
 			Pixel p1 = new Pixel(a,i);
 			Pixel p2 = new Pixel(b,i);
 			Pixel p3 = new Pixel(c,i);
