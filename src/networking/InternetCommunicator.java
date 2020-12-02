@@ -65,7 +65,7 @@ public class InternetCommunicator implements ICommunicator {
     /** Port Number that we will be listening on the network */
     private int clientId;
 
-    /** Boolean check variable for listeners to use */
+    /** Boolean check variable for checking the communication */
     private boolean isRunning = false;
 
     private Socket s = null;
