@@ -56,6 +56,7 @@ public class LoggerManager implements ILogger {
 	 */
 	protected LoggerManager() {
 		
+		// try finding for an XML file in user's home location
 		try {
 			String home = System.getProperty("user.home");
 			loggerConfigFilePath = home+"/.config/KoraKaagaz/infrastructure_logger.xml";
@@ -68,6 +69,7 @@ public class LoggerManager implements ILogger {
 		File logConfigFile = new File(loggerConfigFilePath);
 		List<LogLevel> enabledLogLevelsList = null;
 				
+		// set arguments for constructors using the available XML config file
 		try {
 			
 			if(logConfigFile.isFile()) {
@@ -77,7 +79,7 @@ public class LoggerManager implements ILogger {
 				if(configFile.isFile()) {
 					enabledLogLevelsList = parse(fileToParse);
 				} else {
-					// no xml config file could be found
+					// no xml config file found
 					// switch to default xml config file packaged in "resources/infrastructure_logger.xml"
 					enabledLogLevelsList = parse("resources/infrastructure_logger.xml");
 				}
@@ -92,8 +94,6 @@ public class LoggerManager implements ILogger {
 			// equivalent to the case if isFile method returns False and so, same can be done
 			enabledLogLevelsList = parse(loggerConfigFilePath);
 		}
-
-
 		
 		if(allowFileLogging) {
 			fileLogger = new FileLogger(enabledLogLevelsList, enableTestMode);
