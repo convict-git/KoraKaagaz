@@ -71,12 +71,6 @@ public class CircleDrawer {
 				
 			// By default, use mid point based circle filling algorithm
 			default:
-				LoggerFactory.getLoggerInstance().log(
-					ModuleID.PROCESSING, 
-					LogLevel.INFO, 
-					"[#" + Thread.currentThread().getId() + "] "
-					+ "Using Mid Point Circle Drawing Algorithm"
-				);
 				pixels = midPointCircleDraw(center, radius, intensity);
 		}
 		
@@ -139,12 +133,6 @@ public class CircleDrawer {
 				
 			// By Default, use Mid Point Based Filling Algorithm
 			default:
-				logger.log(
-					ModuleID.PROCESSING, 
-					LogLevel.INFO, 
-					"[#" + Thread.currentThread().getId() + "] "
-					+ "Using Mid Point Based Circle Filling Algorithm"
-				);
 				pixels = midPointBasedCircleFill(center, radius, intensity);
 		}
 

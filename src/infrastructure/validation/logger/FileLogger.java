@@ -4,7 +4,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.time.DateTimeException;
 import java.time.LocalDateTime;
-
+import java.io.File;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.io.IOException;
@@ -65,11 +65,11 @@ public class FileLogger implements ILogger {
 		
 		try {
 			String home = System.getProperty("user.home");
-			logFilePath = home+"/.config/";
+			logFilePath = home+"/.config/KoraKaagaz/logs/";
 		} catch (SecurityException se) {
 			// in case a security manager is present, it's checkRead method can deny read access to the file
 			// if it occurs, logFilePath reverts to the current directory where it is run
-			logFilePath = "./.config/";
+			logFilePath = "logs/";
 		}
 		
 		// sets the logFilename as per the spec
@@ -95,7 +95,7 @@ public class FileLogger implements ILogger {
 		inTestMode = enableTestMode;
 		
 		// set booleans that enable/disable Log Level
-		if (null == enabledLogLevelsList) {
+		if (null == enabledLogLevelsList || enabledLogLevelsList.isEmpty() ) {
 			// nothing to be done
 			// default values will be used
 		} else {
@@ -199,7 +199,9 @@ public class FileLogger implements ILogger {
 	 */
 	private static PrintWriter openFile(String filename) throws IOException {
 		
-		FileWriter fileWriter = new FileWriter(filename, true);
+		File file = new File(filename);
+		file.getParentFile().mkdirs();
+		FileWriter fileWriter = new FileWriter(file, true);
 		PrintWriter printWriter = new PrintWriter(fileWriter);
 		return printWriter;
 	}
@@ -220,8 +222,8 @@ public class FileLogger implements ILogger {
 		} catch (IOException e) {
 			// check for console to print to
 			// if unavailable, do nothing
-			if(System.console() != null) {
-				System.err.println(" Caught IOException: " + e.getMessage());
+			if(System.out != null) {
+				System.out.println(" Caught IOException: " + e.getMessage());
 			}
 		}
 		finally {
@@ -243,7 +245,7 @@ public class FileLogger implements ILogger {
 		else {
 			// check for console to print to
 			// if unavailable, do nothing
-			if(System.console() != null) {
+			if(System.out != null) {
 				System.out.println(" PrintWriter not open ");
 			}
 		}

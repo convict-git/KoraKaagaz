@@ -46,6 +46,9 @@ public class BoardServer {
 		 */
 		Port serverPort = new Port(Integer.parseInt(args[0]));
 		
+		// just to initialise the type of communicator, no use here
+		CommunicatorFactory.getClientInfo().getIp();
+		
 		/**
 		 * Get a new communicator from the networking module giving the same port
 		 * number received as the argument.
@@ -100,7 +103,7 @@ public class BoardServer {
 		 * If the board never existed before i.e the board is a new board then the persistence 
 		 * will be null, so we need not to do anything.
 		 */
-		if(persistence != null) {
+		if(!persistence.equals("NoPersistence")) {
 			
 			try {
 				/**

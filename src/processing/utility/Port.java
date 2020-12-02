@@ -45,4 +45,9 @@ public class Port implements Serializable {
 	public int hashCode() {
 		return port;
 	}
+	
+	@Override
+	public String toString() {
+		return Integer.toString(port);
+	}
 }

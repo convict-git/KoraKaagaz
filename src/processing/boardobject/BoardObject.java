@@ -117,12 +117,6 @@ public class BoardObject implements Serializable {
 	
 	/** Gets the board object's list of pixels */
 	public ArrayList <Pixel> getPixels () {
-		LoggerFactory.getLoggerInstance().log(
-			ModuleID.PROCESSING, 
-			LogLevel.INFO, 
-			"[#" + Thread.currentThread().getId() + "] "
-			+ "Get Pixels from the Board Object"
-		);
 		return pixels;
 	}
 	

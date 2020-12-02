@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <logging>
-    <testMode filePath="resources/testing_logger.xml">true</testMode>
+    <testMode filePath="resources/testing_logger.xml">false</testMode>
     <loggerOptions>
         <loggerOption LoggerName="FileLogger"   >false</loggerOption>
         <loggerOption LoggerName="ConsoleLogger">false</loggerOption>
