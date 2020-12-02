@@ -10,13 +10,15 @@ import networking.utility.*;
 import infrastructure.validation.logger.*;
 
 /**
- * This file contains implementation of sendQueueListener class which is
+ * This file contains the implementation of sendQueueListener class which is
  * part of networking module and the class in this file is responsible for
  * sending the data over the network.
- * This class is implemenation of runnable interface so it has the capability
+ * This class is an implementation of a runnable interface so it has the capability
  * of running in a thread.
  * 
  *  @author Sirpa Sahul
+ * 
+ *  for fragmentation related part @santhosh, @sravan helped.
  */
 
 public class SendQueueListener implements Runnable {
@@ -29,10 +31,14 @@ public class SendQueueListener implements Runnable {
 
 
     /** 
-	 * logger object from the LoggerFactory to log messages
-	 */
+     * logger object from the LoggerFactory to log messages
+     */
     ILogger logger = LoggerFactory.getLoggerInstance();
     
+
+    /**
+     * variable to know whether the application is running or not.
+     */
     boolean isRunning;
 
     /**
@@ -46,6 +52,7 @@ public class SendQueueListener implements Runnable {
 
         this.SendQueue = SendQueue;
 
+        /** Intially declaring the variable as true */
         this.isRunning = true;
     }
 
@@ -61,9 +68,9 @@ public class SendQueueListener implements Runnable {
 
 
     /**
-     * The following method will check whether the ip address is valid or not.
+     * The following method will check whether the IP address is valid or not.
      * @param IP, IPV4 address in string format.
-     * @return boolean, if it's valid address then returns true else returns false.
+     * @return boolean, if it's a valid address then returns true else returns false.
      */
     private boolean isValidIpaddress(String IP){
         
@@ -88,7 +95,7 @@ public class SendQueueListener implements Runnable {
 
     /**
      * The following method will check whether the port number is valid or not.
-     * @param port, port in string format, ex: "8080"
+     * @param port, a port in string format, ex: "8080"
      * @return boolean, if it's valid port then returns true, else return false
      */
     private boolean isValidPort(String port){
@@ -104,15 +111,18 @@ public class SendQueueListener implements Runnable {
 
 
     /**
-     * The method will check whether ip:port address is valid or not.
-     * @param destination, is ip, port address as string
-     * @return boolean, return true if destination address is valid, false if it's not valid.
+     * The method will check whether IP: port address is valid or not.
+     * @param destination, is IP, port address as a string
+     * @return boolean, return true if the destination address is valid, false if it's not valid.
      */
     private boolean isValidAddress(String destination){
         String[] dest = splitAddress(destination);
         return ( dest.length == 2 && isValidIpaddress(dest[0]) && isValidPort(dest[1]) );
     }
 
+    /**
+     *  Stopping the thread by making isRunning false
+     */
 
     public void stop(){
         this.isRunning = false;
@@ -125,14 +135,14 @@ public class SendQueueListener implements Runnable {
     public void run(){
         
         
-        /** when the the thread is started running we logged the instance of it. */
+        /** when the thread is started running we logged the instance of it. */
         logger.log(ModuleID.NETWORKING, LogLevel.INFO, "Send Queue Listener thread started running");
 
         /** run the while loop as long as the application is running. */
         while(this.isRunning){
             
             /**
-             * Check whether queue is empty or not, if it's not empty, 
+             * Check whether the queue is empty or not, if it's not empty, 
              * then try to send the message.
              */
 
@@ -145,7 +155,7 @@ public class SendQueueListener implements Runnable {
 
                 /**
                  * if port number or ip address is invalid then no need to send the message
-                 * simply discard it by contiuing to the next message.
+                 * simply discard it by continuing to the next message.
                  */
                 if(! isValidAddress(destination)){
                     /** as the message is invalid simply dequeue and continue for next one. */
@@ -176,7 +186,7 @@ public class SendQueueListener implements Runnable {
                 /** converting the json object into string */
                 String encodedMessage = jsonData.toString();
                 
-                /** The following code in try block will try to send the message over the network. */
+                /** The following code in the try block will try to send the message over the network. */
                 try{
 
                     /** create socket using ip address and port number. */
@@ -204,7 +214,7 @@ public class SendQueueListener implements Runnable {
                         dout.writeUTF(buffer);
                     }
                    
-                    /** Keeping EOF as the end of message to determine the end of the packet */
+                    /** Keeping EOF as the end of the message to determine the end of the packet */
                     dout.writeUTF("EOF");
 
                     /** flush the byte stream into the network. */
@@ -234,7 +244,7 @@ public class SendQueueListener implements Runnable {
 
        
         }
-        /** Logging the infromation that when the thread is going to stop. */
+        /** Logging the information that when the thread is going to stop. */
         logger.log(ModuleID.NETWORKING, LogLevel.INFO, "Send Queue Listener thread is going to stop running");
 
     }
