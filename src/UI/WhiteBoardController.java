@@ -7,12 +7,12 @@ import java.util.Base64;
 import javax.imageio.ImageIO;
 import processing.*;
 
-/***
+/**
  * @Author	 : Shiva Dhanush
  * This controller handles operations on going from startsession page to canvas page.
  * It takes the image selected by user and encodes it into a base64 string.
  * It sends user details to processing module and content module.
- ***/
+ */
 
 import org.json.*;
 import infrastructure.content.*;
@@ -26,14 +26,19 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+
+
 public class WhiteBoardController {
 
 	@FXML
 	private TextField userName;
+
 	@FXML
 	private TextField ipAddress;
+
 	@FXML
 	private TextField boardId;
+
 	@FXML
 	private Button imageChoose;
 	private String encodedImage;
@@ -65,12 +70,12 @@ public class WhiteBoardController {
     			encodedImage = Base64.getEncoder().encodeToString(imagebyte);
     			baos.close();
     		}
-    	} 
-    	catch (Exception e) {
+    	} catch (Exception e) {
     		logger.log(
-    				ModuleID.UI, 
-    				LogLevel.ERROR, 
-    				"Error in encoding image");
+    				ModuleID.UI,
+    				LogLevel.ERROR,
+    				"Error in encoding image"
+				);
     	}
 	}
 
@@ -88,9 +93,10 @@ public class WhiteBoardController {
     		IUser user = processor;
     		String returnval= user.giveUserDetails(userName.getText(),ipAddress.getText(),boardId.getText());
     		logger.log(
-    				ModuleID.UI, 
-    				LogLevel.SUCCESS, 
-    				"Userdetails to processing module have been sent successfully");
+    			ModuleID.UI,
+    			LogLevel.SUCCESS,
+    			"Userdetails to processing module have been sent successfully"
+			);
 
     		/**
              * Keeping the userdetails information into json object and sending it to content module.
@@ -103,9 +109,10 @@ public class WhiteBoardController {
     		IContentCommunicator communicator = ContentFactory.getContentCommunicator();
     		communicator.initialiseUser(userDetails);
     		logger.log(
-    				ModuleID.UI, 
-    				LogLevel.SUCCESS, 
-    				"Userdetails and image have been sent to content module to initialise user");
+    			ModuleID.UI,
+    			LogLevel.SUCCESS,
+    			"Userdetails and image have been sent to content module to initialise user"
+			);
 
     		/**
              * Closing the Start session window and opening the canvas.fxml page.
@@ -117,15 +124,16 @@ public class WhiteBoardController {
     		primaryStage.setScene(scene);
     		primaryStage.show();
     		logger.log(
-    				ModuleID.UI, 
-    				LogLevel.SUCCESS, 
-    				"Opening the canvas fxml page.");
-    	} 
-    	catch (Exception e) {
+    			ModuleID.UI,
+    			LogLevel.SUCCESS,
+    			"Opening the canvas fxml page."
+			);
+    	} catch (Exception e) {
     		logger.log(
-    				ModuleID.UI, 
-    				LogLevel.ERROR, 
-    				"Error in opening canvas fxml page");
+    			ModuleID.UI,
+    			LogLevel.ERROR,
+    			"Error in opening canvas fxml page"
+			);
     	}
-	} 
+	}
 }
