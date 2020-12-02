@@ -53,15 +53,15 @@ public class WhiteBoardController {
 	{
     	try {
     		/**
-             * This method takes in the image of jpg type and encodes it into a string.
-             */
+    		 * This method takes in the image of jpg type and encodes it into a string.
+    		 */
     		FileChooser fc = new FileChooser();
     		File f = fc.showOpenDialog(null);
     		if(f!=null)
     		{
     			/**
-                 * Byte array of image file taken as input is encoded with Base64.
-                 */
+    			 * Byte array of image file taken as input is encoded with Base64.
+    			 */
     			BufferedImage originalImage = ImageIO.read(f);
     			ByteArrayOutputStream baos = new ByteArrayOutputStream();
     			ImageIO.write( originalImage, "jpg", baos );
@@ -87,11 +87,31 @@ public class WhiteBoardController {
 	public void startSession (ActionEvent event) throws Exception {
     	try {
     		/**
-             * Sending the data filled to the processing module
-             */
+    		 * Opening the canvas fxml page.
+    		 */
+    		Stage primaryStage = new Stage();
+    		Parent root = FXMLLoader.load(getClass().getResource("canvas.fxml"));
+    		Scene scene = new Scene(root,600,800);
+    		primaryStage.setScene(scene);
+    		primaryStage.show();
+    		logger.log(
+    			ModuleID.UI,
+    			LogLevel.SUCCESS,
+    			"Opening the canvas fxml page."
+			);
+    		
+    		/**
+    		 * Sending the data filled to the processing module
+    		 */
+    		String getIp = ipAddress.getText();
+    		String getBoardId =  boardId.getText();
+    		if(getBoardId.isEmpty())
+    		{
+    			getBoardId=null;
+    		}
     		Processor processor = ProcessingFactory.getProcessor() ;
     		IUser user = processor;
-    		String returnval= user.giveUserDetails(userName.getText(),ipAddress.getText(),boardId.getText());
+    		String returnval= user.giveUserDetails(userName.getText(),ipAddress.getText(),getBoardId);
     		logger.log(
     			ModuleID.UI,
     			LogLevel.SUCCESS,
@@ -99,10 +119,11 @@ public class WhiteBoardController {
 			);
 
     		/**
-             * Keeping the userdetails information into json object and sending it to content module.
-             */
+    		 * Keeping the userdetails information into json object and sending it to content module.
+    		 */
+    		String splitIp [] = getIp.split(":");
     		JSONObject obj=new JSONObject();
-    		obj.put("ipAddress",ipAddress.getText());
+    		obj.put("ipAddress",splitIp[0]);
     		obj.put("username",userName.getText());
     		obj.put("image",encodedImage);
     		String userDetails = obj.toString();
@@ -115,19 +136,10 @@ public class WhiteBoardController {
 			);
 
     		/**
-             * Closing the Start session window and opening the canvas.fxml page.
-             */
+    		 * Closing the Start session window.
+    		 */
     		((Stage)(((Button)event.getSource()).getScene().getWindow())).close();
-    		Stage primaryStage = new Stage();
-    		Parent root = FXMLLoader.load(getClass().getResource("canvas.fxml"));
-    		Scene scene = new Scene(root,600,800);
-    		primaryStage.setScene(scene);
-    		primaryStage.show();
-    		logger.log(
-    			ModuleID.UI,
-    			LogLevel.SUCCESS,
-    			"Opening the canvas fxml page."
-			);
+    		
     	} catch (Exception e) {
     		logger.log(
     			ModuleID.UI,
