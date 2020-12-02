@@ -22,7 +22,7 @@ public class Shapes {
 	static boolean eraserselected = false;
 	static IDrawShapes drawshape = ProcessingFactory.getProcessor();
 	static ILogger logger = LoggerFactory.getLoggerInstance();
-	
+
 	/**
 	 * This method will update the shape selection to be default
 	 */
@@ -34,7 +34,7 @@ public class Shapes {
 		squareselected = false;
 		eraserselected = false;
 	}
-	
+
 	/**
 	 * This method will draw rectangle and sends the data to processing module
 	 * @param color: Color selected from color picker
@@ -60,7 +60,11 @@ public class Shapes {
 		Pixel p1 = new Pixel(start,i);
 		Pixel p2 = new Pixel(end,i);
 		drawshape.drawRectangle(p1,p2);
-		logger.log(ModuleID.UI, LogLevel.INFO, "Rectangle drawn from ("+topx+","+topy+") to ("+(topx+length)+","+(topy+width)+")");
+		logger.log(
+			ModuleID.UI,
+			LogLevel.INFO,
+			"Rectangle drawn from ("+topx+","+topy+") to ("+(topx+length)+","+(topy+width)+")"
+		);
     }
 
     /**
@@ -87,7 +91,11 @@ public class Shapes {
 		Intensity i = new Intensity((int) color.getRed(),(int) color.getGreen(),(int) color.getBlue());
 		Pixel p1 = new Pixel(start,i);
 		drawshape.drawCircle(p1,(float) diameter/2);
-		logger.log(ModuleID.UI, LogLevel.INFO, "Circle drawn with center("+(topx+(diameter/2))+","+(topy+(diameter/2))+" radius:"+diameter/2);
+		logger.log(
+			ModuleID.UI,
+			LogLevel.INFO,
+			"Circle drawn with center("+(topx+(diameter/2))+","+(topy+(diameter/2))+" radius:"+diameter/2
+		);
 	}
 
     /**
@@ -109,7 +117,11 @@ public class Shapes {
 		Pixel p1 = new Pixel(start,i);
 		Pixel p2 = new Pixel(end,i);
 		drawshape.drawLine(p1, p2);
-		logger.log(ModuleID.UI, LogLevel.INFO, "Line drawn from ("+startx+","+starty+") to ("+endx+","+endy+")");
+		logger.log(
+			ModuleID.UI,
+			LogLevel.INFO,
+			"Line drawn from ("+startx+","+starty+") to ("+endx+","+endy+")"
+		);
 	}
 
     /**
@@ -135,7 +147,11 @@ public class Shapes {
 		Intensity i = new Intensity((int) color.getRed(),(int) color.getGreen(),(int) color.getBlue());
 		Pixel p1 = new Pixel(start,i);
 		drawshape.drawCircle(p1,(float) len);
-		logger.log(ModuleID.UI, LogLevel.INFO, "Square drawn from ("+topx+","+topy+") with length:"+len);
+		logger.log(
+			ModuleID.UI,
+			LogLevel.INFO,
+			"Square drawn from ("+topx+","+topy+") with length:"+len
+		);
 	}
 
     /**
@@ -176,7 +192,11 @@ public class Shapes {
 			Pixel p2 = new Pixel(b,i);
 			Pixel p3 = new Pixel(c,i);
 			drawshape.drawTriangle(p1, p2, p3);
-			logger.log(ModuleID.UI, LogLevel.INFO, "Triangle drawn with coordiates:("+xs[0]+","+ys[0]+"), ("+xs[1]+","+ys[1]+"), ("+xs[2]+","+ys[2]+")");
+			logger.log(
+				ModuleID.UI,
+				LogLevel.INFO,
+				"Triangle drawn with coordiates:("+xs[0]+","+ys[0]+"), ("+xs[1]+","+ys[1]+"), ("+xs[2]+","+ys[2]+")"
+			);
     }
         else {
 			/**
@@ -198,7 +218,11 @@ public class Shapes {
 			Pixel p2 = new Pixel(b,i);
 			Pixel p3 = new Pixel(c,i);
 			drawshape.drawTriangle(p1, p2, p3);
-			logger.log(ModuleID.UI, LogLevel.INFO, "Triangle drawn with coordiates:("+xs[0]+","+ys[0]+"), ("+xs[1]+","+ys[1]+"), ("+xs[2]+","+ys[2]+")");
+			logger.log(
+				ModuleID.UI,
+				LogLevel.INFO,
+				"Triangle drawn with coordiates:("+xs[0]+","+ys[0]+"), ("+xs[1]+","+ys[1]+"), ("+xs[2]+","+ys[2]+")"
+			);
         }
 	}
 
