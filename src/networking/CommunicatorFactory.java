@@ -170,14 +170,22 @@ public class CommunicatorFactory{
 			
 		}
 		finally{
-			if(sock!=null)
-				sock.close();
-			/** In case failed to get client Id from server */
-			if(from.equals(""))
-				return -1;
-
-			else return Integer.parseInt(from);
+			try {
+				if(sock!=null)
+					sock.close();
+			} catch (IOException e){
+					logger.log(
+						ModuleID.NETWORKING, 
+						LogLevel.ERROR, 
+						"Error in closing the socket" + e.toString()
+					);
+			}
 		}
+		/** In case failed to get client Id from server */
+		if(from.equals(""))
+			return -1;
+
+		else return Integer.parseInt(from);
 	}
 
 	/**
