@@ -77,7 +77,9 @@ public class LoggerManager implements ILogger {
 				if(configFile.isFile()) {
 					enabledLogLevelsList = parse(fileToParse);
 				} else {
-					enabledLogLevelsList = parse(loggerConfigFilePath);
+					// no xml config file could be found
+					// switch to default xml config file packaged in "resources/infrastructure_logger.xml"
+					enabledLogLevelsList = parse("resources/infrastructure_logger.xml");
 				}
 			}
 			
