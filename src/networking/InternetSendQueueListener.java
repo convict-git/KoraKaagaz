@@ -33,6 +33,8 @@ public class InternetSendQueueListener implements Runnable {
     /** logger object from the LoggerFactory to log messages */
 	ILogger logger = LoggerFactory.getLoggerInstance();
 
+    boolean isRunning;
+
     /**
      * Constructor for this sendQueueListener class.
      * @param SendQueue, requires the sendqeue as parameter.
@@ -45,6 +47,7 @@ public class InternetSendQueueListener implements Runnable {
 
         this.SendQueue = SendQueue;
         this.dout = dout;
+        this.isRunning = true;
     }
 
 
@@ -111,6 +114,9 @@ public class InternetSendQueueListener implements Runnable {
         return ( dest.length == 2 && isValidIpaddress(dest[0]) && isValidPort(dest[1]) );
     }
 
+    public void stop(){
+        this.isRunning = false;
+    }
 
     /**
      * This method will do the work of taking the data from the queue 
@@ -122,7 +128,7 @@ public class InternetSendQueueListener implements Runnable {
         logger.log(ModuleID.NETWORKING, LogLevel.INFO, "Send Queue Listener thread started running");
 
         /** run the while loop as long as the application is running. */
-        while(InternetCommunicator.getStatus()){
+        while(this.isRunning){
             
             /**
              * Check whether queue is empty or not, if it's not empty, 
@@ -167,8 +173,27 @@ public class InternetSendQueueListener implements Runnable {
                 try{
 
                     
-                    /** encode the data into UTF format and write it to output stream */
-                    dout.writeUTF(encodedMessage);
+                    /**  sending 25000 characters at a time */
+                    int threshold = 25000;
+
+                    /** a variable to use in the process of fragmentation */
+                    String buffer="";
+
+                    /** Sending message in chunks of 25000 characters*/
+                    for(int i =0 ; i < encodedMessage.length(); i++) {
+                        if(buffer.length()>=threshold) {
+                            dout.writeUTF(buffer);
+                            buffer ="";
+                        }
+                        /** Sending packet in chunks */
+                        buffer = buffer+encodedMessage.charAt(i);
+                    }
+                    if(buffer.length()>0) {
+                        dout.writeUTF(buffer);
+                    }
+                   
+                    /** Keeping EOF as the end of message to determine the end of the packet */
+                    dout.writeUTF("EOF");
 
                     /** flush the byte stream into the network. */
                     dout.flush();
