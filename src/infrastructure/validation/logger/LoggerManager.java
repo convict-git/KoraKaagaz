@@ -56,6 +56,15 @@ public class LoggerManager implements ILogger {
 	 */
 	protected LoggerManager() {
 		
+		try {
+			String home = System.getProperty("user.home");
+			loggerConfigFilePath = home+"/.config/KoraKaagaz/infrastructure_logger.xml";
+		} catch (SecurityException se) {
+			// if it occurs, logFilePath reverts to the current directory where it is run
+			// or the jar default file, if its run as a jar
+			loggerConfigFilePath = "resources/infrastructure_logger.xml";
+		}
+
 		File logConfigFile = new File(loggerConfigFilePath);
 		List<LogLevel> enabledLogLevelsList = null;
 				
