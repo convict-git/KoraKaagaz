@@ -36,6 +36,7 @@ public class TestUtil {
 		ClientBoardState.boardId   = new BoardId(boardId);
 		ClientBoardState.userIP  = new IpAddress(userIP);
 		ClientBoardState.userPort = new Port(userPort);
+		ClientBoardState.portNumber = new Port(9999);
 		ClientBoardState.userId = new UserId(
 				ClientBoardState.userIP,
 				ClientBoardState.username

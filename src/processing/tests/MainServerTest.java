@@ -44,29 +44,16 @@ public class MainServerTest extends TestCase {
 		/* Get an instance of logger */
 		ILogger logger = LoggerFactory.getLoggerInstance();
 		
-		try {
-			/* run the server */
-			MainServer.main(null);
-		} catch (Exception e) {
-			
-			this.setError(e.toString());
-			logger.log(
-					ModuleID.PROCESSING, 
-					LogLevel.WARNING, 
-					"MainServerTest: Failed to start main server."
-			);
-			
-			return false;
-		}
-		
 		/* Initialize the variables in Processor Module */
 		logger.log(
 				ModuleID.PROCESSING,
 				LogLevel.INFO,
-				"MainServerTest: Initialise processor for test."
+				"MainServerTest: Initialise server and processor for test."
 		);
 		
+		/* Initialise the main server */
 		TestUtil.initialiseMainServerForTest();
+		
 		TestUtil.initialiseProcessorForTest(new ClientObjectHandler());
 		
 		// send request for new board to server
