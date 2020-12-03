@@ -13,6 +13,7 @@ import infrastructure.validation.logger.*;
  */
 public class ReceiveQueueListener implements Runnable{
     
+    
     /**
      * Receiving queue of the processing module or content module based.
      */
@@ -29,7 +30,12 @@ public class ReceiveQueueListener implements Runnable{
     private HashMap<String, INotificationHandler> handlerMap;
     
     /**
-     * Creates a new ReceiveQueueListener with the given queue and handlerMap.
+     * Variable to stop waiting in receive  queue
+     */
+    private boolean isWaiting;
+    
+    /**
+     * Creates a new ReceiveQueueListener with the given queue and handlerMap.And sets isWaiting to be true.
      * @param receivequeue     processing or content module's receiving queue.
      * @param handlerMap       map which contains identifier and corresponding module INotificationHandler handler.
     */
@@ -37,6 +43,7 @@ public class ReceiveQueueListener implements Runnable{
         
         this. receivequeue = receivequeue;
         this.handlerMap = handlerMap;
+        this.isWaiting = true;
         
     }
     
@@ -54,7 +61,7 @@ public class ReceiveQueueListener implements Runnable{
     public void run() {
        
         
-        while( LanCommunicator.getStatus() || InternetCommunicator.getStatus()){
+        while( isWaiting ){
             
             if( !receivequeue.isEmpty() ){
             
@@ -79,6 +86,16 @@ public class ReceiveQueueListener implements Runnable{
             }
         }
         
+    }
+    
+    /**
+     * Function to set isWaiting to false, so it will prevent waiting in receive queue
+     * @param void
+     * @return void
+     */
+    public void stop(){
+        
+        isWaiting = false;
     }
     
     /**
