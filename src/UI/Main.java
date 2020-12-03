@@ -20,7 +20,7 @@ public class Main extends Application {
 
 	/**
 	 * This function opens the start session page.
-	 * @param PrimaryStage This is Stage for showing fxml page.
+	 * @param primaryStage This is Stage for showing fxml page.
 	 * @returns nothing
 	 */
 	@Override
