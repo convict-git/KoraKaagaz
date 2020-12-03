@@ -55,8 +55,7 @@ public class EndToEnd1 implements IChanges {
         );
         Process process2 = processBuilder2.start();
         // wait for the sender to run
-        Thread.sleep(10000);
-        
+        Thread.sleep(10000);	
         // Check File Equivalence for evaluation of the test
         if(FileHelp.diff(sendFilePath, recvFilePath)) {
         	System.out.println("E2E test passed");

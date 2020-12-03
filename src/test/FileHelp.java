@@ -50,8 +50,6 @@ public class FileHelp {
 	 */
     public static boolean diff(String path1, String path2) throws IOException {
         return 
-        Files.readString(Paths.get(path1)) 
-        == 
-        Files.readString(Paths.get(path2));
+        Files.readString(Paths.get(path1)).equals(Files.readString(Paths.get(path2)));
     }
 }
