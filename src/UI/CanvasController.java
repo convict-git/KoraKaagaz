@@ -992,7 +992,7 @@ public class CanvasController implements Initializable {
 		    			(double) pix.intensity.b / 255.0
 		    		);
 				gcForUpdate.setStroke(color);
-				gcForUpdate.strokeRect(pos.r, pos.c, 2, 2);
+				gcForUpdate.strokeOval(pos.r-1, pos.c-1, 2, 2);
 			}
 			logger.log(ModuleID.UI, LogLevel.SUCCESS, "Canvas Updated Successfuly");
 		}
