@@ -78,7 +78,7 @@ public class WhiteBoardController {
 	}
 
 	/**
-	 * This function sends data to processing,content moudles and opens canvas.
+	 * This function sends data to processing,content modules and opens canvas.
 	 * @param event The event is clicking start session button.
 	 * @returns nothing
 	 */
@@ -88,7 +88,10 @@ public class WhiteBoardController {
 			 * Opening the canvas fxml page.
 			 */
 			Stage primaryStage = new Stage();
-			Parent root = FXMLLoader.load(getClass().getResource("canvas.fxml"));
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("canvas.fxml"));
+			CanvasController controller = new CanvasController();
+			loader.setController(controller);
+			Parent root = loader.load();
 			Scene scene = new Scene(root,600,800);
 			primaryStage.setScene(scene);
 			primaryStage.show();
@@ -131,7 +134,15 @@ public class WhiteBoardController {
 				LogLevel.SUCCESS,
 				"Userdetails and image have been sent to content module to initialise user"
 			);
-
+			
+			/**
+			 * Subscribing for notifications from processing and content module.
+			 */
+			IContentNotificationHandler contentSubscribe = new ContentNotificationHandler();
+			IChanges processingSubscribe = new PixelListener();
+			user.subscribeForChanges("UI", processingSubscribe);
+			communicator.subscribeForNotifications("UI",contentSubscribe );
+			
 			/**
 			 * Closing the Start session window.
 			 */
