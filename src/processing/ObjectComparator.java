@@ -1,6 +1,8 @@
 package processing;
 
 import processing.utility.*;
+
+import java.io.Serializable;
 import java.util.*;
 
 /**
@@ -11,8 +13,10 @@ import java.util.*;
  * @reviewer Ahmed Zaheer Dadarkar
  */
 
-public class ObjectComparator implements Comparator <PriorityQueueObject>{
+public class ObjectComparator implements Comparator <PriorityQueueObject>, Serializable{
 	
+	private static final long serialVersionUID = 1L;
+
 	/** return 1 if the first object came before, 0 if they came on same time otherwise -1 
 	 * This class will be passed if any new priority queue is created on the map, so as to
 	 * tell that priority queue on how to arrange it's elements. 
