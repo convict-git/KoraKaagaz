@@ -15,7 +15,12 @@ import processing.utility.Pixel;
 *
 */
 public class FileHelp {
-    
+	/**
+	 * writePixels writes a pixel object into a file in the disk
+	 * @param pixels List of pixels belonging to the test object from the sender
+	 * @param filepath Relative path of the file to which pixels are to be
+	 * written w.r.t. the executable jar file location
+	 */
     public static void writePixels(
         ArrayList<Pixel> pixels, 
         String filepath
@@ -37,7 +42,12 @@ public class FileHelp {
         fileWriter.flush();
         fileWriter.close();
     }
-    
+    /**
+	 * diff Helper function to check for equality of two files in the disk
+	 * 
+	 * @param path1 Relative path of file1 w.r.t. the jar executable
+	 * @param path1 Relative path of file2 w.r.t. the jar executable
+	 */
     public static boolean diff(String path1, String path2) throws IOException {
         return 
         Files.readString(Paths.get(path1)) 

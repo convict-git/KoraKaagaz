@@ -34,7 +34,12 @@ public class ClientReceiver implements IChanges {
         processor.stopBoardSession(); 
     }
 
-    // captures the pixels from the board and saves them to the file
+    /** 
+	 * getChanges will take all the changes as the input and passed to the UI.
+	 * We are tapping it one layer above the UI for the test purpose.
+	 * 
+	 * @param pixels List of all the pixels where there is a change.
+	 */
     @Override
     public void getChanges(ArrayList<Pixel> pixels) {
         try {
@@ -43,7 +48,13 @@ public class ClientReceiver implements IChanges {
             e.printStackTrace();
         }
     }
-
+    /**
+	 * giveSelectedPixels will pass the list of pixels belonging to the
+	 * selected object, if the selected object got changed in between
+	 * by any other client.
+	 * 
+	 * @param pixels List of pixels belonging to the selected object
+	 */
     @Override
     public void giveSelectedPixels(ArrayList<Pixel> pixels) {
         try {

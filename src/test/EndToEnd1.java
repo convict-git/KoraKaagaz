@@ -44,7 +44,6 @@ public class EndToEnd1 implements IChanges {
         String sendFilePath = "sendFile";
         String recvFilePath = "recvFile";
         
-        
         // Create Sender client and connect to the same board
         processBuilder2.command(
             "java", 
@@ -73,9 +72,22 @@ public class EndToEnd1 implements IChanges {
         System.exit(0);
     }
 
+    /** 
+	 * getChanges will take all the changes as the input and passed to the UI.
+	 * We are tapping it one layer above the UI for the test purpose.
+	 * 
+	 * @param pixels List of all the pixels where there is a change.
+	 */
 	@Override
 	public void getChanges(ArrayList<Pixel> pixels) {}
 
+	/**
+	 * giveSelectedPixels will pass the list of pixels belonging to the
+	 * selected object, if the selected object got changed in between
+	 * by any other client.
+	 * 
+	 * @param pixels List of pixels belonging to the selected object
+	 */
 	@Override
 	public void giveSelectedPixels(ArrayList<Pixel> pixels) {}
 }

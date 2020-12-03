@@ -10,9 +10,6 @@ package test;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.io.File;
-import java.io.FileWriter;
-
 import processing.IChanges;
 import processing.ProcessingFactory;
 import processing.Processor;
@@ -36,9 +33,9 @@ public class ClientSender implements IChanges {
         // Pixels for test purpose
         ArrayList<Pixel> pixels = new ArrayList<Pixel>();
         pixels.add(new Pixel(new Position(1, 2), new Intensity(1, 2, 3)));
-        pixels.add(new Pixel(new Position(2, 3), new Intensity(2, 3, 4)));
-        pixels.add(new Pixel(new Position(3, 4), new Intensity(3, 4, 5)));
-        pixels.add(new Pixel(new Position(4, 5), new Intensity(5, 6, 7)));
+        pixels.add(new Pixel(new Position(2, 3), new Intensity(1, 2, 3)));
+        pixels.add(new Pixel(new Position(3, 4), new Intensity(1, 2, 3)));
+        pixels.add(new Pixel(new Position(4, 5), new Intensity(1, 2, 3)));
         
         // Write the pixels to the file for evaluation purpose
         FileHelp.writePixels(pixels, filepath);
@@ -65,10 +62,22 @@ public class ClientSender implements IChanges {
         processor.stopBoardSession();
         process.destroy();
     }
-
+    /** 
+	 * getChanges will take all the changes as the input and passed to the UI.
+	 * We are tapping it one layer above the UI for the test purpose.
+	 * 
+	 * @param pixels List of all the pixels where there is a change.
+	 */
 	@Override
 	public void getChanges(ArrayList<Pixel> pixels) {}
-
+	
+	/**
+	 * giveSelectedPixels will pass the list of pixels belonging to the
+	 * selected object, if the selected object got changed in between
+	 * by any other client.
+	 * 
+	 * @param pixels List of pixels belonging to the selected object
+	 */
 	@Override
 	public void giveSelectedPixels(ArrayList<Pixel> pixels) {}
     
