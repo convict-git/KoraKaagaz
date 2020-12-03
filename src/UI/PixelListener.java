@@ -18,12 +18,12 @@ public class PixelListener implements IChanges {
 	 */
 	@Override
 	public void getChanges(ArrayList<Pixel> pixels) {
-		if (pixels!=null) {
+		if (pixels != null) {
 			CanvasController controller = new CanvasController();
 			controller.updateChanges(pixels);
 		}
 	}
-	
+
 
 	/**
 	 * This method will call updateSelectedPixels method to select an object by changing the color of given pixels
@@ -31,7 +31,7 @@ public class PixelListener implements IChanges {
 	 */
 	@Override
 	public void giveSelectedPixels(ArrayList<Pixel> pixels) {
-		if (pixels!=null) {
+		if (pixels != null) {
 			CanvasController controller = new CanvasController();
 			controller.updateSelectedPixels(pixels);
 		}

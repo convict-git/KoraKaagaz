@@ -1,6 +1,6 @@
 package UI;
 /**
- * @Author	 : Ahmed Z D
+ * @Author: Ahmed Z D
  * It is a utility to set the state of the current operation being done on the canvas.
  */
 
