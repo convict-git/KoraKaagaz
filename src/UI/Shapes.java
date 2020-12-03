@@ -175,7 +175,7 @@ public class Shapes {
 		Position  start = new Position((int) (topx),(int) (topy));
 		Intensity i = new Intensity((int) color.getRed()*255,(int) color.getGreen()*255,(int) color.getBlue()*255);
 		Pixel p1 = new Pixel(start,i);
-		drawshape.drawCircle(p1,(float) len);
+		drawshape.drawSquare(p1,(float) len);
 		logger.log(
 			ModuleID.UI,
 			LogLevel.INFO,
