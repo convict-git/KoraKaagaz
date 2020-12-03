@@ -190,7 +190,7 @@ public class Shapes {
 	 * @param startx,starty: start position of mouse drag
 	 * @param endx,endy: end position of mouse drag
 	 */
-	 public static void drawPerfectTriangle(
+	public static void drawPerfectTriangle(
 		Color color,
 		GraphicsContext g,
 		double startx,
@@ -326,7 +326,7 @@ public class Shapes {
 	 * @param startx,starty: start position of mouse drag
 	 * @param endx,endy: end position of mouse drag
 	 */
-	 public static void drawPerfectLineEffect(
+	public static void drawPerfectLineEffect(
 		Canvas canvasB,
 		Color color,
 		GraphicsContext g,
@@ -349,7 +349,7 @@ public class Shapes {
 	 * @param startx,starty: start position of mouse drag
 	 * @param endx,endy: end position of mouse drag
 	 */
-	 public static void drawPerfectSquareEffect(
+	public static void drawPerfectSquareEffect(
 		Canvas canvasB,
 		Color color,
 		GraphicsContext g,
@@ -377,7 +377,7 @@ public class Shapes {
 	 * @param startx,starty: start position of mouse drag
 	 * @param endx,endy: end position of mouse drag
 	 */
-    public static void drawPerfectTriangleEffect(
+	public static void drawPerfectTriangleEffect(
 		Canvas canvasB,
 		Color color,
 		GraphicsContext g,
