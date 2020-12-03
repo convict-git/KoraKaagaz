@@ -44,52 +44,66 @@ public class Brush{
 	}
 
 	/**
-	 *This is called on mouse release for brush to send all the pixels as an arraylist to the processing module
-	 *@param color   any color selected
-	 *@param g   context
-	 *@param startx start pt(X)
-	 *@param starty start pt(Y)
-	 *@param endx end(dragged) pt(X)
-	 *@param endy end(dragged) pt(Y)
-	 *@returns nothing
+	 * This is called on mouse release for brush to send all the pixels as an arraylist to the processing module
+	 * @param color   any color selected
+	 * @param g   context
+	 * @param startx start pt(X)
+	 * @param starty start pt(Y)
+	 * @param endx end(dragged) pt(X)
+	 * @param endy end(dragged) pt(Y)
+	 * @returns nothing
 	 */
-	public static void drawBrush(Color color,GraphicsContext g, double startx, double starty, double endx, double endy) {
+	public static void drawBrush(
+		Color color,
+		GraphicsContext g,
+		double startx,
+		double starty,
+		double endx,
+		double endy
+	) {
 		g.setStroke(color);
 		g.stroke();
 		g.closePath();
 
 		drawerase.drawCurve(pixels);
-		pixels=new ArrayList<Pixel>();
-    	}
+		pixels = new ArrayList<Pixel>();
+	}
 
 	/**
-	 *This is called on mouse release for eraser to send all positions as an arraylist to the processing module
-	 *@param color   any color selected
-	 *@param g   context
-	 *@param startx start pt(X)
-	 *@param starty start pt(Y)
-	 *@param endx end(dragged) pt(X)
-	 *@param endy end(dragged) pt(Y)
-	 *@returns nothing
+	 * This is called on mouse release for eraser to send all positions as an arraylist to the processing module
+	 * @param color   any color selected
+	 * @param g   context
+	 * @param startx start pt(X)
+	 * @param starty start pt(Y)
+	 * @param endx end(dragged) pt(X)
+	 * @param endy end(dragged) pt(Y)
+	 * @returns nothing
 	 */
-	public static void drawEraser(Color color,GraphicsContext g, double startx, double starty, double endx, double endy) {
+	public static void drawEraser(
+		Color color,
+		GraphicsContext g,
+		double startx,
+		double starty,
+		double endx,
+		double endy
+	) {
 		g.closePath();
 
 		drawerase.erase(position);
-		position=new ArrayList<Position>();
-    	}
+		position = new ArrayList<Position>();
+	}
 
 	/**
-	 *It is to show the brush effect while mouse drag and collect data to send to processing team
-	 *@param canvas  canvas to do on
-	 *@param color   any color selected
-	 *@param g   context
-	 *@param startx start pt(X)
-	 *@param starty start pt(Y)
-	 *@param endx end(dragged) pt(X)
-	 *@param endy end(dragged) pt(Y)
-	 *@param size brushsize
-	 *@returns nothing
+	 * It is to show the brush effect while mouse drag and collect data to send to processing team
+	 * @param canvas  canvas to do on
+	 * @param color   any color selected
+	 * @param g   context
+	 * @param startx start pt(X)
+	 * @param starty start pt(Y)
+	 * @param endx end(dragged) pt(X)
+	 * @param endy end(dragged) pt(Y)
+	 * @param size brushsize
+	 * @returns nothing
 	 */
 	public static void drawBrushEffect(
 		Canvas canvasB,
@@ -103,28 +117,28 @@ public class Brush{
 		g.setStroke(color);
 		g.strokeLine(startx,starty,endx,endy);
 
-		double x=0,y=0,m=0,flag=0;
+		double x = 0, y = 0, m = 0, flag = 0;
 
 		/**
 		 * Check if slope is 0 or infinity.
 		 * If either is there flag to a certain value
 		 * m = slope
 		 */
-		if(startx==endx) {
-			flag=1;
+		if(startx == endx) {
+			flag = 1;
 		}
-		else if(endy==starty) {
-			flag=2;
+		else if(endy == starty) {
+			flag = 2;
 		}
 		else {
-			flag=0;
-			m= (endy-starty)/(endx-startx);
+			flag = 0;
+			m = (endy - starty) / (endx - startx);
 		}
 
 		/**
 		 * Intensity in terms of RGB format
 		 */
-		Intensity i = new Intensity((int) color.getRed(),(int) color.getGreen(),(int) color.getBlue());
+		Intensity i = new Intensity((int) color.getRed(), (int) color.getGreen(), (int) color.getBlue());
 
 		/**
 		 * The calculation of pixels
@@ -137,17 +151,16 @@ public class Brush{
 			j <= (int)(Math.sqrt((endy - starty) * (endy - starty) + (endx - startx) * (endx - startx)));
 			j+=2
 		) {
-			for (int k = (int)(-1 * size/2); k <= (int)(size/2); k+=1)
-		    {
-				if (flag==0) {
+			for (int k = (int)(-1 * size/2); k <= (int)(size/2); k+=1) {
+				if (flag == 0) {
 					x = startx + Math.sqrt((j*j)/(m * m + 1)) + ( Math.abs(m * k) * ( Math.sqrt(1/(1 + m * m)) ));
 					y = starty + ( Math.abs(m) * Math.sqrt((j*j)/(m * m + 1))) - ( (1/m) * Math.abs(m * k) * Math.sqrt(1/(1 + m * m)));
 				}
-				else if (flag==1) {
+				else if (flag == 1) {
 					x = startx + k;
 					y = starty + j;
 				}
-				else if (flag==1) {
+				else if (flag == 1) {
 					x = startx + j;
 					y = starty + k;
 				}
@@ -163,16 +176,16 @@ public class Brush{
 	}
 
 	/**
-	 *It is to show the erase effect while mouse drag and collect data to send to processing team
-	 *@param canvas  canvas to do on
-	 *@param color   any color selected
-	 *@param g   context
-	 *@param startx start pt(X)
-	 *@param starty start pt(Y)
-	 *@param endx end(dragged) pt(X)
-	 *@param endy end(dragged) pt(Y)
-	 *@param size brushsize
-	 *@returns nothing
+	 * It is to show the erase effect while mouse drag and collect data to send to processing team
+	 * @param canvas  canvas to do on
+	 * @param color   any color selected
+	 * @param g   context
+	 * @param startx start pt(X)
+	 * @param starty start pt(Y)
+	 * @param endx end(dragged) pt(X)
+	 * @param endy end(dragged) pt(Y)
+	 * @param size brushsize
+	 * @returns nothing
 	 */
 	public static void drawEraserEffect(
 		Canvas canvasB,
@@ -191,16 +204,16 @@ public class Brush{
 		 * If either is there flag to a certain value
 		 * m = slope
 		 */
-		double x=0,y=0,m=0,flag=0;
-		if (startx==endx) {
-			flag=1;
+		double x = 0, y = 0, m = 0, flag = 0;
+		if (startx == endx) {
+			flag = 1;
 		}
-		else if (endy==starty) {
-			flag=2;
+		else if (endy == starty) {
+			flag = 2;
 		}
 		else {
-			flag=0;
-			m= (endy-starty)/(endx-startx);
+			flag = 0;
+			m = (endy - starty) / (endx - startx);
 		}
 
 		/**
@@ -212,19 +225,18 @@ public class Brush{
 		for (
 			int j = 0;
 			j <= (int)(Math.sqrt((endy - starty) * (endy - starty) + (endx - startx) * (endx - startx)));
-			j+=2
+			j += 2
 		) {
-			for (int k = (int)(-1 * size/2); k <= (int)(size/2); k+=1)
-			{
-				if (flag==0) {
+			for (int k = (int)(-1 * size/2); k <= (int)(size/2); k+=1) {
+				if (flag == 0) {
 					x = startx + Math.sqrt((j*j)/(m * m + 1)) + ( Math.abs(m * k) * ( Math.sqrt(1/(1 + m * m))));
 					y = starty + ( Math.abs(m) * Math.sqrt((j*j)/(m * m + 1))) - ( (1/m) * Math.abs(m * k) * Math.sqrt(1/(1 + m * m)));
 				}
-				else if (flag==1) {
+				else if (flag == 1) {
 					x = startx + k;
 					y = starty + j;
 				}
-				else if (flag==1) {
+				else if (flag == 1) {
 					x = startx + j;
 					y = starty + k;
 				}
@@ -236,6 +248,5 @@ public class Brush{
 				position.add(start);
 			}
 		}
-
 	}
 }
