@@ -160,7 +160,7 @@ public class Brush{
 					x = startx + k;
 					y = starty + j;
 				}
-				else if (flag == 1) {
+				else if (flag == 2) {
 					x = startx + j;
 					y = starty + k;
 				}
@@ -236,7 +236,7 @@ public class Brush{
 					x = startx + k;
 					y = starty + j;
 				}
-				else if (flag == 1) {
+				else if (flag == 2) {
 					x = startx + j;
 					y = starty + k;
 				}
