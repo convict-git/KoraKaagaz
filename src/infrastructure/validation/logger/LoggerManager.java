@@ -56,32 +56,43 @@ public class LoggerManager implements ILogger {
 	 */
 	protected LoggerManager() {
 		
+		// try finding for an XML file in user's home location
+		try {
+			String home = System.getProperty("user.home");
+			loggerConfigFilePath = home+"/.config/KoraKaagaz/infrastructure_logger.xml";
+		} catch (SecurityException se) {
+			// if it occurs, logFilePath reverts to the current directory where it is run
+			// or the jar default file, if its run as a jar
+			loggerConfigFilePath = "resources/infrastructure_logger.xml";
+		}
+
 		File logConfigFile = new File(loggerConfigFilePath);
 		List<LogLevel> enabledLogLevelsList = null;
 				
-		if(logConfigFile.isFile()) {
+		// set arguments for constructors using the available XML config file
+		try {
 			
-			String fileToParse = configFileToParse(loggerConfigFilePath);
-			
-			try {
+			if(logConfigFile.isFile()) {
 				
+				String fileToParse = configFileToParse(loggerConfigFilePath);				
 				File configFile = new File(fileToParse);
 				if(configFile.isFile()) {
 					enabledLogLevelsList = parse(fileToParse);
 				} else {
-					enabledLogLevelsList = parse(loggerConfigFilePath);
+					// no xml config file found
+					// switch to default xml config file packaged in "resources/infrastructure_logger.xml"
+					enabledLogLevelsList = parse("resources/infrastructure_logger.xml");
 				}
-				
-			} catch (NullPointerException npe) {
-				// occurs in the case where the pathname argument becomes null
-				// load the loggerConfigFilePath
-				enabledLogLevelsList = parse(loggerConfigFilePath);
-			} catch (SecurityException se) {
-				// a security manager, if it exists can deny read access to the file
-				// equivalent to the case if isFile method returns False and so, same can be done
-				enabledLogLevelsList = parse(loggerConfigFilePath);
 			}
-
+			
+		} catch (NullPointerException npe) {
+			// occurs in the case where the pathname argument becomes null
+			// load the loggerConfigFilePath
+			enabledLogLevelsList = parse("resources/infrastructure_logger.xml");
+		} catch (SecurityException se) {
+			// a security manager, if it exists can deny read access to the file
+			// equivalent to the case if isFile method returns False and so, same can be done
+			enabledLogLevelsList = parse("resources/infrastructure_logger.xml");
 		}
 		
 		if(allowFileLogging) {

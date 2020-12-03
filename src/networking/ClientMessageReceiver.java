@@ -10,10 +10,10 @@ import infrastructure.validation.logger.*;
 
 /**
  * 
- * This is the file which contains the clientMessageReceiver Class which is a runnable class, that means it
- * has the functionality of threads. This thread basically receives message from the server using DataInputStream.
- * After receiving the message it will push it into either conntent module queue or processing module queue based 
- * on the identifier. 
+ * This file contains the clientMessageReceiver Class which is a runnable class, 
+ * which means it has the functionality of threads. This thread receives a message 
+ * from the server using DataInputStream. After receiving the message it will push it 
+ * into either the content module queue or processing module queue based on the identifier. 
  * 
  * @author Marella Shiva Sai Teja
  */
@@ -41,6 +41,11 @@ public class ClientMessageReceiver implements Runnable {
 	ILogger logger = LoggerFactory.getLoggerInstance();
 
 	/**
+	 * Flag variable to exit loop in run method
+	*/
+	boolean isRunning;
+
+	/**
 	 * 
 	 * This method is the constructor of the class which initializes the params
 	 * @param contModuleQueue
@@ -52,6 +57,7 @@ public class ClientMessageReceiver implements Runnable {
 		this.contModuleQueue = contModuleQueue;
 		this.procModuleQueue = procModuleQueue;
 		this.dis = dis;
+		this.isRunning = true;
 	}
 
 	/**
@@ -133,17 +139,31 @@ public class ClientMessageReceiver implements Runnable {
 		 * Loops until the socket gets closed by the internet communicator, when the socket gets closed
 		 * the appropriate catch would be executed.
 		 */
-		while(true){
+		while(this.isRunning){
 			/**
 			 * This block of code inside the try would try to execute instructions inside it and when it 
 			 * receives any exceptions it would look for appropriate catch block.
 			 */
 			try{
+				/**
+				 * Variable to store the entire message from the client
+				 */
+				String recvMsg = "";
 
 				/**
-				 * Receives the input message from the input stream
+				 * Loops until it finds the end of file in the message
 				 */
-				String recvMsg = dis.readUTF();
+				while(true){
+					String newMsg = dis.readUTF();
+					if(newMsg.equals("EOF")) break;
+
+					// If it is not EOF it concatnates the message with the recvMsg
+					recvMsg += newMsg;
+				}
+
+				/**
+				 * Calls to the respective functions to parse the Identifier from the message
+				 */
 				String id = getIdFromPacket(recvMsg);
 				String msg = getMsgFromPacket(recvMsg);
 
@@ -158,7 +178,7 @@ public class ClientMessageReceiver implements Runnable {
 			 */
 			catch(EOFException exp){
 				//Logs exception
-				logger.log(ModuleID.NETWORKING, LogLevel.WARNING, exp.toString());
+				logger.log(ModuleID.NETWORKING, LogLevel.ERROR, exp.toString());
 				return;
 			}
 
@@ -167,7 +187,7 @@ public class ClientMessageReceiver implements Runnable {
 			 */
 			catch(UTFDataFormatException exp){
 				//Logs exception
-				logger.log(ModuleID.NETWORKING, LogLevel.WARNING, exp.toString());
+				logger.log(ModuleID.NETWORKING, LogLevel.ERROR, exp.toString());
 			}
 
 			/**
@@ -176,9 +196,16 @@ public class ClientMessageReceiver implements Runnable {
 			 */
 			catch(IOException exp){
 				//Logs exception
-				logger.log(ModuleID.NETWORKING, LogLevel.WARNING, exp.toString());
+				logger.log(ModuleID.NETWORKING, LogLevel.ERROR, exp.toString());
 				return;
 			}
 		}
+	}
+
+	/**
+	 * This method stops the client message receiver.
+	 */	
+	public void stop(){
+		this.isRunning = false;
 	}
 }
