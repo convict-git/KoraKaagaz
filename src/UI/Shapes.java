@@ -139,16 +139,11 @@ public class Shapes {
 		Pixel p1 = new Pixel(start,i);
 		Pixel p2 = new Pixel(end,i);
 		drawshape.drawLine(p1, p2);
-		drawTest(p1, p2);
 		logger.log(
 			ModuleID.UI,
 			LogLevel.INFO,
 			"Line drawn from ("+startx+","+starty+") to ("+endx+","+endy+")"
 		);
-	}
-	
-	private static void drawTest(Pixel p1, Pixel p2) {
-		
 	}
 
 	/**
