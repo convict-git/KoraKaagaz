@@ -145,9 +145,10 @@ public class CommunicatorFactory{
 
 		/** This variable is used to store the client id */
 		String from="";
+		Socket sock=null;
 		try{
 			/** Creates a stream socket and connects it to the specified port number at the specified IP address. */
-			Socket sock=new Socket(str[0],Integer.parseInt(str[1]));
+			sock=new Socket(str[0],Integer.parseInt(str[1]));
 			
 			/** Creating DataInputStream that gets input underlying input stream of the socket */
 			DataInputStream in=new DataInputStream(sock.getInputStream());
@@ -169,12 +170,22 @@ public class CommunicatorFactory{
 			
 		}
 		finally{
-			/** In case failed to get client Id from server */
-			if(from.equals(""))
-				return -1;
-
-			else return Integer.parseInt(from);
+			try {
+				if(sock!=null)
+					sock.close();
+			} catch (IOException e){
+					logger.log(
+						ModuleID.NETWORKING, 
+						LogLevel.ERROR, 
+						"Error in closing the socket" + e.toString()
+					);
+			}
 		}
+		/** In case failed to get client Id from server */
+		if(from.equals(""))
+			return -1;
+
+		else return Integer.parseInt(from);
 	}
 
 	/**
