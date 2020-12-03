@@ -43,7 +43,7 @@ public class Shapes {
 	 * @param startx,starty: start position of mouse drag
 	 * @param endx,endy: end position of mouse drag
 	 */
-	 public static void drawPerfectRect(
+	public static void drawPerfectRect(
 		Color color,
 		GraphicsContext g,
 		double startx,
@@ -120,7 +120,7 @@ public class Shapes {
 	 * @param startx,starty: start position of mouse drag
 	 * @param endx,endy: end position of mouse drag
 	 */
-	 public static void drawPerfectLine(
+	public static void drawPerfectLine(
 		Color color,
 		GraphicsContext g,
 		double startx,
@@ -153,7 +153,7 @@ public class Shapes {
 	 * @param startx,starty: start position of mouse drag
 	 * @param endx,endy: end position of mouse drag
 	 */
-	 public static void drawPerfectSquare(
+	public static void drawPerfectSquare(
 		Color color,
 		GraphicsContext g,
 		double startx,
@@ -233,7 +233,7 @@ public class Shapes {
 				LogLevel.INFO,
 				"Triangle drawn with coordiates:("+xs[0]+","+ys[0]+"), ("+xs[1]+","+ys[1]+"), ("+xs[2]+","+ys[2]+")"
 			);
-	}
+		}
 		else {
 			/**
 			 * xs[] stores all the x coordinates of triangle
