@@ -1025,14 +1025,6 @@ public class CanvasController implements Initializable {
 			.getItems()
 			.addAll("90", "180", "270");
 
-		// Subscribing for notifications from processing and content module.
-		IContentNotificationHandler contentSubscribe = new ContentNotificationHandler();
-		IChanges processingSubscribe = new PixelListener();
-		Processor processor = ProcessingFactory.getProcessor() ;
-		IUser user = processor;
-		user.subscribeForChanges("UI", processingSubscribe);
-		IContentCommunicator communicator =  ContentFactory.getContentCommunicator();
-		communicator.subscribeForNotifications("UI",contentSubscribe );
 		//Grapics context object for updating pixels
 		gcForUpdate = canvasF.getGraphicsContext2D();
 		// The following code initializes the dropdown of brushSize.

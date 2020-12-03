@@ -43,7 +43,14 @@ public class Shapes {
 	 * @param startx,starty: start position of mouse drag
 	 * @param endx,endy: end position of mouse drag
 	 */
-    public static void drawPerfectRect(Color color,GraphicsContext g, double startx, double starty, double endx, double endy) {
+	public static void drawPerfectRect(
+		Color color,
+		GraphicsContext g,
+		double startx,
+		double starty,
+		double endx,
+		double endy
+	) {
 		/**
 		 * To draw a rectangle, top left coordinates are required along with length and width of rectangle
 		 * (topx,topy) are top left coordinates of rectangle
@@ -66,16 +73,23 @@ public class Shapes {
 			LogLevel.INFO,
 			"Rectangle drawn from ("+topx+","+topy+") to ("+(topx+length)+","+(topy+width)+")"
 		);
-    }
+	}
 
-    /**
-     * This method takes start and end points of mouse drag draw circle and sends the data to processing module
-     * @param color: Color selected from color picker
-     * @param g: object of graphicscontext
-     * @param startx,starty: start position of mouse drag
-     * @param endx,endy: end position of mouse drag
-     */
-    public static void drawPerfectCircle(Color color,GraphicsContext g, double startx, double starty, double endx, double endy) {
+	/**
+	 * This method takes start and end points of mouse drag draw circle and sends the data to processing module
+	 * @param color: Color selected from color picker
+	 * @param g: object of graphicscontext
+	 * @param startx,starty: start position of mouse drag
+	 * @param endx,endy: end position of mouse drag
+	 */
+	public static void drawPerfectCircle(
+		Color color,
+		GraphicsContext g,
+		double startx,
+		double starty,
+		double endx,
+		double endy
+	) {
 		/**
 		 * To draw a circle, top left coordinates of the boundary box are required along with diameter of circle
 		 * Boundary Box is smallest rectangular region enclosing the shape
@@ -99,14 +113,21 @@ public class Shapes {
 		);
 	}
 
-    /**
-     * This method will draw line and sends the data to processing module
-     * @param color: Color selected from color picker
-     * @param g: object of graphicscontext
-     * @param startx,starty: start position of mouse drag
-     * @param endx,endy: end position of mouse drag
-     */
-    public static void drawPerfectLine(Color color,GraphicsContext g, double startx, double starty, double endx, double endy) {
+	/**
+	 * This method will draw line and sends the data to processing module
+	 * @param color: Color selected from color picker
+	 * @param g: object of graphicscontext
+	 * @param startx,starty: start position of mouse drag
+	 * @param endx,endy: end position of mouse drag
+	 */
+	public static void drawPerfectLine(
+		Color color,
+		GraphicsContext g,
+		double startx,
+		double starty,
+		double endx,
+		double endy
+	) {
 		/**
 		 * To draw a line start point and end point are required
 		 */
@@ -126,13 +147,20 @@ public class Shapes {
 	}
 
 	/**
-     * This method will draw square and sends the data to processing module
-     * @param color: Color selected from color picker
-     * @param g: object of graphicscontext
-     * @param startx,starty: start position of mouse drag
-     * @param endx,endy: end position of mouse drag
-     */
-    public static void drawPerfectSquare(Color color,GraphicsContext g, double startx, double starty, double endx, double endy) {
+	 * This method will draw square and sends the data to processing module
+	 * @param color: Color selected from color picker
+	 * @param g: object of graphicscontext
+	 * @param startx,starty: start position of mouse drag
+	 * @param endx,endy: end position of mouse drag
+	 */
+	public static void drawPerfectSquare(
+		Color color,
+		GraphicsContext g,
+		double startx,
+		double starty,
+		double endx,
+		double endy
+	) {
 		/**
 		 * We need to draw the rectangle with equal length and width to draw a square
 		 * Here length of the square is maximum of length and width of rectangle
@@ -155,14 +183,21 @@ public class Shapes {
 		);
 	}
 
-    /**
-     * This method will draw triangle and sends the data to processing module
-     * @param color: Color selected from color picker
-     * @param g: object of graphicscontext
-     * @param startx,starty: start position of mouse drag
-     * @param endx,endy: end position of mouse drag
-     */
-    public static void drawPerfectTriangle(Color color,GraphicsContext g, double startx, double starty, double endx, double endy) {
+	/**
+	 * This method will draw triangle and sends the data to processing module
+	 * @param color: Color selected from color picker
+	 * @param g: object of graphicscontext
+	 * @param startx,starty: start position of mouse drag
+	 * @param endx,endy: end position of mouse drag
+	 */
+	public static void drawPerfectTriangle(
+		Color color,
+		GraphicsContext g,
+		double startx,
+		double starty,
+		double endx,
+		double endy
+	) {
 		/**
 		 * To draw a triangle we need to calculate three points from start and end postions of mouse drag
 		 * Here topx,topy are topleft coordinates of boundary box of triangle
@@ -170,10 +205,10 @@ public class Shapes {
 		 * 							 (2) The end position of mouse drag is below start position
 		 * The coordinates of required triangle is based on the above two cases
 		 */
-    	g.setStroke(color);
-        double topx = Math.min(startx,endx);
-        double topy = Math.min(starty,endy);
-        if (topy==starty) {
+		g.setStroke(color);
+		double topx = Math.min(startx,endx);
+		double topy = Math.min(starty,endy);
+		if (topy==starty) {
 			/**
 			 * xs[] stores all the x coordinates of triangle
 			 * ys[] stores all respective the y coordinates of triangle
@@ -198,8 +233,8 @@ public class Shapes {
 				LogLevel.INFO,
 				"Triangle drawn with coordiates:("+xs[0]+","+ys[0]+"), ("+xs[1]+","+ys[1]+"), ("+xs[2]+","+ys[2]+")"
 			);
-    }
-        else {
+		}
+		else {
 			/**
 			 * xs[] stores all the x coordinates of triangle
 			 * ys[] stores all respective the y coordinates of triangle
@@ -224,19 +259,27 @@ public class Shapes {
 				LogLevel.INFO,
 				"Triangle drawn with coordiates:("+xs[0]+","+ys[0]+"), ("+xs[1]+","+ys[1]+"), ("+xs[2]+","+ys[2]+")"
 			);
-        }
+		}
 	}
 
-    /**
-     * This method will create the scaling effect for rectangle on back canvas while dragging the mouse
-     * Logic: Draws and erases the shape for every drag postion in rear canvas(canvasB)
-     * @param canvasB: Rear canvas
-     * @param color: Color selected from color picker
-     * @param g: object of graphicscontext
-     * @param startx,starty: start position of mouse drag
-     * @param endx,endy: end position of mouse drag
-     */
-	public static void drawPerfectRectEffect(Canvas canvasB,Color color,GraphicsContext g, double startx, double starty, double endx, double endy) {
+	/**
+	 * This method will create the scaling effect for rectangle on back canvas while dragging the mouse
+	 * Logic: Draws and erases the shape for every drag postion in rear canvas(canvasB)
+	 * @param canvasB: Rear canvas
+	 * @param color: Color selected from color picker
+	 * @param g: object of graphicscontext
+	 * @param startx,starty: start position of mouse drag
+	 * @param endx,endy: end position of mouse drag
+	 */
+	public static void drawPerfectRectEffect(
+		Canvas canvasB,
+		Color color,
+		GraphicsContext g,
+		double startx,
+		double starty,
+		double endx,
+		double endy
+	) {
 		double topx = Math.min(startx,endx);
 		double topy = Math.min(starty,endy);
 		double length=Math.abs(startx-endx);
@@ -244,18 +287,26 @@ public class Shapes {
 		g.setStroke(color);
 		g.clearRect(0, 0, canvasB.getWidth(), canvasB.getHeight());
 		g.strokeRect(topx, topy, length, width);
-    }
+	}
 
 	/**
-     * This method will create the scaling effect for circle on back canvas while dragging the mouse
-     * Logic: Draws and erases the shape for every drag postion in rear canvas(canvasB)
-     * @param canvasB: Rear canvas
-     * @param color: Color selected from color picker
-     * @param g: object of graphicscontext
-     * @param startx,starty: start position of mouse drag
-     * @param endx,endy: end position of mouse drag
-     */
-	public static void drawPerfectCircleEffect(Canvas canvasB,Color color,GraphicsContext g, double startx, double starty, double endx, double endy) {
+	 * This method will create the scaling effect for circle on back canvas while dragging the mouse
+	 * Logic: Draws and erases the shape for every drag postion in rear canvas(canvasB)
+	 * @param canvasB: Rear canvas
+	 * @param color: Color selected from color picker
+	 * @param g: object of graphicscontext
+	 * @param startx,starty: start position of mouse drag
+	 * @param endx,endy: end position of mouse drag
+	 */
+	public static void drawPerfectCircleEffect(
+		Canvas canvasB,
+		Color color,
+		GraphicsContext g,
+		double startx,
+		double starty,
+		double endx,
+		double endy
+	) {
 		double topx = Math.min(startx,endx);
 		double topy = Math.min(starty,endy);
 		double length = Math.abs(startx-endx);
@@ -267,30 +318,46 @@ public class Shapes {
 	}
 
 	/**
-     * This method will create the scaling effect for line on back canvas while dragging the mouse
-     * Logic: Draws and erases the shape for every drag postion in rear canvas(canvasB)
-     * @param canvasB: Rear canvas
-     * @param color: Color selected from color picker
-     * @param g: object of graphicscontext
-     * @param startx,starty: start position of mouse drag
-     * @param endx,endy: end position of mouse drag
-     */
-    public static void drawPerfectLineEffect(Canvas canvasB,Color color,GraphicsContext g, double startx, double starty, double endx, double endy) {
+	 * This method will create the scaling effect for line on back canvas while dragging the mouse
+	 * Logic: Draws and erases the shape for every drag postion in rear canvas(canvasB)
+	 * @param canvasB: Rear canvas
+	 * @param color: Color selected from color picker
+	 * @param g: object of graphicscontext
+	 * @param startx,starty: start position of mouse drag
+	 * @param endx,endy: end position of mouse drag
+	 */
+	public static void drawPerfectLineEffect(
+		Canvas canvasB,
+		Color color,
+		GraphicsContext g,
+		double startx,
+		double starty,
+		double endx,
+		double endy
+	) {
 		g.setStroke(color);
 		g.clearRect(0, 0, canvasB.getWidth(), canvasB.getHeight());
 		g.strokeLine(startx, starty, endx, endy);
 	}
 
-    /**
-     * This method will create the scaling effect for square on back canvas while dragging the mouse
-     * Logic: Draws and erases the shape for every drag postion in rear canvas(canvasB)
-     * @param canvasB: Rear canvas
-     * @param color: Color selected from color picker
-     * @param g: object of graphicscontext
-     * @param startx,starty: start position of mouse drag
-     * @param endx,endy: end position of mouse drag
-     */
-    public static void drawPerfectSquareEffect(Canvas canvasB,Color color,GraphicsContext g, double startx, double starty, double endx, double endy) {
+	/**
+	 * This method will create the scaling effect for square on back canvas while dragging the mouse
+	 * Logic: Draws and erases the shape for every drag postion in rear canvas(canvasB)
+	 * @param canvasB: Rear canvas
+	 * @param color: Color selected from color picker
+	 * @param g: object of graphicscontext
+	 * @param startx,starty: start position of mouse drag
+	 * @param endx,endy: end position of mouse drag
+	 */
+	public static void drawPerfectSquareEffect(
+		Canvas canvasB,
+		Color color,
+		GraphicsContext g,
+		double startx,
+		double starty,
+		double endx,
+		double endy
+	) {
 		double topx = Math.min(startx,endx);
 		double topy = Math.min(starty,endy);
 		double length = Math.abs(startx-endx);
@@ -301,20 +368,28 @@ public class Shapes {
 		g.strokeRect(topx, topy, len, len);
 	}
 
-    /**
-     * This method will create the scaling effect for triangle on back canvas while dragging the mouse
-     * Logic: Draws and erases the shape for every drag postion in rear canvas(canvasB)
-     * @param canvasB: Rear canvas
-     * @param color: Color selected from color picker
-     * @param g: object of graphicscontext
-     * @param startx,starty: start position of mouse drag
-     * @param endx,endy: end position of mouse drag
-     */
-    public static void drawPerfectTriangleEffect(Canvas canvasB,Color color,GraphicsContext g, double startx, double starty, double endx, double endy) {
+	/**
+	 * This method will create the scaling effect for triangle on back canvas while dragging the mouse
+	 * Logic: Draws and erases the shape for every drag postion in rear canvas(canvasB)
+	 * @param canvasB: Rear canvas
+	 * @param color: Color selected from color picker
+	 * @param g: object of graphicscontext
+	 * @param startx,starty: start position of mouse drag
+	 * @param endx,endy: end position of mouse drag
+	 */
+	public static void drawPerfectTriangleEffect(
+		Canvas canvasB,
+		Color color,
+		GraphicsContext g,
+		double startx,
+		double starty,
+		double endx,
+		double endy
+	) {
 		g.setStroke(color);
 		double topx = Math.min(startx,endx);
 		double topy = Math.min(starty,endy);
-        if (topy==starty) {
+		if (topy==starty) {
 			double x3 = topx + Math.abs(startx-endx)/2;
 			double y3 = starty;
 			final double xs[] = new double[3];
@@ -323,8 +398,8 @@ public class Shapes {
 			ys[0]=y3; ys[1]=endy; ys[2]=endy;
 			g.clearRect(0, 0, canvasB.getWidth(), canvasB.getHeight());
 			g.strokePolygon(xs,ys,3);
-        }
-        else {
+		}
+		else {
 			double x3 = topx + Math.abs(startx-endx)/2;
 			double y3 = endy;
 			final double xs[] = new double[3];
@@ -333,6 +408,6 @@ public class Shapes {
 			ys[0]=y3; ys[1]=starty; ys[2]=starty;
 			g.clearRect(0, 0, canvasB.getWidth(), canvasB.getHeight());
 			g.strokePolygon(xs,ys,3);
-        }
+		}
 	}
 }

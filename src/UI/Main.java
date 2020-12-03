@@ -28,25 +28,24 @@ public class Main extends Application {
 		try {
 
 			/**
-             * Loading the startSession page
-             */
+			 * Loading the startSession page
+			 */
 			Parent root = FXMLLoader.load(getClass().getResource("StartSession.fxml"));
 			Scene scene = new Scene(root,600,800);
 			primaryStage.setScene(scene);
 			primaryStage.show();
-	    	logger.log(
-	    			ModuleID.UI,
-	    			LogLevel.SUCCESS,
-	    			"Startsession page has been opened."
-				);
+			logger.log(
+					ModuleID.UI,
+					LogLevel.SUCCESS,
+					"Startsession page has been opened."
+			);
 
-		}
-		catch(Exception e) {
+		} catch(Exception e) {
 			logger.log(
 					ModuleID.UI,
 					LogLevel.ERROR,
 					"Opening Start session page has failed."
-				);
+			);
 		}
 	}
 	public static void main(String[] args) {

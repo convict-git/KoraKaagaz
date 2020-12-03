@@ -77,33 +77,30 @@ public class ContentNotificationHandler implements IContentNotificationHandler {
 		alert.show();
 
 		//Creating a new thread to display the alert for some seconds and dismiss
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Thread.sleep(1000);  // seconds * 100
-                } catch (InterruptedException e) {
-                    if (alert.isShowing())
-                    {
-                    	 alert.close();
-                    }
-                    e.printStackTrace();
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					Thread.sleep(1000);  // seconds * 100
+				} catch (InterruptedException e) {
+					if (alert.isShowing()) {
+						 alert.close();
+					}
+					e.printStackTrace();
 
 					//log message
-                    logger.log(
-                    		ModuleID.UI,
-                    		LogLevel.ERROR,
-                    		e.toString()
+					logger.log(
+							ModuleID.UI,
+							LogLevel.ERROR,
+							e.toString()
 						);
-
-                } finally {
-                    if (alert.isShowing())
-                    {
-                    	alert.close();
-                    }
-                }
-           }
-        }).run();
+				} finally {
+					if (alert.isShowing()) {
+					alert.close();
+					}
+				}
+			}
+		}).run();
 
 		//log message on entry of user
 		logger.log(
@@ -149,8 +146,7 @@ public class ContentNotificationHandler implements IContentNotificationHandler {
 		//Converting the image string to image bytes
 		byte[] imageByte = Base64.getDecoder().decode(image);
 
-		if (message!= null)
-    	{
+		if (message != null) {
 			//Converting the image bytes to javafx image
 			Image imageJavafx = new Image(new ByteArrayInputStream(imageByte));
 
@@ -207,15 +203,14 @@ public class ContentNotificationHandler implements IContentNotificationHandler {
 					ModuleID.UI,
 					LogLevel.SUCCESS,
 					"Message received from the user and displayed on the Chatbox"
-				);
-
-    	}
-		else
-		{
+			);
+		}
+		else {
 			logger.log(
 					ModuleID.UI,
 					LogLevel.INFO,
-					"No message is received from the user");
+					"No message is received from the user"
+			);
 		}
 	}
 
@@ -245,11 +240,9 @@ public class ContentNotificationHandler implements IContentNotificationHandler {
 			public void run() {
 				try {
 					Thread.sleep(1000);  // seconds * 100
-				}
-            	catch (InterruptedException e) {
-					if (alert.isShowing())
-					{
-				 		alert.close();
+				} catch (InterruptedException e) {
+					if (alert.isShowing()) {
+						alert.close();
 					}
 					e.printStackTrace();
 
@@ -259,10 +252,8 @@ public class ContentNotificationHandler implements IContentNotificationHandler {
 							LogLevel.ERROR,
 							e.toString());
 
-				}
-				finally {
-					if (alert.isShowing())
-					{
+				} finally {
+					if (alert.isShowing()) {
 						alert.close();
 					}
 				}
@@ -273,6 +264,7 @@ public class ContentNotificationHandler implements IContentNotificationHandler {
 		logger.log(
 				ModuleID.UI,
 				LogLevel.SUCCESS,
-				"User"+ username +"successfully left the canvas");
+				"User"+ username +"successfully left the canvas"
+		);
 	}
 }
