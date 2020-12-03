@@ -155,7 +155,7 @@ public class ClientMessageReceiver implements Runnable {
 				 */
 				while(true){
 					String newMsg = dis.readUTF();
-					if(recvMsg.equals("EOF")) break;
+					if(newMsg.equals("EOF")) break;
 
 					// If it is not EOF it concatnates the message with the recvMsg
 					recvMsg += newMsg;
