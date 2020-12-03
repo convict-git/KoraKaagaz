@@ -693,7 +693,7 @@ public class CanvasController implements Initializable {
      * a point. We assume that the user selected the entire small square, not
      * just a single point
      */
-    private final int[] selRange = new int[] {-1, 0, 1};
+    private final int[] selRange = new int[] {-2,-1, 0, 1,2};
 
     /**
      * When a point in the canvas in clicked, then this method is called.
@@ -725,8 +725,8 @@ public class CanvasController implements Initializable {
 	    	}
 
 	    	// Get approximate selected row and column coordinate
-	    	int rowCoord = (int) Math.round(canvasMouseClickEvent.getY());
-	    	int colCoord = (int) Math.round(canvasMouseClickEvent.getX());
+	    	int rowCoord = (int) Math.round(canvasMouseClickEvent.getX());
+	    	int colCoord = (int) Math.round(canvasMouseClickEvent.getY());
 
 	    	// selPosition would represent a small region around the
 	    	// approximate selected position
@@ -933,8 +933,8 @@ public class CanvasController implements Initializable {
 	    			gcForUpdate
 	    				.getPixelWriter()
 	    				.setColor(
-	    					position.c,
 	    					position.r,
+	    					position.c,
 	    					HIGHLIGHT_COLOR
 	    				);
 	    		}
@@ -970,8 +970,8 @@ public class CanvasController implements Initializable {
 	    		gcForUpdate
 					.getPixelWriter()
 					.setColor(
-						position.c,
 						position.r,
+						position.c,
 						color
 					);
 	    	}
@@ -986,6 +986,11 @@ public class CanvasController implements Initializable {
 		synchronized(this) {
 				for(Pixel pix:pixels) {
 				Position pos = pix.position;
+				if(pix.intensity.r>=255 && pix.intensity.g>=255 && pix.intensity.b>=255) {
+					pix.intensity.r=1;
+					pix.intensity.g=1;
+					pix.intensity.b=1;
+				}
 				Color color = Color.color(
 		    			(double) pix.intensity.r,
 		    			(double) pix.intensity.g,
