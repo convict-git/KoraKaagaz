@@ -77,9 +77,9 @@ public class Chatbox implements Initializable{
 
 	}
 
-    /**
-     * Defining the logger to log the messages
-     */
+	/**
+	 * Defining the logger to log the messages
+	 */
 	static ILogger logger = LoggerFactory.getLoggerInstance();
 
 	/*
@@ -90,77 +90,76 @@ public class Chatbox implements Initializable{
 	* @param :chatDisplayBox-chat displaying box,
 	* @param :chatScroll-scroll pane of the chatbox
 	*/
-    public static void buttonClick(
+	public static void buttonClick(
 		ActionEvent e,
 		String userMessage,
 		VBox chatDisplayBox,
 		ScrollPane chatScroll
 	) {
-    	//checking whether the user has entered any message or not
-    	if (userMessage != null)
-    	{
+		//checking whether the user has entered any message or not
+		if (userMessage != null) {
 
-    		//Setting the chat scroll pane width
-            chatScroll.setFitToWidth(true);
+			//Setting the chat scroll pane width
+			hatScroll.setFitToWidth(true);
 
-            //Creating a label to store the message entered by the user
-            Label sendMessageLabel=new Label(userMessage);
-            sendMessageLabel.setMinHeight(Region.USE_PREF_SIZE);
+			//Creating a label to store the message entered by the user
+			Label sendMessageLabel=new Label(userMessage);
+			sendMessageLabel.setMinHeight(Region.USE_PREF_SIZE);
 
 			//Adding styling to the label
-            sendMessageLabel.setStyle(" -fx-font: 14pt 'Corbel'; -fx-text-fill: black; -fx-background-color: orange;-fx-border-color: black;-fx-background-radius: 10; -fx-border-radius: 10 10 10 10");
+			sendMessageLabel.setStyle(" -fx-font: 14pt 'Corbel'; -fx-text-fill: black; -fx-background-color: orange;-fx-border-color: black;-fx-background-radius: 10; -fx-border-radius: 10 10 10 10");
 
 			//Making sure that the label created is wrapped around the text inside
-            sendMessageLabel.setWrapText(true);
+			sendMessageLabel.setWrapText(true);
 
 			//Setting the alignment of the message label
-            sendMessageLabel.setTextAlignment(TextAlignment.JUSTIFY);
+			sendMessageLabel.setTextAlignment(TextAlignment.JUSTIFY);
 
 			//creating a HBox to store the label
-            HBox sendMessagehBox=new HBox();
+			HBox sendMessagehBox=new HBox();
 
 			//Keeping the message label inside the HBox
-            sendMessagehBox.getChildren().add(sendMessageLabel);
+			sendMessagehBox.getChildren().add(sendMessageLabel);
 
 			//Aligning the position of the HBox
-            sendMessagehBox.setAlignment(Pos.BASELINE_RIGHT);
+			sendMessagehBox.setAlignment(Pos.BASELINE_RIGHT);
 
 			//Adding the HBox to the chat display box
-            chatDisplayBox.getChildren().add(sendMessagehBox);
+			chatDisplayBox.getChildren().add(sendMessagehBox);
 
 			//setting spacing between each element in the chat display box
-            chatDisplayBox.setSpacing(10);
+			chatDisplayBox.setSpacing(10);
 
 			//Making sure that the scroll bar is always at the bottom
-            chatScroll.setVvalue(1);
+			chatScroll.setVvalue(1);
 
 			//Creating a JSON object to send the message to the content module
-            JSONObject sendMessageObject=new JSONObject();
+			JSONObject sendMessageObject=new JSONObject();
 
 			//Assigning the entered message as value to the key : "message"
-            sendMessageObject.put("message",userMessage);
+			sendMessageObject.put("message",userMessage);
 
 			//Converting the JSON object to JSON string
-            String message=sendMessageObject.toString();
+			String message=sendMessageObject.toString();
 
 			//Sending the message to the content module
-            IContentCommunicator communicator = ContentFactory.getContentCommunicator();
-            communicator.sendMessageToContent(message);
+			IContentCommunicator communicator = ContentFactory.getContentCommunicator();
+			communicator.sendMessageToContent(message);
 
 			//Logger to log the messages
-            logger.log(
+			logger.log(
 				ModuleID.UI,
 				LogLevel.SUCCESS,
 				"Message from user has been displayed on chatbox and sent to content module"
 			);
 
-    	}
-    	else
-    	{
-    		//Logger to log the messages
-        	logger.log(ModuleID.UI, LogLevel.INFO, "User did not enter any message");
-    	}
+		}
+		else
+		{
+			//Logger to log the messages
+			logger.log(ModuleID.UI, LogLevel.INFO, "User did not enter any message");
+		}
 
-    }
+	}
 
 }
