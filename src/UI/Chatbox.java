@@ -100,7 +100,7 @@ public class Chatbox implements Initializable{
 		if (userMessage != null) {
 
 			//Setting the chat scroll pane width
-			hatScroll.setFitToWidth(true);
+			chatScroll.setFitToWidth(true);
 
 			//Creating a label to store the message entered by the user
 			Label sendMessageLabel=new Label(userMessage);
