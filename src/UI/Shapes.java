@@ -62,8 +62,8 @@ public class Shapes {
 		double width = Math.abs(starty-endy);
 		g.setStroke(color);
 		g.strokeRect(topx, topy, length, width);
-		Position start = new Position((int) (topx*100),(int) (topy*100));
-		Position end = new Position((int) (topx+length)*100,(int) (topy+width)*100);
+		Position start = new Position((int) (topx),(int) (topy));
+		Position end = new Position((int) (topx+length),(int) (topy+width));
 		Intensity i = new Intensity((int) color.getRed()*255,(int) color.getGreen()*255,(int) color.getBlue()*255);
 		Pixel p1 = new Pixel(start,i);
 		Pixel p2 = new Pixel(end,i);
@@ -102,7 +102,7 @@ public class Shapes {
 		double diameter = Math.max(length,width);
 		g.setStroke(color);
 		g.strokeOval(topx, topy, diameter, diameter);
-		Position start = new Position((int) (topx+(diameter/2))*100,(int) (topy+(diameter/2))*100);
+		Position start = new Position((int) (topx+(diameter/2)),(int) (topy+(diameter/2)));
 		Intensity i = new Intensity((int) color.getRed()*255,(int) color.getGreen()*255,(int) color.getBlue()*255);
 		Pixel p1 = new Pixel(start,i);
 		drawshape.drawCircle(p1,(float) diameter/2);
@@ -133,8 +133,8 @@ public class Shapes {
 		 */
 		g.setStroke(color);
 		g.strokeLine(startx, starty, endx, endy);
-		Position start = new Position((int) startx*100,(int) starty*100);
-		Position end = new Position((int) endx*100,(int) endy*100);
+		Position start = new Position((int) startx,(int) starty);
+		Position end = new Position((int) endx,(int) endy);
 		Intensity i = new Intensity((int) color.getRed()*255,(int) color.getGreen()*255,(int) color.getBlue()*255);
 		Pixel p1 = new Pixel(start,i);
 		Pixel p2 = new Pixel(end,i);
@@ -172,7 +172,7 @@ public class Shapes {
 		double len = Math.max(length,width);
 		g.setStroke(color);
 		g.strokeRect(topx, topy, len, len);
-		Position  start = new Position((int) (topx*100),(int) (topy*100));
+		Position  start = new Position((int) (topx),(int) (topy));
 		Intensity i = new Intensity((int) color.getRed()*255,(int) color.getGreen()*255,(int) color.getBlue()*255);
 		Pixel p1 = new Pixel(start,i);
 		drawshape.drawCircle(p1,(float) len);
@@ -220,9 +220,9 @@ public class Shapes {
 			xs[0]=x3; xs[1]=startx; xs[2]=endx;
 			ys[0]=y3; ys[1]=endy; ys[2]=endy;
 			g.strokePolygon(xs,ys,3);
-			Position a = new Position((int) xs[0]*100,(int) ys[0]*100);
-			Position b = new Position((int) xs[1]*100,(int) ys[1]*100);
-			Position c = new Position((int) xs[2]*100,(int) ys[2]*100);
+			Position a = new Position((int) xs[0],(int) ys[0]);
+			Position b = new Position((int) xs[1],(int) ys[1]);
+			Position c = new Position((int) xs[2],(int) ys[2]);
 			Intensity i = new Intensity((int) color.getRed()*255,(int) color.getGreen()*255,(int) color.getBlue()*255);
 			Pixel p1 = new Pixel(a,i);
 			Pixel p2 = new Pixel(b,i);
@@ -246,9 +246,9 @@ public class Shapes {
 			xs[0]=x3; xs[1]=startx; xs[2]=endx;
 			ys[0]=y3; ys[1]=starty; ys[2]=starty;
 			g.strokePolygon(xs,ys,3);
-			Position a = new Position((int) xs[0]*100,(int) ys[0]*100);
-			Position b = new Position((int) xs[1]*100,(int) ys[1]*100);
-			Position c = new Position((int) xs[2]*100,(int) ys[2]*100);
+			Position a = new Position((int) xs[0],(int) ys[0]);
+			Position b = new Position((int) xs[1],(int) ys[1]);
+			Position c = new Position((int) xs[2],(int) ys[2]);
 			Intensity i = new Intensity((int) color.getRed()*255,(int) color.getGreen()*255,(int) color.getBlue()*255);
 			Pixel p1 = new Pixel(a,i);
 			Pixel p2 = new Pixel(b,i);

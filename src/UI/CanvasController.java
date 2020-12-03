@@ -991,7 +991,7 @@ public class CanvasController implements Initializable {
 		    			(double) pix.intensity.g / 255.0,
 		    			(double) pix.intensity.b / 255.0
 		    		);
-				gcForUpdate.getPixelWriter().setColor((int) pos.c/100,(int) pos.r/100,color);
+				gcForUpdate.getPixelWriter().setColor((int) pos.r,(int) pos.c,color);
 			}
 			logger.log(ModuleID.UI, LogLevel.SUCCESS, "Canvas Updated Successfuly");
 		}
@@ -1025,14 +1025,6 @@ public class CanvasController implements Initializable {
 			.getItems()
 			.addAll("90", "180", "270");
 
-		// Subscribing for notifications from processing and content module.
-		IContentNotificationHandler contentSubscribe = new ContentNotificationHandler();
-		IChanges processingSubscribe = new PixelListener();
-		Processor processor = ProcessingFactory.getProcessor() ;
-		IUser user = processor;
-		user.subscribeForChanges("UI", processingSubscribe);
-		IContentCommunicator communicator =  ContentFactory.getContentCommunicator();
-		communicator.subscribeForNotifications("UI",contentSubscribe );
 		//Grapics context object for updating pixels
 		gcForUpdate = canvasF.getGraphicsContext2D();
 		// The following code initializes the dropdown of brushSize.

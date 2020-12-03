@@ -138,7 +138,7 @@ public class Brush{
 		/**
 		 * Intensity in terms of RGB format
 		 */
-		Intensity i = new Intensity((int) color.getRed(), (int) color.getGreen(), (int) color.getBlue());
+		Intensity i = new Intensity((int) color.getRed()*255,(int) color.getGreen()*255,(int) color.getBlue()*255);
 
 		/**
 		 * The calculation of pixels
@@ -168,7 +168,7 @@ public class Brush{
 				/**
 				 * start point for position
 				 */
-				Position  start = new Position((int) (x*100),(int) (y*100));
+				Position  start = new Position((int) (x),(int) (y));
 				Pixel p1 = new Pixel(start,i);
 				pixels.add(p1);
 			}
@@ -244,7 +244,7 @@ public class Brush{
 				/**
 				 * start point for position
 				 */
-				Position  start = new Position((int) (x*100),(int) (y*100));
+				Position  start = new Position((int) (x),(int) (y));
 				position.add(start);
 			}
 		}
