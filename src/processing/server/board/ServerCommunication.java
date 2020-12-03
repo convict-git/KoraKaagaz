@@ -37,7 +37,7 @@ public class ServerCommunication implements IServerCommunication{
 		 */
 		serverAddress = ClientBoardState.serverIp.toString()
 					  + ":"
-					  + ClientBoardState.serverPort.toString();
+					  + ClientBoardState.portNumber.toString();
 	}
 
 	/**
