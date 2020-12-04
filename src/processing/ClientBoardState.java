@@ -285,7 +285,7 @@ public class ClientBoardState {
 		
 		CommunicateChange.identifierToHandler
 			.get(CommunicateChange.identifierUI)
-			.giveSelectedPixels(maps.getPixelsAtTop(maps.getPositions()));
+			.getChanges(maps.getPixelsAtTop(maps.getPositions()));
 		
 	}
 	
