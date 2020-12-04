@@ -146,7 +146,7 @@ public class ClientMessageReceiver implements Runnable {
 	 * 
 	 */
 	@Override
-    public void run(){
+	public void run(){
 
 		/**
 		 * Loops until the socket gets closed by the internet communicator, when the socket gets closed

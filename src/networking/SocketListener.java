@@ -154,7 +154,7 @@ public class SocketListener implements Runnable {
 	 * 
 	 */
 	@Override
-    public void run(){
+	public void run(){
 
 		/**
 		 * This block of code inside the try would try to execute instructions inside it and when it 
@@ -349,7 +349,7 @@ public class SocketListener implements Runnable {
 				);
 			}
 		}
-    }
+	}
 	
 	/**
 	 * This method stops the server socket. This is called by LanCommunicator's stop method.
