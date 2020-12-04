@@ -114,12 +114,6 @@ public class Brush{
 		GraphicsContext g,
 		double startx, double starty, double endx, double endy,double size
 	) {
-		g.stroke();
-		g.setLineCap(StrokeLineCap.ROUND);
-		g.setLineWidth(size);
-		g.setStroke(color);
-		g.strokeLine(startx,starty,endx,endy);
-
 		double x = 0, y = 0, m = 0, flag = 0 , x1 = 0 , y1 = 0;
 
 		/**
@@ -141,7 +135,7 @@ public class Brush{
 		/**
 		 * Intensity in terms of RGB format
 		 */
-		Intensity i = new Intensity((int) color.getRed(),(int) color.getGreen(),(int) color.getBlue());
+		Intensity i = new Intensity((int) Math.round(color.getRed()*255),(int) Math.round(color.getGreen()*255),(int) Math.round(color.getBlue()*255));
 		
 		/**
 		 * Using the drawsegment to get pixels of the line with the size of brush
@@ -171,6 +165,11 @@ public class Brush{
 			Position  end = new Position((int) (x1),(int) (y1));
 			tempPixels = LineDrawer.drawSegment(start,end,i);
 			pixels.addAll(tempPixels);
+			
+			for(Pixel pix:tempPixels) {
+				Position pos = pix.position;
+				g.getPixelWriter().setColor(pos.r,pos.c,color);
+			}
 		}
 	}
 
@@ -192,12 +191,6 @@ public class Brush{
 		GraphicsContext g,
 		double startx, double starty, double endx, double endy,double size
 	) {
-		g.stroke();
-		g.setLineCap(StrokeLineCap.ROUND);
-		g.setLineWidth(size);
-		g.setStroke(Color.WHITE);
-		g.strokeLine(startx,starty,endx,endy);
-
 		/**
 		 * Check if slope is 0 or infinity.
 		 * If either is there flag to a certain value
@@ -244,6 +237,11 @@ public class Brush{
 			Position  end = new Position((int) (x1),(int) (y1));
 			tempPixels = LineDrawer.drawSegment(start,end,i);
 			pixels.addAll(tempPixels);
+			
+			for(Pixel pix:tempPixels) {
+				Position pos = pix.position;
+				g.getPixelWriter().setColor(pos.r,pos.c,Color.WHITE);
+			}
 		}
 		
 		for(int j=0; j<pixels.size() ;j++) {

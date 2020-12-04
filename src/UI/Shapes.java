@@ -64,7 +64,7 @@ public class Shapes {
 		g.strokeRect(topx, topy, length, width);
 		Position start = new Position((int) (topx),(int) (topy));
 		Position end = new Position((int) (topx+length),(int) (topy+width));
-		Intensity i = new Intensity((int) color.getRed(),(int) color.getGreen(),(int) color.getBlue());
+		Intensity i = new Intensity((int) Math.round(color.getRed()*255),(int) Math.round(color.getGreen()*255),(int) Math.round(color.getBlue()*255));
 		Pixel p1 = new Pixel(start,i);
 		Pixel p2 = new Pixel(end,i);
 		drawshape.drawRectangle(p1,p2);
@@ -103,7 +103,7 @@ public class Shapes {
 		g.setStroke(color);
 		g.strokeOval(topx, topy, diameter, diameter);
 		Position start = new Position((int) (topx+(diameter/2)),(int) (topy+(diameter/2)));
-		Intensity i = new Intensity((int) color.getRed(),(int) color.getGreen(),(int) color.getBlue());
+		Intensity i = new Intensity((int) Math.round(color.getRed()*255),(int) Math.round(color.getGreen()*255),(int) Math.round(color.getBlue()*255));
 		Pixel p1 = new Pixel(start,i);
 		drawshape.drawCircle(p1,(float) diameter/2);
 		logger.log(
@@ -135,7 +135,7 @@ public class Shapes {
 		g.strokeLine(startx, starty, endx, endy);
 		Position start = new Position((int) startx,(int) starty);
 		Position end = new Position((int) endx,(int) endy);
-		Intensity i = new Intensity((int) color.getRed(),(int) color.getGreen(),(int) color.getBlue());
+		Intensity i = new Intensity((int) Math.round(color.getRed()*255),(int) Math.round(color.getGreen()*255),(int) Math.round(color.getBlue()*255));
 		Pixel p1 = new Pixel(start,i);
 		Pixel p2 = new Pixel(end,i);
 		drawshape.drawLine(p1, p2);
@@ -173,7 +173,7 @@ public class Shapes {
 		g.setStroke(color);
 		g.strokeRect(topx, topy, len, len);
 		Position  start = new Position((int) (topx),(int) (topy));
-		Intensity i = new Intensity((int) color.getRed(),(int) color.getGreen(),(int) color.getBlue());
+		Intensity i = new Intensity((int) Math.round(color.getRed()*255),(int) Math.round(color.getGreen()*255),(int) Math.round(color.getBlue()*255));
 		Pixel p1 = new Pixel(start,i);
 		drawshape.drawSquare(p1,(float) len);
 		logger.log(
@@ -223,7 +223,7 @@ public class Shapes {
 			Position a = new Position((int) xs[0],(int) ys[0]);
 			Position b = new Position((int) xs[1],(int) ys[1]);
 			Position c = new Position((int) xs[2],(int) ys[2]);
-			Intensity i = new Intensity((int) color.getRed(),(int) color.getGreen(),(int) color.getBlue());
+			Intensity i = new Intensity((int) Math.round(color.getRed()*255),(int) Math.round(color.getGreen()*255),(int) Math.round(color.getBlue()*255));
 			Pixel p1 = new Pixel(a,i);
 			Pixel p2 = new Pixel(b,i);
 			Pixel p3 = new Pixel(c,i);
@@ -249,7 +249,7 @@ public class Shapes {
 			Position a = new Position((int) xs[0],(int) ys[0]);
 			Position b = new Position((int) xs[1],(int) ys[1]);
 			Position c = new Position((int) xs[2],(int) ys[2]);
-			Intensity i = new Intensity((int) color.getRed(),(int) color.getGreen(),(int) color.getBlue());
+			Intensity i = new Intensity((int) Math.round(color.getRed()*255),(int) Math.round(color.getGreen()*255),(int) Math.round(color.getBlue()*255));
 			Pixel p1 = new Pixel(a,i);
 			Pixel p2 = new Pixel(b,i);
 			Pixel p3 = new Pixel(c,i);

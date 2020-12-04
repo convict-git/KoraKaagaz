@@ -47,6 +47,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.PixelWriter;
@@ -70,10 +71,13 @@ public class CanvasController implements Initializable {
 	/**
 	 * ComboBox below has a list of values for dropdown in brushSize.
 	 */
-
+	
 	@FXML
 	public ComboBox<Integer> brushSize;
-
+	
+	@FXML
+	private Label boardId;
+	
 	public ObservableList<Integer> list = FXCollections.observableArrayList(2,4,6,8);
 
 	@FXML
@@ -156,6 +160,12 @@ public class CanvasController implements Initializable {
 	 * Dimension of the UI Canvas
 	 */
     private final Dimension dimension = new Dimension(720, 1200);
+    
+    public void setBoardId(String id ) {
+		synchronized(this) {
+			boardId.setText(id);
+		}
+	}
 
     /**
 	 * Function called when eraser is clicked.
@@ -986,15 +996,15 @@ public class CanvasController implements Initializable {
 		synchronized(this) {
 				for(Pixel pix:pixels) {
 				Position pos = pix.position;
-				if(pix.intensity.r>=255 && pix.intensity.g>=255 && pix.intensity.b>=255) {
-					pix.intensity.r=1;
-					pix.intensity.g=1;
-					pix.intensity.b=1;
+				if(pix.intensity.r>=255 || pix.intensity.g>=255 || pix.intensity.b>=255) {
+					pix.intensity.r=255;
+					pix.intensity.g=255;
+					pix.intensity.b=255;
 				}
 				Color color = Color.color(
-		    			(double) pix.intensity.r,
-		    			(double) pix.intensity.g,
-		    			(double) pix.intensity.b
+		    			(double) pix.intensity.r/255,
+		    			(double) pix.intensity.g/255,
+		    			(double) pix.intensity.b/255
 		    		);
 				gcForUpdate.getPixelWriter().setColor(pos.r,pos.c,color);
 			}
