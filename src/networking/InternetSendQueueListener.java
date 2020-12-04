@@ -41,6 +41,8 @@ public class InternetSendQueueListener implements Runnable {
      */
     boolean isRunning;
 
+    boolean isRunning;
+
     /**
      * Constructor for this sendQueueListener class.
      * @param SendQueue, requires the sendqeue as parameter.
@@ -49,7 +51,11 @@ public class InternetSendQueueListener implements Runnable {
     public InternetSendQueueListener(IQueue<OutgoingPacket> SendQueue, DataOutputStream dout){
 
         /** logging when the instance of the class is created */
-        logger.log(ModuleID.NETWORKING, LogLevel.INFO, "Send Queue Listener object created");
+        logger.log(
+                ModuleID.NETWORKING, 
+                LogLevel.INFO, 
+                "Send Queue Listener object created"
+        );
 
         this.SendQueue = SendQueue;
         this.dout = dout;
@@ -120,6 +126,9 @@ public class InternetSendQueueListener implements Runnable {
         return ( dest.length == 2 && isValidIpaddress(dest[0]) && isValidPort(dest[1]) );
     }
 
+    public void stop(){
+        this.isRunning = false;
+    }
 
     /**
      *  Stopping the thread by making isRunning false
@@ -137,7 +146,11 @@ public class InternetSendQueueListener implements Runnable {
     public void run(){
         
         /** when the thread is started running we logged the instance of it. */
-        logger.log(ModuleID.NETWORKING, LogLevel.INFO, "Send Queue Listener thread started running");
+        logger.log(
+                ModuleID.NETWORKING, 
+                LogLevel.INFO, 
+                "Send Queue Listener thread started running"
+        );
 
         /** run the while loop as long as the application is running. */
         while(this.isRunning){
@@ -212,12 +225,20 @@ public class InternetSendQueueListener implements Runnable {
 
                     /** For every outgoing packet delivered the log the message with destination address. */
                     String logMessage = "Message delivered to destination " + destination;
-                    logger.log(ModuleID.NETWORKING, LogLevel.SUCCESS, logMessage);
+                    logger.log(
+                            ModuleID.NETWORKING, 
+                            LogLevel.SUCCESS, 
+                            logMessage
+                    );
 
                 } catch (Exception e) {
                     
                     /** if any exception occurs then log the error. */
-                    logger.log(ModuleID.NETWORKING, LogLevel.ERROR, e.toString());
+                    logger.log(
+                            ModuleID.NETWORKING, 
+                            LogLevel.ERROR, 
+                            e.toString()
+                    );
                 }
                 
                 /** Now dequeue the message from sendqueue. */
@@ -225,6 +246,10 @@ public class InternetSendQueueListener implements Runnable {
             }
         }
         /** Logging the information that when the thread is going to stop. */
-        logger.log(ModuleID.NETWORKING, LogLevel.INFO, "Send Queue Listener thread is going to stop running");
+        logger.log(
+                ModuleID.NETWORKING, 
+                LogLevel.INFO, 
+                "Send Queue Listener thread is going to stop running"
+        );
     }
 }
