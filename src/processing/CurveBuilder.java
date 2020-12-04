@@ -44,6 +44,8 @@ public class CurveBuilder {
 		//set operation of the created object
 		curveObj.setOperation(newboardOp);
 		
+		curveObj.setPrevIntensity(prevPixelIntensity);
+		
 		try {
 			//Insert BoardObject in the map
 			ClientBoardState.maps.insertObjectIntoMaps(curveObj);
