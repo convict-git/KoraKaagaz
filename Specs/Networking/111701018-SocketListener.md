@@ -34,27 +34,25 @@ Bind and Listen are only for server as client doesn't need to listen for any mes
     In Java, clients use a Socket constructor to establish a socket connection to a server. 
 Servers obtain a connected socket as a Socket object returned from ServerSocket.accept
 
-### RMI
-Java Remote Method Invocation is a Java API that performs remote method invocation, the object-oriented equivalent of **Remote procedure calls**(RPC).
-
-RPC is the service and protocol offered by the operating system to allow code to be triggered for running by a remote application. It has a defined protocol by which procedures or objects can be accessed by another device over a network. 
-### Advantages of Sockets over RMI
-* Sockets seem easier to control, where something like  could take a lot of time to learn.
-* Efficient and Safe from Bugs.
+### Advantages of Sockets
+* Sockets are bidirectional i.e., read and writes can be done on a single descriptor.
 * Time Constraint and Familiarity with Socket Programming.  
 
 
 ## Protocol : TCP
-* It is a communication protocol, using which the data is transmitted between systems over the network.
-* Data is transmitted in the form of packets.
-* It includes error-checking, guarantees the delivery and preserves the order of the data packets.
+* It is a communication protocol. Connection-orientation means that the communicating devices should establish a connection before transmitting data and should close the connection after transmitting the data.
+* TCP provides extensive error checking mechanisms. It is because it provides flow control and acknowledgment of data.
+* It is slower than that of UDP but more reliable.
 
+## Fragmentation
+Fragmentation occurs when the message is too big to be sent over the network through the one packet. As we are using TCP we can only send 65,535 bytes in a single packet. So, if the information that need to be sent is more than the threshold we divide the message into chunks that can be sent over the network using TCP.
 
-## FLOW
-1. Create a socket, to listen for incoming messages.
-1. Bind the socket to a port and start listening.
-1. Whenever a message is received, It will be in the form a packet which will have some headers as well as the required message.
-1. Identify the message as either processing module or content module using the headers and push it to respective queue.
+## Flow
+1. Create a socket that listens for client requests on a port.
+2. Whenever there is a request, It accepts( blocking manner ) them and receives the message.
+3. If the message is fragmented, We combine all the fragments to form the complete message.
+4. Then identify the message received based on the identifier.
+5. Push the message into either processing module or content module queue based on the identifier.
 ![](https://i.imgur.com/m5SkPbi.png)
 
 ## Class Diagram
