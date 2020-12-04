@@ -10,8 +10,7 @@ public class Message {
 	
 	public Message() {
 		processingMessage = new ArrayList<String>();
-		contentMessage = new ArrayList<String>();
-		
+		contentMessage = new ArrayList<String>();	
 	}
 	
 	/**'
@@ -20,7 +19,10 @@ public class Message {
 	 * @return boolean, returns if the param object is equal to current object or not
 	 */
 	public boolean equals(Message m) { 
-		  if(m.processingMessage.equals(this.processingMessage) && m.contentMessage.equals(this.contentMessage))return true;
+		  if(m.processingMessage.equals(this.processingMessage) && 
+		     m.contentMessage.equals(this.contentMessage)){
+		  	return true;
+		  }
 	      return false;
 	} 
 	
