@@ -943,8 +943,8 @@ public class CanvasController implements Initializable {
 	    			gcForUpdate
 	    				.getPixelWriter()
 	    				.setColor(
-	    					position.r,
 	    					position.c,
+	    					position.r,
 	    					HIGHLIGHT_COLOR
 	    				);
 	    		}
@@ -980,8 +980,8 @@ public class CanvasController implements Initializable {
 	    		gcForUpdate
 					.getPixelWriter()
 					.setColor(
-						position.r,
 						position.c,
+						position.r,
 						color
 					);
 	    	}
@@ -994,20 +994,19 @@ public class CanvasController implements Initializable {
 	 */
      void updateChanges(ArrayList<Pixel> pixels) {
 		synchronized(this) {
-				for(Pixel pix:pixels) {
+			for(Pixel pix:pixels) {
+				
 				Position pos = pix.position;
-				if(pix.intensity.r>=255 || pix.intensity.g>=255 || pix.intensity.b>=255) {
-					pix.intensity.r=255;
-					pix.intensity.g=255;
-					pix.intensity.b=255;
-				}
+				
 				Color color = Color.color(
-		    			(double) pix.intensity.r/255,
-		    			(double) pix.intensity.g/255,
-		    			(double) pix.intensity.b/255
-		    		);
-				gcForUpdate.getPixelWriter().setColor(pos.r,pos.c,color);
+	    			(double) pix.intensity.r / 255,
+	    			(double) pix.intensity.g / 255,
+	    			(double) pix.intensity.b / 255
+	    		);
+				
+				gcForUpdate.getPixelWriter().setColor(pos.c, pos.r, color);
 			}
+			
 			logger.log(ModuleID.UI, LogLevel.SUCCESS, "Canvas Updated Successfuly");
 		}
 	}
