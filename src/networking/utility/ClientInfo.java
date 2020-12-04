@@ -4,7 +4,9 @@ import infrastructure.validation.logger.*;
 
 /**
 * This file contains ClientInfo class, which is used as utility for providing client's IP address
-* and free Port number on which the White Board application going to listening too.
+* and free Port number on which the White Board application going to listening too or clientId available
+* at helping server(AWS) depending on type of communicator using.
+* If Network Communicator is used then ClientId is returned else port number is returned.
 *
 * @author Prudhvi Vardhan Reddy Pulagam
 * 
@@ -29,7 +31,7 @@ public class ClientInfo{
 	public ClientInfo() {
 		this.ip="0.0.0.0";
 		this.port=-1;
-		
+
 		logger.log(
 			ModuleID.NETWORKING,
 			LogLevel.INFO,
@@ -38,7 +40,8 @@ public class ClientInfo{
 	}
 
 	/**
-	* This is the actual constructor which gives the Private IP and free port number available at client.
+	* This is the actual constructor which gives the Private IP and free port number available at client or clientId available
+	* at helping server(AWS) depending on type of communicator using.
 	*/
 	public ClientInfo( String ip , int port ) {
 		this.ip=ip;
@@ -60,7 +63,8 @@ public class ClientInfo{
 	}
 
 	/**
-	* @return int which is free port number available at client. 
+	* @return int which is free port number available at client or clientId available
+	* at helping server(AWS) depending the type of communicator using. 
 	*/
 	public int getPort(){
 		return this.port;
