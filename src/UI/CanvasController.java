@@ -996,15 +996,15 @@ public class CanvasController implements Initializable {
 		synchronized(this) {
 				for(Pixel pix:pixels) {
 				Position pos = pix.position;
-				if(pix.intensity.r>=255 && pix.intensity.g>=255 && pix.intensity.b>=255) {
-					pix.intensity.r=1;
-					pix.intensity.g=1;
-					pix.intensity.b=1;
+				if(pix.intensity.r>=255 || pix.intensity.g>=255 || pix.intensity.b>=255) {
+					pix.intensity.r=255;
+					pix.intensity.g=255;
+					pix.intensity.b=255;
 				}
 				Color color = Color.color(
-		    			(double) pix.intensity.r,
-		    			(double) pix.intensity.g,
-		    			(double) pix.intensity.b
+		    			(double) pix.intensity.r/255,
+		    			(double) pix.intensity.g/255,
+		    			(double) pix.intensity.b/255
 		    		);
 				gcForUpdate.getPixelWriter().setColor(pos.r,pos.c,color);
 			}
