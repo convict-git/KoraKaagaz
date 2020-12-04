@@ -125,6 +125,7 @@ public class SendQueueListener implements Runnable {
      */
 
     public void stop(){
+    	while(!SendQueue.isEmpty());
         this.isRunning = false;
     }
 
