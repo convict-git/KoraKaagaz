@@ -135,7 +135,7 @@ public class Brush{
 		/**
 		 * Intensity in terms of RGB format
 		 */
-		Intensity i = new Intensity((int) color.getRed()*255,(int) color.getGreen()*255,(int) color.getBlue()*255);
+		Intensity i = new Intensity((int) Math.round(color.getRed()*255),(int) Math.round(color.getGreen()*255),(int) Math.round(color.getBlue()*255));
 		
 		/**
 		 * Using the drawsegment to get pixels of the line with the size of brush
