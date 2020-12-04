@@ -38,9 +38,10 @@ Member of Networking Module.
 # [Overview](https://)
 We are developing whiteboard application, Where anonymous user can join and share single whiteboard over LAN. There is chat communication available between the users.
 # [Tasks Assigned](https://)
-* Define an ICommunicator interface and create a communicatorFactory class following Singleton factory design pattern and This class should provide private IP address and Port number at client.
+* Define an ICommunicator interface and INotificationHandler interface to handle communication operations.
+* design communicatorFactory class to follow Singleton factory design pattern while creating communicator and should provide appropriate Communicator.While LAN communication, This class should provide private IP address and Port number at client.While Internet Communication, This class should  provide IP and clientId obtained AWS server. This class also Should provide server details within package obtained XML file.
 * Write subscribeForNotifications() functions in the LanCommunicator class.
-* ClientInfo class 
+* ClientInfo utility class. 
 # [Design](https://)
 * ## [Singleton Factory Pattern](https://)
     &ensp; Factory pattern is one of the core design principles to create an object, allowing clients to create objects of a library in a way such that it doesn’t have tight coupling with the class hierarchy of the library.Factory pattern encapsulate object creation logic which makes it easy to change it later when you change object creation logic or you can even introduce new object with just change in one method.
@@ -49,7 +50,7 @@ We are developing whiteboard application, Where anonymous user can join and shar
     &ensp; As there is only need of single socket to send the data there should not be more than one instance of the LanCommunicator(which implements ICommunicator) object, So The Factory Class should create the LanCommunicator(which implements ICommunicator) object only once. So the Factory class should follow Singleton Creation design Pattern in creating LanCommunicator object, So that there won't be multiple instances of LanCommunicator class. A Class variable is used for this purpose.
     <br />
     
-    ![](https://i.imgur.com/RKXlZfG.png)
+    ![](https://i.imgur.com/G1N7SGL.png)
 
 
 
@@ -115,68 +116,45 @@ package networking;
 * 
 
 public interface INotificationHandler{
-	
-	/**
-	* This method is invoked by networking module(particularly by ReceiveQueueListener) on receiving the message over network.
-	* This method should do the processing or other needful of the message received over network.
-	*
-	* @param message The message received over network.
-	*/
-	public void onMessageReceived(String message);
+    
+    /**
+    * This method is invoked by networking module(particularly by ReceiveQueueListener) on receiving the message over network.
+    * This method should do the processing or other needful of the message received over network.
+    *
+    * @param message The message received over network.
+    */
+    public void onMessageReceived(String message);
 
 ```
 * ## CommunicatorFactory Class
-     - This is class used for creation of LanCommunicator object. This class has to follow Singleton Factory design pattern, for which the getCommunicator() method is designed in this class. The method getCommunicator() takes integer(which is free port number available on the client's pc) and returns LanCommunicator object of ICommunicator interface. This getCommunicator() method can be accessed before instantiation of the object of it's own class(CommunicatorFactory class).
-    - For following Factory pattern getCommunicator() calls constructor of LanCommunicator classs and it creates an object and getCommunicator() method returns the created LanCommunicator object and thus object of LanCommunicator is initialised in this way.
-    - For following Singleton pattern a LanCommunicator class variable is maintained in CommunicatorFactory class and logic is changed such a way that it checks for the stored class variable of CommunicatorFactory class and  getCommunicator() method returns the new or already existing object of the LanCommunicator, which helps in following Single Factory design pattern.
-    - The method getClientInfo provides information about Private IP and free port available at the client. This method takes no arguments and returns ClientInfo object which consists of Private IP and free Port available. With the returned port number the LanCommunicator object is created. This method can be invoked many times without creating the object of the CommunicatorFactory class.
+     - This is class mainly used for creation of LanCommunicator or InternetCommunicator object based on the availability of internet at client and server provided(The server in the sense helping server which supports communication over internet). The type of communicator using or created should be uniform through out the communication. For this a instance variable is used to save type of communicator.
+     - This class has to follow Singleton Factory design pattern while creating the LAN Communicator or Internet Communicator, for which the getCommunicator() method is designed in this class. The method getCommunicator() takes integer(which is free port number or clientId at helping server available on the client's pc) and returns LanCommunicator object of ICommunicator interface. This getCommunicator() method can be accessed before instantiation of the object of it's own class(CommunicatorFactory class).
+    - For following Factory pattern getCommunicator() calls constructor of LanCommunicator class or InternetCommunicator class depending on the type of Communicator set(The setting of type of Communicator is done through checking of internet availability at client and helping server status(AWS)) and it creates an appropriate object and getCommunicator() method returns the created LanCommunicator or InternetCommunicator object and thus object of LanCommunicator or InternetCommunicator is initialised in this way.
+    - For following Singleton pattern a ICommunicator instance variable is maintained in CommunicatorFactory class and logic is changed such a way that it checks for the stored class variable of CommunicatorFactory class and getCommunicator() method returns the new or already existing object of the LanCommunicator or InternetCommunicator, which helps in following Single Factory design pattern.
+    - The method getClientInfo provides information about Private IP and free port available at the client or clientId available at helping server(AWS). This method takes no arguments and returns ClientInfo object which consists of Private IP and free Port available or ClientId. With the returned port number the LanCommunicator object is created or with returned id InternetCommmunicator is created. This method can be invoked many times without creating the object of the CommunicatorFactory class.
+    - The method getServerInfo is used to read the server details(IP address of server and port number on which server program is listening too) provided by the user through XML file. This can be accessed throught the package.
 
     <br />
-```java=
-public class CommunicatorFactory{
-	
-	/**
-	* This method helps in creating the LanCommunicator object which uses Singleton and factory design pattern in 
-	* creating LanCommunicator object.
-	*
-	* @param port is a free port number available at client.
-	*
-	* @return LanCommunicator(which implements ICommunicator interface) object.
-	*/
-	public static ICommunicator getCommunicator(int port){
-		return new LanCommunicator();
-	}
-
-	/**
-	* This method provides information about private IP address of the client and free port available at client without 
-	* creating the object of CommunicatorFactory class.
-	*
-	* @return ClientInfo object which consists of local or private IP address and free port number at client.
-	*/
-	public static ClientInfo getClientInfo(){
-		return new ClientInfo();
-	}
-}
-```
     
 * ## ClientInfo Class
-    This is utility class which is used to deliver the Private IP address of client and free port number available at the client. These IP and port number can accessed using appropriate get methods.
+    This is utility class which is used to deliver the Private IP address of client and free port number available at the client or clientId available at helping server(AWS) through port variable. These IP and port number or clientId can accessed using appropriate get methods.
 ```java=
 public class ClientInfo{
 
-	/**
-	* @return String which is client's private IP address.
-	*/
-	public String getIp(){
-		return "";
-	}
+    /**
+    * @return String which is client's private IP address.
+    */
+    public String getIp(){
+        return "";
+    }
 
-	/**
-	* @return int which is free port number on client's port number. 
-	*/
-	public int getPort(){
-		return 0;
-	}
+    /**
+    * @return int which is free port number available at client or clientId available
+    * at helping server(AWS) depending the type of communicator using. 
+    */
+    public int getPort(){
+        return 0;
+    }
 }
 ```
 * ## subscribeForNotifications method
@@ -184,13 +162,10 @@ public class ClientInfo{
 # Class Diagram
 Below shows the class diagram for the ICommunicator Interface, LanCommunicator class and CommunicatorFactory class and dependies involved with other modules.
 
-![](https://i.imgur.com/EOeKYGn.png)
+![](https://i.imgur.com/Ad8VOL2.png)
 
 
 ## Package
 There are various teams delivering respective packages in this project. Our team networking delivers the package named networking.
 ## Coding Style:
 We are going to follow [google’s java style guide](https://google.github.io/styleguide/javaguide.html).
-
-
-
