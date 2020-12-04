@@ -12,7 +12,11 @@ public class DummyProcessingHandler implements INotificationHandler {
 	int numMessages;
 	int numMessagesReceived;
 	private Stopper stopper=  null;
-	public DummyProcessingHandler(Message output,int numMsgs,Stopper stopper) {
+	public DummyProcessingHandler(
+			Message output,
+			int numMsgs,
+			Stopper stopper
+	) {
 		this.output= output;
 		this.numMessages = numMsgs;
 		this.numMessagesReceived=0;

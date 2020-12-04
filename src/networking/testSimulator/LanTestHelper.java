@@ -8,23 +8,23 @@ import networking.LanCommunicator;
 import networking.utility.ClientInfo;
 
 /**
- * This  is helper class for testing the lan communication
+ * This  is helper class for testing the LAN communication
  * @author sravan
  *
  */
 public class LanTestHelper  {
 	
 	/**
-	 * This method is used to run the test for Lan Communication 
+	 * This method is used to run the test for LAN Communication 
 	 * for a given number of messages and given message length
 	 * 
 	 * @param numMessages
 	 * @param msgLength
-	 * @return boolean, returns whether this ran succesfully or not
+	 * @return boolean, returns whether this ran successfully or not
 	 */
 	public boolean run(int numMessages,int msgLength) {
 		
-		//Get the client Ip and ports of two clients
+		//Get the client IP and ports of two clients
 		ClientInfo info = CommunicatorFactory.getClientInfo();
 		ClientInfo client1 = null;
 		ClientInfo client2 =  null;
@@ -46,23 +46,23 @@ public class LanTestHelper  {
 		Message clientTwoInput = new Message();
 		Message clientTwoOutput = new Message();
 			
-		//Create a lan communicators using the ports obtained above
-		 ICommunicator communicator1 = new LanCommunicator(client1.getPort());
-		 ICommunicator communicator2 = new LanCommunicator(client2.getPort());
+		//Create a LAN communicators using the ports obtained above
+		ICommunicator communicator1 = new LanCommunicator(client1.getPort());
+		ICommunicator communicator2 = new LanCommunicator(client2.getPort());
 		 
-		 //Start the communicators
-		 communicator1.start();
-		 communicator2.start();
-		 //Creates a stopper objects which indicates the status of the commmmunication
-		 Stopper stopper = new Stopper();
+		//Start the communicators
+		communicator1.start();
+		communicator2.start();
+		//Creates a stopper objects which indicates the status of the communication
+		Stopper stopper = new Stopper();
 		 
-		 //Create two clients
-		 Client clientOne = new Client(communicator1,client1,client2,clientOneInput,clientOneOutput,numMessages,msgLength,stopper);
-		 Client clientTwo = new Client(communicator2,client2,client1,clientTwoInput,clientTwoOutput,numMessages,msgLength,stopper);
+		//Create two clients
+		Client clientOne = new Client(communicator1,client1,client2,clientOneInput,clientOneOutput,numMessages,msgLength,stopper);
+		Client clientTwo = new Client(communicator2,client2,client1,clientTwoInput,clientTwoOutput,numMessages,msgLength,stopper);
 		 
-		 //Start the two clients
-		 clientOne.start();
-		 clientTwo.start();
+		//Start the two clients
+		clientOne.start();
+		clientTwo.start();
 		 
 		//While the communication is happening
 		while(true) {

@@ -1,7 +1,5 @@
 package networking.testSimulator;
 
-import java.io.FileWriter;
-import java.io.IOException;
 
 import networking.INotificationHandler;
 /**
@@ -14,7 +12,11 @@ public class DummyContentHandler implements INotificationHandler {
 	int numMessages;
 	int numMessagesReceived;
 	Stopper stopper= null;
-	public DummyContentHandler(Message output,int numMsgs,Stopper stopper) {
+	public DummyContentHandler(
+			Message output,
+			int numMsgs,
+			Stopper stopper
+		) {
 		this.output = output;
 		this.numMessages = numMsgs;
 		this.numMessagesReceived = 0;

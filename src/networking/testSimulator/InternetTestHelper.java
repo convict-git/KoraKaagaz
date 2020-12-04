@@ -1,18 +1,26 @@
 package networking.testSimulator;
 
 
-
-import java.util.ArrayList;
-
-import infrastructure.validation.testing.TestCase;
 import networking.CommunicatorFactory;
 import networking.ICommunicator;
 import networking.InternetCommunicator;
-import networking.LanCommunicator;
 import networking.utility.ClientInfo;
 
+/**
+ * This class is helper class for testing Internet communication
+ * @author Sravan
+ *
+ */
 public class InternetTestHelper {
 	
+	/**
+	 * This method is used to run the test for Internet Communication 
+	 * for a given number of messages and given message length
+	 * 
+	 * @param numMessages
+	 * @param msgLength
+	 * @return boolean, returns whether this ran successfully or not
+	 */
 	public boolean run(int numMessages, int msgLength) {
 		
 		//Get info of two clients
@@ -25,23 +33,30 @@ public class InternetTestHelper {
 		Message clientTwoInput = new Message();
 		Message clientTwoOutput = new Message();
 			
-		//Create a lan communicators using the ports obtained above
-		 ICommunicator communicator1 = new InternetCommunicator(client1.getPort());
-		 ICommunicator communicator2 = new InternetCommunicator(client2.getPort());
+		//Create a Internet communicators using the ports obtained above
+		ICommunicator communicator1 = new InternetCommunicator(client1.getPort());
+		ICommunicator communicator2 = new InternetCommunicator(client2.getPort());
 		 
 		 //Start the communicators
-		 communicator1.start();
-		 communicator2.start();
-		 //Creates a stopper objects which indicates the status of the commmmunication
-		 Stopper stopper = new Stopper();
+		communicator1.start();
+		communicator2.start();
 		 
-		 //Create two clients
-		 Client clientOne = new Client(communicator1,client1,client2,clientOneInput,clientOneOutput,numMessages,msgLength,stopper);
-		 Client clientTwo = new Client(communicator2,client2,client1,clientTwoInput,clientTwoOutput,numMessages,msgLength,stopper);
+		try {
+			Thread.sleep(10000);
+		} catch (InterruptedException e) {
+				
+		}
+		//Creates a stopper objects which indicates the status of the communication
+		Stopper stopper = new Stopper();
 		 
-		 //Start the two clients
-		 clientOne.start();
-		 clientTwo.start();
+		//Create two clients
+		Client clientOne = new Client(communicator1,client1,client2,clientOneInput,clientOneOutput,numMessages,msgLength,stopper);
+		Client clientTwo = new Client(communicator2,client2,client1,clientTwoInput,clientTwoOutput,numMessages,msgLength,stopper);
+		 
+		//Start the two clients
+		clientOne.start();
+		clientTwo.start();
+		 
 		 
 		//While the communication is happening
 		while(true) {

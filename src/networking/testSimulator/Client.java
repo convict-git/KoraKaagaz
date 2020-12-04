@@ -22,7 +22,17 @@ public class Client extends Thread {
 	Stopper stopper = null;
  	
 	
-	public Client(ICommunicator communicator,ClientInfo client1,ClientInfo client2,Message input,Message output,int numMessages,int msgLength,Stopper stopper) {
+	public Client(
+					  ICommunicator communicator,
+					  ClientInfo client1,
+					  ClientInfo client2,
+					  Message input,
+					  Message output,
+					  int numMessages,
+					  int msgLength,
+					  Stopper stopper
+				 ) {
+		
 		this.communicator = communicator;
 		this.srcClient = client1;
 		this.destClient = client2;
@@ -37,9 +47,26 @@ public class Client extends Thread {
 	public void run() {
 		
 		// Creating ProcessingManager 
-		DummyProcessor processor = new DummyProcessor(communicator,srcClient,destClient,input,output,numMessages,msgLength,stopper);
+		DummyProcessor processor = new DummyProcessor(
+									    communicator,
+										srcClient,
+										destClient,
+										input,output,
+										numMessages,
+										msgLength,
+										stopper
+									);
 		// Creating contentManager
-		DummyContent content = new DummyContent(communicator,srcClient,destClient,input,output,numMessages,msgLength,stopper);
+		DummyContent content = new DummyContent(
+										communicator,
+										srcClient,
+										destClient,
+										input,
+										output,
+										numMessages,
+										msgLength,
+										stopper
+									);
 		
 		// Start the processor and contentManager
 		processor.start();

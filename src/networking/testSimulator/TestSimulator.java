@@ -15,14 +15,17 @@ public class TestSimulator {
 		
 		TestCase test = null;
 		String communication  = null;
-		if(args[0]== "INTERNET") {
+		
+		if(args.length==0 || args[0]=="LAN") {
+				test = new LanTest();
+				communication = "LAN";
+		}
+		
+		else if(args[0]== "INTERNET") {
 			test = new InternetTest();
 			communication = "INTERNET";
 		}
-		else if(args.length==0 || args[0]=="LAN") {
-			test = new LanTest();
-			communication = "LAN";
-		}
+		
 		
 		if(test.run()) {
 			System.out.println("TestCase passed for "+communication);

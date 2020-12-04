@@ -7,6 +7,7 @@ public class Message {
 	public ArrayList<String> processingMessage= null;
 	//Array to store contentMessages
 	public ArrayList<String> contentMessage= null;	
+	
 	public Message() {
 		processingMessage = new ArrayList<String>();
 		contentMessage = new ArrayList<String>();

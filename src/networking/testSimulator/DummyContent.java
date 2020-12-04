@@ -1,11 +1,7 @@
 package networking.testSimulator;
 
-import java.io.FileWriter;
-import java.io.IOException;
-import java.nio.charset.Charset;
-import java.util.Random;
 
-import networking.CommunicatorFactory;
+import java.util.Random;
 import networking.ICommunicator;
 import networking.utility.ClientInfo;
 
@@ -41,7 +37,16 @@ public class DummyContent extends Thread {
 	    String generatedString = buffer.toString();	    return(generatedString);
 	}
 
-	public DummyContent(ICommunicator communicator, ClientInfo src,ClientInfo dest,Message input,Message output,int numMessages,int msgLength,Stopper stopper) {
+	public DummyContent(
+			ICommunicator communicator, 
+			ClientInfo src,
+			ClientInfo dest,
+			Message input,
+			Message output,
+			int numMessages,
+			int msgLength,
+			Stopper stopper
+		) {
 		this.srcClient = src;
 		this.destClient = dest;
 		this.communicator = communicator;
