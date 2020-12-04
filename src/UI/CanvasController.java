@@ -998,11 +998,6 @@ public class CanvasController implements Initializable {
 				
 				Position pos = pix.position;
 				
-				if(pix.intensity.r >= 255 || pix.intensity.g >= 255 || pix.intensity.b >= 255) {
-					pix.intensity.r = 255;
-					pix.intensity.g = 255;
-					pix.intensity.b = 255;
-				}
 				Color color = Color.color(
 	    			(double) pix.intensity.r / 255,
 	    			(double) pix.intensity.g / 255,
