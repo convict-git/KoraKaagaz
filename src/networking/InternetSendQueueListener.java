@@ -126,10 +126,7 @@ public class InternetSendQueueListener implements Runnable {
         return ( dest.length == 2 && isValidIpaddress(dest[0]) && isValidPort(dest[1]) );
     }
 
-    public void stop(){
-        this.isRunning = false;
-    }
-
+   
     /**
      *  Stopping the thread by making isRunning false
      */
