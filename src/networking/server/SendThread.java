@@ -54,11 +54,55 @@ public class SendThread extends Thread {
              * from the queue
              */
             if (!q.isEmpty()){
+
+                /** Taking the front item of the queue*/
                 String data = q.front();
+
+                /** Dequeuing the front item of the queue*/
                 q.dequeue();
+
+                /** Fixing the maximum size of the message that can be send via internet, one at a time*/
+                int threshold = 25000;
+
+                /** Variable used in the process of fragmentation*/
+                String buffer = "";
+
+                /** Sending the message in chunks of threshold number of charcters, if the data size is greater than thresshold value*/
+                for(int i = 0; i < data.length(); i++){
+
+                    if(buffer.length() >= threshold){
+                        try{
+                            /** Writing the part of the data which is got from the queue to the client socket*/
+                            dos.writeUTF(buffer);
+                            buffer = "";
+                        }
+                        catch (IOException e){
+                            /** If any exception araises while writing the socket, log the info and stop the thread*/
+                            logger.log(ModuleID.NETWORKING, LogLevel.ERROR, "An I/O Exception has been raised on server in SendThread");
+                            return;
+                        }
+                    }
+                    /** Appending the character of the variable data at ith position to the end of the buffer*/
+                    buffer = buffer + data.charAt(i);
+                }
+                
+                /** Sending the remaining portion of string after dividing into chunks of threshold size strings*/
+                if(buffer.length() > 0) {
+                    try{
+                        /** Writing the data which is got from the queue to the client socket*/
+                        dos.writeUTF(buffer);
+                        buffer = "";
+                    }
+                    catch (IOException e){
+                        /** If any exception araises while writing the socket, log the info and stop the thread*/
+                        logger.log(ModuleID.NETWORKING, LogLevel.ERROR, "An I/O Exception has been raised on server in SendThread");
+                        return;
+                    }
+                }
+
                 try{
-                    /** Write the data which is got from the queue to the client socket*/
-                    dos.writeUTF(data);
+                    /** Used EOF to indicate that the respective message that is popped feom the queue is finished*/
+                    dos.writeUTF("EOF");
                 }
                 catch (IOException e){
                     /** If any exception araises while writing the socket, log the info and stop the thread*/

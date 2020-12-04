@@ -48,7 +48,7 @@ public class Main {
 		System.out.println("ColorChange: " + color.run());
 		
 		RotateTest rotate = new RotateTest();
-		System.out.println("rotate: " + rotate.run());
+		System.out.println("Rotate: " + rotate.run());
 		
 		UndoTest undo = new UndoTest();
 		System.out.println("Undo: " + undo.run());
