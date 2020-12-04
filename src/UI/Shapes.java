@@ -56,22 +56,42 @@ public class Shapes {
 		 * (topx,topy) are top left coordinates of rectangle
 		 * x and y coordinates at top left corner of rectangle are minimum of all coordinates.
 		 */
-		double topx = Math.min(startx,endx);
-		double topy = Math.min(starty,endy);
-		double length = Math.abs(startx-endx);
-		double width = Math.abs(starty-endy);
+		double topx = Math.min(startx, endx);
+		double topy = Math.min(starty, endy);
+		double length = Math.abs(startx - endx);
+		double width = Math.abs(starty - endy);
+		
 		g.setStroke(color);
 		g.strokeRect(topx, topy, length, width);
-		Position start = new Position((int) (topx),(int) (topy));
-		Position end = new Position((int) (topx+length),(int) (topy+width));
-		Intensity i = new Intensity((int) Math.round(color.getRed()*255),(int) Math.round(color.getGreen()*255),(int) Math.round(color.getBlue()*255));
-		Pixel p1 = new Pixel(start,i);
-		Pixel p2 = new Pixel(end,i);
-		drawshape.drawRectangle(p1,p2);
+		
+		Position start = new Position(
+			(int) topy,
+			(int) topx
+		);
+		
+		Position end = new Position(
+			(int) (topy + width),
+			(int) (topx + length)
+		);
+		
+		Intensity i = new Intensity(
+			(int) Math.round(color.getRed() * 255),
+			(int) Math.round(color.getGreen() * 255),
+			(int) Math.round(color.getBlue() * 255)
+		);
+		
+		
+		Pixel p1 = new Pixel(start, i);
+		Pixel p2 = new Pixel(end, i);
+		
+		
+		drawshape.drawRectangle(p1, p2);
+		
+		
 		logger.log(
 			ModuleID.UI,
 			LogLevel.INFO,
-			"Rectangle drawn from ("+topx+","+topy+") to ("+(topx+length)+","+(topy+width)+")"
+			"Rectangle drawn from ("+topy+","+topx+") to ("+(topy+width)+","+(topx+length)+")"
 		);
 	}
 
@@ -95,21 +115,40 @@ public class Shapes {
 		 * Boundary Box is smallest rectangular region enclosing the shape
 		 * Diameter of circle is nothing but the maximum of length, width of boundary box
 		 */
-		double topx = Math.min(startx,endx);
-		double topy = Math.min(starty,endy);
-		double length = Math.abs(startx-endx);
-		double width = Math.abs(starty-endy);
-		double diameter = Math.max(length,width);
+		double topx = Math.min(startx, endx);
+		double topy = Math.min(starty, endy);
+		
+		double length = Math.abs(startx - endx);
+		double width = Math.abs(starty - endy);
+		
+		double diameter = Math.max(length, width);
+		
 		g.setStroke(color);
 		g.strokeOval(topx, topy, diameter, diameter);
-		Position start = new Position((int) (topx+(diameter/2)),(int) (topy+(diameter/2)));
-		Intensity i = new Intensity((int) Math.round(color.getRed()*255),(int) Math.round(color.getGreen()*255),(int) Math.round(color.getBlue()*255));
-		Pixel p1 = new Pixel(start,i);
-		drawshape.drawCircle(p1,(float) diameter/2);
+		
+		Position start = new Position(
+			(int) (topy+ (diameter / 2)),
+			(int) (topx+ (diameter / 2))
+		);
+		
+		
+		Intensity i = new Intensity(
+			(int) Math.round(color.getRed() * 255),
+			(int) Math.round(color.getGreen() * 255),
+			(int) Math.round(color.getBlue() * 255)
+		);
+		
+		
+		Pixel p1 = new Pixel(start, i);
+
+		
+		drawshape.drawCircle(p1, (float) diameter / 2);
+		
+		
 		logger.log(
 			ModuleID.UI,
 			LogLevel.INFO,
-			"Circle drawn with center("+(topx+(diameter/2))+","+(topy+(diameter/2))+" radius:"+diameter/2
+			"Circle drawn with center("+(topy+(diameter / 2))+","+(topx+(diameter / 2))+" radius:"+diameter /2
 		);
 	}
 
