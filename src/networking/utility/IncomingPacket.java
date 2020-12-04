@@ -9,14 +9,10 @@ package networking.utility;
 
 public class IncomingPacket{
 
-    /**
-     * The content of the message that needs to be delivered to the corresponding module
-     */
+    /** The content of the message that needs to be delivered to the corresponding module */
     String message;
     
-    /**
-     * To indicate which module is sending the message
-     */
+    /** To indicate which module is sending the message */
     String identifier;
 
     /**
@@ -82,7 +78,8 @@ public class IncomingPacket{
     */
     public boolean isEqual(Object obj) {
         if(obj instanceof IncomingPacket){
-            return (message == ((IncomingPacket) obj).message && identifier == ((IncomingPacket) obj).identifier);
+            return (message == ((IncomingPacket) obj).message
+                    && identifier == ((IncomingPacket) obj).identifier);
         }
         else {
             return false;

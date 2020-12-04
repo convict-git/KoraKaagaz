@@ -1,9 +1,10 @@
 package networking.server;
 
-import networking.queueManagement.*;
-import infrastructure.validation.logger.*;
 import java.io.DataOutputStream;
 import java.io.IOException;
+
+import networking.queueManagement.*;
+import infrastructure.validation.logger.*;
 
 /**
  *  This file contains the implementation of the class SendThread which runs on the server and sends the message
@@ -15,18 +16,14 @@ import java.io.IOException;
 
 public class SendThread extends Thread {
 
-    /**
-     * Declaring the DataOutputStream variable which is used for writing to the client socket
-     */
+    /** Declaring the DataOutputStream variable which is used for writing to the client socket */
     final DataOutputStream dos;
 
-    /**
-     * Declaring the queue variable which is used to dequeue the required the message
-     */
+    /** Declaring the queue variable which is used to dequeue the required the message */
     IQueue<String> q;
 
     /**
-     *Constructor which initialises DataOutputStream variable and queue from the arguments passed
+     * Constructor which initialises DataOutputStream variable and queue from the arguments passed
      *
      * @param dos this is the DataOutputStream object which is used for writing
      * @param q this the queue that we are going to interact to get the message
@@ -36,9 +33,7 @@ public class SendThread extends Thread {
         this.q = q;
     }
 
-    /**
-     *  Creating a Logger Instance for logging mainly the errors
-     */
+    /** Creating a Logger Instance for logging mainly the error */
     ILogger logger = LoggerFactory.getLoggerInstance();
 
     /**
@@ -61,52 +56,64 @@ public class SendThread extends Thread {
                 /** Dequeuing the front item of the queue*/
                 q.dequeue();
 
-                /** Fixing the maximum size of the message that can be send via internet, one at a time*/
+                /** Fixing the maximum size of the message that can be send via internet, one at a time */
                 int threshold = 25000;
 
                 /** Variable used in the process of fragmentation*/
                 String buffer = "";
 
-                /** Sending the message in chunks of threshold number of charcters, if the data size is greater than thresshold value*/
+                /** Sending the message in chunks of threshold number of charcters, if the data size is greater than thresshold value */
                 for(int i = 0; i < data.length(); i++){
 
                     if(buffer.length() >= threshold){
                         try{
-                            /** Writing the part of the data which is got from the queue to the client socket*/
+                            /** Writing the part of the data which is got from the queue to the client socket */
                             dos.writeUTF(buffer);
                             buffer = "";
                         }
                         catch (IOException e){
-                            /** If any exception araises while writing the socket, log the info and stop the thread*/
-                            logger.log(ModuleID.NETWORKING, LogLevel.ERROR, "An I/O Exception has been raised on server in SendThread");
+                            /** If any exception araises while writing the socket, log the info and stop the thread */
+                            logger.log(
+                                    ModuleID.NETWORKING,
+                                    LogLevel.ERROR,
+                                    "An I/O Exception has been raised on server in SendThread"
+                            );
                             return;
                         }
                     }
-                    /** Appending the character of the variable data at ith position to the end of the buffer*/
+                    /** Appending the character of the variable data at ith position to the end of the buffer */
                     buffer = buffer + data.charAt(i);
                 }
                 
-                /** Sending the remaining portion of string after dividing into chunks of threshold size strings*/
+                /** Sending the remaining portion of string after dividing into chunks of threshold size strings */
                 if(buffer.length() > 0) {
                     try{
-                        /** Writing the data which is got from the queue to the client socket*/
+                        /** Writing the data which is got from the queue to the client socket */
                         dos.writeUTF(buffer);
                         buffer = "";
                     }
                     catch (IOException e){
-                        /** If any exception araises while writing the socket, log the info and stop the thread*/
-                        logger.log(ModuleID.NETWORKING, LogLevel.ERROR, "An I/O Exception has been raised on server in SendThread");
+                        /** If any exception araises while writing the socket, log the info and stop the thread */
+                        logger.log(
+                                ModuleID.NETWORKING,
+                                LogLevel.ERROR,
+                                "An I/O Exception has been raised on server in SendThread"
+                        );
                         return;
                     }
                 }
 
                 try{
-                    /** Used EOF to indicate that the respective message that is popped feom the queue is finished*/
+                    /** Used EOF to indicate that the respective message that is popped feom the queue is finished */
                     dos.writeUTF("EOF");
                 }
                 catch (IOException e){
-                    /** If any exception araises while writing the socket, log the info and stop the thread*/
-                    logger.log(ModuleID.NETWORKING, LogLevel.ERROR, "An I/O Exception has been raised on server in SendThread");
+                    /** If any exception araises while writing the socket, log the info and stop the thread */
+                    logger.log(
+                            ModuleID.NETWORKING,
+                            LogLevel.ERROR,
+                            "An I/O Exception has been raised on server in SendThread"
+                    );
                     return;
                 }
             }
