@@ -1,5 +1,6 @@
 package networking.testSimulator;
 
+import infrastructure.validation.testing.TestCase;
 import networking.tests.InternetTest;
 import networking.tests.LanTest;
 
@@ -12,21 +13,22 @@ import networking.tests.LanTest;
 public class TestSimulator {
 	public static void main(String args[]) {
 		
-		//Run the test for land
-		/*LanTest test1 = new LanTest();
-		if(test1.run()) {
-			System.out.println("Lan Passed");
+		TestCase test = null;
+		String communication  = null;
+		if(args[0]== "INTERNET") {
+			test = new InternetTest();
+			communication = "INTERNET";
+		}
+		else if(args.length==0 || args[0]=="LAN") {
+			test = new LanTest();
+			communication = "LAN";
+		}
+		
+		if(test.run()) {
+			System.out.println("TestCase passed for "+communication);
 		}
 		else {
-			System.out.println("Lan Failed");
-		}*/
-		//Run the test for internet
-		InternetTest test2 = new InternetTest();
-		if(test2.run()) {
-			System.out.println("Internet Passed");
-		}
-		else {
-			System.out.println("Internet Failed");
+			System.out.println("TestCase Failed for" + communication);
 		}
 	}
 }
