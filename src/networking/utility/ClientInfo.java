@@ -26,19 +26,29 @@ public class ClientInfo{
 	* handle the exception like NullPointerException, So this default constructor is used to show any error
 	* takes place, and logger module shows particular error. 
 	*/ 
-	public ClientInfo(){
+	public ClientInfo() {
 		this.ip="0.0.0.0";
 		this.port=-1;
-		logger.log(ModuleID.NETWORKING, LogLevel.INFO, "created dummy ClientInfo object");
+		
+		logger.log(
+			ModuleID.NETWORKING,
+			LogLevel.INFO,
+			"created dummy ClientInfo object"
+		);
 	}
 
 	/**
 	* This is the actual constructor which gives the Private IP and free port number available at client.
 	*/
-	public ClientInfo(String ip,int port){
+	public ClientInfo( String ip , int port ) {
 		this.ip=ip;
 		this.port=port;
-		logger.log(ModuleID.NETWORKING, LogLevel.INFO, "created ClientInfo object with IP and port available at client");
+
+		logger.log(
+			ModuleID.NETWORKING,
+			LogLevel.INFO,
+			"created ClientInfo object with IP and port available at client"
+		);
 	}
 
 
