@@ -21,20 +21,19 @@ public class DummyContent extends Thread {
 	
 	/**
 	 * @param msgLength, Length of string to be generated
-	 * @return String, randomly generated string of length of msgLength
+	 * @return String, randomly generated string of alphabets of length  msgLength
 	 */
 	public static String randomString(int msgLength) {
-		int leftLimit = 97; // letter 'a'
-	    int rightLimit = 122; // letter 'z'
-	    int targetStringLength = msgLength;
+		int leftLimit = 97; 
+	    int rightLimit = 122;
 	    Random random = new Random();
-	    StringBuilder buffer = new StringBuilder(targetStringLength);
-	    for (int i = 0; i < targetStringLength; i++) {
-	        int randomLimitedInt = leftLimit + (int) 
-	          (random.nextFloat() * (rightLimit - leftLimit + 1));
-	        buffer.append((char) randomLimitedInt);
+	    StringBuilder buffer = new StringBuilder(msgLength);
+	    for (int i = 0; i < msgLength; i++) {
+	        int asciiValue = leftLimit + (int)(random.nextFloat() * (rightLimit - leftLimit + 1));
+	        buffer.append((char) asciiValue);
 	    }
-	    String generatedString = buffer.toString();	    return(generatedString);
+	    String generatedString = buffer.toString();	    
+	    return(generatedString);
 	}
 
 	public DummyContent(

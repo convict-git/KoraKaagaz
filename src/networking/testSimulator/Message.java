@@ -19,10 +19,12 @@ public class Message {
 	 * @return boolean, returns if the param object is equal to current object or not
 	 */
 	public boolean equals(Message m) { 
+		  
 		  if(m.processingMessage.equals(this.processingMessage) && 
 		     m.contentMessage.equals(this.contentMessage)){
 		  	return true;
 		  }
+		  
 	      return false;
 	} 
 	

@@ -28,7 +28,7 @@ public class TestSimulator {
 			communication = "INTERNET";
 		}
 		else{
-			System.out.println("Invalid Arguments")
+			System.out.println("Invalid Arguments");
 		}
 		
 		if(test.run()) {
