@@ -144,6 +144,11 @@ public class WhiteBoardController {
 			communicator.subscribeForNotifications("UI",contentSubscribe );
 			
 			/**
+			 * Sending the boardId to canvas controller.
+			 */
+			controller.setBoardId(returnval);
+			
+			/**
 			 * Closing the Start session window.
 			 */
 			((Stage)(((Button)event.getSource()).getScene().getWindow())).close();
