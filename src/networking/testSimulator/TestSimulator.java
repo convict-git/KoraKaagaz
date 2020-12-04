@@ -11,21 +11,25 @@ import networking.tests.LanTest;
  *
  */
 public class TestSimulator {
+	
+	/** This progtam expects arguments , if no arguments provided , communication will be set to LAN */
 	public static void main(String args[]) {
 		
 		TestCase test = null;
 		String communication  = null;
 		
 		if(args.length==0 || args[0]=="LAN") {
-				test = new LanTest();
-				communication = "LAN";
+			test = new LanTest();
+			communication = "LAN";
 		}
-		
+	
 		else if(args[0]== "INTERNET") {
 			test = new InternetTest();
 			communication = "INTERNET";
 		}
-		
+		else{
+			System.out.println("Invalid Arguments")
+		}
 		
 		if(test.run()) {
 			System.out.println("TestCase passed for "+communication);
