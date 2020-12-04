@@ -129,7 +129,6 @@ public class SendQueueListener implements Runnable {
      */
 
     public void stop(){
-    	while(!SendQueue.isEmpty());
         this.isRunning = false;
     }
 
@@ -150,7 +149,7 @@ public class SendQueueListener implements Runnable {
         );
 
         /** run the while loop as long as the application is running. */
-        while(this.isRunning){
+        while(this.isRunning || !SendQueue.isEmpty()){
             
             /**
              * Check whether the queue is empty or not, if it's not empty, 
