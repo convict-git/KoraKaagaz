@@ -1,5 +1,7 @@
 package processing.utility;
 
+import java.io.Serializable;
+
 /**
  * Class Representing the Dimension
  *
@@ -7,7 +9,11 @@ package processing.utility;
  * @reviewer Himanshu Jain
  */
 
-public class Dimension {
+public class Dimension implements Serializable {
+	
+	/** Serial UID */
+	private static final long serialVersionUID = 3711127614897978214L;
+	
 	/**
 	 * numRows Number of rows
 	 * numCols Number of columns
@@ -43,5 +49,11 @@ public class Dimension {
 		}
 		else
 			return false;
+	}
+	
+	/** HashCode Method */
+	@Override
+	public int hashCode() {
+		return 31 * numRows + numCols;
 	}
 }

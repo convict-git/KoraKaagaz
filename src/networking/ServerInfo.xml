@@ -1,0 +1,8 @@
+<?xml version ="1.0"?>
+<!-- Add AWS server details in respective places of Server tag in the same manner or else it might lead to error --> 
+<Server>
+	<!-- Add IP of AWS server inside the ip element --> 
+	<ip>13.233.96.79</ip>
+	<!-- Add port available at server inside the port element -->
+	<port>5000</port>
+</Server>

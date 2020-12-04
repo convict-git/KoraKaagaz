@@ -1,5 +1,6 @@
 package processing.utility;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -9,7 +10,11 @@ import java.util.Date;
  * @reviewer Himanshu Jain
  */
 
-public class Timestamp implements Comparable<Timestamp> {
+public class Timestamp implements Comparable<Timestamp>, Serializable {
+	
+	/** Serial UID */
+	private static final long serialVersionUID = -1627727721294374145L;
+	
 	/** Timestamp is internally stored as a Date */
 	private Date date;
 	
@@ -42,7 +47,7 @@ public class Timestamp implements Comparable<Timestamp> {
 	 * @return Timestamp as a String
 	 */
 	public String toString() {
-		return date.toString();
+		return Long.toString(date.getTime());
 	}
 	
 	/**
@@ -69,5 +74,11 @@ public class Timestamp implements Comparable<Timestamp> {
 	@Override
 	public int compareTo(Timestamp timestamp) {
 		return date.compareTo(timestamp.date);
+	}
+	
+	/** HashCode Method */
+	@Override
+	public int hashCode() {
+		return date.hashCode();
 	}
 }

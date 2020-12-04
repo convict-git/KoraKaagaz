@@ -1,5 +1,7 @@
 package processing.utility;
 
+import java.io.Serializable;
+
 /**
  * Class Representing a Board ID
  *
@@ -7,10 +9,12 @@ package processing.utility;
  * @reviewer Himanshu Jain
  */
 
-public class BoardId {
-	/**
-	 * Board ID String 
-	 */
+public class BoardId implements Serializable  {
+	
+	/** Serial UID */
+	private static final long serialVersionUID = -6661933124255421896L;
+
+	/** Board ID String */
 	private String boardId;
 	
 	/**
@@ -43,5 +47,11 @@ public class BoardId {
 			return boardId.equals(((BoardId)obj).boardId);
 		else
 			return false;
+	}
+	
+	/** HashCode Method */
+	@Override
+	public int hashCode() {
+		return boardId.hashCode();
 	}
 }

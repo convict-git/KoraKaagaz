@@ -1,5 +1,7 @@
 package processing.utility;
 
+import java.io.Serializable;
+
 /**
  * Class Representing IP Address
  * 
@@ -7,7 +9,11 @@ package processing.utility;
  * @reviewer Ahmed Zaheer Dadarkar
  */
 
-public class IpAddress {
+public class IpAddress implements Serializable {
+	
+	/** Serial UID */
+	private static final long serialVersionUID = -292807028024686686L;
+	
 	/** IP Address String */
 	private String ipAddress;
 	
@@ -41,5 +47,11 @@ public class IpAddress {
 			return ipAddress.equals(((IpAddress)obj).ipAddress);
 		else
 			return false;
+	}
+	
+	/** HashCode Method */
+	@Override
+	public int hashCode() {
+		return ipAddress.hashCode();
 	}
 }

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- file intended to be used to change logging settings -->
+<!-- <testMode> to be kept false, unless being used by test harness -->
+<!-- default path of file logger - $HOME/.config/KoraKaagaz/logs/ --> 
+<logging>
+    <testMode filePath="resources/testing_logger.xml">false</testMode>
+    <loggerOptions>
+        <loggerOption LoggerName="FileLogger"   >true</loggerOption>
+        <loggerOption LoggerName="ConsoleLogger">true</loggerOption>
+    </loggerOptions>
+    <logLevels>
+        <logLevel level="ERROR"  >true</logLevel>
+        <logLevel level="WARNING">true</logLevel>
+        <logLevel level="SUCCESS">true</logLevel>
+        <logLevel level="INFO"   >true</logLevel>
+    </logLevels>
+</logging>
