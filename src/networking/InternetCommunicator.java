@@ -65,8 +65,8 @@ public class InternetCommunicator implements ICommunicator {
     /** Port Number that we will be listening on the network */
     private int clientId;
 
-    /** Boolean check variable for listeners to use */
-    private static boolean isRunning = false;
+    /** Boolean check variable for checking the communication */
+    private boolean isRunning = false;
 
     private Socket s = null;
 
@@ -97,7 +97,7 @@ public class InternetCommunicator implements ICommunicator {
      * 
      * @return isRunning
      */
-    static boolean getStatus() {
+    private boolean getStatus() {
         return isRunning;
     }
 
@@ -221,26 +221,32 @@ public class InternetCommunicator implements ICommunicator {
      */
     @Override
     public void stop() {
-        setStatus(false);
-        try {
-            s.close();
-        } catch (Exception e) {
-            logger.log(ModuleID.NETWORKING, LogLevel.INFO, "Cannot close the socket" + e.toString());
+        if(getStatus()){
+            setStatus(false);
+            internetSendQueueListener.stop();
+            clientMessageReceiver.stop();
+            processingReceiveQueueListener.stop();
+            contentReceiveQueueListener.stop();
+            try {
+                s.close();
+            } catch (Exception e) {
+                logger.log(ModuleID.NETWORKING, LogLevel.INFO, "Cannot close the socket" + e.toString());
+            }
+            internetSendQueueListener = null;
+            internetSendQueueListenerWorker = null;
+            clientMessageReceiver = null;
+            clientMessageReceiverWorker = null;
+            processingReceiveQueueListener = null;
+            processingReceiveQueueListenerWorker = null;
+            contentReceiveQueueListener = null;
+            contentReceiveQueueListenerWorker = null;
+            sendQueue = null;
+            processingReceiveQueue = null;
+            contentReceiveQueue = null;
+            handlerMap = null;
+            CommunicatorFactory.freeCommunicator();
+            logger.log(ModuleID.NETWORKING, LogLevel.INFO, "Communication is stopped");
         }
-        internetSendQueueListener = null;
-        internetSendQueueListenerWorker = null;
-        clientMessageReceiver = null;
-        clientMessageReceiverWorker = null;
-        processingReceiveQueueListener = null;
-        processingReceiveQueueListenerWorker = null;
-        contentReceiveQueueListener = null;
-        contentReceiveQueueListenerWorker = null;
-        sendQueue = null;
-        processingReceiveQueue = null;
-        contentReceiveQueue = null;
-        handlerMap = null;
-        CommunicatorFactory.freeCommunicator();
-        logger.log(ModuleID.NETWORKING, LogLevel.INFO, "Communication is stopped");
     }
 
     /**

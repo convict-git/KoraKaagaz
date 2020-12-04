@@ -10,11 +10,11 @@ import infrastructure.validation.logger.*;
 
 /**
  * 
- * This is the file which contains the SocketListener Class which is a runnable class, that means it
- * has the functionality of threads. This thread basically keeps listening on a port for the client requests, whenever
- * there is a request it accepts(In a blocking manner) them and connects them to another socket which basically
- * receives the message. After receiving the message from the client these messages are 
- * pushed into either content module queue or processing module queue based on the identifier. 
+ * This file contains the SocketListener Class that is a runnable class, which means it 
+ * has the functionality of threads. This thread keeps listening on a port for the client requests. 
+ * Whenever there is a request, It accepts(In a blocking manner) them and connects them to another 
+ * socket that receives the message. After receiving the message from the client, these messages are 
+ * pushed into either the content module queue or processing module queue based on the identifier. 
  * 
  * @author Marella Shiva Sai Teja
  */
@@ -47,6 +47,11 @@ public class SocketListener implements Runnable {
 	ILogger logger = LoggerFactory.getLoggerInstance();
 
 	/**
+	 * Flag variable to exit loop in run method
+	 */
+	boolean isRunning;
+
+	/**
 	 * 
 	 * This method is the constructor of the class which initializes the params
 	 * @param port
@@ -59,6 +64,7 @@ public class SocketListener implements Runnable {
 		this.port = port;
 		this.contModuleQueue = contModuleQueue;
 		this.procModuleQueue = procModuleQueue;
+		this.isRunning = true;
 	}
 
 	/**
@@ -129,7 +135,7 @@ public class SocketListener implements Runnable {
 	/**
 	 * 
 	 * This is the default method that would be executed when the thread is started
-	 * because the class implements Runnable interface.
+	 * as the class implements Runnable interface.
 	 * This is the method where the server starts listening for the client requests and 
 	 * when it finds one it connects it to a socket through which it receives the client message.
 	 * 
@@ -150,9 +156,9 @@ public class SocketListener implements Runnable {
 			logger.log(ModuleID.NETWORKING, LogLevel.INFO, "Server started listening for client requests..");
 
 			/**
-			 * socket keeps listening based on the static variable isRunning
+			 * socket keeps listening based on the variable isRunning
 			 */
-			while(LanCommunicator.getStatus()) {
+			while(this.isRunning) {
 				Socket socket = null;
 				DataInputStream input = null;
 				/**
@@ -167,15 +173,29 @@ public class SocketListener implements Runnable {
 					logger.log(ModuleID.NETWORKING, LogLevel.INFO, "Server has accepted a client request for data transfer");
 
 					/**
-					 * Receives the input from socket. "Remember getInputStream is Blocking type.."
+					 * Receives the data input stream from socket. "Remember getInputStream is Blocking type.."
 					 */
 					input = new DataInputStream(socket.getInputStream());
-					logger.log(ModuleID.NETWORKING, LogLevel.INFO, "Successfully received data from client");
 
 					/**
-					 * Converts the received input into UTF format
+					 * Variable to store the entire message from the client
 					 */
-					String recvMsg = input.readUTF();
+					String recvMsg = "";
+
+					/**
+					 * Loops until it finds the end of file in the message
+					 */
+					while(true){
+						String newMsg = input.readUTF();
+						if(newMsg.equals("EOF")) break;
+
+						// If it is not EOF it concatnates the message with the recvMsg
+						recvMsg += newMsg;
+					}
+
+					/**
+					 * Calls to the respective functions to parse the Identifier from the message
+					 */
 					String id = getIdFromPacket(recvMsg);
 					String msg = getMsgFromPacket(recvMsg);
 
@@ -190,7 +210,7 @@ public class SocketListener implements Runnable {
 				 */
 				catch(EOFException exp){
 					//Logs exception
-					logger.log(ModuleID.NETWORKING, LogLevel.WARNING, exp.toString());
+					logger.log(ModuleID.NETWORKING, LogLevel.ERROR, exp.toString());
 				}
 
 				/**
@@ -198,7 +218,7 @@ public class SocketListener implements Runnable {
 				 */
 				catch(UTFDataFormatException exp){
 					//Logs exception
-					logger.log(ModuleID.NETWORKING, LogLevel.WARNING, exp.toString());
+					logger.log(ModuleID.NETWORKING, LogLevel.ERROR, exp.toString());
 				}
 
 				/**
@@ -207,7 +227,7 @@ public class SocketListener implements Runnable {
 				 */
 				catch(IOException exp){
 					//Logs exception
-					logger.log(ModuleID.NETWORKING, LogLevel.WARNING, exp.toString());
+					logger.log(ModuleID.NETWORKING, LogLevel.ERROR, exp.toString());
 				}
 
 				/**
@@ -275,6 +295,7 @@ public class SocketListener implements Runnable {
 	 */	
 	public void stop(){
 		try{
+			this.isRunning = false;
 			/**
 			 * Closes the socket which keeps listening on the port 
 			 */

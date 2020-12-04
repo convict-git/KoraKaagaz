@@ -50,14 +50,21 @@ public class Communicator implements ICommunicator{
 	@Override
 	public void send(String destination, String message, String identifier) {
 		
-		// System.out.println("send through network " + identifier);
-		INotificationHandler handler = handlerMap.get(identifier);
-		handler.onMessageReceived(message);
-		logger.log(
-				ModuleID.PROCESSING, 
-				LogLevel.INFO, 
-				"Test: Received the sent message"
-		);
+		try {
+			INotificationHandler handler = handlerMap.get(identifier);
+			handler.onMessageReceived(message);
+			logger.log(
+					ModuleID.PROCESSING, 
+					LogLevel.INFO, 
+					"Test: Received the sent message"
+			);
+		} catch (Exception e) {
+			logger.log(
+					ModuleID.PROCESSING, 
+					LogLevel.WARNING, 
+					"Test: Identifier " + identifier + " not found." 
+			);
+		}
 	}
 
 	@Override
