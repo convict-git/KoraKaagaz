@@ -3,24 +3,30 @@
 
 ### Overview
 To implement color change of objects:
-* Receive objectID of the object(theoritically from server or UI), userID of new-user who lastly edited the object, and intensity(final one).
+* Receive `BoardObject` of the object(theoritically from server or UI), userID of new-user who lastly edited the object, and intensity(final one).
 * Set intensity of each of the pixel from previous object, as the input intensity. Hence, we create a new pixel set in a local arraylist(`ArrayList <Pixel>`).
 * Set `BoardObjectOperation` as COLOR_CHANGE, with previous intensity, into a local variable.
-* Call for deletion of the previous object in all the maps, through `removeObjectFromMaps` public static function in `SelectDeleteUtil` class. But in this step, note that the undo-redo stack is not altered. Here a call will take place to update changes to UI, to change previous object's pixel state according to maps.
-* Send the received `userID` as new-user's `user-ID`, the pixel set, the local variable for `BoardObjectOperation` and rest of the parameters from previous object stored in local variables, to the `drawCurve` public static function. But in this step, note that the undo-redo stack is not altered. Here a call will take place to update changes to UI, to change new updated object's pixel's state according to the maps.
+* Call for deletion of the previous object in all the maps, through `removeObjectFromMaps` public static function in `ClientBoardState` class. But in this step, note that the undo-redo stack is not altered.
+* Send the received `userID` as new-user's `user-ID`, the pixel set, the local variable for `BoardObjectOperation` and rest of the parameters from previous object stored in local variables, to the `drawCurve` public static function. But in this step, note that the undo-redo stack is not altered.
 * Call for updating the undo-redo stack to public static function `pushIntoStack` by passing the `BoardObject`, via the `stackUtil` function in `ParameterizedOperationsUtil`.
-* Return the ObjectID.
+* A call will take place to update changes to UI using `CommunicateChange.provideChanges` function, to change new updated object's pixel's state according to the maps.
+* Send the change in selected object to UI using ```CommunicateChange.identifierToHandler.get(CommunicateChange.identifierUI)
+				.giveSelectedPixels``` function.
+* Change `boardOp` of old object and return it, for updating other clients(if required).
 
 To implement rotation of objects(angles in multiples of 90$^\circ$):
-* Receive objectID of the object(theoritically from server or UI), userID of new-user who lastly edited the object, and angleOfRotation(in counter-clockwise direction).
+* Receive `BoardObject` of the object(theoritically from server or UI), userID of new-user who lastly edited the object, and angleOfRotation(in counter-clockwise direction).
 * From the pixel set of previous object, deduce the center coordinates of object around which rotation will take place.
-* Find the rotation matrix using centre coordinates and angle of rotation.
-* Create a new local arraylist to store updated pixels after passing the previous object's pixels through rotation matrix.
+* Find the rotation matrix using angle of rotation.
+* Create a new local arraylist to store updated pixels after passing the previous object's pixels through rotation matrix. Re-align it using the `centre` position of pixels.
 * Set `BoardObjectOperation` as ROTATE, with anlgeOfRotation, into a local variable.
-* Call for deletion of the previous object in all the maps, through `removeObjectFromMaps` public static function in `SelectDeleteUtil` class. But in this step, note that the undo-redo stack is not altered. Here a call will take place to update changes to UI, to change previous object's pixel state according to maps.
-* Send the received `userID` as new-user's `user-ID`, the pixel set, the local variable for `BoardObjectOperation` and rest of the parameters from previous object stored in local variables, to the `drawCurve` public static function. But in this step, note that the undo-redo stack is not altered. Here a call will take place to update changes to UI, to change new updated object's pixel's state according to the maps.
+* Call for deletion of the previous object in all the maps, through `removeObjectFromMaps` public static function in `ClientBoardState` class. But in this step, note that the undo-redo stack is not altered.
+* Send the received `userID` as new-user's `user-ID`, the pixel set, the local variable for `BoardObjectOperation` and rest of the parameters from previous object stored in local variables, to the `drawCurve` public static function. But in this step, note that the undo-redo stack is not altered.
 * Call for updating the undo-redo stack to public static function `pushIntoStack` by passing the `BoardObject`, via the `stackUtil` function in `ParameterizedOperationsUtil`.
-* Return the ObjectID.
+* A call will take place to update changes to UI using `CommunicateChange.provideChanges` function, to change new updated object's pixel's state according to the maps.
+* Send the change in selected object to UI using ```CommunicateChange.identifierToHandler.get(CommunicateChange.identifierUI)
+				.giveSelectedPixels``` function.
+* Change `boardOp` of old object and return it, for updating other clients independently(if required).
 
 To implement test harness:
 * `Executive` and `TestHarness` class.
@@ -47,43 +53,47 @@ To review other processing module sections:
 #### Color Change
 1. Instead of keeping color(intensity) as a property of a `BoardObject`, we have kept color(intensity) for each indivisual pixel in a `BoardObject`. This is to add flexibility in model, incase we allow multiple intensities within a same object, in future.
 1. The `colorChange` function in `IOperation` takes input of `Intensity` class, calls public static function `colorChange` in `ParameterizedOperationsUtil` class after retreiving all the necessary parameters from the selected object.
-1. The `colorChange` function in `ParameterizedOperationsUtil` class takes `BoardObject`(previous object) and `Intensity`(new intensity) as parameters and returns `ObjectID` of the new object created to the 'Client Side Processing' section, so that it can be forwarded to the processing server according to needs. Since this function gets called from 'Client Side Processing' section, it is kept as a public function.
+1. The `colorChange` function in `ParameterizedOperationsUtil` class takes `BoardObject`(previous object) and `Intensity`(new intensity) as parameters and returns `BoardObject` of the old object with change in `boardOp`, so that it can be forwarded to the processing server according to needs. Since this function gets called from 'Client Side Processing' section, it is kept as a public function.
 1. The `colorChangeUtil` function is kept public as it will be called by 'undo-redo' section.
 1. The `colorChangeUtil` will be used to store previous object into local variables, update its intensities, send previous object for deletion, creation of new object(with updates in the maps). The call for deletion and creation of object is to avoid rewriting the existing utilities in other sections of processing module.
 1. The `colorChange` function sequentially calls `colorChangeUtil`, `stackUtil` functions. The reason of this breakup is: during 'Undo' operation on any object with `BoardOperation` type as COLOR_CHANGE, only `colorChangeUtil` will be called because after undo, the object is shifted into redo stack, and we don't want the object to again enter into the undo stack, which `colorChange` function actually does. So, `colorChange` will be called by 'Client Side Processing' section and `colorChangeUtil` will be called by 'undo-redo' section.
 #### Rotate Objects
 1. The `rotate` function in `IOperation` takes input of `Angle` class, calls public static function `rotate` in `ParameterizedOperationsUtil` class after retreiving all the necessary parameters from the selected object.
-1. The `rotate` function in `ParameterizedOperationsUtil` class takes `BoardObject`(previous object) and `Angle`(angleOfRotation) as parameters and returns `ObjectID` of the new object created to the 'Client Side Processing' section, so that it can be forwarded to the processing server according to needs. Since this function gets called from 'Client Side Processing' section, it is kept as a public function.
+1. The `rotate` function in `ParameterizedOperationsUtil` class takes `BoardObject`(previous object) and `Angle`(angleOfRotation) as parameters and returns `BoardObject` of the old object with change in `boardOp`, so that it can be forwarded to the processing server according to needs. Since this function gets called from 'Client Side Processing' section, it is kept as a public function.
 1. The `rotateUtil` function is kept public as it will be called by 'undo-redo' section.
 1. The `rotateUtil` will be used to store previous object into local variables, get updated pixels in arraylist as `ArrayList <Pixel>`, send previous object for deletion, creation of new object(with updates in the maps). The call for deletion and creation of object is to avoid rewriting the existing utilities in other sections of processing module.
 1. The `rotate` function sequentially calls `rotateUtil`, `stackUtil` functions. The reason of this breakup is: during 'Undo' operation on any object with `BoardOperation` type as ROTATE, only `rotateUtil` will be called because after undo, the object is shifted into redo stack, and we don't want the object to again enter into the undo stack, which `rotate` function actually does. So, `rotate` will be called by 'Client Side Processing' section and `rotateUtil` will be called by 'undo-redo' section.
 1. For rotation of an object, rotation matrix and vector-maps will be used because they are efficient in time complexity i.e `O(number_of_pixels_to_be_rotated)`.
 1. `findCentre` function is a private utility function in `ParameterizedOperationsUtil` class to return a `Position` of centre from passed `ArrayList<Pixel>` of an object. It is kept private because, is not being used by any other section.
-1. Similarly `rotationMatrix` function takes an `Angle` and `Position` of centre pixel to deduce the required rotation matrix in a 2D array form. It is just a local utility function, thus kept private.
+1. Similarly `computeRotationMatrix` function takes an `Angle` to deduce the required rotation matrix in a 2D array form. It is just a local utility function, thus kept private. Later on we re-align the rotation matrix using the `centre` of rotation.
 
 ### Interfaces
 ```java
-/*
+/**
  * This interface is used by UI and conducted by 'Client
  * Side Processing', to call every major functionality
- * sections.*/
+ * sections.
+ */
 public interface IOperation {
-    /* returns the pixel position for selected object, if
+    /**
+     * returns the pixel position for selected object, if
      * an object exists at the selected position
-     * */
+     */
     ArrayList<Position> select (ArrayList<Position> positions);
 
     // deletes the selected object
     void delete ();
 
-    /* changes color of selected object to the specified
+    /**
+     * changes color of selected object to the specified
      * intensity
-     * */
+     */
     void colorChange (Intensity intensity);
 
-    /* rotates selected object by specified angle, in
+    /**
+     * rotates selected object by specified angle, in
      * counter clockwise direction
-     * */
+     */
     void rotate (Angle angleCCW);
 
     // removes all the object drawn
@@ -94,61 +104,65 @@ public interface IOperation {
 ### Classes
 
 ```java
-/* Supports operations with parameters like `Angle` and
- *  `Intensity`.
- * */
+/**
+ * Supports operations with parameters like `Angle` and
+ * `Intensity`.
+ */
 public class ParameterizedOperationsUtil{
-    /*
+    /**
      * Operation: calculate average x-coordinate &
      * y-coordinate as centre pixel postion
      * Input: pixels of an object
      * Ouput: centre pixel position
-     * */
+     */
     private static Position findCentre(ArrayList<Pixel> pixels);
 
-    /*
+    /**
      * Operation: suitable rotation matrix
-     * Inputs: angleOfRotation, centre `Position`.
+     * Inputs: angleOfRotation.
      * Output: 2D rotation matrix
-     * */
-    private static double[][] rotationMatrix(Angle angle, Position centre);
+     */
+    private static double[][] computeRotationMatrix(Angle angle);
 
-    /*
+    /**
      * Operation: call 'pushIntoStack' for undo-redo
      * Inputs: rotated/color-changed object
      * Output: void
-     * */
+     */
     private static void stackUtil(BoardObject newObj);
 
-    /*
+    /**
      * Operation: change pixel colors, delete previous
      * object, create updated object
-     * Inputs: previous object, and final intensity
+     * Inputs: previous object, current user's id
+     * and final intensity
      * Output: updated object with color changed
-     * */
-    public static BoardObject colorChangeUtil(BoardObject obj, Intensity intensity);
+     */
+    public static BoardObject colorChangeUtil(BoardObject obj, UserId id, Intensity intensity);
 
-    /*
-     * Operation: Color change
+    /**
+     * Operation: Color change, update UI
      * Inputs: Intensity, previous object
-     * Output: objectID of updated object
-     * */
-    public static ObjectId colorChange(BoardObject obj, Intensity intensity);
+     * Output: old object with 'COLOR_CHANGE' `boardOp`
+     */
+    public static BoardObject colorChange(BoardObject obj, UserId id, Intensity intensity);
 
-    /*
+    /**
      * Operation: find new pixel set after rotation,
      * delete previous object, create updated object
-     * Inputs: previous object, and angleOfRotation
+     * Inputs: previous object, current user's id
+     * and angleOfRotation
      * Output: updated rotated object
-     * */
+     */
     public static BoardObject rotationUtil(BoardObject obj, Angle angleOf Rotation);
 
-    /*
+    /**
      * Operation: Rotation
-     * Input: previous object, and angleOfRotation
-     * Output: Object ID of updated object
-     * */
-    public static ObjectId rotation(BoardObject obj, Angle angleOfRotation);
+     * Input: previous object, current user's id and
+     * angleOfRotation
+     * Output: old object with 'ROTATE' `boardOp`
+     */
+    public static BoardObject rotation(BoardObject obj, Angle angleOfRotation);
 }
 ```
 
@@ -246,6 +260,7 @@ public class BoardObject implements Serializable {
 * `BoardObjectOperation` type object `boardOp` could have been `enum`, but because Rotation and ColorChange operations needed extra parameters to store its object operation state i.e. Angle and Intensity repectively; thus we have built a interface `BoardObjectInterface` and a class for each of the operation.
 * `Angle`, `Intensity`, `Position`, `UserID`, `ObjectID` classes are specifically created to make it more readable, without considering the details about their primary data types.
 * Since there are no usage of data-structure resources like maps, stacks, etc., there is no need of keeping functions synchronized. And hence it remains secure from issues like inconsistency.
+
 ### Summary and Conclusions
 Color change operation is currently based on the assumption that an object possesses mono-colored pixels. But as we have set Intensity to be a property of pixel instead of complete object, the design can be easily manipulated to support multi-colored objects.
 
