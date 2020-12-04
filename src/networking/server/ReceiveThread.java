@@ -78,10 +78,21 @@ public class ReceiveThread extends Thread{
             
             try{
               
+                   
+                   
+                     message = "";
+
                     /**
-                     * Read a string that has been encoded using the UTF-8 format.
+                     * Loops until it finds the end of file in the message
                      */
-                    message = dis.readUTF();
+                    while(true){
+                        String newMsg = dis.readUTF();
+                        if(newMsg.equals("EOF")) break;
+
+                        // If it is not EOF it concatnates the message with the recvMsg
+                        message += newMsg;
+                    }
+
                     logger.log(ModuleID.NETWORKING, LogLevel.INFO, "Message received");
                     
                     /**

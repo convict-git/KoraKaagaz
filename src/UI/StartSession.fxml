@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<!-- Author : Konuru Shiva Dhanush -->
+<!-- This file contains the code for start session  page -->
+
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
@@ -11,10 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<!--  <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
-   -->
-
-<AnchorPane maxHeight="600.0" maxWidth="800.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="600.0" maxWidth="800.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="UI.WhiteBoardController">
    
    <children>
       <Pane layoutX="254.0" prefHeight="600.0" prefWidth="539.0" style="-fx-background-color: white;">
@@ -29,10 +29,10 @@
                   <Font size="20.0" />
                </font>
             </Label>
-            <TextField layoutX="219.0" layoutY="169.0" prefHeight="35.0" prefWidth="293.0" promptText="Enter Username" />
-            <TextField layoutX="218.0" layoutY="236.0" prefHeight="35.0" prefWidth="293.0" promptText="Enter IP address" />
-            <TextField layoutX="216.0" layoutY="290.0" prefHeight="35.0" prefWidth="293.0" promptText="Enter Board ID" />
-            <Label layoutX="37.0" layoutY="353.0" prefHeight="35.0" prefWidth="166.0" text="Profile Image">
+            <TextField fx:id="userName" layoutX="219.0" layoutY="169.0" prefHeight="35.0" prefWidth="293.0" promptText="Enter Username" />
+            <TextField fx:id="ipAddress" layoutX="218.0" layoutY="236.0" prefHeight="35.0" prefWidth="293.0" promptText="Enter IP address" />
+            <TextField fx:id="boardId" layoutX="216.0" layoutY="290.0" prefHeight="35.0" prefWidth="293.0" promptText="Enter Board ID" />
+            <Label layoutX="37.0" layoutY="353.0" prefHeight="35.0" prefWidth="166.0" text="Profile Image(.jpg)">
                <font>
                   <Font size="20.0" />
                </font>
@@ -47,14 +47,14 @@
                   <Font name="Arial Black" size="33.0" />
                </font>
             </Label>
-            <Button layoutX="104.0" layoutY="438.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="224.0" style="-fx-background-color: orange;" text="Start Session">
+            <Button fx:id="startSession" layoutX="104.0" layoutY="438.0" mnemonicParsing="false" onAction="#startSession" prefHeight="25.0" prefWidth="224.0" style="-fx-background-color: orange;" text="Start Session">
                <font>
                   <Font size="15.0" />
                </font>
                <cursor>
                   <Cursor fx:constant="OPEN_HAND" />
                </cursor></Button>
-            <Button layoutX="216.0" layoutY="358.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="142.0" text="Choose Image">
+            <Button fx:id="imageChoose" layoutX="216.0" layoutY="358.0" mnemonicParsing="false" onAction="#getImage" prefHeight="25.0" prefWidth="142.0" text="Choose Image">
                <cursor>
                   <Cursor fx:constant="OPEN_HAND" />
                </cursor></Button>
@@ -66,11 +66,7 @@
              <image>
             <Image url="@KoraKaagaz.jpg" />
          </image>
-            </ImageView> 
-            
-           
-         
-      <!--      <ImageView fitHeight="188.0" fitWidth="253.0" pickOnBounds="true" smooth="false" /> -->
+            </ImageView>          
          </children>
       </VBox>
    </children>
