@@ -125,7 +125,9 @@ public class InternetSendQueueListener implements Runnable {
      *  Stopping the thread by making isRunning false
      */
     public void stop(){
+        while(!SendQueue.isEmpty());
         this.isRunning = false;
+        
     }
 
     /**
