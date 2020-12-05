@@ -403,10 +403,12 @@ public class ParameterizedOperationsUtil {
 
 		// change `boardOp` of old object and return it
 		IBoardObjectOperation newBoardOp = new ColorChangeOperation(intensity);
-		obj.setOperation(newBoardOp);
-		obj.setUserId(newObj.getUserId());
+		//obj.setOperation(newBoardOp);
+		//obj.setUserId(newObj.getUserId());
+		BoardObject copyObj = UndoRedo.duplicateObject(obj, newBoardOp);
+		copyObj.setUserId(newObj.getUserId());
 
-		return obj;
+		return copyObj;
 	}
 
 	/**
@@ -463,9 +465,11 @@ public class ParameterizedOperationsUtil {
 
 		// change `boardOp`, `UserId` of old object and return it
 		IBoardObjectOperation newBoardOp = new RotateOperation(angleOfRotation);
-		obj.setOperation(newBoardOp);
-		obj.setUserId(newObj.getUserId());
+		//obj.setOperation(newBoardOp);
+		//obj.setUserId(newObj.getUserId());
+		BoardObject copyObj = UndoRedo.duplicateObject(obj, newBoardOp);
+		copyObj.setUserId(newObj.getUserId());
 
-		return obj;
+		return copyObj;
 	}
 }
