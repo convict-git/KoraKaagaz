@@ -7,6 +7,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 
 /**
  * Class containing static methods for serializing and
@@ -37,18 +39,22 @@ public class Serialize {
 		Serializable serialObj
 	) throws IOException, UnsupportedEncodingException {
 		// Create Stream for outputting object as Bytes
-	    	ByteArrayOutputStream byteOutputStream = 
-	    		new ByteArrayOutputStream();
+    	ByteArrayOutputStream byteOutputStream = 
+    		new ByteArrayOutputStream();
 	  
-	    	// Create Stream for passing serializable object to
+	    GZIPOutputStream gzipOutputStream = 
+	    	new GZIPOutputStream(byteOutputStream);
+	    	
+	    // Create Stream for passing serializable object to
 		// ByteArrayOutputStream
 		ObjectOutputStream objOutStream = 
-			new ObjectOutputStream(byteOutputStream);
+			new ObjectOutputStream(gzipOutputStream);
 		
 		// Write the object and flush it (so that
 		// it is written immediately)
 		objOutStream.writeObject(serialObj);
 		objOutStream.flush();
+		gzipOutputStream.finish();
 		
 		// Get the serialized String from stream
 		// The ISO-8859-1 preserves 1-to-1 mapping between bytes and characters,
@@ -80,10 +86,13 @@ public class Serialize {
 		ByteArrayInputStream byteInputStream = 
 			new ByteArrayInputStream(serialString.getBytes("ISO-8859-1"));
 		
+		GZIPInputStream gzipInputStream =
+			new GZIPInputStream(byteInputStream);
+		
 		// Create Stream for reading the object from the
 		// ByteArrayInputStream stream
 		ObjectInputStream objInputStream = 
-			new ObjectInputStream(byteInputStream);
+			new ObjectInputStream(gzipInputStream);
 		
 		// Read the serialized object from the object input stream
 		Serializable serialObj = 
