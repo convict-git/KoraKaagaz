@@ -177,6 +177,90 @@ public class ContentNotificationHandler implements IContentNotificationHandler {
 		}
 	}
 	
+
+	public void userJoined(String username)
+	  {
+	    Platform.runLater(new Runnable() {
+	      @Override public void run() {
+	        //Update UI here 
+	    	//Creating a JSON Object
+	  		JSONObject obj = new JSONObject(username);
+	  		//Obtaining the username string
+	  		String userName = obj.getString("username");
+	  		//new user joined alert.
+	  		Alert alert = new Alert(AlertType.CONFIRMATION, "The user" + userName +  "joined the canvas! ", ButtonType.OK);
+	  		//Displaying the alert
+	  		alert.show();
+	  		//Creating a new thread to display the alert for some seconds and dismiss
+	          new Thread(new Runnable() {
+	              @Override
+	              public void run() {
+	                  try {
+	                      Thread.sleep(1000);  // seconds * 100
+	                  } catch (InterruptedException e) {
+	                      if (alert.isShowing())
+	                      {
+	                      	 alert.close();
+	                      }
+	                      e.printStackTrace();
+	                      //log message
+	                      logger.log(ModuleID.UI, LogLevel.ERROR, e.toString());
+	                      
+
+	                  }finally {
+	                      if (alert.isShowing())
+	                      {
+	                      	alert.close();
+	                      }
+	                  }
+	              }
+	          }).run();
+	      }
+	    });
+	  }
+	
+	
+	public void userLeft(String username)
+	  {
+	    Platform.runLater(new Runnable() {
+	      @Override public void run() {
+	        //Update UI here 
+	    	//Creating a JSON Object
+	  		JSONObject obj = new JSONObject(username);
+	  		//Obtaining the username string
+	  		String userName = obj.getString("username");
+	  		//new user joined alert.
+	  		Alert alert = new Alert(AlertType.CONFIRMATION, "The user" + userName +  "left the canvas! ", ButtonType.OK);
+	  		//Displaying the alert
+	  		alert.show();
+	  		//Creating a new thread to display the alert for some seconds and dismiss
+	          new Thread(new Runnable() {
+	              @Override
+	              public void run() {
+	                  try {
+	                      Thread.sleep(1000);  // seconds * 100
+	                  } catch (InterruptedException e) {
+	                      if (alert.isShowing())
+	                      {
+	                      	 alert.close();
+	                      }
+	                      e.printStackTrace();
+	                      //log message
+	                      logger.log(ModuleID.UI, LogLevel.ERROR, e.toString());
+	                      
+
+	                  }finally {
+	                      if (alert.isShowing())
+	                      {
+	                      	alert.close();
+	                      }
+	                  }
+	              }
+	          }).run();
+	      }
+	    });
+	  }
+	  
 	/*
 	 * The function onNewUserJoined() displays an alert when a new user joins the canvas
 	 * @param : username- A JSON String of the user name of the user entered
