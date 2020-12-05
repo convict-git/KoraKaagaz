@@ -41,8 +41,6 @@ public class InternetSendQueueListener implements Runnable {
      */
     boolean isRunning;
 
-    boolean isRunning;
-
     /**
      * Constructor for this sendQueueListener class.
      * @param SendQueue, requires the sendqeue as parameter.
@@ -85,7 +83,7 @@ public class InternetSendQueueListener implements Runnable {
             = "(\\d{1,2}|(0|1)\\"
               + "d{2}|2[0-4]\\d|25[0-5])";
 
-        /** regular epression for ip address. */
+        /** regular expression for ip address. */
         String ipreg = zeroTo255 + "\\."
         + zeroTo255 + "\\."
         + zeroTo255 + "\\."
@@ -131,6 +129,9 @@ public class InternetSendQueueListener implements Runnable {
      *  Stopping the thread by making isRunning false
      */
     public void stop(){
+    	while(!SendQueue.isEmpty()) {
+    		
+    	}
         this.isRunning = false;
     }
 
@@ -148,7 +149,7 @@ public class InternetSendQueueListener implements Runnable {
         );
 
         /** run the while loop as long as the application is running. */
-        while(this.isRunning || !SendQueue.isEmpty()){
+        while(this.isRunning){
             
             /**
              * Check whether the queue is empty or not, if it's not empty, 
