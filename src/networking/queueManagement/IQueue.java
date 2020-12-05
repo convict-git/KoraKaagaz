@@ -10,9 +10,7 @@ package networking.queueManagement;
 
 public interface IQueue <T> {
 
-    /**
-     *  This method "clear" removes all the elements present in the queue
-     */
+    /** This method "clear" removes all the elements present in the queue */
     public void clear();
 
     /**
@@ -30,7 +28,7 @@ public interface IQueue <T> {
     public void enqueue(T item) ;
 
     /**
-     *This method "front" takes no argument and returns the front item of the queue without
+     * This method "front" takes no argument and returns the front item of the queue without
      * removing the item from the queue
      *
      * @return the front item if queue is not empty or else returns NULL

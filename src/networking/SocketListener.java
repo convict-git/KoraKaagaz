@@ -60,11 +60,17 @@ public class SocketListener implements Runnable {
 	 * 
 	 * There won't be any return type as it is a constructor of the class
 	 */
-	public SocketListener(int port, IQueue<IncomingPacket> contModuleQueue, IQueue<IncomingPacket> procModuleQueue){
+	public SocketListener(
+		int port, 
+		IQueue<IncomingPacket> contModuleQueue, 
+		IQueue<IncomingPacket> procModuleQueue
+		) {
+
 		this.port = port;
 		this.contModuleQueue = contModuleQueue;
 		this.procModuleQueue = procModuleQueue;
 		this.isRunning = true;
+
 	}
 
 	/**
@@ -114,7 +120,10 @@ public class SocketListener implements Runnable {
 	 * @param id Identifier of the message
 	 * @param msg Message that is to be transported over the network.
 	 */
-	public void push(String id, String msg) {
+	public void pushToQueue(
+		String id, 
+		String msg
+		) {
 
 		/**
 		 * Creates a object of queue type.
@@ -129,7 +138,11 @@ public class SocketListener implements Runnable {
 		}else{
 			procModuleQueue.enqueue(queuePacket);
 		}
-		logger.log(ModuleID.NETWORKING, LogLevel.SUCCESS, "Message pushed into appropriate queue by server based on the identifier");
+		logger.log(
+			ModuleID.NETWORKING, 
+			LogLevel.SUCCESS, 
+			"Message pushed into appropriate queue by server based on the identifier"
+		);
 	}
 	
 	/**
@@ -141,7 +154,7 @@ public class SocketListener implements Runnable {
 	 * 
 	 */
 	@Override
-    public void run(){
+	public void run(){
 
 		/**
 		 * This block of code inside the try would try to execute instructions inside it and when it 
@@ -153,7 +166,11 @@ public class SocketListener implements Runnable {
 			 * creates a socket which keeps listening on the port for client requests
 			 */
 			serverSocket = new ServerSocket(port);
-			logger.log(ModuleID.NETWORKING, LogLevel.INFO, "Server started listening for client requests..");
+			logger.log(
+				ModuleID.NETWORKING, 
+				LogLevel.INFO, 
+				"Server started listening for client requests.."
+			);
 
 			/**
 			 * socket keeps listening based on the variable isRunning
@@ -161,16 +178,22 @@ public class SocketListener implements Runnable {
 			while(this.isRunning) {
 				Socket socket = null;
 				DataInputStream input = null;
+
 				/**
 				 * This block of code inside the tries to accept the client requests if any exception occurs
 				 * it checks for appropriate catch.
 				 */
 				try{
+					
 					/**
 					 * creates a socket which connects with the client for message transfer.
 					 */
 					socket = serverSocket.accept();
-					logger.log(ModuleID.NETWORKING, LogLevel.INFO, "Server has accepted a client request for data transfer");
+					logger.log(
+						ModuleID.NETWORKING, 
+						LogLevel.INFO, 
+						"Server has accepted a client request for data transfer"
+					);
 
 					/**
 					 * Receives the data input stream from socket. "Remember getInputStream is Blocking type.."
@@ -189,7 +212,9 @@ public class SocketListener implements Runnable {
 						String newMsg = input.readUTF();
 						if(newMsg.equals("EOF")) break;
 
-						// If it is not EOF it concatnates the message with the recvMsg
+						/**
+						 * If it is not EOF it concatnates the message with the recvMsg
+						 */
 						recvMsg += newMsg;
 					}
 
@@ -202,23 +227,32 @@ public class SocketListener implements Runnable {
 					/**
 					 * Calls the push function
 					 */
-					push(id, msg);
+					pushToQueue(
+						id, 
+						msg
+					);
 				}
 
 				/**
 				 * This block gets executed  if this stream reaches the end before reading all the bytes.
 				 */
 				catch(EOFException exp){
-					//Logs exception
-					logger.log(ModuleID.NETWORKING, LogLevel.ERROR, exp.toString());
+					logger.log(
+						ModuleID.NETWORKING, 
+						LogLevel.ERROR, 
+						exp.toString()
+					);
 				}
 
 				/**
 				 * This block gets executed if the bytes do not represent a valid modified UTF-8 encoding of a string.
 				 */
 				catch(UTFDataFormatException exp){
-					//Logs exception
-					logger.log(ModuleID.NETWORKING, LogLevel.ERROR, exp.toString());
+					logger.log(
+						ModuleID.NETWORKING, 
+						LogLevel.ERROR, 
+						exp.toString()
+					);
 				}
 
 				/**
@@ -226,8 +260,11 @@ public class SocketListener implements Runnable {
 				 * reading after close, or another I/O error occurs.
 				 */
 				catch(IOException exp){
-					//Logs exception
-					logger.log(ModuleID.NETWORKING, LogLevel.ERROR, exp.toString());
+					logger.log(
+						ModuleID.NETWORKING, 
+						LogLevel.ERROR, 
+						exp.toString()
+					);
 				}
 
 				/**
@@ -240,7 +277,11 @@ public class SocketListener implements Runnable {
 						 */
 						if(input != null){
 							input.close();
-							logger.log(ModuleID.NETWORKING, LogLevel.INFO, "DataInputStream of client has been closed");
+							logger.log(
+								ModuleID.NETWORKING, 
+								LogLevel.INFO, 
+								"DataInputStream of client has been closed"
+							);
 						}
 
 						/**
@@ -248,14 +289,22 @@ public class SocketListener implements Runnable {
 						 */
 						if(socket != null){
 							socket.close();
-							logger.log(ModuleID.NETWORKING, LogLevel.INFO, "socket connection has been closed");
+							logger.log(
+								ModuleID.NETWORKING, 
+								LogLevel.INFO, 
+								"socket connection has been closed"
+							);
 						}
 					}
 					/**
 					 * This block gets executed when an exception arises while closing the input stream
 					 */
 					catch(IOException exp){
-						logger.log(ModuleID.NETWORKING, LogLevel.ERROR, exp.toString());
+						logger.log(
+							ModuleID.NETWORKING, 
+							LogLevel.ERROR, 
+							exp.toString()
+						);
 					}
 				}
 			}
@@ -265,7 +314,11 @@ public class SocketListener implements Runnable {
 		 * This block gets executed when a exception arises in try block
 		 */
 		catch(IOException exp){
-			logger.log(ModuleID.NETWORKING, LogLevel.ERROR, exp.toString());
+			logger.log(
+				ModuleID.NETWORKING, 
+				LogLevel.ERROR, 
+				exp.toString()
+			);
 		}
 
 		/**
@@ -278,17 +331,25 @@ public class SocketListener implements Runnable {
 				 */
 				if(serverSocket != null){
 					serverSocket.close();
-					logger.log(ModuleID.NETWORKING, LogLevel.INFO, "Server has been closed");
+					logger.log(
+						ModuleID.NETWORKING, 
+						LogLevel.INFO, 
+						"ServerSocket has been closed"
+					);
 				}
 			}
 			/**
 			 * This block gets executed when an exception arises while closing the socket.
 			 */
 			catch(IOException exp){
-				logger.log(ModuleID.NETWORKING, LogLevel.ERROR, exp.toString());
+				logger.log(
+					ModuleID.NETWORKING, 
+					LogLevel.ERROR, 
+					exp.toString()
+				);
 			}
 		}
-    }
+	}
 	
 	/**
 	 * This method stops the server socket. This is called by LanCommunicator's stop method.
@@ -301,14 +362,22 @@ public class SocketListener implements Runnable {
 			 */
 			if(serverSocket != null){
 				serverSocket.close();
-				logger.log(ModuleID.NETWORKING, LogLevel.INFO, "Server has been closed");
+				logger.log(
+					ModuleID.NETWORKING, 
+					LogLevel.INFO, 
+					"Server has been closed"
+				);
 			}
 		}
 		/**
 		 * This block gets executed when an exception arises while closing the socket.
 		 */
 		catch(IOException exp){
-			logger.log(ModuleID.NETWORKING, LogLevel.ERROR, exp.toString());
+			logger.log(
+				ModuleID.NETWORKING, 
+				LogLevel.ERROR, 
+				exp.toString()
+			);
 		}
 	}
 
