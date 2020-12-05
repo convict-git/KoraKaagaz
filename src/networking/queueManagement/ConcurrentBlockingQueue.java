@@ -1,7 +1,9 @@
 package networking.queueManagement;
 
-import infrastructure.validation.logger.*;
 import java.util.concurrent.*;
+
+import infrastructure.validation.logger.*;
+
 
 /**
  *  This file contains the class ConcurrentBlockingQueue which implements the the queue interface
@@ -17,29 +19,27 @@ import java.util.concurrent.*;
 
 public class ConcurrentBlockingQueue<T> implements IQueue<T> {
 
-    /**
-     * It contains the maximum number of elements that queue can store.
-     */
+    /** It contains the maximum number of elements that queue can store */
     int capacity;
 
-    /**
-     * Declaring the the java inbuilt Blocking Queue which is thread-safe and will  not rise the concurrency issues
-     */
+    /** Declaring the the java inbuilt Blocking Queue which is thread-safe and will  not rise the concurrency issues */
     BlockingQueue<T> q;
 
-    /**
-     *  Logger object from the LoggerFactory to log Messages.
-     */
+    /** Logger object from the LoggerFactory to log Messages */
     ILogger logger = LoggerFactory.getLoggerInstance();
 
     /**
      * Default Constructor which initialises capacity and creates a ArrayBlocking queue instance of size equal to
-     *  capacity.
+     * capacity.
      */
     public ConcurrentBlockingQueue(){
         capacity = 100000;
         q = new ArrayBlockingQueue<T>(capacity);
-        logger.log(ModuleID.NETWORKING, LogLevel.SUCCESS, "A new queue has been constructed which is thread-safe and blocking");
+        logger.log(
+                ModuleID.NETWORKING,
+                LogLevel.SUCCESS,
+                "A new queue has been constructed which is thread-safe and blocking"
+        );
     }
 
     /**
@@ -51,12 +51,14 @@ public class ConcurrentBlockingQueue<T> implements IQueue<T> {
     public ConcurrentBlockingQueue(int capacity){
         this.capacity = capacity;
         q = new ArrayBlockingQueue<T>(this.capacity);
-        logger.log(ModuleID.NETWORKING, LogLevel.SUCCESS, "A new queue has been constructed which is thread-safe and blocking");
+        logger.log(
+                ModuleID.NETWORKING,
+                LogLevel.SUCCESS,
+                "A new queue has been constructed which is thread-safe and blocking"
+        );
     }
 
-    /**
-     *  This method "clear" removes all the elements present in the queue
-     */
+    /** This method "clear" removes all the elements present in the queue */
     public void clear(){
         q.clear();
     }
@@ -69,7 +71,11 @@ public class ConcurrentBlockingQueue<T> implements IQueue<T> {
         try {
            q.take();
         } catch (InterruptedException e){
-            logger.log(ModuleID.NETWORKING, LogLevel.ERROR, "Raised in QueueManagement because a interruption is caused while the queue is waiting");
+            logger.log(
+                    ModuleID.NETWORKING,
+                    LogLevel.ERROR,
+                    "Raised in QueueManagement because a interruption is caused while the queue is waiting"
+            );
         }
     }
 
@@ -83,9 +89,17 @@ public class ConcurrentBlockingQueue<T> implements IQueue<T> {
         try {
             q.put(item);
         } catch (InterruptedException e){
-            logger.log(ModuleID.NETWORKING, LogLevel.ERROR, "Raised in QueueManagement because a interruption is caused while the queue is waiting");
+            logger.log(
+                    ModuleID.NETWORKING,
+                    LogLevel.ERROR,
+                    "Raised in QueueManagement because a interruption is caused while the queue is waiting"
+            );
         } catch(NullPointerException e){
-            logger.log(ModuleID.NETWORKING, LogLevel.ERROR, "Raised in QueueManagement because the element inserted is NULL which should not be inserted");
+            logger.log(
+                    ModuleID.NETWORKING,
+                    LogLevel.ERROR,
+                    "Raised in QueueManagement because the element inserted is NULL which should not be inserted"
+            );
         }
     }
 
