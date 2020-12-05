@@ -145,16 +145,15 @@ public class ContentServer implements INotificationHandler{
 			jsonObject.remove("image");
 			// declaring a JSON Array and a temporary JSON Object
 			JSONArray jsonArray = new JSONArray();
-			JSONObject tempJsonObject = new JSONObject();
 			// This loop adds all userName-userImage as a JSON object to a JSON Array
 			for (String name : imageMap.keySet()) {
 				userName = name;
 				userImage = imageMap.get(userName);
+				
+				JSONObject tempJsonObject = new JSONObject();
 				tempJsonObject.put("username", userName);
 				tempJsonObject.put("image", userImage);
 				jsonArray.put(tempJsonObject);
-				tempJsonObject.remove("username");
-				tempJsonObject.remove("image");
 			}
 			jsonObject.put("imageMap", jsonArray);
 			// logging to logger
