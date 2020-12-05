@@ -53,11 +53,17 @@ public class ClientMessageReceiver implements Runnable {
 	 * @param dis
 	 * There won't be any return type as it is a constructor of the class
 	 */
-	public ClientMessageReceiver(IQueue<IncomingPacket> contModuleQueue, IQueue<IncomingPacket> procModuleQueue, DataInputStream dis){
+	public ClientMessageReceiver(
+		IQueue<IncomingPacket> contModuleQueue, 
+		IQueue<IncomingPacket> procModuleQueue, 
+		DataInputStream dis
+		) {
+
 		this.contModuleQueue = contModuleQueue;
 		this.procModuleQueue = procModuleQueue;
 		this.dis = dis;
 		this.isRunning = true;
+
 	}
 
 	/**
@@ -107,7 +113,10 @@ public class ClientMessageReceiver implements Runnable {
 	 * @param id Identifier of the message
 	 * @param msg Message that is to be transported over the network.
 	 */
-	public void push(String id, String msg) {
+	public void pushToQueue(
+		String id, 
+		String msg
+		) {
 
 		/**
 		 * Creates a object of queue type.
@@ -122,7 +131,11 @@ public class ClientMessageReceiver implements Runnable {
 		}else{
 			procModuleQueue.enqueue(queuePacket);
 		}
-		logger.log(ModuleID.NETWORKING, LogLevel.SUCCESS, "Message pushed into appropriate queue by server based on the identifier");
+		logger.log(
+			ModuleID.NETWORKING, 
+			LogLevel.SUCCESS, 
+			"Message pushed into appropriate queue by server based on the identifier"
+		);
 	}
 	
 	/**
@@ -133,7 +146,7 @@ public class ClientMessageReceiver implements Runnable {
 	 * 
 	 */
 	@Override
-    public void run(){
+	public void run(){
 
 		/**
 		 * Loops until the socket gets closed by the internet communicator, when the socket gets closed
@@ -157,7 +170,9 @@ public class ClientMessageReceiver implements Runnable {
 					String newMsg = dis.readUTF();
 					if(newMsg.equals("EOF")) break;
 
-					// If it is not EOF it concatnates the message with the recvMsg
+					/** 
+					 * If it is not EOF it concatenates the message with the recvMsg
+					 */
 					recvMsg += newMsg;
 				}
 
@@ -170,24 +185,32 @@ public class ClientMessageReceiver implements Runnable {
 				/**
 				 * Calls the push function
 				 */
-				push(id, msg);
+				pushToQueue(
+					id, 
+					msg
+				);
 			}
 
 			/**
 			 * This block gets executed  if this stream reaches the end before reading all the bytes.
 			 */
 			catch(EOFException exp){
-				//Logs exception
-				logger.log(ModuleID.NETWORKING, LogLevel.ERROR, exp.toString());
-				return;
+				logger.log(
+					ModuleID.NETWORKING, 
+					LogLevel.ERROR, 
+					exp.toString()
+				);
 			}
 
 			/**
 			 * This block gets executed if the bytes do not represent a valid modified UTF-8 encoding of a string.
 			 */
 			catch(UTFDataFormatException exp){
-				//Logs exception
-				logger.log(ModuleID.NETWORKING, LogLevel.ERROR, exp.toString());
+				logger.log(
+					ModuleID.NETWORKING, 
+					LogLevel.ERROR, 
+					exp.toString()
+				);
 			}
 
 			/**
@@ -196,7 +219,11 @@ public class ClientMessageReceiver implements Runnable {
 			 */
 			catch(IOException exp){
 				//Logs exception
-				logger.log(ModuleID.NETWORKING, LogLevel.ERROR, exp.toString());
+				logger.log(
+					ModuleID.NETWORKING, 
+					LogLevel.ERROR, 
+					exp.toString()
+				);
 				return;
 			}
 		}
