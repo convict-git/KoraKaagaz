@@ -735,8 +735,8 @@ public class CanvasController implements Initializable {
 	    	}
 
 	    	// Get approximate selected row and column coordinate
-	    	int rowCoord = (int) Math.round(canvasMouseClickEvent.getX());
-	    	int colCoord = (int) Math.round(canvasMouseClickEvent.getY());
+	    	int rowCoord = (int) Math.round(canvasMouseClickEvent.getY());
+	    	int colCoord = (int) Math.round(canvasMouseClickEvent.getX());
 
 	    	// selPosition would represent a small region around the
 	    	// approximate selected position
