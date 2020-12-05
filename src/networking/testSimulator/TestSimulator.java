@@ -18,17 +18,18 @@ public class TestSimulator {
 		TestCase test = null;
 		String communication  = null;
 		
-		if(args.length==0 || args[0]=="LAN") {
+		if(args.length==0 || args[0].equals("LAN")) {
 			test = new LanTest();
 			communication = "LAN";
 		}
 	
-		else if(args[0]== "INTERNET") {
+		else if(args[0].equals("INTERNET")) {
 			test = new InternetTest();
 			communication = "INTERNET";
 		}
 		else{
 			System.out.println("Invalid Arguments");
+			return;
 		}
 		
 		if(test.run()) {

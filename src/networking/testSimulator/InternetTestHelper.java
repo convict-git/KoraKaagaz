@@ -40,12 +40,7 @@ public class InternetTestHelper {
 		 //Start the communicators
 		communicator1.start();
 		communicator2.start();
-		 
-		try {
-			Thread.sleep(10000);
-		} catch (InterruptedException e) {
-				
-		}
+		
 		//Creates a stopper objects which indicates the status of the communication
 		Stopper stopper = new Stopper();
 		 
@@ -68,9 +63,12 @@ public class InternetTestHelper {
 		communicator1.stop();
 		communicator2.stop();
 		
-		
+	
+
+
 		//If the incoming and outgoing message of both the clients are equal then return true else return false
-		if(clientOneInput.equals(clientTwoOutput) && clientTwoInput.equals(clientOneOutput)) {
+		if(clientOneInput.equals(clientTwoOutput) 
+			&& clientTwoInput.equals(clientOneOutput)) {
 			return true;
 		}
 		return false;
