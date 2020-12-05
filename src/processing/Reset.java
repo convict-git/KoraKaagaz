@@ -25,34 +25,17 @@ public class Reset {
 	 */
 	public static BoardObject screenReset(UserId newUserId,boolean reset) {
 		
-		/* Get BoardDimensions from UI */
-		Dimension dimension = ClientBoardState.boardDimension;
-		
-		int rows = dimension.numRows;
-		
-		int cols = dimension.numCols;
-		
 		Intensity whiteIntensity = new Intensity(255,255,255);
 		
 		ArrayList<Pixel> pixels = new ArrayList<Pixel>();
 		
+		ArrayList<Position> positions = ClientBoardState.maps.getPositions();
+		
 		/* Traverse through screen and assign position
 		 * and white intensity to each pixel
 		 */
-		for(int i = 0; i < rows; i++) {
-			
-			for(int j = 0; j < cols; j++) {
-				
-				// Each position is chosen for a pixel
-				Position whitePosition = new Position(i,j);
-				
-				// White intensity and position is assigned to the pixel
-				Pixel whitePixel = new Pixel(whitePosition, whiteIntensity);
-				
-				// Add pixel to the ArrayList
-				pixels.add(whitePixel);
-				
-			}
+		for(Position pos: positions) {
+			pixels.add(new Pixel(pos, whiteIntensity));
 		}
 		
 		// Get current timestamp for ObjectId
@@ -82,6 +65,8 @@ public class Reset {
 				prevPixels,
 				reset
 		);
+		
+		CommunicateChange.provideChanges(null, pixels);
 		
 		logger.log(
 				ModuleID.PROCESSING,
