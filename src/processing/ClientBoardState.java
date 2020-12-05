@@ -77,7 +77,7 @@ public class ClientBoardState {
 	 * brushSize will store the radius of the brush which will be used while drawing
 	 * different shapes, it is given by the UI for default.
 	 */
-	public static final BrushRadius brushSize = new BrushRadius(4);
+	public static final BrushRadius brushSize = new BrushRadius(1);
 	
 	/**
 	 * This is the communicator that we will get from the networking module.

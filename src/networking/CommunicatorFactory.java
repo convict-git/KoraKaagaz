@@ -402,13 +402,14 @@ public class CommunicatorFactory {
 		);
 		
 		/** unsetting the type of communicator */
-		setTypeOfCommunicator("");
+		setTypeOfCommunicator(null);
 
 		logger.log(
 			ModuleID.NETWORKING,
 			LogLevel.INFO,
 			"Free to create any type of Communicator object"
 		);
+
 
 	}
 }

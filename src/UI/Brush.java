@@ -135,7 +135,11 @@ public class Brush{
 		/**
 		 * Intensity in terms of RGB format
 		 */
-		Intensity i = new Intensity((int) Math.round(color.getRed()*255),(int) Math.round(color.getGreen()*255),(int) Math.round(color.getBlue()*255));
+		Intensity i = new Intensity(
+			(int) Math.round(color.getRed() * 255),
+			(int) Math.round(color.getGreen() * 255),
+			(int) Math.round(color.getBlue() * 255)
+		);
 		
 		/**
 		 * Using the drawsegment to get pixels of the line with the size of brush
@@ -143,11 +147,10 @@ public class Brush{
 		for (int k = (int)(-1 * size/2); k <= (int)(size/2); k+=2) 
 		{
 			if(flag == 0) {
-				x = startx + m * k * Math.sqrt(1/(m * m + 1));
-				y = starty + k * Math.sqrt(1/(m * m + 1));
-				x1 = endx + m * k * Math.sqrt(1/(m * m + 1));
-				y1 = endy + k * Math.sqrt(1/(m * m + 1));
-				
+				x = startx + m * k * Math.sqrt(1 / (m * m + 1));
+				y = starty + k * Math.sqrt(1 / (m * m + 1));
+				x1 = endx + m * k * Math.sqrt(1 / (m * m + 1));
+				y1 = endy + k * Math.sqrt(1 / (m * m + 1));
 			}
 			if(flag == 1) {
 				x = startx + k;
@@ -161,14 +164,16 @@ public class Brush{
 				x1 = endx;
 				y1 = endy + k ;
 			}
-			Position  start = new Position((int) (x),(int) (y));
-			Position  end = new Position((int) (x1),(int) (y1));
-			tempPixels = LineDrawer.drawSegment(start,end,i);
+			
+			Position start = new Position((int) y,(int) x);
+			Position end = new Position((int) y1,(int) x1);
+			
+			tempPixels = LineDrawer.drawSegment(start, end, i);
 			pixels.addAll(tempPixels);
 			
 			for(Pixel pix:tempPixels) {
 				Position pos = pix.position;
-				g.getPixelWriter().setColor(pos.r,pos.c,color);
+				g.getPixelWriter().setColor(pos.c, pos.r, color);
 			}
 		}
 	}
@@ -196,7 +201,7 @@ public class Brush{
 		 * If either is there flag to a certain value
 		 * m = slope
 		 */
-		double x = 0, y = 0, m = 0, flag = 0 , x1 = 0 , y1 = 0;
+		double x = 0, y = 0, m = 0, flag = 0, x1 = 0, y1 = 0;
 		if (startx == endx) {
 			flag = 1;
 		}
@@ -208,17 +213,17 @@ public class Brush{
 			m = (endy - starty) / (endx - startx);
 		}
 
-		Intensity i = new Intensity(1,1,1);
+		Intensity i = new Intensity(1, 1, 1);
 		/**
 		 * Using the drawsegment to get pixels of the line with the size of eraser
 		 */
 		for (int k = (int)(-1 * size/2); k <= (int)(size/2); k+=2) 
 		{
 			if(flag == 0) {
-				x = startx + m * k * Math.sqrt(1/(m * m + 1));
-				y = starty + k * Math.sqrt(1/(m * m + 1));
-				x1 = endx + m * k * Math.sqrt(1/(m * m + 1));
-				y1 = endy + k * Math.sqrt(1/(m * m + 1));
+				x = startx + m * k * Math.sqrt(1 / (m * m + 1));
+				y = starty + k * Math.sqrt(1 / (m * m + 1));
+				x1 = endx + m * k * Math.sqrt(1 / (m * m + 1));
+				y1 = endy + k * Math.sqrt(1 / (m * m + 1));
 				
 			}
 			if(flag == 1) {
@@ -233,14 +238,15 @@ public class Brush{
 				x1 = endx;
 				y1 = endy + k ;
 			}
-			Position  start = new Position((int) (x),(int) (y));
-			Position  end = new Position((int) (x1),(int) (y1));
-			tempPixels = LineDrawer.drawSegment(start,end,i);
+			Position  start = new Position((int) y,(int) x);
+			Position  end = new Position((int) y1,(int) x1);
+			
+			tempPixels = LineDrawer.drawSegment(start, end, i);
 			pixels.addAll(tempPixels);
 			
 			for(Pixel pix:tempPixels) {
 				Position pos = pix.position;
-				g.getPixelWriter().setColor(pos.r,pos.c,Color.WHITE);
+				g.getPixelWriter().setColor(pos.c, pos.r, Color.WHITE);
 			}
 		}
 		

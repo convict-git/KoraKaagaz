@@ -56,22 +56,42 @@ public class Shapes {
 		 * (topx,topy) are top left coordinates of rectangle
 		 * x and y coordinates at top left corner of rectangle are minimum of all coordinates.
 		 */
-		double topx = Math.min(startx,endx);
-		double topy = Math.min(starty,endy);
-		double length = Math.abs(startx-endx);
-		double width = Math.abs(starty-endy);
+		double topx = Math.min(startx, endx);
+		double topy = Math.min(starty, endy);
+		double length = Math.abs(startx - endx);
+		double width = Math.abs(starty - endy);
+		
 		g.setStroke(color);
 		g.strokeRect(topx, topy, length, width);
-		Position start = new Position((int) (topx),(int) (topy));
-		Position end = new Position((int) (topx+length),(int) (topy+width));
-		Intensity i = new Intensity((int) Math.round(color.getRed()*255),(int) Math.round(color.getGreen()*255),(int) Math.round(color.getBlue()*255));
-		Pixel p1 = new Pixel(start,i);
-		Pixel p2 = new Pixel(end,i);
-		drawshape.drawRectangle(p1,p2);
+		
+		Position start = new Position(
+			(int) topy,
+			(int) topx
+		);
+		
+		Position end = new Position(
+			(int) (topy + width),
+			(int) (topx + length)
+		);
+		
+		Intensity i = new Intensity(
+			(int) Math.round(color.getRed() * 255),
+			(int) Math.round(color.getGreen() * 255),
+			(int) Math.round(color.getBlue() * 255)
+		);
+		
+		
+		Pixel p1 = new Pixel(start, i);
+		Pixel p2 = new Pixel(end, i);
+		
+		
+		drawshape.drawRectangle(p1, p2);
+		
+		
 		logger.log(
 			ModuleID.UI,
 			LogLevel.INFO,
-			"Rectangle drawn from ("+topx+","+topy+") to ("+(topx+length)+","+(topy+width)+")"
+			"Rectangle drawn from ("+topy+","+topx+") to ("+(topy+width)+","+(topx+length)+")"
 		);
 	}
 
@@ -95,21 +115,40 @@ public class Shapes {
 		 * Boundary Box is smallest rectangular region enclosing the shape
 		 * Diameter of circle is nothing but the maximum of length, width of boundary box
 		 */
-		double topx = Math.min(startx,endx);
-		double topy = Math.min(starty,endy);
-		double length = Math.abs(startx-endx);
-		double width = Math.abs(starty-endy);
-		double diameter = Math.max(length,width);
+		double topx = Math.min(startx, endx);
+		double topy = Math.min(starty, endy);
+		
+		double length = Math.abs(startx - endx);
+		double width = Math.abs(starty - endy);
+		
+		double diameter = Math.max(length, width);
+		
 		g.setStroke(color);
 		g.strokeOval(topx, topy, diameter, diameter);
-		Position start = new Position((int) (topx+(diameter/2)),(int) (topy+(diameter/2)));
-		Intensity i = new Intensity((int) Math.round(color.getRed()*255),(int) Math.round(color.getGreen()*255),(int) Math.round(color.getBlue()*255));
-		Pixel p1 = new Pixel(start,i);
-		drawshape.drawCircle(p1,(float) diameter/2);
+		
+		Position start = new Position(
+			(int) (topy + (diameter / 2)),
+			(int) (topx + (diameter / 2))
+		);
+		
+		
+		Intensity i = new Intensity(
+			(int) Math.round(color.getRed() * 255),
+			(int) Math.round(color.getGreen() * 255),
+			(int) Math.round(color.getBlue() * 255)
+		);
+		
+		
+		Pixel p1 = new Pixel(start, i);
+
+		
+		drawshape.drawCircle(p1, (float) diameter / 2);
+		
+		
 		logger.log(
 			ModuleID.UI,
 			LogLevel.INFO,
-			"Circle drawn with center("+(topx+(diameter/2))+","+(topy+(diameter/2))+" radius:"+diameter/2
+			"Circle drawn with center("+(topy + (diameter / 2))+","+(topx + (diameter / 2))+" radius:" + diameter / 2
 		);
 	}
 
@@ -133,16 +172,25 @@ public class Shapes {
 		 */
 		g.setStroke(color);
 		g.strokeLine(startx, starty, endx, endy);
-		Position start = new Position((int) startx,(int) starty);
-		Position end = new Position((int) endx,(int) endy);
-		Intensity i = new Intensity((int) Math.round(color.getRed()*255),(int) Math.round(color.getGreen()*255),(int) Math.round(color.getBlue()*255));
-		Pixel p1 = new Pixel(start,i);
-		Pixel p2 = new Pixel(end,i);
+		
+		Position start = new Position((int) starty, (int) startx);
+		Position end = new Position((int) endy, (int) endx);
+		
+		Intensity i = new Intensity(
+			(int) Math.round(color.getRed() * 255),
+			(int) Math.round(color.getGreen() * 255),
+			(int) Math.round(color.getBlue() * 255)
+		);
+		
+		Pixel p1 = new Pixel(start, i);
+		Pixel p2 = new Pixel(end, i);
+		
 		drawshape.drawLine(p1, p2);
+		
 		logger.log(
 			ModuleID.UI,
 			LogLevel.INFO,
-			"Line drawn from ("+startx+","+starty+") to ("+endx+","+endy+")"
+			"Line drawn from ("+starty+","+startx+") to ("+endy+","+endx+")"
 		);
 	}
 
@@ -165,21 +213,31 @@ public class Shapes {
 		 * We need to draw the rectangle with equal length and width to draw a square
 		 * Here length of the square is maximum of length and width of rectangle
 		 */
-		double topx = Math.min(startx,endx);
-		double topy = Math.min(starty,endy);
-		double length = Math.abs(startx-endx);
-		double width = Math.abs(starty-endy);
+		double topx = Math.min(startx, endx);
+		double topy = Math.min(starty, endy);
+		double length = Math.abs(startx - endx);
+		double width = Math.abs(starty - endy);
 		double len = Math.max(length,width);
+		
 		g.setStroke(color);
 		g.strokeRect(topx, topy, len, len);
-		Position  start = new Position((int) (topx),(int) (topy));
-		Intensity i = new Intensity((int) Math.round(color.getRed()*255),(int) Math.round(color.getGreen()*255),(int) Math.round(color.getBlue()*255));
-		Pixel p1 = new Pixel(start,i);
+		
+		Position start = new Position((int) topy,(int) topx);
+		
+		Intensity i = new Intensity(
+			(int) Math.round(color.getRed() * 255),
+			(int) Math.round(color.getGreen() * 255),
+			(int) Math.round(color.getBlue() * 255)
+		);
+		
+		Pixel p1 = new Pixel(start, i);
+		
 		drawshape.drawSquare(p1,(float) len);
+		
 		logger.log(
 			ModuleID.UI,
 			LogLevel.INFO,
-			"Square drawn from ("+topx+","+topy+") with length:"+len
+			"Square drawn from ("+topy+","+topx+") with length:" + len
 		);
 	}
 
@@ -206,32 +264,46 @@ public class Shapes {
 		 * The coordinates of required triangle is based on the above two cases
 		 */
 		g.setStroke(color);
+		
 		double topx = Math.min(startx,endx);
 		double topy = Math.min(starty,endy);
-		if (topy==starty) {
+		
+		if (topy == starty) {
 			/**
 			 * xs[] stores all the x coordinates of triangle
 			 * ys[] stores all respective the y coordinates of triangle
 			 */
-			double x3 = topx + Math.abs(startx-endx)/2;
+			double x3 = topx + Math.abs(startx - endx)/2;
 			double y3 = starty;
+			
 			final double xs[] = new double[3];
 			final double ys[] = new double[3];
-			xs[0]=x3; xs[1]=startx; xs[2]=endx;
-			ys[0]=y3; ys[1]=endy; ys[2]=endy;
-			g.strokePolygon(xs,ys,3);
-			Position a = new Position((int) xs[0],(int) ys[0]);
-			Position b = new Position((int) xs[1],(int) ys[1]);
-			Position c = new Position((int) xs[2],(int) ys[2]);
-			Intensity i = new Intensity((int) Math.round(color.getRed()*255),(int) Math.round(color.getGreen()*255),(int) Math.round(color.getBlue()*255));
-			Pixel p1 = new Pixel(a,i);
-			Pixel p2 = new Pixel(b,i);
-			Pixel p3 = new Pixel(c,i);
+			
+			xs[0] = x3; xs[1] = startx; xs[2] = endx;
+			ys[0] = y3; ys[1] = endy; ys[2] = endy;
+			
+			g.strokePolygon(xs, ys, 3);
+			
+			Position a = new Position((int) ys[0],(int) xs[0]);
+			Position b = new Position((int) ys[1],(int) xs[1]);
+			Position c = new Position((int) ys[2],(int) xs[2]);
+			
+			Intensity i = new Intensity(
+				(int) Math.round(color.getRed() * 255),
+				(int) Math.round(color.getGreen() * 255),
+				(int) Math.round(color.getBlue() * 255)
+			);
+			
+			Pixel p1 = new Pixel(a, i);
+			Pixel p2 = new Pixel(b, i);
+			Pixel p3 = new Pixel(c, i);
+			
 			drawshape.drawTriangle(p1, p2, p3);
+			
 			logger.log(
 				ModuleID.UI,
 				LogLevel.INFO,
-				"Triangle drawn with coordiates:("+xs[0]+","+ys[0]+"), ("+xs[1]+","+ys[1]+"), ("+xs[2]+","+ys[2]+")"
+				"Triangle drawn with coordiates:("+ys[0]+","+xs[0]+"), ("+ys[1]+","+xs[1]+"), ("+ys[2]+","+xs[2]+")"
 			);
 		}
 		else {
@@ -239,25 +311,37 @@ public class Shapes {
 			 * xs[] stores all the x coordinates of triangle
 			 * ys[] stores all respective the y coordinates of triangle
 			 */
-			double x3 = topx + Math.abs(startx-endx)/2;
+			double x3 = topx + Math.abs(startx - endx) / 2;
 			double y3 = endy;
+			
 			final double xs[] = new double[3];
 			final double ys[] = new double[3];
-			xs[0]=x3; xs[1]=startx; xs[2]=endx;
-			ys[0]=y3; ys[1]=starty; ys[2]=starty;
+			
+			xs[0] = x3; xs[1] = startx; xs[2] = endx;
+			ys[0] = y3; ys[1] = starty; ys[2] = starty;
+			
 			g.strokePolygon(xs,ys,3);
+			
 			Position a = new Position((int) xs[0],(int) ys[0]);
 			Position b = new Position((int) xs[1],(int) ys[1]);
 			Position c = new Position((int) xs[2],(int) ys[2]);
-			Intensity i = new Intensity((int) Math.round(color.getRed()*255),(int) Math.round(color.getGreen()*255),(int) Math.round(color.getBlue()*255));
+			
+			Intensity i = new Intensity(
+				(int) Math.round(color.getRed() * 255),
+				(int) Math.round(color.getGreen() * 255),
+				(int) Math.round(color.getBlue() * 255)
+			);
+			
 			Pixel p1 = new Pixel(a,i);
 			Pixel p2 = new Pixel(b,i);
 			Pixel p3 = new Pixel(c,i);
+			
 			drawshape.drawTriangle(p1, p2, p3);
+			
 			logger.log(
 				ModuleID.UI,
 				LogLevel.INFO,
-				"Triangle drawn with coordiates:("+xs[0]+","+ys[0]+"), ("+xs[1]+","+ys[1]+"), ("+xs[2]+","+ys[2]+")"
+				"Triangle drawn with coordiates:("+ys[0]+","+xs[0]+"), ("+ys[1]+","+xs[1]+"), ("+ys[2]+","+xs[2]+")"
 			);
 		}
 	}
@@ -280,10 +364,11 @@ public class Shapes {
 		double endx,
 		double endy
 	) {
-		double topx = Math.min(startx,endx);
-		double topy = Math.min(starty,endy);
-		double length=Math.abs(startx-endx);
-		double width=Math.abs(starty-endy);
+		double topx = Math.min(startx, endx);
+		double topy = Math.min(starty, endy);
+		double length = Math.abs(startx - endx);
+		double width = Math.abs(starty - endy);
+		
 		g.setStroke(color);
 		g.clearRect(0, 0, canvasB.getWidth(), canvasB.getHeight());
 		g.strokeRect(topx, topy, length, width);
@@ -307,11 +392,12 @@ public class Shapes {
 		double endx,
 		double endy
 	) {
-		double topx = Math.min(startx,endx);
-		double topy = Math.min(starty,endy);
-		double length = Math.abs(startx-endx);
-		double width = Math.abs(starty-endy);
-		double diameter = Math.max(length,width);
+		double topx = Math.min(startx, endx);
+		double topy = Math.min(starty, endy);
+		double length = Math.abs(startx - endx);
+		double width = Math.abs(starty - endy);
+		double diameter = Math.max(length, width);
+		
 		g.setStroke(color);
 		g.clearRect(0, 0, canvasB.getWidth(), canvasB.getHeight());
 		g.strokeOval(topx, topy, diameter, diameter);
@@ -358,11 +444,12 @@ public class Shapes {
 		double endx,
 		double endy
 	) {
-		double topx = Math.min(startx,endx);
-		double topy = Math.min(starty,endy);
-		double length = Math.abs(startx-endx);
-		double width = Math.abs(starty-endy);
-		double len = Math.max(length,width);
+		double topx = Math.min(startx, endx);
+		double topy = Math.min(starty, endy);
+		double length = Math.abs(startx - endx);
+		double width = Math.abs(starty - endy);
+		double len = Math.max(length, width);
+		
 		g.setStroke(color);
 		g.clearRect(0, 0, canvasB.getWidth(), canvasB.getHeight());
 		g.strokeRect(topx, topy, len, len);
@@ -387,25 +474,33 @@ public class Shapes {
 		double endy
 	) {
 		g.setStroke(color);
+		
 		double topx = Math.min(startx,endx);
 		double topy = Math.min(starty,endy);
-		if (topy==starty) {
-			double x3 = topx + Math.abs(startx-endx)/2;
+		
+		if (topy == starty) {
+			double x3 = topx + Math.abs(startx - endx)/2;
 			double y3 = starty;
+			
 			final double xs[] = new double[3];
 			final double ys[] = new double[3];
-			xs[0]=x3; xs[1]=startx; xs[2]=endx;
-			ys[0]=y3; ys[1]=endy; ys[2]=endy;
+			
+			xs[0] = x3; xs[1] = startx; xs[2] = endx;
+			ys[0] = y3; ys[1] = endy; ys[2] = endy;
+			
 			g.clearRect(0, 0, canvasB.getWidth(), canvasB.getHeight());
 			g.strokePolygon(xs,ys,3);
 		}
 		else {
-			double x3 = topx + Math.abs(startx-endx)/2;
+			double x3 = topx + Math.abs(startx - endx)/2;
 			double y3 = endy;
+			
 			final double xs[] = new double[3];
 			final double ys[] = new double[3];
-			xs[0]=x3; xs[1]=startx; xs[2]=endx;
-			ys[0]=y3; ys[1]=starty; ys[2]=starty;
+			
+			xs[0] = x3; xs[1] = startx; xs[2] = endx;
+			ys[0] = y3; ys[1] = starty; ys[2] = starty;
+			
 			g.clearRect(0, 0, canvasB.getWidth(), canvasB.getHeight());
 			g.strokePolygon(xs,ys,3);
 		}
