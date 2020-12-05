@@ -47,10 +47,10 @@ We are going to use sockets and the transport protocol that we are going to use 
 * ### Fragmenatation
     Fragmentation occurs when the message is too big to be sent over the network through the one packet. If a message is big then we will divide it into chunks then we will send it one by one and we need a mechanism to distinguish the end of the message. In the Networking module, we are not implementing the fragmentation because of the following analysis.
     
-    In one TCP packet, we can send 65,535 bytes (65KB).In a worst-case lot of data is transferred when a new user joins the Whiteboard, then we need to send the full screen. So in this case suppose the Whiteboard application is running for 60 minutes and 10 members were already present in and assuming averagely 10 objects drawn in every minute so it turnout we have to send 6000 objects ( 10 * 30 * 10) and assuming each object takes around 100 bytes then we have to send 60000 bytes which is possible as we can send around 65000 bytes.
+    In one TCP packet, we can send 65,535 bytes (65KB).In a worst-case lot of data is transferred when a new user joins the Whiteboard, then we need to send the full screen. So in this case suppose the Whiteboard application is running for 60 minutes and 10 members were already present in and assuming averagely 10 objects drawn in every minute so it turnout we have to send 600 objects ( 10 * 60 ) and assuming each object takes around 100 bytes then we have to send 60000 bytes which is possible as we can send around 65000 bytes.
     
 ## Class Diagram
-This sub-module is not using any other modules and it's not being used by any other modules. It will only use a blocking queue (sendQueue), but it is not instantiated by this sub-module. The only logic that is going to be implemented in this sub-module is just for sending the data over the network through sockets. So the class diagram contains only two classes out of it send class will be an implementation of a runnable interface and it will contain the logic of this sub-module and it also extensively uses sendQueue so we included it in the class diagram.
+This sub-module is not using any other modules and it's not being used by any other modules. It will only use a blocking queue (sendQueue), but it is not instantiated by this sub-module. The only logic that is going to be implemented in this sub-module is just for sending the data over the network through sockets. So the class diagram contains only two classes out of it send class will be an implementation of a runnable interface and it will contain the logic of this sub-module and it also extensively uses sendQueue so we included queue in the class diagram.
 
 ![](https://i.imgur.com/RJ7GCTj.jpg)
 
@@ -66,3 +66,10 @@ The sub-module logic is implemented in the run function(public void run() provid
 ## Coding Style
 
 We are going to follow [google's java style guide](https://google.github.io/styleguide/javaguide.html).
+
+
+## Edits 
+
+In the whiteboard for drawing curves, it is taking more memory, 65kilo bytes are not sufficient for transmitting the state, and also when a new user joins the application for sending the full board configuration it is taking more than 65000bytes, so we have introduced fragmentation while sending the message. We divide the message into chunks of 25000 characters and sending them one by one. Introducing the fragmentation is became easier because for every message we are creating a new connection and so we send the message as a stream in chunks and then we flushed the stream and closed the connection.
+
+We also included Internet Send Queue Listener for working of the application on the internet and to transmit the messages we used a relay server.

@@ -9,19 +9,13 @@ package networking.utility;
 
 public class OutgoingPacket {
 
-    /**
-     * Destination IP address of the host for which the message should be delivered
-     */
+    /** Destination IP address of the host for which the message should be delivered */
     String destination;
 
-    /**
-     * The content of the message that needs to be delivered
-     */
+    /** The content of the message that needs to be delivered */
     String message;
 
-    /**
-     * To indicate which module is sending the message
-     */
+    /** To indicate which module is sending the message */
     String identifier;
 
     /**
@@ -107,8 +101,9 @@ public class OutgoingPacket {
      */
     public boolean isEqual(Object obj) {
         if(obj instanceof OutgoingPacket){
-            return ( destination == ((OutgoingPacket) obj).destination && message == ((OutgoingPacket) obj).message
-                    && identifier == ((OutgoingPacket) obj).identifier );
+            return (destination == ((OutgoingPacket) obj).destination
+                    && message == ((OutgoingPacket) obj).message
+                    && identifier == ((OutgoingPacket) obj).identifier);
         }
         else {
             return false;

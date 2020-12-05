@@ -1,6 +1,7 @@
 package processing.server.board;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import processing.boardobject.*;
@@ -104,6 +105,39 @@ public class BoardServer {
 		 * will be null, so we need not to do anything.
 		 */
 		if(!persistence.equals("NoPersistence")) {
+			
+			try {
+				persistence = PersistanceSupport.loadStateString(
+						ClientBoardState.boardId
+				);
+			} catch (ClassNotFoundException e) {
+				
+				ClientBoardState.logger.log(
+						ModuleID.PROCESSING, 
+						LogLevel.ERROR, 
+						"[#" + Thread.currentThread().getId() + "] "
+						+ "IOException occured while loading the persistence for board"
+				);
+				
+			} catch(UnsupportedEncodingException e) {
+				
+				ClientBoardState.logger.log(
+						ModuleID.PROCESSING, 
+						LogLevel.ERROR, 
+						"[#" + Thread.currentThread().getId() + "] "
+						+ "UnsupportedEncodingException occured while loading the persistence state"
+				);
+				
+			} catch (IOException e) {
+				
+				ClientBoardState.logger.log(
+						ModuleID.PROCESSING, 
+						LogLevel.ERROR, 
+						"[#" + Thread.currentThread().getId() + "] "
+						+ "IO Exception occured while loading the persistence state"
+				);
+				
+			}
 			
 			try {
 				/**
