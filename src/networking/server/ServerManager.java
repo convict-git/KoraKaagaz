@@ -60,7 +60,11 @@ public class ServerManager {
 				if (msg.trim().equals("CHECK_INTERNET")) {
 					dos.writeUTF("CONNECTED");
 					s.close();
-					logger.log(ModuleID.NETWORKING, LogLevel.INFO, "successfully returned that client is connected to internet");
+					logger.log(
+						ModuleID.NETWORKING, 
+						LogLevel.INFO, 
+						"successfully returned that client is connected to internet"
+					);
 				}
 				/**
 				 * If the message is GET_CLIENT_INFO we give the client the id which is unique
@@ -71,7 +75,11 @@ public class ServerManager {
 					dos.writeUTF(id);
 					clientID++;
 					s.close();
-					logger.log(ModuleID.NETWORKING, LogLevel.INFO, "successfully returned clientid to the client");
+					logger.log(
+						ModuleID.NETWORKING, 
+						LogLevel.INFO, 
+						"successfully returned clientid to the client"
+					);
 				}
 				/**
 				 * If the message is like clientID:msg we create a queue and two threads for the
@@ -86,12 +94,20 @@ public class ServerManager {
 					Thread t2 = new SendThread(dos, q);
 					t1.start();
 					t2.start();
-					logger.log(ModuleID.NETWORKING, LogLevel.INFO, "Successfully created queue and two threads for the client");
+					logger.log(
+						ModuleID.NETWORKING, 
+						LogLevel.INFO, 
+						"Successfully created queue and two threads for the client"
+					);
 				}
 
 			} catch (Exception e) {
 				s.close();
-				logger.log(ModuleID.NETWORKING, LogLevel.ERROR, e.toString());
+				logger.log(
+					ModuleID.NETWORKING, 
+					LogLevel.ERROR, 
+					e.toString()
+				);
 			}
 		}
 	}

@@ -101,7 +101,11 @@ public class LanCommunicator implements ICommunicator {
             processingReceiveQueue = new ConcurrentBlockingQueue < IncomingPacket > ();
             contentReceiveQueue = new ConcurrentBlockingQueue < IncomingPacket > ();
 
-            logger.log(ModuleID.NETWORKING, LogLevel.INFO, "1 sendQueue and 2 receive queues created");
+            logger.log(
+                ModuleID.NETWORKING, 
+                LogLevel.INFO, 
+                "1 sendQueue and 2 receive queues created"
+            );
 
             /** 
              * The listener which listens on the send queue and transfer the messages on the lan network to the destination IP
@@ -112,11 +116,19 @@ public class LanCommunicator implements ICommunicator {
             try {
                 sendQueueListenerWorker.start();
             } catch (Exception e) {
-                logger.log(ModuleID.NETWORKING, LogLevel.ERROR, "sendQueueListenerWorker is not able to start " + e.toString());
+                logger.log(
+                    ModuleID.NETWORKING, 
+                    LogLevel.ERROR, 
+                    "sendQueueListenerWorker is not able to start " + e.toString()
+                );
                 return;
             }
 
-            logger.log(ModuleID.NETWORKING, LogLevel.INFO, "sendQueueListener thread started");
+            logger.log(
+                ModuleID.NETWORKING, 
+                LogLevel.INFO, 
+                "sendQueueListener thread started"
+            );
 
             /** 
              * The listener that will be listening on the network and that receives the packet sent by the sendQueueListener
@@ -127,11 +139,19 @@ public class LanCommunicator implements ICommunicator {
             try {
                 socketListenerWorker.start();
             } catch (Exception e) {
-                logger.log(ModuleID.NETWORKING, LogLevel.ERROR, "socketListenerWorker is not able to start " + e.toString());
+                logger.log(
+                    ModuleID.NETWORKING, 
+                    LogLevel.ERROR, 
+                    "socketListenerWorker is not able to start " + e.toString()
+                );
                 return;
             }
 
-            logger.log(ModuleID.NETWORKING, LogLevel.INFO, "socketListener thread started");
+            logger.log(
+                ModuleID.NETWORKING, 
+                LogLevel.INFO, 
+                "socketListener thread started"
+            );
 
             /** 
              * This listener will be listening on the receive queue which is for the processing modules message
@@ -143,11 +163,19 @@ public class LanCommunicator implements ICommunicator {
             try {
                 processingReceiveQueueListenerWorker.start();
             } catch (Exception e) {
-                logger.log(ModuleID.NETWORKING, LogLevel.ERROR, "processingReceiveQueueListenerWorker is not able to start " + e.toString());
+                logger.log(
+                    ModuleID.NETWORKING, 
+                    LogLevel.ERROR, 
+                    "processingReceiveQueueListenerWorker is not able to start " + e.toString()
+                );
                 return;
             }
 
-            logger.log(ModuleID.NETWORKING, LogLevel.INFO, "processingReceiveQueueListener thread started");
+            logger.log(
+                ModuleID.NETWORKING, 
+                LogLevel.INFO, 
+                "processingReceiveQueueListener thread started"
+            );
 
             /** 
              * This listener will be listening on the receive queue which is for the content modules message
@@ -158,12 +186,24 @@ public class LanCommunicator implements ICommunicator {
             try {
                 contentReceiveQueueListenerWorker.start();
             } catch (Exception e) {
-                logger.log(ModuleID.NETWORKING, LogLevel.ERROR, "contentReceiveQueueListener is not able to start");
+                logger.log(
+                    ModuleID.NETWORKING, 
+                    LogLevel.ERROR, 
+                    "contentReceiveQueueListener is not able to start"
+                );
                 return;
             }
 
-            logger.log(ModuleID.NETWORKING, LogLevel.INFO, "contentReceiveQueueListener thread started");
-            logger.log(ModuleID.NETWORKING, LogLevel.INFO, "Communication is started");
+            logger.log(
+                ModuleID.NETWORKING, 
+                LogLevel.INFO, 
+                "contentReceiveQueueListener thread started"
+            );
+            logger.log(
+                ModuleID.NETWORKING, 
+                LogLevel.INFO, 
+                "Communication is started"
+            );
 
         }
     }
@@ -194,7 +234,11 @@ public class LanCommunicator implements ICommunicator {
             contentReceiveQueue = null;
             handlerMap = null;
             CommunicatorFactory.freeCommunicator();
-            logger.log(ModuleID.NETWORKING, LogLevel.INFO, "Communication is stopped");
+            logger.log(
+                ModuleID.NETWORKING, 
+                LogLevel.INFO, 
+                "Communication is stopped"
+            );
         }
     }
 
@@ -212,18 +256,30 @@ public class LanCommunicator implements ICommunicator {
         String[] dest = destination.split(":");
         /** checking if we have the destination in the required pattern ip:port */
         if (dest.length != 2 || dest[0] == "" || dest[1] == "") {
-            logger.log(ModuleID.NETWORKING, LogLevel.WARNING, "Invalid destination : " + destination);
+            logger.log(
+                ModuleID.NETWORKING, 
+                LogLevel.WARNING, 
+                "Invalid destination : " + destination
+            );
             return;
         }
         /** checking if identifier is empty */
         if (identifier == "") {
-            logger.log(ModuleID.NETWORKING, LogLevel.WARNING, "Empty identifier");
+            logger.log(
+                ModuleID.NETWORKING, 
+                LogLevel.WARNING, 
+                "Empty identifier"
+            );
             return;
         }
         /** Creating the object for the outgoing packet that is being pushed into the send queue. */
         OutgoingPacket packet = new OutgoingPacket(destination, message, identifier);
         sendQueue.enqueue(packet);
-        logger.log(ModuleID.NETWORKING, LogLevel.INFO, "Pushed the message into the send queue");
+        logger.log(
+            ModuleID.NETWORKING, 
+            LogLevel.INFO, 
+            "Pushed the message into the send queue"
+        );
     }
 
     /**
@@ -241,17 +297,29 @@ public class LanCommunicator implements ICommunicator {
 
         /** validating the handler */
         if (handler == null)
-            logger.log(ModuleID.NETWORKING, LogLevel.WARNING, "Provide a valid handler");
+            logger.log(
+                ModuleID.NETWORKING, 
+                LogLevel.WARNING, 
+                "Provide a valid handler"
+            );
 
         /** validating the identifier */
         else if (identifier == "" || identifier == null)
-            logger.log(ModuleID.NETWORKING, LogLevel.WARNING, "Provide a valid identifier");
+            logger.log(
+                ModuleID.NETWORKING, 
+                LogLevel.WARNING, 
+                "Provide a valid identifier"
+            );
 
         else {
 
             /** logging the info as the handler might be overridden if the specified identifier exists */
             if (handlerMap.containsKey(identifier))
-                logger.log(ModuleID.NETWORKING, LogLevel.INFO, "Already have the specified identifier");
+                logger.log(
+                    ModuleID.NETWORKING, 
+                    LogLevel.INFO, 
+                    "Already have the specified identifier"
+                );
 
             /** inserting the specified identifier and handler into the hashmap */
             handlerMap.put(identifier, handler);
