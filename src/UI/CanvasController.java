@@ -13,22 +13,29 @@
 package UI;
 
 import infrastructure.content.*;
+
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.ResourceBundle;
+
+import org.json.JSONObject;
 
 import infrastructure.validation.logger.ILogger;
 import infrastructure.validation.logger.LogLevel;
 import infrastructure.validation.logger.LoggerFactory;
 import infrastructure.validation.logger.ModuleID;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.stage.Stage;
 import processing.IChanges;
 import processing.IUser;
@@ -44,17 +51,25 @@ import javafx.scene.Scene;
 import javafx.scene.Cursor;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.TextAlignment;
 
 public class CanvasController implements Initializable {
 	/***
@@ -119,7 +134,7 @@ public class CanvasController implements Initializable {
 	private static GraphicsContext gc,gcForUpdate;
 
 	private static VBox chatDisplay;
-	private static VBox chatScroller;
+	private static ScrollPane chatScroller;
 
 	private double x1,y1,x2,y2;
 
