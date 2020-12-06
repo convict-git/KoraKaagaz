@@ -204,9 +204,9 @@ public class NetworkMessageHandler implements INotificationHandler {
 				if(!username.equals(ContentCommunicator.getUserName()) {
 					handler.onNewUserJoined(jsonObject.toString());
 					logger.log(
-							ModuleID.INFRASTRUCTURE, 
-							LogLevel.INFO, 
-							"onNewUserJoined called"
+						ModuleID.INFRASTRUCTURE, 
+						LogLevel.INFO, 
+						"onNewUserJoined called"
 					);
 				}
 			}
@@ -254,9 +254,9 @@ public class NetworkMessageHandler implements INotificationHandler {
 				if(!username.equals(ContentCommunicator.getUserName()) {
 					handler.onMessageReceived(jsonObject.toString());
 					logger.log(
-							ModuleID.INFRASTRUCTURE,
-							LogLevel.INFO,
-							"onMessageReceived called"
+						ModuleID.INFRASTRUCTURE,
+						LogLevel.INFO,
+						"onMessageReceived called"
 					);
 				}
 			}
@@ -312,9 +312,9 @@ public class NetworkMessageHandler implements INotificationHandler {
 				if(!username.equals(ContentCommunicator.getUserName()) {
 					handler.onUserExit(jsonObject.toString());
 					logger.log(
-							ModuleID.INFRASTRUCTURE,
-							LogLevel.INFO,
-							"onUserExit called"
+						ModuleID.INFRASTRUCTURE,
+						LogLevel.INFO,
+						"onUserExit called"
 					);
 				}
 			}
