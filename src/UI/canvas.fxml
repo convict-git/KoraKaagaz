@@ -79,7 +79,7 @@
                      </font></Button>
                   <ScrollPane fx:id="chatScroll" layoutX="4.0" layoutY="4.0" vvalue="1.0">
                      <content>
-                        <VBox fx:id="chatDisplayBox" prefHeight="434.0" prefWidth="340.0" style="-fx-background-color: yellow; -fx-border-color: black; -fx-border-width: 3;" />
+                        <VBox fx:id="chatDisplayBox" prefHeight="434.0" prefWidth="340.0" style="-fx-background-color: light grey; -fx-border-color: black; -fx-border-width: 3;" />
                      </content>
                   </ScrollPane>
                </children>
