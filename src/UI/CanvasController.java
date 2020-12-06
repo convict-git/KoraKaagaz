@@ -82,65 +82,8 @@ public class CanvasController implements Initializable{
 	int size;
 
 	public static ILogger logger = LoggerFactory.getLoggerInstance();
+	public static ObservableList<model> updateList = FXCollections.observableArrayList();			
 	
-	public static ObservableList<model> updateList = FXCollections.observableArrayList();
-	public static void main(String[] args) {		
-		updateList.addListener(new ListChangeListener<model>() {
-			
-			public void onChanged(Change<? extends model> change) {
-				while(change.next()) {
-					if(change.wasAdded()) {
-						for(model newModel: change.getAddedSubList()) {
-							if(newModel.getIdentifier() == UpdateMode.CONTENT_JOINED) {
-								logger.log(
-						 				ModuleID.UI,
-						 				LogLevel.INFO,
-						 				"user enter from listener"
-						 			);
-								userJoined(newModel.getMessage());
-							}
-							else if(newModel.getIdentifier() == UpdateMode.CONTENT_LEAVE) {
-								logger.log(
-						 				ModuleID.UI,
-						 				LogLevel.INFO,
-						 				"user leave from listener"
-						 			);
-								userExit(newModel.getMessage());
-							}
-							else if(newModel.getIdentifier() == UpdateMode.CONTENT_MESSAGE) {
-								logger.log(
-						 				ModuleID.UI,
-						 				LogLevel.INFO,
-						 				"chat message from listener"
-						 			);
-								newChatMessage(newModel.getMessage());
-							}
-							else if(newModel.getIdentifier() == UpdateMode.PROCESSING_CHANGES) {
-								logger.log(
-						 				ModuleID.UI,
-						 				LogLevel.INFO,
-						 				"selectPixels from listener"
-						 			);
-								updateChanges(newModel.getPixelArray());
-							}
-							else if(newModel.getIdentifier() == UpdateMode.PROCESSING_SELECTED) {
-						 		logger.log(
-						 				ModuleID.UI,
-						 				LogLevel.INFO,
-						 				"updatePixels from listener"
-						 			);
-								updateSelectedPixels(newModel.getPixelArray());
-							}
-						}
-					}
-				}
-			}
-			
-		});
-	}
-	
-	
-
 	/**
 	 * ComboBox below has a list of values for dropdown in brushSize.
 	 */
@@ -1285,6 +1228,63 @@ public class CanvasController implements Initializable{
 			LogLevel.INFO,
 			"Initializing Canvas Controller"
 		);
+		
+		updateList.addListener(new ListChangeListener<model>() {			
+			public void onChanged(Change<? extends model> change) {
+				while(change.next()) {
+					if(change.wasReplaced() || change.wasAdded() || change.wasUpdated()) {
+						for(model newModel: change.getAddedSubList()) {
+							System.out.println(newModel);
+							if(newModel.getIdentifier() == UpdateMode.CONTENT_JOINED) {
+								logger.log(
+						 				ModuleID.UI,
+						 				LogLevel.INFO,
+						 				"user enter from listener"
+						 			);
+								userJoined(newModel.getMessage());
+							}
+							else if(newModel.getIdentifier() == UpdateMode.CONTENT_LEAVE) {
+								System.out.println(newModel);								
+								logger.log(
+						 				ModuleID.UI,
+						 				LogLevel.INFO,
+						 				"user leave from listener"
+						 			);
+								userExit(newModel.getMessage());
+							}
+							else if(newModel.getIdentifier() == UpdateMode.CONTENT_MESSAGE) {
+								System.out.println(newModel);								
+								logger.log(
+						 				ModuleID.UI,
+						 				LogLevel.INFO,
+						 				"chat message from listener"
+						 			);
+								newChatMessage(newModel.getMessage());
+							}
+							else if(newModel.getIdentifier() == UpdateMode.PROCESSING_CHANGES) {
+								System.out.println(newModel);								
+								logger.log(
+						 				ModuleID.UI,
+						 				LogLevel.INFO,
+						 				"selectPixels from listener"
+						 			);
+								updateChanges(newModel.getPixelArray());
+							}
+							else if(newModel.getIdentifier() == UpdateMode.PROCESSING_SELECTED) {
+								System.out.println(newModel);								
+						 		logger.log(
+						 				ModuleID.UI,
+						 				LogLevel.INFO,
+						 				"updatePixels from listener"
+						 			);
+								updateSelectedPixels(newModel.getPixelArray());
+							}
+						}
+					}
+				}
+			}		
+	});
+
 
 		// Add drop down angles to the rotate Button ComboBox
 		rotateButton
