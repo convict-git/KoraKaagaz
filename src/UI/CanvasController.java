@@ -1029,6 +1029,10 @@ public class CanvasController implements Initializable {
 		}
 	}
 
+	/***
+	 * messageRecieved function is to display the message recieved from one user to other users
+	 * @param messageDetails
+	 */
 	public void messageRecieved(String messageDetails) {
 		
 		Platform.runLater(new Runnable() {
@@ -1125,6 +1129,10 @@ public class CanvasController implements Initializable {
 
 }
 
+/***
+ * userJoined function is to display an alert showing new user is joined
+ * @param username
+ */
 public void userJoined(String username)
 {
 Platform.runLater(new Runnable() {
@@ -1167,6 +1175,10 @@ Platform.runLater(new Runnable() {
 }
 
 
+/***
+ * userLeft function is to display an alert if a user has left the canvas.
+ * @param username
+ */
 public void userLeft(String username)
 {
 Platform.runLater(new Runnable() {
