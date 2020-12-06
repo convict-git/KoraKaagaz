@@ -57,41 +57,9 @@ public class ContentNotificationHandler implements IContentNotificationHandler {
 
 	@Override
 	public void onNewUserJoined (String username) {
-/***	
-		//Creating a JSON Object
-		JSONObject obj = new JSONObject(username);
-		//Obtaining the username string
-		String userName = obj.getString("username");
-		//new user joined alert.
-		Alert alert = new Alert(AlertType.CONFIRMATION, "The user" + userName +  "joined the canvas! ", ButtonType.OK);
-		//Displaying the alert
-		alert.show();
-		//Creating a new thread to display the alert for some seconds and dismiss
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Thread.sleep(1000);  // seconds * 100
-                } catch (InterruptedException e) {
-                    if (alert.isShowing())
-                    {
-                    	 alert.close();
-                    }
-                    e.printStackTrace();
-                    //log message
-                    logger.log(ModuleID.UI, LogLevel.ERROR, e.toString());
-                    
 
-                }finally {
-                    if (alert.isShowing())
-                    {
-                    	alert.close();
-                    }
-                }
-            }
-        }).run();
-        }
-        ***/
+		//To display an alert on user joined.
+		//The function is written in the controller
 		if (username != null) {
 			CanvasController controller = new CanvasController();
 			controller.userJoined(username);
@@ -106,206 +74,28 @@ public class ContentNotificationHandler implements IContentNotificationHandler {
 	 */
 	@Override
 	public  void onMessageReceived (String messageDetails) {
-/***		
-		//Creating the CanvasController object
-		CanvasController canvas = new CanvasController();
-		//Getting the chatDisplayBox and the chatScroll pane from the controller
-		VBox chatDisplayBox = canvas.getchatDisplayBox();
-		ScrollPane chatScroll = canvas.getchatScroll();
-		//Creating a JSON Object to store the message details
-		JSONObject obj = new JSONObject(messageDetails);
-		//Getting the username from messageDetails string
-		String username = obj.getString("username");
-		//Getting the message from messageDetails string
-		String message = obj.getString("message");
-		//Getting the image from messageDetails string
-		String image= obj.getString("image");
-		//Getting the time from messageDetails string
-		String time= obj.getString("time");
-		//Converting the image string to image bytes
-		byte[] imageByte = Base64.getDecoder().decode(image);
-		
-		if(message!= null)
-    	{    		
-            //Converting the image bytes to javafx image
-            Image imageJavafx = new Image(new ByteArrayInputStream(imageByte));
-            //Creating a view for the javafx image
-            ImageView viewImage = new ImageView(imageJavafx);
-            //Setting the dimensions of the image
-            viewImage.setFitHeight(25);
-            viewImage.setFitWidth(25);
-            viewImage.setPreserveRatio(true);
-            //Setting the styling of the image
-            viewImage.setStyle("-fx-border-color: black;-fx-background-radius: 10; -fx-border-radius: 10 10 10 10");
-    		chatScroll.setFitToWidth(true);
-    		//Creating a label to display the username
-        	Label userNameDisplay = new Label(username);
-        	//Setting styling for the username label
-        	userNameDisplay.setStyle(" -fx-font: 10pt 'Corbel';-fx-font-weight: bold; -fx-text-fill: black; -fx-background-color: orange;-fx-border-color: black;-fx-background-radius: 10 10 0 0; -fx-border-radius: 10 10 0 0");
-    		//Creating a label to display the message received
-        	Label msgLabel=new Label(message);
-        	msgLabel.setMinHeight(Region.USE_PREF_SIZE);
-    		//Setting the styling for the image
-    		msgLabel.setStyle(" -fx-font: 14pt 'Corbel'; -fx-text-fill: black; -fx-background-color: orange;-fx-border-color: black;-fx-background-radius: 0 10 10 10; -fx-border-radius: 0 10 10 10");  		    		
-    		msgLabel.setWrapText(true);
-    		msgLabel.setTextAlignment(TextAlignment.JUSTIFY);
-    		//Creating a VBox to store the labels created to display username and message
-    		VBox usernameMessageDisplayBox = new VBox();
-    		usernameMessageDisplayBox.getChildren().addAll(userNameDisplay,msgLabel);
-    		//Creating a HBox to store the image and usernameMessageDisplayBox
-            HBox imageUsernameMessageDisplayBox=new HBox();
-            imageUsernameMessageDisplayBox.setSpacing(10);
-            imageUsernameMessageDisplayBox.getChildren().addAll(viewImage,usernameMessageDisplayBox);
-            //Setting the position of imageUsernameMessageDisplayBox
-            imageUsernameMessageDisplayBox.setAlignment(Pos.BASELINE_LEFT);
-            //Adding the imageUsernameMessageDisplayBox to the chatDisplayBox
-            chatDisplayBox.getChildren().add(imageUsernameMessageDisplayBox);
-            //Setting the spacing between each element in the chatDisplayBox
-            chatDisplayBox.setSpacing(10);
-            //Making sure the chatScroll is always at the bottom
-            chatScroll.setVvalue(1);
-       
-    	}
-		else
-		{
-			logger.log(ModuleID.UI, LogLevel.INFO, "No message is received from the user");
-		}
-		***/
+
+		//message recieved function is written in the controller and is called here
 		if (messageDetails != null) {
 			CanvasController controller = new CanvasController();
 			controller.messageRecieved(messageDetails);
 		}
 	}
 	
-
-	public void userJoined(String username)
-	  {
-	    Platform.runLater(new Runnable() {
-	      @Override public void run() {
-	        //Update UI here 
-	    	//Creating a JSON Object
-	  		JSONObject obj = new JSONObject(username);
-	  		//Obtaining the username string
-	  		String userName = obj.getString("username");
-	  		//new user joined alert.
-	  		Alert alert = new Alert(AlertType.CONFIRMATION, "The user" + userName +  "joined the canvas! ", ButtonType.OK);
-	  		//Displaying the alert
-	  		alert.show();
-	  		//Creating a new thread to display the alert for some seconds and dismiss
-	          new Thread(new Runnable() {
-	              @Override
-	              public void run() {
-	                  try {
-	                      Thread.sleep(1000);  // seconds * 100
-	                  } catch (InterruptedException e) {
-	                      if (alert.isShowing())
-	                      {
-	                      	 alert.close();
-	                      }
-	                      e.printStackTrace();
-	                      //log message
-	                      logger.log(ModuleID.UI, LogLevel.ERROR, e.toString());
-	                      
-
-	                  }finally {
-	                      if (alert.isShowing())
-	                      {
-	                      	alert.close();
-	                      }
-	                  }
-	              }
-	          }).run();
-	      }
-	    });
-	  }
-	
-	
-	public void userLeft(String username)
-	  {
-	    Platform.runLater(new Runnable() {
-	      @Override public void run() {
-	        //Update UI here 
-	    	//Creating a JSON Object
-	  		JSONObject obj = new JSONObject(username);
-	  		//Obtaining the username string
-	  		String userName = obj.getString("username");
-	  		//new user joined alert.
-	  		Alert alert = new Alert(AlertType.CONFIRMATION, "The user" + userName +  "left the canvas! ", ButtonType.OK);
-	  		//Displaying the alert
-	  		alert.show();
-	  		//Creating a new thread to display the alert for some seconds and dismiss
-	          new Thread(new Runnable() {
-	              @Override
-	              public void run() {
-	                  try {
-	                      Thread.sleep(1000);  // seconds * 100
-	                  } catch (InterruptedException e) {
-	                      if (alert.isShowing())
-	                      {
-	                      	 alert.close();
-	                      }
-	                      e.printStackTrace();
-	                      //log message
-	                      logger.log(ModuleID.UI, LogLevel.ERROR, e.toString());
-	                      
-
-	                  }finally {
-	                      if (alert.isShowing())
-	                      {
-	                      	alert.close();
-	                      }
-	                  }
-	              }
-	          }).run();
-	      }
-	    });
-	  }
-	  
 	/*
-	 * The function onNewUserJoined() displays an alert when a new user joins the canvas
+	 * The function onNewUserExit() displays an alert when a new user leaves the canvas
 	 * @param : username- A JSON String of the user name of the user entered
 	 */
 	
 	@Override
 	public void onUserExit (String username) {
-	/***
-		//Creating a JSON Object
-				JSONObject obj = new JSONObject(username);
-				//Obtaining the username string
-				String userName = obj.getString("username");
-				//new user joined alert.
-				Alert alert = new Alert(AlertType.CONFIRMATION, "The user" + userName +  "left the canvas! ", ButtonType.OK);
-				//Displaying the alert
-				alert.show();
-				//Creating a new thread to display the alert for some seconds and dismiss
-		        new Thread(new Runnable() {
-		            @Override
-		            public void run() {
-		                try {
-		                    Thread.sleep(1000);  // seconds * 100
-		                } catch (InterruptedException e) {
-		                    if (alert.isShowing())
-		                    {
-		                    	 alert.close();
-		                    }
-		                    e.printStackTrace();
-		                    //log message
-		                    logger.log(ModuleID.UI, LogLevel.ERROR, e.toString());
-		                    
-
-		                }finally {
-		                    if (alert.isShowing())
-		                    {
-		                    	alert.close();
-		                    }
-		                }
-		            }
-		        }).run();
-		        ***/
-		        if (username != null) {
-					CanvasController controller = new CanvasController();
-					controller.userLeft(username);
-				}
+	
+		//To display an alert on user left.
+		//The function is written in the controller
+	    if (username != null) {
+			CanvasController controller = new CanvasController();
+			controller.userLeft(username);
+		}
 	}
 	
 
