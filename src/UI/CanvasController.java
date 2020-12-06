@@ -83,7 +83,7 @@ public class CanvasController implements Initializable{
 
 	public static ILogger logger = LoggerFactory.getLoggerInstance();
 	
-	public static ObservableList<model> updateList = FXCollections.observableList(new ArrayList<model>());
+	public static ObservableList<model> updateList = FXCollections.observableArrayList();
 	public static void main(String[] args) {		
 		updateList.addListener(new ListChangeListener<model>() {
 			
