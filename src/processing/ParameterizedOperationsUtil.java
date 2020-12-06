@@ -8,7 +8,7 @@ import infrastructure.validation.logger.*;
 /**
  * Class for implementing selected(non-erase, non-reset) object's Color-change and Rotate
  * operation.
- * 
+ *
  * @author Devansh Singh Rathore
  * @reviewer Shruti Umat
  */
@@ -30,7 +30,7 @@ public class ParameterizedOperationsUtil {
 			UndoRedo.pushIntoStack(newObj);
 
 			paraOpLogger.log(
-				ModuleID.PROCESSING, 
+				ModuleID.PROCESSING,
 				LogLevel.SUCCESS,
 				"[#" + Thread.currentThread().getId() + "] "
 				+ "Undo-Redo stacks updated"
@@ -38,7 +38,7 @@ public class ParameterizedOperationsUtil {
 		} catch (Exception e) {
 
 			paraOpLogger.log(
-				ModuleID.PROCESSING, 
+				ModuleID.PROCESSING,
 				LogLevel.ERROR,
 				"[#" + Thread.currentThread().getId() + "] "
 				+ "Undo-Redo call failed!"
@@ -65,8 +65,8 @@ public class ParameterizedOperationsUtil {
 		if (numOfPixels == 0) {
 
 			paraOpLogger.log(
-				ModuleID.PROCESSING, 
-				LogLevel.ERROR, 
+				ModuleID.PROCESSING,
+				LogLevel.ERROR,
 				"Object is empty!"
 			);
 		}
@@ -109,11 +109,28 @@ public class ParameterizedOperationsUtil {
 
 		// storing initial intensities of pixels (to be used during undo-operation)
 		ArrayList<Pixel> prevPixelIntensities = new ArrayList<Pixel>();
-		prevPixelIntensities = obj.getPixels();
+
+		// shallow copy
+		// prevPixelIntensities = obj.getPixels();
+
+		// deep copy
+		for (Pixel p : obj.getPixels()) {
+
+			prevPixelIntensities.add(new Pixel(p));
+		}
 
 		// changing intensities of selected object's pixels
 		ArrayList<Pixel> newPixelSet = new ArrayList<Pixel>();
-		newPixelSet = obj.getPixels();
+
+		// shallow copy
+		// newPixelSet = obj.getPixels();
+
+		// deep copy
+		for (Pixel p : obj.getPixels()) {
+
+			newPixelSet.add(new Pixel(p));
+		}
+
 		for (int i = 0; i < newPixelSet.size(); i++) {
 
 			Pixel newPix = new Pixel(newPixelSet.get(i).position, newIntensity);
@@ -133,7 +150,7 @@ public class ParameterizedOperationsUtil {
 			ClientBoardState.maps.removeObjectFromMaps(obj.getObjectId());
 
 			paraOpLogger.log(
-				ModuleID.PROCESSING, 
+				ModuleID.PROCESSING,
 				LogLevel.SUCCESS,
 				"[#" + Thread.currentThread().getId() + "] "
 				+ "colorChangeU: old object deleted"
@@ -141,7 +158,7 @@ public class ParameterizedOperationsUtil {
 		} catch (Exception e) {
 
 			paraOpLogger.log(
-				ModuleID.PROCESSING, 
+				ModuleID.PROCESSING,
 				LogLevel.ERROR,
 				"[#" + Thread.currentThread().getId() + "] "
 				+ "colorChangeU: object deletion failed!"
@@ -156,7 +173,7 @@ public class ParameterizedOperationsUtil {
 			id, prevPixelIntensities, false);
 
 			paraOpLogger.log(
-				ModuleID.PROCESSING, 
+				ModuleID.PROCESSING,
 				LogLevel.SUCCESS,
 				"[#" + Thread.currentThread().getId() + "] "
 				+ "colorChangeU: object recreated"
@@ -164,7 +181,7 @@ public class ParameterizedOperationsUtil {
 		} catch (Exception e) {
 
 			paraOpLogger.log(
-				ModuleID.PROCESSING, 
+				ModuleID.PROCESSING,
 				LogLevel.ERROR,
 				"[#" + Thread.currentThread().getId() + "] "
 				+ "colorChangeU: object recreation failed!"
@@ -184,7 +201,15 @@ public class ParameterizedOperationsUtil {
 
 		// storing initial list of pixels (to be used in creation of new BoardObject)
 		ArrayList<Pixel> prevPixelIntensities = new ArrayList<Pixel>();
-		prevPixelIntensities = obj.getPixels();
+
+		// shallow copy
+		// prevPixelIntensities = obj.getPixels();
+
+		// deep copy
+		for (Pixel p : obj.getPixels()) {
+
+			prevPixelIntensities.add(new Pixel(p));
+		}
 
 		Position centre = null;
 		try {
@@ -193,7 +218,7 @@ public class ParameterizedOperationsUtil {
 			centre = new Position(findCentre(prevPixelIntensities));
 
 			paraOpLogger.log(
-				ModuleID.PROCESSING, 
+				ModuleID.PROCESSING,
 				LogLevel.SUCCESS,
 				"[#" + Thread.currentThread().getId() + "] "
 				+ "rotationU: object centre found"
@@ -201,7 +226,7 @@ public class ParameterizedOperationsUtil {
 		} catch (Exception e) {
 
 			paraOpLogger.log(
-				ModuleID.PROCESSING, 
+				ModuleID.PROCESSING,
 				LogLevel.ERROR,
 				"[#" + Thread.currentThread().getId() + "] "
 				+ "rotationU: centre couldn't be found!"
@@ -215,7 +240,7 @@ public class ParameterizedOperationsUtil {
 			rotMatrix = computeRotationMatrix(angleOfRotation);
 
 			paraOpLogger.log(
-				ModuleID.PROCESSING, 
+				ModuleID.PROCESSING,
 				LogLevel.SUCCESS,
 				"[#" + Thread.currentThread().getId() + "] "
 				+ "rotationU: rotation matrix created"
@@ -223,7 +248,7 @@ public class ParameterizedOperationsUtil {
 		} catch (Exception e) {
 
 			paraOpLogger.log(
-				ModuleID.PROCESSING, 
+				ModuleID.PROCESSING,
 				LogLevel.ERROR,
 				"[#" + Thread.currentThread().getId() + "] "
 				+ "rotationU: rotation matrix couldn't be formed!"
@@ -232,7 +257,16 @@ public class ParameterizedOperationsUtil {
 
 		// generating new list of object's pixels
 		ArrayList<Pixel> newPixelSet = new ArrayList<Pixel>();
-		newPixelSet = obj.getPixels();
+
+		// shallow copy
+		// newPixelSet = obj.getPixels();
+
+		// deep copy
+		for (Pixel p : obj.getPixels()) {
+
+			newPixelSet.add(new Pixel(p));
+		}
+
 		for (int i = 0; i < newPixelSet.size(); i++) {
 
 			// shifting origin
@@ -244,9 +278,9 @@ public class ParameterizedOperationsUtil {
 			// applying rotation matrix followed by Narrowing Type Casting
 			Position rotatedPos = new Position(
 				(int)(
-					rotMatrix[0][0] * posWithShiftedOrigin.r 
+					rotMatrix[0][0] * posWithShiftedOrigin.r
 					+ rotMatrix[0][1] * posWithShiftedOrigin.c
-				), 
+				),
 				(int)(
 					rotMatrix[1][0] * posWithShiftedOrigin.r
 					+ rotMatrix[1][1] * posWithShiftedOrigin.c
@@ -274,7 +308,7 @@ public class ParameterizedOperationsUtil {
 			ClientBoardState.maps.removeObjectFromMaps(obj.getObjectId());
 
 			paraOpLogger.log(
-				ModuleID.PROCESSING, 
+				ModuleID.PROCESSING,
 				LogLevel.SUCCESS,
 				"[#" + Thread.currentThread().getId() + "] "
 				+ "rotationU: old object deleted"
@@ -282,7 +316,7 @@ public class ParameterizedOperationsUtil {
 		} catch (Exception e) {
 
 			paraOpLogger.log(
-				ModuleID.PROCESSING, 
+				ModuleID.PROCESSING,
 				LogLevel.ERROR,
 				"[#" + Thread.currentThread().getId() + "] "
 				+ "rotationU: object deletion failed!"
@@ -297,7 +331,7 @@ public class ParameterizedOperationsUtil {
 			id, prevPixelIntensities, false);
 
 			paraOpLogger.log(
-				ModuleID.PROCESSING, 
+				ModuleID.PROCESSING,
 				LogLevel.SUCCESS,
 				"[#" + Thread.currentThread().getId() + "] "
 				+ "rotationU: object recreated"
@@ -305,7 +339,7 @@ public class ParameterizedOperationsUtil {
 		} catch (Exception e) {
 
 			paraOpLogger.log(
-				ModuleID.PROCESSING, 
+				ModuleID.PROCESSING,
 				LogLevel.ERROR,
 				"[#" + Thread.currentThread().getId() + "] "
 				+ "rotationU: object recreation failed!"
@@ -324,10 +358,10 @@ public class ParameterizedOperationsUtil {
 		try {
 
 			newObj = colorChangeUtil(obj, id, intensity);
-			stackUtil(newObj);
+			// stackUtil(newObj);
 
 			paraOpLogger.log(
-				ModuleID.PROCESSING, 
+				ModuleID.PROCESSING,
 				LogLevel.SUCCESS,
 				"[#" + Thread.currentThread().getId() + "] "
 				+ "colorChange: operation completed"
@@ -335,7 +369,7 @@ public class ParameterizedOperationsUtil {
 		} catch (Exception e) {
 
 			paraOpLogger.log(
-				ModuleID.PROCESSING, 
+				ModuleID.PROCESSING,
 				LogLevel.ERROR,
 				"[#" + Thread.currentThread().getId() + "] "
 				+ "colorChange: operation failed!"
@@ -348,11 +382,11 @@ public class ParameterizedOperationsUtil {
 			CommunicateChange.provideChanges(newObj.getPrevIntensity(), newObj.getPixels());
 
 			// To send selection updates to UI
-			CommunicateChange.identifierToHandler.get(CommunicateChange.identifierUI)
-				.giveSelectedPixels(newObj.getPixels());
+			// CommunicateChange.identifierToHandler.get(CommunicateChange.identifierUI)
+			//	.giveSelectedPixels(newObj.getPixels());
 
 			paraOpLogger.log(
-				ModuleID.PROCESSING, 
+				ModuleID.PROCESSING,
 				LogLevel.SUCCESS,
 				"[#" + Thread.currentThread().getId() + "] "
 				+ "colorChange: updates sent to UI"
@@ -360,7 +394,7 @@ public class ParameterizedOperationsUtil {
 		} catch (Exception e) {
 
 			paraOpLogger.log(
-				ModuleID.PROCESSING, 
+				ModuleID.PROCESSING,
 				LogLevel.ERROR,
 				"[#" + Thread.currentThread().getId() + "] "
 				+ "colorChange: UI updates failed!"
@@ -369,10 +403,12 @@ public class ParameterizedOperationsUtil {
 
 		// change `boardOp` of old object and return it
 		IBoardObjectOperation newBoardOp = new ColorChangeOperation(intensity);
-		obj.setOperation(newBoardOp);
-		obj.setUserId(newObj.getUserId());
+		//obj.setOperation(newBoardOp);
+		//obj.setUserId(newObj.getUserId());
+		BoardObject copyObj = UndoRedo.duplicateObject(obj, newBoardOp);
+		copyObj.setUserId(newObj.getUserId());
 
-		return obj;
+		return copyObj;
 	}
 
 	/**
@@ -384,10 +420,10 @@ public class ParameterizedOperationsUtil {
 		try {
 
 			newObj = rotationUtil(obj, id, angleOfRotation);
-			stackUtil(newObj);
+			// stackUtil(newObj);
 
 			paraOpLogger.log(
-				ModuleID.PROCESSING, 
+				ModuleID.PROCESSING,
 				LogLevel.SUCCESS,
 				"[#" + Thread.currentThread().getId() + "] "
 				+ "rotation: operation completed"
@@ -395,7 +431,7 @@ public class ParameterizedOperationsUtil {
 		} catch (Exception e) {
 
 			paraOpLogger.log(
-				ModuleID.PROCESSING, 
+				ModuleID.PROCESSING,
 				LogLevel.ERROR,
 				"[#" + Thread.currentThread().getId() + "] "
 				+ "rotation: operation failed!"
@@ -408,11 +444,11 @@ public class ParameterizedOperationsUtil {
 			CommunicateChange.provideChanges(newObj.getPrevIntensity(), newObj.getPixels());
 
 			// To send selection updates to UI
-			CommunicateChange.identifierToHandler.get(CommunicateChange.identifierUI)
-				.giveSelectedPixels(newObj.getPixels());
+			// CommunicateChange.identifierToHandler.get(CommunicateChange.identifierUI)
+			//	.giveSelectedPixels(newObj.getPixels());
 
 			paraOpLogger.log(
-				ModuleID.PROCESSING, 
+				ModuleID.PROCESSING,
 				LogLevel.SUCCESS,
 				"[#" + Thread.currentThread().getId() + "] "
 				+ "rotation: updates sent to UI"
@@ -420,7 +456,7 @@ public class ParameterizedOperationsUtil {
 		} catch (Exception e) {
 
 			paraOpLogger.log(
-				ModuleID.PROCESSING, 
+				ModuleID.PROCESSING,
 				LogLevel.ERROR,
 				"[#" + Thread.currentThread().getId() + "] "
 				+ "rotation: UI updates failed!"
@@ -429,9 +465,11 @@ public class ParameterizedOperationsUtil {
 
 		// change `boardOp`, `UserId` of old object and return it
 		IBoardObjectOperation newBoardOp = new RotateOperation(angleOfRotation);
-		obj.setOperation(newBoardOp);
-		obj.setUserId(newObj.getUserId());
+		//obj.setOperation(newBoardOp);
+		//obj.setUserId(newObj.getUserId());
+		BoardObject copyObj = UndoRedo.duplicateObject(obj, newBoardOp);
+		copyObj.setUserId(newObj.getUserId());
 
-		return obj;
+		return copyObj;
 	}
 }
