@@ -157,76 +157,76 @@ public class ContentCommunicator implements IContentCommunicator{
 		JSONObject jsonObject;
 		try {
 			jsonObject = new JSONObject(userDetails);
-		} catch(Exception e) {
-			logger.log(
-				ModuleID.INFRASTRUCTURE,
-				LogLevel.ERROR,
-				"Argument userDetails cannot be converted to JSON object"
-			);
-			return;
-		}
-		try {
-			boardServerFullAddress = jsonObject.getString("ipAddress");
-		} catch(Exception e) {
-			logger.log(
-				ModuleID.INFRASTRUCTURE,
-				LogLevel.ERROR,
-				"No String value for ipAddress key in argument userDetails"
-			);
-			return;
-		}
-		try {
-			userName = jsonObject.getString("username");
-		} catch(Exception e) {
-			logger.log(
-				ModuleID.INFRASTRUCTURE,
-				LogLevel.ERROR,
-				"No String value for username key in argument userDetails"
-			);
-			return;
-		}
-		try {
-			userImage = jsonObject.getString("image");
-		} catch(Exception e) {
-			logger.log(
-				ModuleID.INFRASTRUCTURE,
-				LogLevel.ERROR,
-				"No String value for image key in argument userDetails"
-			);
-			return;
-		}
-		port = serverPort.getPort();
-		while (port == 0) {
-			logger.log(
-				ModuleID.INFRASTRUCTURE,
-				LogLevel.ERROR,
-				"The port value is not yet updated, cannot create server's ipAddress"
-			);
 			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {}
+				boardServerFullAddress = jsonObject.getString("ipAddress");
+			} catch(Exception e) {
+				logger.log(
+					ModuleID.INFRASTRUCTURE,
+					LogLevel.ERROR,
+					"No String value for ipAddress key in argument userDetails"
+				);
+				return;
+			}
+			try {
+				userName = jsonObject.getString("username");
+			} catch(Exception e) {
+				logger.log(
+					ModuleID.INFRASTRUCTURE,
+					LogLevel.ERROR,
+					"No String value for username key in argument userDetails"
+				);
+				return;
+			}
+			try {
+				userImage = jsonObject.getString("image");
+			} catch(Exception e) {
+				logger.log(
+					ModuleID.INFRASTRUCTURE,
+					LogLevel.ERROR,
+					"No String value for image key in argument userDetails"
+				);
+				return;
+			}
 			port = serverPort.getPort();
+			while (port == 0) {
+				logger.log(
+					ModuleID.INFRASTRUCTURE,
+					LogLevel.ERROR,
+					"The port value is not yet updated, cannot create server's ipAddress"
+				);
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {}
+				port = serverPort.getPort();
+			}
+			boardServerFullAddress += ":" + String.valueOf(port);
+			logger.log(
+				ModuleID.INFRASTRUCTURE,
+				LogLevel.INFO,
+				"server's ipAddress in ContentCommunicator class created"
+			);
+			imageMap.put(userName, userImage);
+			jsonObject.put("meta", "newUser");
+			jsonObject.remove("ipAddress");
+			communicator.send(boardServerFullAddress, jsonObject.toString(), "content");
+			logger.log(
+				ModuleID.INFRASTRUCTURE,
+				LogLevel.INFO,
+				"Desired message passed to networking to send it to server"
+			);
+			logger.log(
+				ModuleID.INFRASTRUCTURE,
+				LogLevel.SUCCESS,
+				"Successfully finished the initialiseUser method of ContentCommunicator class"
+			);
 		}
-		boardServerFullAddress += ":" + String.valueOf(port);
-		logger.log(
-			ModuleID.INFRASTRUCTURE,
-			LogLevel.INFO,
-			"server's ipAddress in ContentCommunicator class created"
-		);
-		imageMap.put(userName, userImage);
-		jsonObject.put("meta", "newUser");
-		jsonObject.remove("ipAddress");
-		communicator.send(boardServerFullAddress, jsonObject.toString(), "content");
-		logger.log(
-			ModuleID.INFRASTRUCTURE,
-			LogLevel.INFO,
-			"Desired message passed to networking to send it to server"
-		);
-		logger.log(
-			ModuleID.INFRASTRUCTURE,
-			LogLevel.SUCCESS,
-			"Successfully finished the initialiseUser method of ContentCommunicator class"
-		);
+		catch(Exception e) {
+			logger.log(
+				ModuleID.INFRASTRUCTURE,
+				LogLevel.ERROR,
+				"Caught Exception: " + e.getMessage()
+			);
+		}
 	}
 	
 	/**
@@ -245,27 +245,27 @@ public class ContentCommunicator implements IContentCommunicator{
 		JSONObject jsonObject;
 		try {
 			jsonObject = new JSONObject(message);
-		} catch(Exception e) {
+			jsonObject.put("meta", "message");
+			jsonObject.put("username",userName);
+			communicator.send(boardServerFullAddress, jsonObject.toString(), "content");
+			logger.log(
+				ModuleID.INFRASTRUCTURE,
+				LogLevel.INFO,
+				"Desired message passed to networking to send it to server"
+			);
+			logger.log(
+				ModuleID.INFRASTRUCTURE,
+				LogLevel.SUCCESS,
+				"Successfully finished the sendMessageToContent method of ContentCommunicator class"
+			);
+		}
+		catch(Exception e) {
 			logger.log(
 				ModuleID.INFRASTRUCTURE,
 				LogLevel.ERROR,
-				"Argument message cannot be converted to JSON object"
+				"Catch Exception: " + e.getMessage()
 			);
-			return;
 		}
-		jsonObject.put("meta", "message");
-		jsonObject.put("username",userName);
-		communicator.send(boardServerFullAddress, jsonObject.toString(), "content");
-		logger.log(
-			ModuleID.INFRASTRUCTURE,
-			LogLevel.INFO,
-			"Desired message passed to networking to send it to server"
-		);
-		logger.log(
-			ModuleID.INFRASTRUCTURE,
-			LogLevel.SUCCESS,
-			"Successfully finished the sendMessageToContent method of ContentCommunicator class"
-		);
 	}
 	
 	/**
@@ -280,27 +280,36 @@ public class ContentCommunicator implements IContentCommunicator{
 			LogLevel.INFO,
 			"notifyUserExit method of ContentCommunicator is executing"
 		);
-		imageMap.clear();
-		handlerMap.clear();
-		logger.log(
-			ModuleID.INFRASTRUCTURE,
-			LogLevel.INFO,
-			"imageMap and handlerMap of ContentCommunicator class are cleared"
-		);
-		JSONObject jsonObject = new JSONObject();
-		jsonObject.put("meta", "userExit");
-		jsonObject.put("username", userName);
-		communicator.send(boardServerFullAddress, jsonObject.toString(), "content");
-		logger.log(
-			ModuleID.INFRASTRUCTURE,
-			LogLevel.INFO,
-			"Desired message passed to networking to send it to server"
-		);
-		logger.log(
-			ModuleID.INFRASTRUCTURE,
-			LogLevel.SUCCESS,
-			"Successfully finished the notifyUserExit method of ContentCommunicator class"
-		);
+		try {
+			imageMap.clear();
+			handlerMap.clear();
+			logger.log(
+				ModuleID.INFRASTRUCTURE,
+				LogLevel.INFO,
+				"imageMap and handlerMap of ContentCommunicator class are cleared"
+			);
+			JSONObject jsonObject = new JSONObject();
+			jsonObject.put("meta", "userExit");
+			jsonObject.put("username", userName);
+			communicator.send(boardServerFullAddress, jsonObject.toString(), "content");
+			logger.log(
+				ModuleID.INFRASTRUCTURE,
+				LogLevel.INFO,
+				"Desired message passed to networking to send it to server"
+			);
+			logger.log(
+				ModuleID.INFRASTRUCTURE,
+				LogLevel.SUCCESS,
+				"Successfully finished the notifyUserExit method of ContentCommunicator class"
+			);
+		}
+		catch(Exception e) {
+			logger.log(
+				ModuleID.INFRASTRUCTURE,
+				LogLevel.ERROR,
+				"Catch Exception: " + e.getMessage()
+			);
+		}
 	}
 	
 	/**

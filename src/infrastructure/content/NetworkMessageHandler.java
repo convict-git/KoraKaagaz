@@ -73,7 +73,7 @@ public class NetworkMessageHandler implements INotificationHandler {
 	/**
 	 * @param message - JSON string message (Meta fields are newUser or message or userExit)
 	 *
-	 * if meta field is newUser, then remaining field of parameter message would only be imageMap (it is a string of json array whose elements are json object having fields username and corresponding image). 
+	 * if meta field is newUser, then remaining field of parameter message would be imageMap (it is a string of json array whose elements are json object having fields username and corresponding image) and username. 
 	 *		onNewUserJoined(String message) - message fields are username and image  
 	 * if meta field is message, then remaining fields of parameter message would be username, message and time. onMessageReceived(String message) - message fields are username, message, time and image
 	 * if meta field is exitUser, then remaining field of parameter message would only be username. onUserExit(String message) - message fields are username and image
@@ -179,7 +179,7 @@ public class NetworkMessageHandler implements INotificationHandler {
 				}
 				
 				try {
-					userimage = object.getString(username);
+					userimage = object.getString("image");
 				}
 				catch(Exception e) {
 					logger.log(
@@ -190,25 +190,33 @@ public class NetworkMessageHandler implements INotificationHandler {
 					return;
 				}
 				imagemap.put(username, userimage);
-				if(!imageMap.containsKey(username)) {
-					jsonObject.put("username", username);
-					jsonObject.put("image", userimage);
-				}
 			}
 			
+			username = jsonObject.getString("username");
+			jsonObject.put("image", imagemap.get(username));
 			ContentCommunicator.setImageMap(imagemap);
 			logger.log(
 				ModuleID.INFRASTRUCTURE, 
 				LogLevel.SUCCESS, 
 				"imageMap updated successfully"
 			);
-			
-			handler.onNewUserJoined(jsonObject.toString());
-			logger.log(
-				ModuleID.INFRASTRUCTURE, 
-				LogLevel.INFO, 
-				"onNewUserJoined called"
-			);
+			try {
+				if(!username.equals(ContentCommunicator.getUserName()) {
+					handler.onNewUserJoined(jsonObject.toString());
+					logger.log(
+							ModuleID.INFRASTRUCTURE, 
+							LogLevel.INFO, 
+							"onNewUserJoined called"
+					);
+				}
+			}
+			catch(Exception e) {
+				logger.log(
+					ModuleID.INFRASTRUCTURE, 
+					LogLevel.ERROR, 
+					"Caught Exception: " + e.getMessage()
+				);
+			}
 		}
 		else if(metafield.equals("message")) {
 			logger.log(
@@ -241,12 +249,24 @@ public class NetworkMessageHandler implements INotificationHandler {
 				return;
 			}
 			jsonObject.put("image", userimage);
-			handler.onMessageReceived(jsonObject.toString());
-			logger.log(
-				ModuleID.INFRASTRUCTURE, 
-				LogLevel.INFO, 
-				"onMessageReceived called"
-			);
+			
+			try {
+				if(!username.equals(ContentCommunicator.getUserName()) {
+					handler.onMessageReceived(jsonObject.toString());
+					logger.log(
+							ModuleID.INFRASTRUCTURE,
+							LogLevel.INFO,
+							"onMessageReceived called"
+					);
+				}
+			}
+			catch(Exception e) {
+				logger.log(
+					ModuleID.INFRASTRUCTURE, 
+					LogLevel.ERROR, 
+					"Caught Exception: " + e.getMessage()
+				);
+			}
 		}
 		else if (metafield.equals("userExit")) {
 			logger.log(
@@ -288,12 +308,23 @@ public class NetworkMessageHandler implements INotificationHandler {
 				"imageMap updated successfully"
 			);
 			
-			handler.onUserExit(jsonObject.toString());
-			logger.log(
-				ModuleID.INFRASTRUCTURE, 
-				LogLevel.INFO, 
-				"onUserExit called"
-			);
+			try {
+				if(!username.equals(ContentCommunicator.getUserName()) {
+					handler.onUserExit(jsonObject.toString());
+					logger.log(
+							ModuleID.INFRASTRUCTURE,
+							LogLevel.INFO,
+							"onUserExit called"
+					);
+				}
+			}
+			catch(Exception e) {
+				logger.log(
+					ModuleID.INFRASTRUCTURE, 
+					LogLevel.ERROR, 
+					"Caught Exception: " + e.getMessage()
+				);
+			}
 		}
 		else {
 			logger.log(
