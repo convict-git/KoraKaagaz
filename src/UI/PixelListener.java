@@ -1,6 +1,10 @@
 package UI;
 
 import java.util.ArrayList;
+
+import infrastructure.validation.logger.ILogger;
+import infrastructure.validation.logger.LogLevel;
+import infrastructure.validation.logger.ModuleID;
 import processing.*;
 import processing.utility.Pixel;
 
@@ -16,11 +20,19 @@ public class PixelListener implements IChanges {
 	 * This method will call updateChanges method to update the canvas with given pixels
 	 * @param pixels ArrayList of pixels
 	 */
+	
+	public static ILogger logger = CanvasController.logger;
+	
 	@Override
 	public void getChanges(ArrayList<Pixel> pixels) {
 		if (pixels != null) {
-			CanvasController controller = new CanvasController();
-			controller.updateChanges(pixels);
+			logger.log(
+	 				ModuleID.UI,
+	 				LogLevel.INFO,
+	 				"getChanges called by processor"
+	 			);
+			model temp = new model(UpdateMode.PROCESSING_CHANGES,pixels);
+			CanvasController.updateList.setAll(temp);
 		}
 	}
 
@@ -32,8 +44,13 @@ public class PixelListener implements IChanges {
 	@Override
 	public void giveSelectedPixels(ArrayList<Pixel> pixels) {
 		if (pixels != null) {
-			CanvasController controller = new CanvasController();
-			controller.updateSelectedPixels(pixels);
+			logger.log(
+	 				ModuleID.UI,
+	 				LogLevel.INFO,
+	 				"giveSelectedPixels called by processor"
+	 			);
+			model temp = new model(UpdateMode.PROCESSING_SELECTED,pixels);
+			CanvasController.updateList.setAll(temp);
 		}
 	}
 }
