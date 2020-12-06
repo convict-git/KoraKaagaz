@@ -1153,18 +1153,20 @@ Platform.runLater(new Runnable() {
 			  try {
 				  Thread.sleep(1000);  // seconds * 100
 			  } catch (InterruptedException e) {
-				  if (alert.isShowing())
-				  {
+				  if (alert.isShowing()) {
 					   alert.close();
 				  }
 				  e.printStackTrace();
 				  //log message
-				  logger.log(ModuleID.UI, LogLevel.ERROR, e.toString());
+				  logger.log(
+						  ModuleID.UI, 
+						  LogLevel.ERROR, 
+						  e.toString()
+						  );
 				  
 
 			  }finally {
-				  if (alert.isShowing())
-				  {
+				  if (alert.isShowing()) {
 					  alert.close();
 				  }
 			  }
@@ -1199,18 +1201,20 @@ Platform.runLater(new Runnable() {
 			  try {
 				  Thread.sleep(1000);  // seconds * 100
 			  } catch (InterruptedException e) {
-				  if (alert.isShowing())
-				  {
+				  if (alert.isShowing()) {
 					   alert.close();
 				  }
 				  e.printStackTrace();
 				  //log message
-				  logger.log(ModuleID.UI, LogLevel.ERROR, e.toString());
+				  logger.log(
+						  ModuleID.UI, 
+						  LogLevel.ERROR, 
+						  e.toString()
+						  );
 				  
 
 			  }finally {
-				  if (alert.isShowing())
-				  {
+				  if (alert.isShowing()) {
 					  alert.close();
 				  }
 			  }
