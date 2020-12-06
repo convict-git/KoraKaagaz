@@ -121,7 +121,7 @@ public class CommunicatorFactory {
 		 
 		 	String home = System.getProperty("user.home");
 			/** Building Document from the file ServerInfo.xml*/
-			Document document = builder.parse( new File(home+".config/KoraKaagaz/ServerInfo.xml") );
+			Document document = builder.parse( new File(home+"/.config/KoraKaagaz/ServerInfo.xml") );
 		 
 			/** Normalising the XML Structure */
 			document.getDocumentElement().normalize();
