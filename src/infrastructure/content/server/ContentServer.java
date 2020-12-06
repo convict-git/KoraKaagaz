@@ -141,7 +141,6 @@ public class ContentServer implements INotificationHandler{
 			}
 			// updating imageMap
 			imageMap.put(userName, userImage);
-			jsonObject.remove("userName");
 			jsonObject.remove("image");
 			// declaring a JSON Array and a temporary JSON Object
 			JSONArray jsonArray = new JSONArray();
