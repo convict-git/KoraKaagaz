@@ -201,7 +201,7 @@ public class NetworkMessageHandler implements INotificationHandler {
 				"imageMap updated successfully"
 			);
 			try {
-				if(!username.equals(ContentCommunicator.getUserName()) {
+				if(!username.equals(ContentCommunicator.getUserName())) {
 					handler.onNewUserJoined(jsonObject.toString());
 					logger.log(
 						ModuleID.INFRASTRUCTURE, 
@@ -251,7 +251,7 @@ public class NetworkMessageHandler implements INotificationHandler {
 			jsonObject.put("image", userimage);
 			
 			try {
-				if(!username.equals(ContentCommunicator.getUserName()) {
+				if(!username.equals(ContentCommunicator.getUserName())) {
 					handler.onMessageReceived(jsonObject.toString());
 					logger.log(
 						ModuleID.INFRASTRUCTURE,
@@ -309,7 +309,7 @@ public class NetworkMessageHandler implements INotificationHandler {
 			);
 			
 			try {
-				if(!username.equals(ContentCommunicator.getUserName()) {
+				if(!username.equals(ContentCommunicator.getUserName())) {
 					handler.onUserExit(jsonObject.toString());
 					logger.log(
 						ModuleID.INFRASTRUCTURE,

@@ -263,7 +263,7 @@ public class ContentCommunicator implements IContentCommunicator{
 			logger.log(
 				ModuleID.INFRASTRUCTURE,
 				LogLevel.ERROR,
-				"Catch Exception: " + e.getMessage()
+				"Caught Exception: " + e.getMessage()
 			);
 		}
 	}
@@ -307,7 +307,7 @@ public class ContentCommunicator implements IContentCommunicator{
 			logger.log(
 				ModuleID.INFRASTRUCTURE,
 				LogLevel.ERROR,
-				"Catch Exception: " + e.getMessage()
+				"Caught Exception: " + e.getMessage()
 			);
 		}
 	}
