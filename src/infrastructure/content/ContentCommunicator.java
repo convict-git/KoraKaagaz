@@ -124,7 +124,14 @@ public class ContentCommunicator implements IContentCommunicator{
 			LogLevel.INFO,
 			"setImageMap method of ContentCommunicator class is executing"
 		);
-		imageMap = new HashMap<>(imagemap);
+		imageMap.clear();
+		String username;
+		String userimage;
+		for(String name : imagemap.keySet()) {
+			username = name;
+			userimage = imagemap.get(username);
+			imageMap.put(username,  userimage);
+		}
 	}
 	
 	/**
