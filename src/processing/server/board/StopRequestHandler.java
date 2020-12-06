@@ -107,12 +107,6 @@ public class StopRequestHandler implements INotificationHandler {
 			);
 			
 			/**
-			 * Notifying the networking module to stop listening for this server
-			 * messages by calling their stop function.
-			 */
-			ClientBoardState.communicator.stop();
-			
-			/**
 			 * Notifying the main server to shut this board's server by passing board ID as
 			 * the argument.
 			 */
@@ -125,6 +119,12 @@ public class StopRequestHandler implements INotificationHandler {
 					ClientBoardState.boardId.toString(), 
 					"RemoveBoard"
 			);
+			
+			/**
+			 * Notifying the networking module to stop listening for this server
+			 * messages by calling their stop function.
+			 */
+			ClientBoardState.communicator.stop();
 			
 			System.exit(0);
 		}
