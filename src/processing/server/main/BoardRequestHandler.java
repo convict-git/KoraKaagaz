@@ -94,7 +94,7 @@ public class BoardRequestHandler implements INotificationHandler{
 				ModuleID.PROCESSING, 
 				LogLevel.INFO, 
 				"[#" + Thread.currentThread().getId() + "] "
-				+ "New Board Request received on the Main Server"
+				+ "Existing Board Request received on the Main Server"
 		);
 		
 		JSONObject messageInJSON = new JSONObject(message);
