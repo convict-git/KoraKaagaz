@@ -13,22 +13,29 @@
 package UI;
 
 import infrastructure.content.*;
+
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.ResourceBundle;
+
+import org.json.JSONObject;
 
 import infrastructure.validation.logger.ILogger;
 import infrastructure.validation.logger.LogLevel;
 import infrastructure.validation.logger.LoggerFactory;
 import infrastructure.validation.logger.ModuleID;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.stage.Stage;
 import processing.IChanges;
 import processing.IUser;
@@ -44,17 +51,25 @@ import javafx.scene.Scene;
 import javafx.scene.Cursor;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.TextAlignment;
 
 public class CanvasController implements Initializable {
 	/***
@@ -117,6 +132,9 @@ public class CanvasController implements Initializable {
 	private Canvas canvasB;
 
 	private static GraphicsContext gc,gcForUpdate;
+
+	private static VBox chatDisplay;
+	private static ScrollPane chatScroller;
 
 	private double x1,y1,x2,y2;
 
@@ -1011,6 +1029,201 @@ public class CanvasController implements Initializable {
 		}
 	}
 
+	/***
+	 * messageRecieved function is to display the message recieved from one user to other users
+	 * @param messageDetails
+	 */
+	public void messageRecieved(String messageDetails) {
+		
+		Platform.runLater(new Runnable() {
+			  @Override public void run() {
+				//Update UI here 
+				//Creating a JSON Object to store the message details
+					JSONObject obj = new JSONObject(messageDetails);
+
+					//Getting the username from messageDetails string
+					String username = obj.getString("username");
+
+					//Getting the message from messageDetails string
+					String message = obj.getString("message");
+
+					//Getting the image from messageDetails string
+					String image= obj.getString("image");
+
+					//Getting the time from messageDetails string
+					String time= obj.getString("time");
+
+					//Converting the image string to image bytes
+					byte[] imageByte = Base64.getDecoder().decode(image);
+
+					if (message != null) {
+						//Converting the image bytes to javafx image
+						Image imageJavafx = new Image(new ByteArrayInputStream(imageByte));
+
+						//Creating a view for the javafx image
+						ImageView viewImage = new ImageView(imageJavafx);
+
+						//Setting the dimensions of the image
+						viewImage.setFitHeight(25);
+						viewImage.setFitWidth(25);
+						viewImage.setPreserveRatio(true);
+
+						//Setting the styling of the image
+						viewImage.setStyle("-fx-border-color: black;-fx-background-radius: 10; -fx-border-radius: 10 10 10 10");
+						chatScroller.setFitToWidth(true);
+
+						//Creating a label to display the username
+						Label userNameDisplay = new Label(username);
+
+						//Setting styling for the username label
+						userNameDisplay.setStyle(" -fx-font: 10pt 'Corbel';-fx-font-weight: bold; -fx-text-fill: black; -fx-background-color: orange;-fx-border-color: black;-fx-background-radius: 10 10 0 0; -fx-border-radius: 10 10 0 0");
+
+						//Creating a label to display the message received
+						Label msgLabel=new Label(message);
+						msgLabel.setMinHeight(Region.USE_PREF_SIZE);
+
+						//Setting the styling for the image
+						msgLabel.setStyle(" -fx-font: 14pt 'Corbel'; -fx-text-fill: black; -fx-background-color: orange;-fx-border-color: black;-fx-background-radius: 0 10 10 10; -fx-border-radius: 0 10 10 10");
+						msgLabel.setWrapText(true);
+						msgLabel.setTextAlignment(TextAlignment.JUSTIFY);
+
+						//Creating a VBox to store the labels created to display username and message
+						VBox usernameMessageDisplayBox = new VBox();
+						usernameMessageDisplayBox.getChildren().addAll(userNameDisplay,msgLabel);
+
+						//Creating a HBox to store the image and usernameMessageDisplayBox
+						HBox imageUsernameMessageDisplayBox=new HBox();
+						imageUsernameMessageDisplayBox.setSpacing(10);
+						imageUsernameMessageDisplayBox.getChildren().addAll(viewImage,usernameMessageDisplayBox);
+
+						//Setting the position of imageUsernameMessageDisplayBox
+						imageUsernameMessageDisplayBox.setAlignment(Pos.BASELINE_LEFT);
+
+						//Adding the imageUsernameMessageDisplayBox to the chatDisplayBox
+						chatDisplay.getChildren().add(imageUsernameMessageDisplayBox);
+
+						//Setting the spacing between each element in the chatDisplayBox
+						chatDisplay.setSpacing(10);
+
+						//Making sure the chatScroll is always at the bottom
+						chatScroller.setVvalue(1);
+
+						//log message on receiving message
+						logger.log(
+								ModuleID.UI,
+								LogLevel.SUCCESS,
+								"Message received from the user and displayed on the Chatbox"
+						);
+					}
+					else {
+						logger.log(
+								ModuleID.UI,
+								LogLevel.INFO,
+								"No message is received from the user"
+						);
+					}
+			  }
+				
+			});
+		
+
+}
+
+/***
+ * userJoined function is to display an alert showing new user is joined
+ * @param username
+ */
+public void userJoined(String username)
+{
+Platform.runLater(new Runnable() {
+  @Override public void run() {
+	//Update UI here 
+	//Creating a JSON Object
+	  JSONObject obj = new JSONObject(username);
+	  //Obtaining the username string
+	  String userName = obj.getString("username");
+	  //new user joined alert.
+	  Alert alert = new Alert(AlertType.CONFIRMATION, "The user" + userName +  "joined the canvas! ", ButtonType.OK);
+	  //Displaying the alert
+	  alert.show();
+	  //Creating a new thread to display the alert for some seconds and dismiss
+	  new Thread(new Runnable() {
+		  @Override
+		  public void run() {
+			  try {
+				  Thread.sleep(1000);  // seconds * 100
+			  } catch (InterruptedException e) {
+				  if (alert.isShowing()) {
+					   alert.close();
+				  }
+				  e.printStackTrace();
+				  //log message
+				  logger.log(
+						  ModuleID.UI, 
+						  LogLevel.ERROR, 
+						  e.toString()
+						  );
+				  
+
+			  }finally {
+				  if (alert.isShowing()) {
+					  alert.close();
+				  }
+			  }
+		  }
+	  }).run();
+  }
+});
+}
+
+
+/***
+ * userLeft function is to display an alert if a user has left the canvas.
+ * @param username
+ */
+public void userLeft(String username)
+{
+Platform.runLater(new Runnable() {
+  @Override public void run() {
+	//Update UI here 
+	//Creating a JSON Object
+	  JSONObject obj = new JSONObject(username);
+	  //Obtaining the username string
+	  String userName = obj.getString("username");
+	  //new user joined alert.
+	  Alert alert = new Alert(AlertType.CONFIRMATION, "The user" + userName +  "left the canvas! ", ButtonType.OK);
+	  //Displaying the alert
+	  alert.show();
+	  //Creating a new thread to display the alert for some seconds and dismiss
+	  new Thread(new Runnable() {
+		  @Override
+		  public void run() {
+			  try {
+				  Thread.sleep(1000);  // seconds * 100
+			  } catch (InterruptedException e) {
+				  if (alert.isShowing()) {
+					   alert.close();
+				  }
+				  e.printStackTrace();
+				  //log message
+				  logger.log(
+						  ModuleID.UI, 
+						  LogLevel.ERROR, 
+						  e.toString()
+						  );
+				  
+
+			  }finally {
+				  if (alert.isShowing()) {
+					  alert.close();
+				  }
+			  }
+		  }
+	  }).run();
+  }
+});
+}
+
     /**
      * Initialize the Canvas Controller
      *
@@ -1041,6 +1254,9 @@ public class CanvasController implements Initializable {
 
 		//Grapics context object for updating pixels
 		gcForUpdate = canvasF.getGraphicsContext2D();
+
+		chatDisplay = chatDisplayBox;
+		chatScroller = chatScroll;
 		// The following code initializes the dropdown of brushSize.
 		brushSize.setItems(list);
 	}
